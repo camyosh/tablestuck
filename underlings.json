@@ -1,0 +1,80 @@
+{
+  "imp":{
+    "stm":4,
+    "vit":25,
+    "av":3,
+
+    "d":5,
+    "bd":[1,4],
+    "act":["AGGRIEVE","AGGRESS","AGGRAVATE","NO ACTION"],
+    "stats":[0,0,0,0,0,0],
+
+  "xp":2,
+    "drop":1
+  },
+  "ogre":{
+    "stm":4,
+    "vit":50,
+    "av":5,
+
+    "d":10,
+    "bd":[1,10],
+    "act":["ASSAIL","ASSAULT","AGGRAVATE","NO ACTION"],
+    "stats":[1,1,0,0,0,0],
+
+  "xp":8,
+    "drop":5
+  },
+  "basilisk":{
+    "stm":4,
+    "vit":100,
+    "av":7,
+
+    "d":20,
+    "bd":[2,20],
+    "act":["ARBORIZE","ARSONATE","NO ACTION","NO ACTION"],
+    "stats":[1,1,2,2,0,1],
+
+    "xp":32,
+    "drop":25
+  },
+  "lich":{
+    "stm":4,
+    "vit":200,
+    "av":9,
+
+    "d":40,
+    "bd":[4,40],
+    "act":["ACQUIRE","ACCUPRESSURE","ACERBATE","ANNIHALATE"],
+    "stats":[0,0,0,3,3,3],
+
+    "xp":128,
+    "drop":125
+  },
+  "giclopse":{
+    "stm":6,
+    "vit":400,
+    "av":11,
+
+    "d":80,
+    "bd":[8,80],
+    "act":["ASSURE","ASSAIL","ASSERT","ANNUL"],
+    "stats":[4,4,0,1,2,0],
+
+    "xp":512,
+    "drop":625
+  },
+  "titachnid":{
+    "stm":6,
+    "vit":800,
+    "av":11,
+
+    "d":160,
+    "bd":[16,160],
+    "act":["ARTILLERATE","ABUSE","ARSONATE","ABSORB"],
+    "stats":[5,5,3,5,2,1],
+
+    "xp":2048,
+    "drop":3125
+  }
+}

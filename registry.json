@@ -1,0 +1,32 @@
+{
+  "cruxtruder":{
+    "cost":0,
+    "item":["CRUXTRUDER","////////",1,1,[["CRUXITE DOWEL","////////",1,1,[]]]],
+    "grist":"build",
+    "costT":100
+  },
+  "punch designix":{
+    "cost":4,
+    "item":["PUNCH DESIGNIX","////////",1,1,[]],
+    "grist":"build",
+    "costT":100
+  },
+  "totem lathe":{
+    "cost":0,
+    "item":["TOTEM LATHE","////////",1,1,[]],
+    "grist":"build",
+    "costT":100
+  },
+  "alchemiter":{
+    "cost":0,
+    "item":["ALCHEMITER","////////",1,1,[]],
+    "grist":"build",
+    "costT":100
+  },
+  "pre-punched card":{
+    "cost":0,
+    "item":["PRE-PUNCHED CARD","11111111",1,1,[["CRUXITE ARTIFACT","////////",1,1,[]]]],
+    "grist":"build",
+    "costT":"N/A"
+  }
+}
