@@ -17,6 +17,8 @@ exports.run = (client, message, args) => {
     return;
   }
 
+//determine player location
+
   var charid = message.guild.id.concat(message.author.id);
   var occset = [true,charid];
 
@@ -26,9 +28,13 @@ exports.run = (client, message, args) => {
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
 
+//check if player is in house
+
   if(area[0]==5){
 
     if(!args[0]){
+
+      //if no arguments, list all gates
 
       let gristSpent = client.landMap.get(local[4],"spent");
       let gate = client.landMap.get(local[4],"gate");
@@ -48,8 +54,6 @@ exports.run = (client, message, args) => {
 
       message.channel.send(gateSend);
 
-      //736000373596225638
-
       return;
     }
 
@@ -59,6 +63,8 @@ exports.run = (client, message, args) => {
       return;
     }
     let gate = client.landMap.get(local[4],"gate");
+
+    //check if selected gate is available
 
     if(value>gate){
       message.channel.send("House hasn't been built high enough to reach that gate! Have your SERVER player build up your house with >build");
@@ -70,6 +76,7 @@ exports.run = (client, message, args) => {
     let clientGates;
 
     switch(value){
+      //if fist gate selected, change player location to location of first gate on land
       case 1:
         local = ["s1",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the FIRST GATE!");
@@ -79,6 +86,7 @@ exports.run = (client, message, args) => {
         client.playerMap.set(charid,local,"local");
       break;
       case 2:
+      //if second gate is selected, check if server player is connected and entered
         sburbClient = client.playerMap.get(local[4],"client");
         clientid =message.guild.id.concat(sburbClient)
 
@@ -178,6 +186,9 @@ exports.run = (client, message, args) => {
     client.landMap.set(local[4],sec,local[0]); */
 
   } else if(area[0]==3){
+
+    //if location is return node, send player to house on land
+
     local = ["h",0,0,0,land];
 
     sec = client.landMap.get(land,local[0]);

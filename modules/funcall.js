@@ -51,6 +51,7 @@ function roomGen(client, area, section, roomNum) {
 //set room inventory
 
   let roomInv = [];
+//REPLACE THIS WITH A SWITCH CASE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   if(area==0 && roomType ==14){
     roomInv = ["Hidden Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]]
@@ -88,8 +89,10 @@ var output = [roomType,roomLoot,roomName,false,occ,roomInv];
 return output;
 
 }
+//generate an AREA
 
 function areaGen(client, section) {
+  //rolls a random number to be the selected area from a table
   let area = areaTable[dubs(4)];
   let roomNum = roomCount[section][area];
   let z= [area,roomNum,[]];
@@ -110,7 +113,7 @@ exports.preItem = function() {
   let item = [premadeNames[i],premadeCodes[i],1,1,[]]
   return item;
 }
-
+//generates sections by calling on other functions
 exports.landSecInit = function(client, section) {
   let i;
   let xy = [];
@@ -125,7 +128,7 @@ exports.landSecInit = function(client, section) {
   return xy;
 
 }
-
+//creates a random list of characters that can be used in a captcha code
 exports.ranChar = function(client, x) {
   let i;
   let string = "";
@@ -134,7 +137,7 @@ exports.ranChar = function(client, x) {
   }
   return string;
 }
-
+//test if player is registered
 exports.regTest = function(client, message, target) {
 
   try {
@@ -152,7 +155,7 @@ exports.regTest = function(client, message, target) {
     return false;
   }
 }
-
+//test if potential client is registered
 exports.clientTest = function(client, message, target) {
 
   try {
@@ -202,10 +205,11 @@ exports.regImport = async function(client, charSheet) {
 
   return importsheet;
 }
-
+//check if player has a computer in rooms
 exports.compTest = function(client, message, charid, room, currentInv) {
 
     let i;
+    //if first value in array is true, it means there is a computer, if both are true, it means the computer has sburbed installed
     let comp = [false,false];
 
 
@@ -352,7 +356,7 @@ exports.oror = function(client, item1, item2){
 }
 }
 
-
+//combines 2 items and returns the result
 exports.andand = function(client, item1, item2){
 
   let code1 = [item1[1].charAt(0),item1[1].charAt(1),item1[1].charAt(2),item1[1].charAt(3),item1[1].charAt(4),item1[1].charAt(5),item1[1].charAt(6),item1[1].charAt(7)];
@@ -458,7 +462,7 @@ exports.andand = function(client, item1, item2){
 }
 
 
-
+//used to give xp to a player and level them up
 exports.xpGive = function(client, message, xp, target){
   let curXp = client.playerMap.get(target,"xp");
   let curRung = client.playerMap.get(target,"rung");

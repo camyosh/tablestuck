@@ -16,6 +16,8 @@ exports.run = (client, message, args) => {
 
   var charid = message.guild.id.concat(message.author.id);
 
+//check for computer with sburb
+
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   var currentInv = client.playerMap.get(charid,"sdex");
@@ -31,21 +33,26 @@ exports.run = (client, message, args) => {
     return;
   }
 
+//if no client code is entered, display player's client CODE
+
   if(!args[0]){
     message.channel.send(`You must enter a CLIENT CODE to connect to a CLIENT. Your CLIENT CODE is ${message.author.id}`);
     return;
   }
+
+//check if selected client code is a registered player
 
   if(funcall.clientTest(client, message, args[0]) == false){
     message.channel.send("You're not a registered player!");
     return;
   }
 
+  //check if clientid is playerid
+
   if(args[0]==message.author.id){
     message.channel.send("You cannot be your own server!")
     return;
   }
-
 
   var targetId = message.guild.id.concat(args[0]);
 

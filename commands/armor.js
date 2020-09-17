@@ -2,6 +2,7 @@ const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
 
+//declare variables for how much BD and AV player gets from armor
 const tierBD = [[1,2],[1,4],[1,6],[1,8],[1,10],[1,12],[2,16],[2,20],[2,24],[3,30],[3,36],[4,40],[5,50],[6,60],[7,70],[8,80],[10,100]];
 const tierAv = [1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
 const tList = ["MELEE","RANGED","MAGIC","NA"];
@@ -16,6 +17,8 @@ exports.run = (client, message, args) => {
   var charid = message.guild.id.concat(message.author.id);
   var armor = client.playerMap.get(charid,"armor");
   let name = client.playerMap.get(charid,"name");
+
+//if no arguments, display currently equipped armor
 
   if(!args[0]){
 
@@ -69,11 +72,15 @@ exports.run = (client, message, args) => {
 
     }
 
+    //if first argument is eject, eject armor
+
   } else if(args[0]=="eject"){
     if(armor.length==0){
       message.channel.send("You don't have any EQUIPPED ARMOR to EJECT!");
       return;
     }
+
+    //defining player location to place ejected armor in
 
     let local = client.playerMap.get(charid,"local");
     let land = local[4];
@@ -81,7 +88,11 @@ exports.run = (client, message, args) => {
     let area = sec[local[1]][local[2]];
     let room = area[2][local[3]];
 
+    //creates variable called dropitem while removing ejected armor from armor data
+
     dropItem=armor.splice(0,1)[0];
+
+    //push ejected armor into room inventory
 
     room[5].push(dropItem);
     sec[local[1]][local[2]][2][local[3]] = room;
@@ -90,13 +101,20 @@ exports.run = (client, message, args) => {
 
     message.channel.send("Ejecting Armor!")
 
+//if first argument is equip, equip selected armor
+
   } else if(args[0]=="equip"){
 
     let sdex = client.playerMap.get(charid,"sdex");
+
+    //if no second argument, cancel
+
     if(!args[1]){
       message.channel.send("You must select ARMOR from your SYLLADEX to equip! See the items in your sylladex with >sylladex")
       return;
     }
+
+    //converts argument 2 to number
 
     selectDex = parseInt(args[1], 10) - 1;
     if(isNaN(selectDex)){
@@ -109,10 +127,14 @@ exports.run = (client, message, args) => {
       return;
     }
 
+    //if armor is already equipped, cancel
+
     if(armor.length>0){
       message.channel.send("You already have ARMOR equipped! Unequip your currently equipped armor using >armor eject");
       return;
     }
+
+    //if selected item is not armorkind, cancel command
 
       let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(sdex[selectDex][1].charAt(0)) /*-1*/  ]];
 
@@ -120,6 +142,8 @@ exports.run = (client, message, args) => {
         message.channel.send(`You can only equip ARMORKIND items as ARMOR!`);
         return;
       }
+
+      //creates variable that pulls armor out of sylladex and pushes it into armor inv
 
       let equipItem = sdex.splice(selectDex,1)[0];
       armor.push(equipItem);

@@ -33,11 +33,13 @@ exports.run = (client, message, args) => {
   }
 
   let selectItem = sdex[selectDex];
-
+//combine all args except for selection
   let name = funcall.combineArgs(args);
 
   let code = selectItem[1];
   let oldName = selectItem[0];
+
+  //check if item code is blacklisted
 
   if(code == "11111111" || code == "////////" || code.includes("/")) {
     message.channel.send("The name of that item cannot be changed!");

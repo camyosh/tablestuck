@@ -24,6 +24,8 @@ exports.run = (client, message, args) => {
 
   let kinds = client.playerMap.get(charid,"kinds");
 
+//make sure strife specibus is allocated
+
   if(kinds.length == 0){
     message.channel.send(`Your STRIFE SPECIBUS is not currently allocated to a weaponkind, you must >allocate it before you can >equip a weapon!`);
     return;
@@ -45,12 +47,16 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  //check selected itemkind is allocated to strife specibus
+
   let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(sdex[selectDex][1].charAt(0)) /*-1*/  ]];
 
   if(kinds[0] !== weaponkind) {
     message.channel.send(`Your STRIFE SPECIBUS is allocated to ${kinds[0]}, you can only >equip ${kinds[0]} weapons!`);
     return;
   }
+
+//check if strife specibus is full
 
   if(spec.length >= scards) {
     message.channel.send("Your STRIFE SPECIBUS is full! You can >specibus eject a weapon to make room.");

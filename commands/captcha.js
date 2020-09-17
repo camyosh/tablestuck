@@ -16,6 +16,8 @@ exports.run = (client, message, args) => {
 
   var charid = message.guild.id.concat(message.author.id);
 
+//get player location and room inventory
+
   let local = client.playerMap.get(charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
@@ -23,6 +25,8 @@ exports.run = (client, message, args) => {
   let room = area[2][local[3]];
   let currentInv = client.playerMap.get(charid,"sdex");
   let targetItem;
+
+//convert first argument to number and check if number is valid argument
 
   value = parseInt(args[0], 10) - 1;
   if(isNaN(value)){
@@ -34,9 +38,13 @@ exports.run = (client, message, args) => {
     return;
   }
 
+//if only one argument, captchalogue item in that position in room
+
   if(!args[1]){
   targetItem = room[5].splice(value,1)[0];
 } else {
+
+  //if more than one argument, check if target item is holding other items
   value1 = parseInt(args[1], 10) - 1;
   if(isNaN(value1)){
     message.channel.send("That is not a valid argument!");
@@ -63,6 +71,9 @@ exports.run = (client, message, args) => {
   targetItem = room[5][value][4].splice(value1,1)[0];
   }
 }
+
+//add target item to Sylladex
+
   currentInv.unshift(targetItem);
   let mess = `CAPTCHALOGUED the ${targetItem[0]} from the ${room[2]}.`
   if(currentInv.length > client.playerMap.get(charid,"cards")){

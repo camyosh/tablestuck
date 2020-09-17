@@ -22,6 +22,9 @@ exports.run = (client, message, args) => {
   let name = client.playerMap.get(charid,"name");
   let msg =``;
   let i;
+
+//loop to list all of a player's grist types and ammounts
+
   for(i=0;i<gristTypes.length;i++){
     msg += `${client.emojis.cache.get(client.grist[gristTypes[i]].emoji)} **${gristTypes[i].toUpperCase()} - ${grist[i]}**\n\n`
   }

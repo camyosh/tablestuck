@@ -1,5 +1,5 @@
 const funcall = require("../modules/funcall.js");
-//simple ping command to check if the bot is online.
+//displays player's grist total
 const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
@@ -13,6 +13,8 @@ exports.run = (client, message, args) => {
     message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
     return;
   }
+
+  //check for computer with sburb installed
 
   var charid = message.guild.id.concat(message.author.id);
   var local = client.playerMap.get(charid,"local");
@@ -28,12 +30,18 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  //check if connected to a client
+
   if(client.playerMap.get(charid,"client") == "NA") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
 
+//retrieve client charid
+
   let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
+
+  //retrieve client's grist totals
 
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
   let grist = client.playerMap.get(clientId,"grist");

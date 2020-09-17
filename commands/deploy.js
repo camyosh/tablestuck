@@ -16,6 +16,8 @@ exports.run = (client, message, args) => {
 
   var charid = message.guild.id.concat(message.author.id);
 
+//retrieve player location and check for computer
+
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   var currentInv = client.playerMap.get(charid,"sdex");
@@ -32,6 +34,8 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  //check if connected to a client
+
   if(client.playerMap.get(charid,"client") == "NA") {
     message.channel.send("You aren't connected to a client!");
     return;
@@ -39,12 +43,15 @@ exports.run = (client, message, args) => {
 
   let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
 
+//retrieve client information
 
   let clientLocal = client.playerMap.get(clientId,"local");
   let clientSec = client.landMap.get(clientId,"h");
   let gristType = client.landMap.get(clientId,"grist")[0];
   let deployCheck = client.playerMap.get(clientId,"deploy");
   let gristCheck = client.playerMap.get(clientId,"grist");
+
+//if no arguments, display list of deployable items
 
   if(!args[0]) {
     let msg=``;
@@ -71,6 +78,8 @@ exports.run = (client, message, args) => {
     message.channel.send(registryDirect);
     return;
   }
+
+  //if no second argument, display list of rooms in players house
   if(!args[1]) {
     let msg=``;
     let i;
@@ -92,6 +101,8 @@ exports.run = (client, message, args) => {
   }
 
 //PUT A CHECK TO MAKE SURE PLAYER CAN AFFORD MACHINE
+
+//check to see if selected item is already deployed and if they can afford it
 
   if(deployCheck[value[0]]==false){
 

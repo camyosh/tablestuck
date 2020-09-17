@@ -356,14 +356,14 @@ function leaveStrife(client,message,local,pos){
 //used to start a player or underlings turn and initiate
 
 function startTurn(client, message, local) {
-
+//retrieve strife id
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let list = client.strifeMap.get(strifeLocal,"list");
   let init = client.strifeMap.get(strifeLocal,"init");
   let i;
-
+//reset actions taken this turn
   list[init[turn][0]][6]=[];
 
 
@@ -373,7 +373,7 @@ function startTurn(client, message, local) {
   let stamsg;
   let carry = false;
   let removed;
-
+//go through checking for status effects and applying them
   for(i=(list[init[turn][0]][7].length-1);i>=0;i--){
     switch(list[init[turn][0]][7][i]){
       case "STAMFAV":
@@ -402,13 +402,13 @@ function startTurn(client, message, local) {
       break;
     }
   }
-
+//check if player or underling
   if(list[init[turn][0]][0]==true){
-
+//roll player stamina
     stamroll = [Math.floor((Math.random() * 8) + 1),Math.floor((Math.random() * 8) + 1)];
-
+//check if carry is in effect
     if(carry==false){
-
+//if stamina roll is not favorable, take first roll, if true take higher roll
     if(stamfav==0){
       stamina=stamroll[0];
       stamsg=`${stamroll[0]}`
@@ -429,10 +429,11 @@ function startTurn(client, message, local) {
         stamsg=`~~${stamroll[0]}~~ ${stamroll[1]}`
       }
     }
-
+    //set rolled stamina to strife data
     list[init[turn][0]][5]=stamina;
 
   } else {
+    //if carry is true, keep stamina from last turn and add it to new rolled stamina
     let carrystam = list[init[turn][0]][5];
   if(stamfav==0){
     stamina=stamroll[0]+carrystam;
@@ -459,10 +460,10 @@ function startTurn(client, message, local) {
 }
 
     client.strifeMap.set(strifeLocal,list,"list");
-
+//retrieve player channel information
     let chan = client.playerMap.get(list[init[turn][0]][1],"channel");
     let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
-
+//send message to player's channel
     client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actionList you can take with >act, and >pass your turn once you're done!`);
 
     let active = client.strifeMap.get(strifeLocal,"active");
@@ -475,7 +476,7 @@ function startTurn(client, message, local) {
     }
 
   } else {
-
+//if turn is underling, roll stamina based on underling document
     stamroll = [Math.floor((Math.random() * client.underlings[list[init[turn][0]][1]].stm) + 1),Math.floor((Math.random() * client.underlings[list[init[turn][0]][1]].stm) + 1)];
 
     if(stamfav==0){
@@ -538,7 +539,7 @@ exports.strifeTest = function(client, message, target) {
 }
 
 exports.turnTest = function(client, message, local) {
-
+//test if it's a player's turn
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
   let turn = client.strifeMap.get(strifeLocal,"turn");
@@ -558,7 +559,9 @@ exports.turnTest = function(client, message, local) {
 }
 
 exports.underSpawn = function(client, local, sec) {
+//chance to spawn an underling everytime a player moves in house or on underling tile
 
+//roll random numbers to decide what underlings spawn where under specific circumstance
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
 
@@ -979,7 +982,7 @@ exports.leaveStrife = function(client,message,local,target){
 }
 
 exports.underRally = function(client, local) {
-
+//check if any underlings are in room, if so they will be added to the strife
   let sec = client.landMap.get(local[4],local[0]);
   let occList = sec[local[1]][local[2]][2][local[3]][4];
 
@@ -1035,7 +1038,7 @@ exports.underRally = function(client, local) {
   function act(client,message,local,action,target){
 
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
-
+//if strife database does not exist, cancel code
     if(client.strifeMap.has(strifeLocal)==false){
       message.channel.send("Hey tell cam you saw this")
       console.log("Stopped another crash!")
@@ -1046,7 +1049,7 @@ exports.underRally = function(client, local) {
     let list = client.strifeMap.get(strifeLocal,"list");
     let active = client.strifeMap.get(strifeLocal,"active");
     let init = client.strifeMap.get(strifeLocal,"init");
-
+//check action tags
     let aa = client.actionList[action].add;
 
     if(aa.includes("INSTANT")){
@@ -1078,6 +1081,7 @@ exports.underRally = function(client, local) {
     let tarGrist;
 
     try{
+      //retrieve target grist
     tarGrist = list[target][2];
   } catch(err) {
     console.log(message.author.username);
@@ -1088,12 +1092,14 @@ exports.underRally = function(client, local) {
   }
     let targName = "Target"
     let attName = "Attacker"
-
+//check if current turn is a player
     if(list[init[turn][0]][0]==true){
 
       try{
+        //retrieve player information
         let specibus = client.playerMap.get(list[init[turn][0]][1],"spec");
         let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
+
         grist = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(specibus[equip][1].charAt(1))]];
         dmg = tierDmg[specibus[equip][2]];
         bdroll = tierBD[specibus[equip][2]];
@@ -1108,12 +1114,13 @@ exports.underRally = function(client, local) {
       }
 
     } else {
+      //if player is underling, get information from underling document
       dmg = client.underlings[list[init[turn][0]][1]].d;
       bdroll = client.underlings[list[init[turn][0]][1]].bd;
       grist = list[init[turn][0]][2];
       attName = `${list[init[turn][0]][2]} ${list[init[turn][0]][1]}`
     }
-
+//if target is player, retrieve name from database, if underling default underling name
     if(list[target][0]==true){
       targName = client.playerMap.get(list[target][1],"name");
     } else {
@@ -1122,9 +1129,9 @@ exports.underRally = function(client, local) {
 
     let brroll;
     let av;
-
+//if target is player
     if(list[target][0]==true){
-
+//retrieve target armor
       try{
         let armor = client.playerMap.get(list[target][1],"armor");
 
@@ -1136,6 +1143,7 @@ exports.underRally = function(client, local) {
       }
 
     } else {
+      //if underling, retrieve armor information from underling doc
       av = client.underlings[list[target][1]].av;
       brroll = client.underlings[list[target][1]].bd;
     }
@@ -1143,7 +1151,7 @@ exports.underRally = function(client, local) {
     let effective = "HIT!"
 
     try{
-
+//check for grist effectivity, if effective change message accordingly and increase BR or BD accordingly
     if(grist=="artifact"){
       if(tarGrist!="artifact"&&tarGrist!="diamond"&&tarGrist!="zillium"){
         br++;
@@ -1226,14 +1234,14 @@ exports.underRally = function(client, local) {
     }
 
     //
-
+    //if action deals damage or imposes effect
     if(att == true) {
 
       let precon;
       for(precon=(list[init[turn][0]][7].length - 1);precon>=0;precon--){
         let removed;
 
-
+        //check for COMBATATIVE tags
         switch(list[init[turn][0]][7][precon]){
           case "ALLFAV":
             fav++;
@@ -1256,7 +1264,7 @@ exports.underRally = function(client, local) {
 
     let strikeCheck;
     let strikemsg;
-
+//roll to hit, similar to how stamina is handled
     let strikeRoll = [Math.floor((Math.random() * 20) + 1),Math.floor((Math.random() * 20) + 1)];
 
     if(fav == 0) {
@@ -1459,9 +1467,10 @@ exports.underRally = function(client, local) {
 
     let list = client.strifeMap.get(strifeLocal,"list")
     let turn = client.strifeMap.get(strifeLocal,"turn")
-
+//randomly decide target from list
     let target = playerpos[Math.floor((Math.random() * playerpos.length))];
     try{
+      //depending on underling, take actions in order before passing turn with 3 second delay between each
     switch (underling){
       case "imp":
         switch(stamina){

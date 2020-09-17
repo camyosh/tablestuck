@@ -24,6 +24,8 @@ exports.run = (client, message, args) => {
   const tList = ["MELEE","RANGED","MAGIC","NA"];
 
   let msg = ``;
+
+  //if no argument, list all weapons
   if(!args[0]){
   let i;
   for(i=0;i<scards && i<16;i++){
@@ -53,6 +55,8 @@ exports.run = (client, message, args) => {
   return;
 }
 
+//eject selected item from specibus
+
 if(args[0]=="eject") {
 
   let local = client.playerMap.get(charid,"local");
@@ -72,13 +76,14 @@ if(args[0]=="eject") {
     return;
   }
   let dropItem;
+  //if selection is not an item, drop strife card
   if(selectDex >= spec.length){
 
     if(scards <= 1) {
       message.channel.send("Cannot eject your last STRIFE CARD!");
       return;
     }
-
+    //decrease card count, place strife card in house
     scards-=1;
     client.playerMap.set(charid,scards,"scards");
     dropItem=["STRIFE CARD","////////",1,1,[]];

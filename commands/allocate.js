@@ -32,10 +32,14 @@ exports.run = (client, message, args) => {
     return;
   };
 
+  //check for second argument
+
   if(!args[0]){
     message.channel.send("You need to select an item from your sylladex to allocate! You can see a full list of items in your sylladex with >sylladex. Allocate an item using the position number in the sylladex, for example: >allocate 3");
     return;
   }
+
+//convert argument into number
 
   selectDex = parseInt(args[0], 10) - 1;
   if(isNaN(selectDex)){
@@ -43,6 +47,10 @@ exports.run = (client, message, args) => {
     message.channel.send("That is not a valid argument!");
     return;
   }
+
+
+//check if argument is an item in sylladex
+
   if(selectDex >= cards || selectDex< 0 || selectDex >= sdex.length){
     message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
     return;
@@ -50,14 +58,20 @@ exports.run = (client, message, args) => {
 
   let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(sdex[selectDex][1].charAt(0)) /*-1*/  ]];
 
+//checks for blacklisted weaponkinds
+
   if(client.weaponkinds[weaponkind].t == 3){
     message.channel.send("That is an invalid weaponkind!");
     return;
   };
 
+//checks to see if weaponkind is already allocated
+
   if(kinds.includes(weaponkind)==true){
     message.channel.send("That weaponkind is already allocated!");
   }
+
+//push weaponkind into specibus list
 
   kinds.push(weaponkind);
 

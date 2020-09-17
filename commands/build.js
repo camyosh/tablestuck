@@ -14,12 +14,18 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  //define variables to determine required grist to reach each gate
+
   const gateReq = [200,400,800,1600,3200,6400,12800,25600];
+
+  //retrieve player location
 
   var charid = message.guild.id.concat(message.author.id);
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   var currentInv = client.playerMap.get(charid,"sdex");
+
+  //check for computer with sburb installed in room or inventory
 
   let compCheck = funcall.compTest(client,message,charid,room,currentInv);
 
@@ -32,18 +38,25 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  //if no client player is connected cancel
+
   if(client.playerMap.get(charid,"client") == "NA") {
     message.channel.send("You aren't connected to a client!");
   }
 
+  //retrieve clients charid
+
   let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
 
+  //convert grist amount to number
 
   value = parseInt(args[0], 10);
   if(isNaN(value) || value<1){
     message.channel.send("That is not a valid argument!");
     return;
   }
+
+  //checks if amount spent is greater than amount of grist player has
 
   let buildSpent = client.landMap.get(clientId,"spent");
   let grist = client.playerMap.get(clientId,"grist");
@@ -52,8 +65,14 @@ exports.run = (client, message, args) => {
     message.channel.send("The Client doesn't have enough Build Grist!");
     return;
   }
+
+  //increases built amount and decreases build grist total
+
+
   buildSpent += value;
   grist[0] -= value;
+
+  //check if player has enough grist to reach next gate
 
   let i;
   let gate = 0;
@@ -66,6 +85,8 @@ exports.run = (client, message, args) => {
 
   client.playerMap.set(clientId,grist,"grist");
   client.landMap.set(clientId,buildSpent,"spent");
+
+  //if player can now reach next gate, send message
 
   if(gate>curGate){
 

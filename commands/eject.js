@@ -16,6 +16,8 @@ exports.run = (client, message, args) => {
 
   var charid = message.guild.id.concat(message.author.id);
 
+//retrieve player information like location and sylladex
+
   let local = client.playerMap.get(charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
@@ -23,6 +25,8 @@ exports.run = (client, message, args) => {
   let room = area[2][local[3]];
   let sdex = client.playerMap.get(charid,"sdex");
   let cards = client.playerMap.get(charid,"cards")
+
+//convert argument to number
 
   selectDex = parseInt(args[0], 10) - 1;
   if(isNaN(selectDex)){
@@ -34,13 +38,20 @@ exports.run = (client, message, args) => {
     message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
     return;
   }
+
+//check if item is in selected card, if not drop card
+
   let dropItem;
   if(selectDex >= sdex.length){
+
+//if only one captcha card left cancel
 
     if(cards <= 1) {
       message.channel.send("Cannot eject your last CAPTCHALOGUE CARD!");
       return;
     }
+
+//drop captcha card
 
     cards-=1;
     client.playerMap.set(charid,cards,"cards");
@@ -48,6 +59,9 @@ exports.run = (client, message, args) => {
   } else {
     dropItem=sdex.splice(selectDex,1)[0];
   }
+
+  //drop items
+
   room[5].push(dropItem);
   sec[local[1]][local[2]][2][local[3]] = room;
   client.landMap.set(land,sec,local[0]);

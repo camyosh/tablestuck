@@ -41,12 +41,13 @@ if(!args[0]){
     msg += `**[${i+1}] ${dex[i][0]} x${dex[i][3]}** \n${dex[i][1]} TIER - ${dex[i][2]}\n\n`
   }
 }
-
+//check if occupants are in room
   if(occList<=0){
 
     occ = `**EMPTY**`
 
-}else{    
+}else{
+  //list all occupants in room
   for(j=0;j<occList.length&&j<10;j++){
     if(occList[j][0]==true){
       occ += `**${client.playerMap.get(occList[j][1],"name")}**\n\n`
@@ -76,6 +77,8 @@ if(!args[0]){
     message.channel.send("That is not a valid argument!")
     return;
   };
+
+  //decypher captcha code and convert into weapon information
 
   let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(dex[value][1].charAt(0)) /*-1*/  ]];
   let gristType = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(dex[value][1].charAt(1))]];

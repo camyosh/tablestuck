@@ -8,7 +8,7 @@ exports.run = (client, message, args) => {
     message.channel.send("You're not a registered player!");
     return;
   }
-
+// if player is in strife, leave strife
     if(strifecall.strifeTest(client, message, message.author) == true){
 
     //  message.channel.send("You are already in STRIFE! You can leave by ABSCONDING, which is >act 6 1");
@@ -17,9 +17,11 @@ exports.run = (client, message, args) => {
 
     var charid = message.guild.id.concat(message.author.id);
     let local = client.playerMap.get(charid,"local");
+    //retrieve strife id
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`
 
     let players = client.strifeMap.get(strifeLocal,"players");
+    //if character is the only player in strife, delete strife database
     if(players == 1){
       client.strifeMap.delete(strifeLocal);
     } else {
@@ -28,7 +30,7 @@ exports.run = (client, message, args) => {
 
       let active = client.strifeMap.get(strifeLocal,"active");
       let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
-
+      //remove player from all strife variables in database
       let removed = [active.splice(active.indexOf(pos),1),playerpos.splice(playerpos.indexOf(pos),1)];
       players --;
 
@@ -56,7 +58,7 @@ exports.run = (client, message, args) => {
   }
 
   let grist;
-
+//determine grist type for effectiveness
   if(armor.length == 0){
     grist = "artifact"
   } else {
@@ -80,7 +82,7 @@ exports.run = (client, message, args) => {
     let active = client.strifeMap.get(strifeLocal,"active");
     let players = client.strifeMap.get(strifeLocal,"players");
     let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
-
+//set player position in list
     const pos = list.length;
 /*
     [[player name,hp],[underlin 1]]
@@ -108,6 +110,7 @@ exports.run = (client, message, args) => {
 
 
   } else {
+//if no strife exists, create strife database
 
     var strifeSet = {
       list:[profile],
@@ -135,6 +138,8 @@ exports.run = (client, message, args) => {
     client.playerMap.set(charid,0,"pos");
     client.playerMap.set(charid,true,"strife");
 
+
+    //add all underlings in area to strife
     strifecall.underRally(client,local);
 
     message.channel.send("Entering Strife!");
