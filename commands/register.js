@@ -1,5 +1,6 @@
 const funcall = require("../modules/funcall.js");
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const landcall = require("../modules/landcall.js");
 //Command usage: >register @target
 //This command creates a character sheet in the player database as well as a new land in the location database
 
@@ -15,6 +16,7 @@ exports.run = (client, message, args) => {
   }
 
 //checks to see if the command user mentioned a target
+
 
 
   //declaring who the target to be registered is and their charid (The server id + the user id)
@@ -170,6 +172,7 @@ regImport();
 
 client.playerMap.set(charid,charSheet)
 
+let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 
 var land = {
     name: ["Stumps","Dismay"],
@@ -178,14 +181,18 @@ var land = {
     spent: 0,
     floors: 0,
     gate: 0,
-    gates:[["s1",Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11)),0,charid],["s2",Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11)),0,charid],["s3",Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11)),0,charid],["s4",Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11)),0,charid]],
+    gates:gategen,
     h:preset,
-    s1: funcall.landSecInit(client,0),
+    /*s1: funcall.landSecInit(client,0),
     s2: funcall.landSecInit(client,1),
     s3: funcall.landSecInit(client,2),
     s4: funcall.landSecInit(client,3)
+    */
+    s1:landcall.landGen(client,0,gategen[0]),
+    s2:landcall.landGen(client,1,gategen[1]),
+    s3:landcall.landGen(client,2,gategen[2]),
+    s4:landcall.landGen(client,3,gategen[3])
 }
-
 //adds the charaacter sheet and land sheet to the database
 
 

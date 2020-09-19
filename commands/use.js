@@ -230,7 +230,7 @@ exports.run = (client, message, args) => {
 
       if(sdex[selectDex][0]=="CRUXITE ARTIFACT"){
 
-        let sec1 = client.landMap.get(charid,"s1");
+        /*let sec1 = client.landMap.get(charid,"s1");
         let sec2 = client.landMap.get(charid,"s2");
         let sec3 = client.landMap.get(charid,"s3");
         let gates = client.landMap.get(charid,"gates");
@@ -247,7 +247,7 @@ exports.run = (client, message, args) => {
 
         sec3[gates[2][1]][gates[2][2]][0]=6;
         sec3[gates[2][1]][gates[2][2]][1]=1;
-        sec3[gates[2][1]][gates[2][2]][2]=[[0,0,"GATE 6",false,[],[]]];
+        sec3[gates[2][1]][gates[2][2]][2]=[[0,0,"GATE 6",false,[],[]]];*/
 
         let landName = client.landMap.get(charid,"name");
         client.landMap.set(charid,true,"enter");

@@ -15,6 +15,7 @@ function dubs(x){
 }
 
 
+
 //defining tables to determine information about an area in ranArea
 //0 is empty, 1 is dungeon, 2 is construct, 3 is return node, 4 is village
 const areaTable = [1,0,2,0,3,0,4];
@@ -22,6 +23,10 @@ const areaTable = [1,0,2,0,3,0,4];
 const roomCount = [[1,3,1,1,3],[1,5,1,1,4],[1,7,1,1,5],[1,9,1,1,6]]
 //
 const vilName = ["BANK","HABERDASHERY","GENERAL STORE","HOUSE","SNACK STAND","WEAPONSMITH","INN"]
+
+exports.roomGenCall = function(client, area, section, roomNum){
+  return roomGen(client, area, section, roomNum);
+}
 
 function roomGen(client, area, section, roomNum) {
   //set default room type
@@ -115,6 +120,8 @@ exports.preItem = function() {
 }
 //generates sections by calling on other functions
 exports.landSecInit = function(client, section) {
+  //xy = [xy[]]
+  //s1 =[[x[]]]
   let i;
   let xy = [];
   for(i = 0; i < 11; i++){
