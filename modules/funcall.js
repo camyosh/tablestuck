@@ -1,7 +1,7 @@
 
 //const GoogleSpreadsheet = require('google-spreadsheet');
 //const { promisify } = require('util');
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+//const { GoogleSpreadsheet } = require('google-spreadsheet');
 const lootcall = require("./lootcall.js");
 
 //declaring list of premade items and their codes (there are 102 entries)
@@ -180,7 +180,7 @@ exports.clientTest = function(client, message, target) {
     return false;
   }
 }
-
+/*
 
 exports.accessSpreasdsheet = async function(client, message, charSheet) {
   var doc = new GoogleSpreadsheet(charSheet);
@@ -212,6 +212,9 @@ exports.regImport = async function(client, charSheet) {
 
   return importsheet;
 }
+
+*/
+
 //check if player has a computer in rooms
 exports.compTest = function(client, message, charid, room, currentInv) {
 

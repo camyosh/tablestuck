@@ -11,7 +11,7 @@ const fs = require('fs');
 //const { promisify } = require('util');
 const auth = require("../auth.json");
 const grist =require("./grist.json")
-const creds =require("../client_secret.json");
+//const creds =require("../client_secret.json");
 const registry =require("./registry.json");
 const actionList =require("./actions.json");
 
@@ -55,7 +55,7 @@ client.auth = auth;
 client.playerMap = playerMap;
 client.landMap = landMap;
 client.grist = grist;
-client.creds = creds;
+//client.creds = creds;
 client.Discord = Discord;
 client.registry = registry;
 client.actionList = actionList;
