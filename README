@@ -1,0 +1,20 @@
+TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
+
+1- Download and install NODE JS
+
+2- Once NODE JS is installed, open the command terminal on your computer and type the following --
+  npm install discord.js
+  npm install enmap
+
+3- Put the V1 folder in the same folder as a text file called auth.json and paste the following into it --
+  {
+    "token": "YOUR DISCORD BOT TOKEN HERE",
+    "prefix": ">",
+    "admin": "YOUR DISCORD ID HERE"
+  }
+
+4- replace the information in the token and admin spaces with your own information to connect this program to your own discord bot
+
+5- open the file "run.bat" to start the bot
+
+--this code is not the finished version of the bot and will continue to be updated regularly on github--

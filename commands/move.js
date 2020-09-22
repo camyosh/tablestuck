@@ -44,8 +44,8 @@ exports.run = (client, message, args) => {
 
     let msg = ``;
     let i;
-    for (i = 0; i < area[1]; i++) {
-
+    for (i = 0; i < area[2].length; i++) {
+      console.log(area[2][i]);
       msg += `**[${i+1}] ${area[2][i][2]}**\n\n`
     }
     roomDirect = new client.Discord.MessageEmbed()
@@ -67,20 +67,20 @@ exports.run = (client, message, args) => {
     switch(args[0]) {
       case "north":
       case "n":
-      if(local[2]>=sec[local[1]].length-1){
+      if(local[1]<=0){
         message.channel.send("You've reached the edge of the section! You can't go any farther!");
         return;
       }
 
       sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
 
-      local[2]+=1;
+      local[1]-=1;
       local[3]=0;
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       sec =  strifecall.underSpawn(client,local,sec);
-
+      sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
 
@@ -90,28 +90,7 @@ exports.run = (client, message, args) => {
 
       case "south":
       case "s":
-      if(local[2]<=0){
-        message.channel.send("You've reached the edge of the section! You can't go any farther!");
-        return;
-      }
-
-      sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
-
-      local[2]-=1;
-      local[3]=0;
-
-      sec[local[1]][local[2]][2][local[3]][4].push(occset);
-
-      sec =  strifecall.underSpawn(client,local,sec);
-
-      client.playerMap.set(charid,local,"local");
-      client.landMap.set(land,sec,local[0]);
-      message.channel.send(`You move South and find a ${typeList[sec[local[1]][local[2]][0]]}`)
-      break;
-
-      case "east":
-      case "e":
-      if(local[1]>=sec.length-1){
+      if(local[1]>=10){
         message.channel.send("You've reached the edge of the section! You can't go any farther!");
         return;
       }
@@ -124,7 +103,28 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       sec =  strifecall.underSpawn(client,local,sec);
+      sec[local[1]][local[2]][2][local[3]][3]=true;
+      client.playerMap.set(charid,local,"local");
+      client.landMap.set(land,sec,local[0]);
+      message.channel.send(`You move South and find a ${typeList[sec[local[1]][local[2]][0]]}`)
+      break;
 
+      case "east":
+      case "e":
+      if(local[2]>=sec.length-1){
+        message.channel.send("You've reached the edge of the section! You can't go any farther!");
+        return;
+      }
+
+      sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
+
+      local[2]+=1;
+      local[3]=0;
+
+      sec[local[1]][local[2]][2][local[3]][4].push(occset);
+
+      sec =  strifecall.underSpawn(client,local,sec);
+      sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
       message.channel.send(`You move East and find a ${typeList[sec[local[1]][local[2]][0]]}`)
@@ -132,7 +132,7 @@ exports.run = (client, message, args) => {
 
       case "west":
       case "w":
-      if(local[1]<=0){
+      if(local[2]<=0){
         message.channel.send("You've reached the edge of the section! You can't go any farther!");
         return;
       }
@@ -140,19 +140,37 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
 
-      local[1]-=1;
+      local[2]-=1;
       local[3]=0;
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
-
       sec =  strifecall.underSpawn(client,local,sec);
-
+      sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
       message.channel.send(`You move West and find a ${typeList[sec[local[1]][local[2]][0]]}`)
       break;
     }
 
+    let occNew = sec[local[1]][local[2]][2][local[3]][4];
+
+    if(occNew.length > 1){
+      let occCheck = [false,false];
+      for(i=0;i<occNew.length;i++){
+        if(occNew[i][0]==false){
+          occCheck[0]=true;
+        } else if(!occNew[i][1]==charid){
+          occCheck[1]=true;
+        }
+      }
+      if(occCheck[0]&&occCheck[1]){
+        message.channel.send("There are players and Underlings in this area!");
+      } else if(occCheck[0]){
+        message.channel.send("There are Underlings in this area!");
+      } else {
+        message.channel.send("There are Players in this area!")
+      }
+    }
 
   } else {
 

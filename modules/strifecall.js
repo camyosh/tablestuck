@@ -716,7 +716,7 @@ exports.underSpawn = function(client, local, sec) {
               sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
             break;
           }
-          sec[local[1]][local[2]][2][local[3]][3]=true;
+
         }
       } else if(area[0]==1){
         let ranroll = Math.floor(Math.random() * 4);
@@ -743,7 +743,7 @@ exports.underSpawn = function(client, local, sec) {
             sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
           break;
         }
-        sec[local[1]][local[2]][2][local[3]][3]=true;
+
       }
     } else if(local[0]=="s2"){
       if(area[0]==0){
@@ -779,7 +779,7 @@ exports.underSpawn = function(client, local, sec) {
               sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
             break;
           }
-          sec[local[1]][local[2]][2][local[3]][3]=true;
+
         }
       } else if(area[0]==1){
         let ranroll = Math.floor(Math.random() * 6);
@@ -818,7 +818,7 @@ exports.underSpawn = function(client, local, sec) {
             sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
           break;
         }
-        sec[local[1]][local[2]][2][local[3]][3]=true;
+
       }
     } else if(local[0]=="s3"){
       if(area[0]==0){
@@ -854,7 +854,7 @@ exports.underSpawn = function(client, local, sec) {
               sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
             break;
           }
-          sec[local[1]][local[2]][2][local[3]][3]=true;
+
         }
       } else if(area[0]==1){
         let ranroll = Math.floor(Math.random() * 6);
@@ -893,7 +893,7 @@ exports.underSpawn = function(client, local, sec) {
             sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
           break;
         }
-        sec[local[1]][local[2]][2][local[3]][3]=true;
+
       }
     } else if(local[0]=="s4"){
       if(area[0]==0){
@@ -929,7 +929,7 @@ exports.underSpawn = function(client, local, sec) {
               sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
             break;
           }
-          sec[local[1]][local[2]][2][local[3]][3]=true;
+
         }
       } else if(area[0]==1){
         let ranroll = Math.floor(Math.random() * 6);
@@ -968,7 +968,7 @@ exports.underSpawn = function(client, local, sec) {
             sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
           break;
         }
-        sec[local[1]][local[2]][2][local[3]][3]=true;
+        
       }
     }
   }

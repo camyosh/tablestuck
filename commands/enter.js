@@ -81,7 +81,9 @@ exports.run = (client, message, args) => {
         local = ["s1",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the FIRST GATE!");
         sec = client.landMap.get(local[4],local[0]);
+        console.log(sec[local[1]][local[2]][2]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
+        sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
       break;
@@ -98,10 +100,12 @@ exports.run = (client, message, args) => {
           return;
         }
         clientGates = client.landMap.get(clientid,"gates");
-        local = clientGates[0]
+        local = ["s1",clientGates[0][0],clientGates[0][1],0,clientid];
+        //local = clientGates[0];
         message.channel.send("Entering the SECOND GATE!");
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
+        sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
       break;
@@ -111,6 +115,7 @@ exports.run = (client, message, args) => {
         message.channel.send("Entering the THIRD GATE!");
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
+        sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
       break;
@@ -126,10 +131,11 @@ exports.run = (client, message, args) => {
           return;
         }
         clientGates = client.landMap.get(clientid,"gates");
-        local = clientGates[1]
+        local = ["s2",clientGates[1][0],clientGates[1][1],0,clientid];
         message.channel.send("Entering the FOURTH GATE!");
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
+        sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
       break;
@@ -139,6 +145,7 @@ exports.run = (client, message, args) => {
         message.channel.send("Entering the FIFTH GATE!");
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
+        sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
       break;
@@ -154,10 +161,11 @@ exports.run = (client, message, args) => {
           return;
         }
         clientGates = client.landMap.get(clientid,"gates");
-        local = clientGates[2]
+        local = ["s3",clientGates[2][0],clientGates[2][1],0,clientid];
         message.channel.send("Entering the SIXTH GATE!");
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
+        sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
       break;
@@ -167,6 +175,7 @@ exports.run = (client, message, args) => {
         message.channel.send("Entering the SEVENTH GATE!");
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
+        sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
       break;
@@ -213,7 +222,7 @@ exports.run = (client, message, args) => {
     }
 
     message.channel.send("Entering the gate!");
-    local = ["h",0,0,0,land];
+    local = ["h",0,0,0,serverid];
 
     client.playerMap.set(charid,local,"local");
 

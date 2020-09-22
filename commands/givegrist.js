@@ -6,7 +6,7 @@ exports.run = (client, message, args) => {
 
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
 
-  if(true == true) {
+  if(true == false) {
     message.channel.send("You don't have permission to do that!");
     return;
   }
