@@ -5,10 +5,11 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
   When the NODE JS installation asks if you want to install tools necessary to compile native modules, please make sure that the box is checked!
   If you don't do this, you will need to install python and Visual Studio c++ manually.
 
-2- Once NODE JS is installed, open the command terminal on your computer and type the following --
+2- Once NODE JS is installed, open the command terminal on your computer in administrator mode and type the following --
   npm install discord.js
   npm install enmap
   npm install better-sqlite3
+  npm install google-spreadsheet
 
 3- Put the V1 folder in the same folder as a text file called auth.json and paste the following into it --
   {
