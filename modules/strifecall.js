@@ -30,7 +30,6 @@ function passTurn(client, message, local) {
   let removed;
 
   //check if the player whos turn it is has any status effects
-
   //Steps for retrieving player information based on turn
   //Retrieve an array from the init array at the position equal to TURN
   //The first value in an initiative array is the posiion of that character in the LIST array where the data can then be retrieved for the correct character
@@ -968,7 +967,7 @@ exports.underSpawn = function(client, local, sec) {
             sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
           break;
         }
-        
+
       }
     }
   }
@@ -1040,7 +1039,6 @@ exports.underRally = function(client, local) {
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 //if strife database does not exist, cancel code
     if(client.strifeMap.has(strifeLocal)==false){
-      message.channel.send("Hey tell cam you saw this")
       console.log("Stopped another crash!")
       return;
     }

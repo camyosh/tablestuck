@@ -78,6 +78,7 @@ exports.run = (client, message, args) => {
     switch(value){
       //if fist gate selected, change player location to location of first gate on land
       case 1:
+        sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s1",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the FIRST GATE!");
         sec = client.landMap.get(local[4],local[0]);
@@ -100,6 +101,7 @@ exports.run = (client, message, args) => {
           return;
         }
         clientGates = client.landMap.get(clientid,"gates");
+        sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s1",clientGates[0][0],clientGates[0][1],0,clientid];
         //local = clientGates[0];
         message.channel.send("Entering the SECOND GATE!");
@@ -111,6 +113,7 @@ exports.run = (client, message, args) => {
       break;
 
       case 3:
+      sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s2",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the THIRD GATE!");
         sec = client.landMap.get(local[4],local[0]);
@@ -131,6 +134,7 @@ exports.run = (client, message, args) => {
           return;
         }
         clientGates = client.landMap.get(clientid,"gates");
+        sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s2",clientGates[1][0],clientGates[1][1],0,clientid];
         message.channel.send("Entering the FOURTH GATE!");
         sec = client.landMap.get(local[4],local[0]);
@@ -141,6 +145,7 @@ exports.run = (client, message, args) => {
       break;
 
       case 5:
+      sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s3",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the FIFTH GATE!");
         sec = client.landMap.get(local[4],local[0]);
@@ -161,6 +166,7 @@ exports.run = (client, message, args) => {
           return;
         }
         clientGates = client.landMap.get(clientid,"gates");
+        sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s3",clientGates[2][0],clientGates[2][1],0,clientid];
         message.channel.send("Entering the SIXTH GATE!");
         sec = client.landMap.get(local[4],local[0]);
@@ -171,6 +177,7 @@ exports.run = (client, message, args) => {
       break;
 
       case 7:
+      sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s4",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the SEVENTH GATE!");
         sec = client.landMap.get(local[4],local[0]);
@@ -198,6 +205,8 @@ exports.run = (client, message, args) => {
 
     //if location is return node, send player to house on land
 
+    sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
+
     local = ["h",0,0,0,land];
 
     sec = client.landMap.get(land,local[0]);
@@ -222,6 +231,7 @@ exports.run = (client, message, args) => {
     }
 
     message.channel.send("Entering the gate!");
+    sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
     local = ["h",0,0,0,serverid];
 
     client.playerMap.set(charid,local,"local");

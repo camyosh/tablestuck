@@ -271,7 +271,7 @@ exports.oror = function(client, item1, item2){
   }
   let coderes = ["/","/","/","/","/","/","/","/"]
   for(i=0;i<8;i++){
-    if(code1[i]=="/"){
+    if(code1[i]=="/"||code1[i]=="#"){
       coderes[i]=code2[i];
     } else {
       char1 = client.captchaCode.indexOf(code1[i]);
@@ -342,7 +342,7 @@ exports.oror = function(client, item1, item2){
       }
     }
   }
-  if(coderes[0]=="/"){
+  if(coderes[0]=="/"||coderes[0]=="#"){
     tier=0;
   }else if(code1[0]==code2[0]){
     if(item1[2]>item2[2]){
@@ -381,7 +381,7 @@ exports.andand = function(client, item1, item2){
   }
   let coderes = ["/","/","/","/","/","/","/","/"]
   for(i=0;i<8;i++){
-    if(code1[i]=="/"){
+    if(code1[i]=="/"||code1[i]=="#"){
       coderes[i]=code2[i];
     } else {
       char1 = client.captchaCode.indexOf(code1[i]);
@@ -452,7 +452,7 @@ exports.andand = function(client, item1, item2){
       }
     }
   }
-  if(coderes[0]=="/"){
+  if(coderes[0]=="/"||coderes[0]=="#"){
     tier=0;
   }else if(code1[0]==code2[0]){
     if(item1[2]>item2[2]){

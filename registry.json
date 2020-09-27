@@ -1,7 +1,7 @@
 {
   "cruxtruder":{
     "cost":0,
-    "item":["CRUXTRUDER","////////",1,1,[["CRUXITE DOWEL","////////",1,1,[]]]],
+    "item":["CRUXTRUDER","////////",1,1,[["CRUXITE DOWEL","########",1,1,[]]]],
     "grist":"build",
     "costT":100
   },

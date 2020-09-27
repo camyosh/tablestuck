@@ -95,7 +95,7 @@ exports.run = (client, message, args) => {
             message.channel.send("Both CARD SLOTS on the PUNCH DESIGNIX are full! Take them out using the >captcha command");
             return;
           }
-        } else if(selectCode == "////////" && sdex[selectDex][0] == "CRUXITE DOWEL"){
+        } else if(selectCode == "########" && sdex[selectDex][0] == "CRUXITE DOWEL"){
           switch(room[5][selectRoom][4].length){
             case 0:
               message.channel.send("You use the CRUXITE DOWEL on the TOTEM LATHE but nothing happens! Try putting a PUNCHED CARD in the TOTEM LATHE first!");
@@ -169,7 +169,7 @@ exports.run = (client, message, args) => {
         }
       } else if(room[5][selectRoom][0] == "ALCHEMITER") {
         if(room[5][selectRoom][4].length==0){
-          if(selectCode == "////////" && sdex[selectDex][0] == "CARVED TOTEM"){
+          if(selectCode == "########" && sdex[selectDex][0] == "CARVED TOTEM"){
             message.channel.send(`Placed the CARVED TOTEM onto the pedestal on the ALCHEMITER`)
             let targetItem = sdex.splice(selectDex,1)[0];
             room[5][selectRoom][4].push(targetItem);
@@ -271,6 +271,19 @@ exports.run = (client, message, args) => {
         let targetItem = sdex.splice(selectDex,1);
         client.playerMap.set(charid,sdex,"sdex");
         client.playerMap.set(charid,cards,"scards");
+        return;
+      }
+      if(sdex[selectDex][0]=="BOONDOLLARS"){
+
+        message.channel.send(`Added ${sdex[selectDex][3]} BOONDOLLARS to your PORKHOLLOW`);
+        let b = client.playerMap.get(charid,"b");
+        b+= sdex[selectDex][3];
+        let targetItem = sdex.splice(selectDex,1);
+        client.playerMap.set(charid,b,"b");
+        client.playerMap.set(charid,sdex,"sdex");
+
+      } else {
+        message.channel.send("You can't use that item!")
         return;
       }
     }
