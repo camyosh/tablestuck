@@ -1,5 +1,5 @@
 const funcall = require("../modules/funcall.js");
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+//const { GoogleSpreadsheet } = require('google-spreadsheet');
 const landcall = require("../modules/landcall.js");
 //Command usage: >register @target
 //This command creates a character sheet in the player database as well as a new land in the location database
