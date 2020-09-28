@@ -17,18 +17,22 @@ const actionList =require("./actions.json");
 
 //declare enmaps
 
+if (!fs.existsSync("./data")){
+  fs.mkdirSync("./data");
+}
+
 const playerMap = new Enmap({
   name: "playerData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 const landMap= new Enmap({
   name: "landData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 
 const strifeMap = new Enmap({
   name: "strifeData",
-  dataDir:"../data"
+  dataDir:"./data"
 })
 
 //declare cooldowns
