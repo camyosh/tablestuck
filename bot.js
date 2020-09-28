@@ -9,7 +9,7 @@ const fs = require('fs');
 //declare json files
 
 //const { promisify } = require('util');
-const auth = require("../auth.json");
+const auth = require("./auth.json");
 const grist =require("./grist.json")
 //const creds =require("../client_secret.json");
 const registry =require("./registry.json");

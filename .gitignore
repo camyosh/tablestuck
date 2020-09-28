@@ -1,4 +1,5 @@
 node_modules/
 data/
 
+auth.json
 package-lock.json
