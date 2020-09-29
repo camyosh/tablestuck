@@ -49,10 +49,10 @@ exports.run = (client, message, args) => {
 
   //check if clientid is playerid
 
-  if(args[0]==message.author.id){
+  /*if(args[0]==message.author.id){
     message.channel.send("You cannot be your own server!")
     return;
-  }
+  }*/
 
   var targetId = message.guild.id.concat(args[0]);
 

@@ -92,7 +92,7 @@ exports.run = (client, message, args) => {
       //if second gate is selected, check if server player is connected and entered
         sburbClient = client.playerMap.get(local[4],"client");
         clientid =message.guild.id.concat(sburbClient)
-
+        console.log(sburbClient);
         if(sburbClient== "NA"){
           message.channel.send("This gate does not lead anywhere!");
           return;

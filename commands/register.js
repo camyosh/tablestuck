@@ -1,5 +1,5 @@
 const funcall = require("../modules/funcall.js");
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+//const { GoogleSpreadsheet } = require('google-spreadsheet');
 const landcall = require("../modules/landcall.js");
 //Command usage: >register @target
 //This command creates a character sheet in the player database as well as a new land in the location database
@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
 
 
   //declaring who the target to be registered is and their charid (The server id + the user id)
-
+ let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
   let target = message.author;
   let charid = message.guild.id.concat(target.id);
   var occset = [true,charid];
@@ -176,6 +176,7 @@ let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11)
 
 var land = {
     name: ["Stumps","Dismay"],
+    aspect: aspects[Math.floor((Math.random() * 11))],
     grist: [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]],
     enter:false,
     spent: 0,
