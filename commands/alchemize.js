@@ -79,6 +79,10 @@ exports.run = (client, message, args) => {
           message.channel.send("The quantity must be more than 0");
           return;
         }
+        if(quantity>=10000){
+          message.channel.send("The quantity must be less than 10000");
+          return;
+        }
 
 //increase price based on quantity alchemized
 
