@@ -72,151 +72,51 @@ let msg =  `${client.emojis.cache.get("760188336325001257")}${client.emojis.cach
   }
     for(j=0;j<11;j++){
       let str = ``;
+
       if(!input[i][j][2][0][3]){
-        str=`${client.emojis.cache.get("760188336391848006")}`;
-      } else if(i==local[1]&& j==local[2]){
+        str=`${client.emojis.cache.get(client.map.FOGTILE.BLANK)}`;
+      //} else if(i==local[1]&& j==local[2]){
+      } else {
+        let tile = "TILE";
+        if(i==local[1]&& j==local[2]){
+          tile = `PLTILE`;
+        }
        //str=`${client.emojis.cache.get("760188336245309512")}`;
        switch(input[i][j][0]){
          case 0:
-           str=`${client.emojis.cache.get("760188336245309512")}`;
+
+         let player = false;
+         if(input[i][j][2][0][4].length > 0){
+         for(k=0;k<input[i][j][2][0][4].length;k++){
+           if(input[i][j][2][0][4][k][0]&& input[i][j][2][0][4][k][1]!=charid){
+             player=true;
+           }
+         }}
+         if(player){
+           str=`${client.emojis.cache.get(client.map[tile].PLAYER)}`;
+         } else {
+           str=`${client.emojis.cache.get(client.map[tile].BLANK)}`;
+         }
          break;
          case 1:
-           str=`${client.emojis.cache.get("760188336664346664")}`;
-
+           str=`${client.emojis.cache.get(client.map[tile].DUNGEON)}`;
          break;
          case 2:
          console.log(aspect);
-         switch(aspect){
-           case "BREATH":
-           str=`${client.emojis.cache.get("760188336223682652")}`;
-           break;
-           case "LIFE":
-           str=`${client.emojis.cache.get("760188336429465600")}`;
-           break;
-           case "LIGHT":
-           str=`${client.emojis.cache.get("760188336412557322")}`;
-           break;
-           case "TIME":
-           str=`${client.emojis.cache.get("760188336311631903")}`;
-           break;
-           case "HEART":
-           str=`${client.emojis.cache.get("760188336873930825")}`;
-           break;
-           case "RAGE":
-           str=`${client.emojis.cache.get("760188336647831642")}`;
-           break;
-           case "BLOOD":
-           str=`${client.emojis.cache.get("760188336542449695")}`;
-           break;
-           case "DOOM":
-           str=`${client.emojis.cache.get("760188336136257567")}`;
-           break;
-           case "VOID":
-           str=`${client.emojis.cache.get("760188336471670794")}`;
-           break;
-           case "SPACE":
-           str=`${client.emojis.cache.get("760188336454369331")}`;
-           break;
-           case "MIND":
-           str=`${client.emojis.cache.get("760188336471146556")}`;
-           break;
-           case "HOPE":
-           str=`${client.emojis.cache.get("760188336429858836")}`;
-           break;
-         }
+          str = `${client.emojis.cache.get(client.map[tile][aspect])}`;
          break;
          case 3:
-           str=`${client.emojis.cache.get("760188336487792640")}`;
+           str = `${client.emojis.cache.get(client.map[tile].NODE)}`;
          break;
          case 4:
-           str=`${client.emojis.cache.get("760188336466952202")}`;
+           str=`${client.emojis.cache.get(client.map[tile].VILLAGE)}`;
          break;
          case 6:
-           str=`${client.emojis.cache.get("760188336705896488")}`;
+           str=`${client.emojis.cache.get(client.map[tile].GATE)}`;
          break;
          default:
            str=`:x:`;
        }
-
-
-
-      } else {
-      switch(input[i][j][0]){
-        case 0:
-
-        if(input[i][j][2][0][4].length > 0){
-          let player = false;
-          for(k=0;k<input[i][j][2][0][4].length;k++){
-            if(input[i][j][2][0][4][k][0]){
-              player=true;
-            }
-          }
-          if(player){
-            str=`${client.emojis.cache.get("760188336375070740")}`;
-          } else {
-            str=`${client.emojis.cache.get("760188336811540550")}`;
-          }
-        } else {
-          str=`${client.emojis.cache.get("760188336811540550")}`;
-        }
-        break;
-        case 1:
-          str=`${client.emojis.cache.get("760188336739844166")}`;
-
-        break;
-        case 2:
-        switch(aspect){
-          case "BREATH":
-          str=`${client.emojis.cache.get("760188336136257597")}`;
-          break;
-          case "LIFE":
-          str=`${client.emojis.cache.get("760188336001515572")}`;
-          break;
-          case "LIGHT":
-          str=`${client.emojis.cache.get("760188336521871390")}`;
-          break;
-          case "TIME":
-          str=`${client.emojis.cache.get("760188336492773376")}`;
-          break;
-          case "HEART":
-          str=`${client.emojis.cache.get("760188336521609286")}`;
-          break;
-          case "RAGE":
-          str=`${client.emojis.cache.get("760188336227876865")}`;
-          break;
-          case "BLOOD":
-          str=`${client.emojis.cache.get("760188336328409088")}`;
-          break;
-          case "DOOM":
-          str=`${client.emojis.cache.get("760188336337453096")}`;
-          break;
-          case "VOID":
-          str=`${client.emojis.cache.get("760188336613883928")}`;
-          break;
-          case "SPACE":
-          str=`${client.emojis.cache.get("760188336609820672")}`;
-          break;
-          case "MIND":
-          str=`${client.emojis.cache.get("760188336404299846")}`;
-          break;
-          case "HOPE":
-          str=`${client.emojis.cache.get("760188336433922148")}`;
-          break;
-        }
-        break;
-        case 3:
-          str=`${client.emojis.cache.get("760188336429465700")}`;
-        break;
-        case 4:
-          str=`${client.emojis.cache.get("760188336060104735")}`;
-        break;
-        case 6:
-          str=`${client.emojis.cache.get("760188336325001257")}`;
-        break;
-        default:
-          str=`:x:`;
-      }
-
     }
     if(i<3){
       msg+=`${str}`;
@@ -239,6 +139,5 @@ let msg =  `${client.emojis.cache.get("760188336325001257")}${client.emojis.cach
 message.channel.send(msg);
 message.channel.send(msg2);
 message.channel.send(msg3);
-
 
 }

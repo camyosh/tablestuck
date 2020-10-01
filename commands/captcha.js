@@ -65,7 +65,7 @@ exports.run = (client, message, args) => {
   if(room[5][value][1]=="########" && room[5][value][0]=="CARVED TOTEM"){
     message.channel.send("That is not a valid item!");
     return;
-  }if(room[5][value][1]=="########" && room[5][value][0]=="CRUXTRUDER"){
+  }if(room[5][value][1]=="////////" && room[5][value][0]=="CRUXTRUDER"){
     targetItem = ["CRUXITE DOWEL","########",1,1,[]]
   } else {
   targetItem = room[5][value][4].splice(value1,1)[0];

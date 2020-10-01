@@ -75,8 +75,8 @@ exports.run = (client, message, args) => {
           message.channel.send("That is not a valid argument!");
           return;
         }
-        if(quantity<=0){
-          message.channel.send("The quantity must be more than 0");
+        if(quantity<=0 || quantity>8){
+          message.channel.send("The quantity must be more than 0 and less than 8.");
           return;
         }
 

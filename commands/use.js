@@ -169,7 +169,7 @@ exports.run = (client, message, args) => {
         }
       } else if(room[5][selectRoom][0] == "ALCHEMITER") {
         if(room[5][selectRoom][4].length==0){
-          if(selectCode == "########" && sdex[selectDex][0] == "CARVED TOTEM"){
+          if(selectCode == "########"){
             message.channel.send(`Placed the CARVED TOTEM onto the pedestal on the ALCHEMITER`)
             let targetItem = sdex.splice(selectDex,1)[0];
             room[5][selectRoom][4].push(targetItem);

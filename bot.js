@@ -62,6 +62,7 @@ client.actionList = actionList;
 client.weaponkinds = require("./weaponkinds.json");
 client.underlings = require("./underlings.json");
 client.strifeMap = strifeMap;
+client.map = require("./map.json");
 //client.GoogleSpreadsheet = GoogleSpreadsheet;
 
 

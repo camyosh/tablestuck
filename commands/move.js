@@ -1,6 +1,7 @@
 const funcall = require("../modules/funcall.js");
 //command usage: >move [direection / room]
 const strifecall = require("../modules/strifecall.js");
+const landcall = require("../modules/landcall.js");
 
 //ADDS TO ACTION COUNT!!!
 
@@ -19,7 +20,7 @@ exports.run = (client, message, args) => {
 
   var charid = message.guild.id.concat(message.author.id);
   var occset = [true,charid];
-
+  let msg = ``;
   let local = client.playerMap.get(charid,"local");
   let land = local[4];
   let sec;
@@ -42,7 +43,6 @@ exports.run = (client, message, args) => {
 
     //send room directory of area in chat
 
-    let msg = ``;
     let i;
     for (i = 0; i < area[2].length; i++) {
       console.log(area[2][i]);
@@ -84,7 +84,7 @@ exports.run = (client, message, args) => {
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
 
-      message.channel.send(`You move North and find a ${typeList[sec[local[1]][local[2]][0]]}`)
+      msg+=`You move North and find a ${typeList[sec[local[1]][local[2]][0]]}`;
 
       break;
 
@@ -106,7 +106,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
-      message.channel.send(`You move South and find a ${typeList[sec[local[1]][local[2]][0]]}`)
+      msg+=`You move South and find a ${typeList[sec[local[1]][local[2]][0]]}`
       break;
 
       case "east":
@@ -127,7 +127,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
-      message.channel.send(`You move East and find a ${typeList[sec[local[1]][local[2]][0]]}`)
+      msg+=`You move East and find a ${typeList[sec[local[1]][local[2]][0]]}`
       break;
 
       case "west":
@@ -148,7 +148,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
-      message.channel.send(`You move West and find a ${typeList[sec[local[1]][local[2]][0]]}`)
+      msg+=`You move West and find a ${typeList[sec[local[1]][local[2]][0]]}`;
       break;
     }
 
@@ -164,13 +164,15 @@ exports.run = (client, message, args) => {
         }
       }
       if(occCheck[0]&&occCheck[1]){
-        message.channel.send("There are players and Underlings in this area!");
+        msg+="\nThere are players and Underlings in this area!";
       } else if(occCheck[0]){
-        message.channel.send("There are Underlings in this area!");
+        msg+="\nThere are Underlings in this area!";
       } else {
-        message.channel.send("There are Players in this area!")
+        msg+="\nThere are Players in this area!";
       }
     }
+    message.channel.send(msg);
+    landcall.miniMap(client,message);
 
   } else {
 
