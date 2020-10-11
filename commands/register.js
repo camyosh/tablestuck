@@ -173,15 +173,22 @@ regImport();
 client.playerMap.set(charid,charSheet)
 
 let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
+var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
+
+console.log("test");
+var s1 = landcall.landGen(client,0,gategen[0],gristSet);
+var s2 = landcall.landGen(client,1,gategen[0],gristSet);
+var s3 = landcall.landGen(client,2,gategen[0],gristSet);
+var s4 = landcall.landGen(client,3,gategen[0],gristSet);
 
 var land = {
     name: ["Stumps","Dismay"],
     aspect: aspects[Math.floor((Math.random() * 11))],
-    grist: [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]],
+    grist: gristSet,
     enter:true,
-    spent: 200,
-    floors: 2,
-    gate: 1,
+    spent: 1000000,
+    floors: 100000,
+    gate: 7,
     gates:gategen,
     h:preset,
     /*s1: funcall.landSecInit(client,0),
@@ -189,11 +196,18 @@ var land = {
     s3: funcall.landSecInit(client,2),
     s4: funcall.landSecInit(client,3)
     */
-    s1:landcall.landGen(client,0,gategen[0]),
-    s2:landcall.landGen(client,1,gategen[1]),
-    s3:landcall.landGen(client,2,gategen[2]),
-    s4:landcall.landGen(client,3,gategen[3])
+    s1:s1[0],
+    s1d:s1[1],
+    s2:s2[0],
+    s2d:s2[1],
+    s3:s3[0],
+    s3d:s3[1],
+    s4:s4[0],
+    s4d:s4[1],
+    s4e:s4[2],
+    s4f:s4[3]
 }
+
 //adds the charaacter sheet and land sheet to the database
 
 

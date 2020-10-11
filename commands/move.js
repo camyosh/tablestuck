@@ -45,7 +45,6 @@ exports.run = (client, message, args) => {
 
     let i;
     for (i = 0; i < area[2].length; i++) {
-      console.log(area[2][i]);
       msg += `**[${i+1}] ${area[2][i][2]}**\n\n`
     }
     roomDirect = new client.Discord.MessageEmbed()
@@ -70,6 +69,15 @@ exports.run = (client, message, args) => {
       if(local[1]<=0){
         message.channel.send("You've reached the edge of the section! You can't go any farther!");
         return;
+      } else if(sec[local[1]-1][local[2]][0]==7){
+        message.channel.send("you can't go that way!");
+        return;
+      } else if(local[0].length==3){
+        if(sec[local[1]-1][local[2]][2][0][3]==false && landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4])){
+
+          message.channel.send("You can't continue on until the Underlings have been defeated!");
+          return;
+        }
       }
 
       sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
@@ -93,6 +101,16 @@ exports.run = (client, message, args) => {
       if(local[1]>=10){
         message.channel.send("You've reached the edge of the section! You can't go any farther!");
         return;
+      } else if(sec[local[1]+1][local[2]][0]==7){
+        message.channel.send("you can't go that way!");
+        return;
+      } else if(local[0].length==3){
+
+        if(sec[local[1]+1][local[2]][2][0][3]==false && landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4])){
+
+          message.channel.send("You can't continue on until the Underlings have been defeated!")
+          return;
+        }
       }
 
       sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
@@ -114,6 +132,16 @@ exports.run = (client, message, args) => {
       if(local[2]>=sec.length-1){
         message.channel.send("You've reached the edge of the section! You can't go any farther!");
         return;
+      } else if(sec[local[1]][local[2]+1][0]==7){
+        message.channel.send("you can't go that way!");
+        return;
+      } else if(local[0].length==3){
+
+        if(sec[local[1]][local[2]+1][2][0][3]==false && landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4])){
+
+          message.channel.send("You can't continue on until the Underlings have been defeated!")
+          return;
+        }
       }
 
       sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
@@ -135,6 +163,17 @@ exports.run = (client, message, args) => {
       if(local[2]<=0){
         message.channel.send("You've reached the edge of the section! You can't go any farther!");
         return;
+      }else if(sec[local[1]][local[2]-1][0]==7){
+        message.channel.send("you can't go that way!");
+        return;
+      }else if(local[0].length==3){
+
+
+        if(sec[local[1]][local[2]-1][2][0][3]==false && landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4])){
+
+          message.channel.send("You can't continue on until the Underlings have been defeated!")
+          return;
+        }
       }
 
 

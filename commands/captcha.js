@@ -1,5 +1,5 @@
 const funcall = require("../modules/funcall.js");
-
+const landcall = require("../modules/landcall.js");
 const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
@@ -25,6 +25,11 @@ exports.run = (client, message, args) => {
   let room = area[2][local[3]];
   let currentInv = client.playerMap.get(charid,"sdex");
   let targetItem;
+
+  if(local[0].length!="h"&&landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4])){
+    message.channel.send("You can't captchalogue items while there are Underlings here!");
+    return;
+  }
 
 //convert first argument to number and check if number is valid argument
 

@@ -37,7 +37,7 @@ let input = client.landMap.get(local[4],local[0]);
 /*
 section[gate[0][0]][gate[0][1]]=defaultGate;
 */
-let sectionTitle;
+let sectionTitle = [];
   switch(local[0]){
     case "s1":
     sectionTitle = [`${client.emojis.cache.get("760224982054862868")}`,`${client.emojis.cache.get("760224981988409394")}`];
@@ -53,7 +53,11 @@ let sectionTitle;
     break;
   }
 
-let msg =  `${client.emojis.cache.get("760188336325001257")}${client.emojis.cache.get("760224982071640084")}${client.emojis.cache.get("760224981740814367")}${client.emojis.cache.get("760224981740814367")}${client.emojis.cache.get("760224981563998229")}${client.emojis.cache.get("760224981975564308")}${client.emojis.cache.get("760224982005055540")}${client.emojis.cache.get("760224982117908490")}${sectionTitle[0]}${sectionTitle[1]}${client.emojis.cache.get("760224981950267453")}${client.emojis.cache.get("760224982038347836")}\n`
+let msg = ``
+
+if(local[0].length==2){
+msg =  `${client.emojis.cache.get("760188336325001257")}${client.emojis.cache.get("760224982071640084")}${client.emojis.cache.get("760224981740814367")}${client.emojis.cache.get("760224981740814367")}${client.emojis.cache.get("760224981563998229")}${client.emojis.cache.get("760224981975564308")}${client.emojis.cache.get("760224982005055540")}${client.emojis.cache.get("760224982117908490")}${sectionTitle[0]}${sectionTitle[1]}${client.emojis.cache.get("760224981950267453")}${client.emojis.cache.get("760224982038347836")}\n`
+}
 
 
  let legend = [`${client.emojis.cache.get("760217643746852894")}`,`${client.emojis.cache.get("760217643470422036")}`,
@@ -73,7 +77,8 @@ let msg =  `${client.emojis.cache.get("760188336325001257")}${client.emojis.cach
     for(j=0;j<11;j++){
       let str = ``;
 
-      if(!input[i][j][2][0][3]){
+      if(true==false){
+      //if(!input[i][j][2][0][3]){
         str=`${client.emojis.cache.get(client.map.FOGTILE.BLANK)}`;
       //} else if(i==local[1]&& j==local[2]){
       } else {
@@ -114,6 +119,15 @@ let msg =  `${client.emojis.cache.get("760188336325001257")}${client.emojis.cach
          case 6:
            str=`${client.emojis.cache.get(client.map[tile].GATE)}`;
          break;
+         case 7:
+          str=`${client.emojis.cache.get("761001131035066378")}`;
+          break;
+          case 8:
+            str=`${client.emojis.cache.get(client.map[tile].BOSS)}`;
+          break;
+          case 9:
+            str=`${client.emojis.cache.get(client.map[tile].DENIZEN)}`;
+          break;
          default:
            str=`:x:`;
        }
@@ -134,7 +148,6 @@ let msg =  `${client.emojis.cache.get("760188336325001257")}${client.emojis.cach
     msg3+='\n'
   }
   }
-
 
 message.channel.send(msg);
 message.channel.send(msg2);

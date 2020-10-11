@@ -1,6 +1,7 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
+const landcall = require("../modules/landcall.js");
 
 const gateReq = [0,200,400,800,1600,3200,6400,12800];
 
@@ -188,6 +189,7 @@ exports.run = (client, message, args) => {
       break;
 
     }
+    landcall.miniMap(client,message);
 
 
     /*local = ["s1",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
@@ -242,6 +244,25 @@ exports.run = (client, message, args) => {
 
     client.landMap.set(local[4],sec,local[0]);
 
+  } else if(area[0]==1){
+
+
+    sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
+   if(local[0].length==2){
+
+     local[0]+="d";
+    message.channel.send("Entering the Dungeon!");
+    landcall.miniMap(client,message);
+
+   } else {
+     local[0]=local[0].slice(0,-1);
+    message.channel.send("Leaving the Dungeon!");
+    landcall.miniMap(client,message);
+   }
+   sec = client.landMap.get(land,local[0]);
+   sec[local[1]][local[2]][2][local[3]][4].push(occset);
+   sec[local[1]][local[2]][2][local[3]][3]=true;
+   client.landMap.set(local[4],sec,local[0]);
   } else {
     message.channel.send("You can't do that here!")
   }
