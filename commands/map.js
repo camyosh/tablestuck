@@ -77,8 +77,8 @@ msg =  `${client.emojis.cache.get("760188336325001257")}${client.emojis.cache.ge
     for(j=0;j<11;j++){
       let str = ``;
 
-      if(true==false){
-      //if(!input[i][j][2][0][3]){
+      //if(true==false){
+      if(!input[i][j][2][0][3]){
         str=`${client.emojis.cache.get(client.map.FOGTILE.BLANK)}`;
       //} else if(i==local[1]&& j==local[2]){
       } else {

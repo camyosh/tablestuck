@@ -28,5 +28,11 @@
     "item":["PRE-PUNCHED CARD","11111111",1,1,[["CRUXITE ARTIFACT","////////",1,1,[]]]],
     "grist":"build",
     "costT":"N/A"
+  },
+  "instant alchemiter":{
+    "cost":100,
+    "item":["INSTANT ALCHEMITER","////////",1,1,[]],
+    "grist":"build",
+    "costT":100
   }
 }

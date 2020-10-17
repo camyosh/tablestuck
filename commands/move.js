@@ -88,6 +88,11 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       sec =  strifecall.underSpawn(client,local,sec);
+      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+        funcall.actionCheck(client,message,"tile");
+      } else {
+        funcall.actionCheck(client,message);
+      }
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
@@ -121,6 +126,11 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       sec =  strifecall.underSpawn(client,local,sec);
+      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+        funcall.actionCheck(client,message,"tile");
+      } else {
+        funcall.actionCheck(client,message);
+      }
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
@@ -152,6 +162,11 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       sec =  strifecall.underSpawn(client,local,sec);
+      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+        funcall.actionCheck(client,message,"tile");
+      } else {
+        funcall.actionCheck(client,message);
+      }
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
@@ -184,6 +199,11 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
       sec =  strifecall.underSpawn(client,local,sec);
+      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+        funcall.actionCheck(client,message,"tile");
+      } else {
+        funcall.actionCheck(client,message);
+      }
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
@@ -245,6 +265,7 @@ exports.run = (client, message, args) => {
     sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
     message.channel.send(`Moving to the ${area[2][value][2]}!`);
+    funcall.actionCheck(client,message);
     if(sec[local[1]][local[2]][2][local[3]][4].length <= 1){
 
     sec =  strifecall.underSpawn(client,local,sec);

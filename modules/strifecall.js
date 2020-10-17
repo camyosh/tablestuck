@@ -122,7 +122,16 @@ function kill(client,message,local,target,pos){
 
   if(list[target][0]==true){
     client.playerMap.set(list[target][1],false,"alive");
+try{
+  increase = client.playerMap.get(message.guild.id.concat(message.author.id),"playersDefeated");
+  increase++;
+  client.playerMap.set(message.guild.id.concat(message.author.id),increase,"playersDefeated");
+  if(increase>client.playerMap.get("leaderboard","playersDefeated")[1]){
+    client.playerMap.set("leaderboard",[message.author.username,increase],"playersDefeated");
+  }
+}catch(err){
 
+}
     let name = client.playerMap.get(list[target][1],"name");
 
     //send death message to all participating player's terminals
@@ -147,6 +156,26 @@ function kill(client,message,local,target,pos){
     }
 
   } else {
+
+    try{
+      if(list[target][1]=="unicorn"||list[target][1]=="kraken"||list[target][1]=="hecatoncheires"||list[target][1]=="denizen"){
+        increase = client.playerMap.get(message.guild.id.concat(message.author.id),"bossesDefeated");
+        increase++;
+        client.playerMap.set(message.guild.id.concat(message.author.id),increase,"bossesDefeated");
+        if(increase>client.playerMap.get("leaderboard","bossesDefeated")[1]){
+          client.playerMap.set("leaderboard",[message.author.username,increase],"bossesDefeated");
+        }
+      } else {
+      increase = client.playerMap.get(message.guild.id.concat(message.author.id),"underlingsDefeated");
+      increase++;
+      client.playerMap.set(message.guild.id.concat(message.author.id),increase,"underlingsDefeated");
+      if(increase>client.playerMap.get("leaderboard","underlingsDefeated")[1]){
+        client.playerMap.set("leaderboard",[message.author.username,increase],"underlingsDefeated");
+      }
+    }
+    }catch(err){
+    }
+
 
     //figure out what all the underling drops on death
 

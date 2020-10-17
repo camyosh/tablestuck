@@ -26,7 +26,7 @@ exports.run = (client, message, args) => {
   let currentInv = client.playerMap.get(charid,"sdex");
   let targetItem;
 
-  if(local[0].length!="h"&&landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4])){
+  if(local[0]!="h"&&landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4])){
     message.channel.send("You can't captchalogue items while there are Underlings here!");
     return;
   }
@@ -90,4 +90,5 @@ message.channel.send(mess);
 sec[local[1]][local[2]][2][local[3]] = room;
 client.landMap.set(land,sec,local[0]);
 client.playerMap.set(charid,currentInv,"sdex");
+funcall.actionCheck(client,message,"item");
 }

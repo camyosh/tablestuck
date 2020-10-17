@@ -13,6 +13,7 @@ exports.run = (client, message, args) => {
 
     //  message.channel.send("You are already in STRIFE! You can leave by ABSCONDING, which is >act 6 1");
       //return;
+      funcall.actionCheck(client,message);
     message.channel.send("Leaving Strife");
 
     var charid = message.guild.id.concat(message.author.id);
@@ -105,6 +106,7 @@ exports.run = (client, message, args) => {
     client.playerMap.set(charid,pos,"pos");
 
     client.playerMap.set(charid,true,"strife");
+    funcall.actionCheck(client,message);
     message.channel.send("Entering Strife!");
 
 
@@ -141,7 +143,7 @@ exports.run = (client, message, args) => {
 
     //add all underlings in area to strife
     strifecall.underRally(client,local);
-
+    funcall.actionCheck(client,message);
     message.channel.send("Entering Strife!");
 
     strifecall.start(client,message,local);

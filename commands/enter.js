@@ -82,6 +82,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s1",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the FIRST GATE!");
+        funcall.actionCheck(client,message);
         sec = client.landMap.get(local[4],local[0]);
         console.log(sec[local[1]][local[2]][2]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
@@ -106,6 +107,7 @@ exports.run = (client, message, args) => {
         local = ["s1",clientGates[0][0],clientGates[0][1],0,clientid];
         //local = clientGates[0];
         message.channel.send("Entering the SECOND GATE!");
+        funcall.actionCheck(client,message);
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
         sec[local[1]][local[2]][2][local[3]][3]=true;
@@ -117,6 +119,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s2",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the THIRD GATE!");
+        funcall.actionCheck(client,message);
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
         sec[local[1]][local[2]][2][local[3]][3]=true;
@@ -138,6 +141,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s2",clientGates[1][0],clientGates[1][1],0,clientid];
         message.channel.send("Entering the FOURTH GATE!");
+        funcall.actionCheck(client,message);
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
         sec[local[1]][local[2]][2][local[3]][3]=true;
@@ -149,6 +153,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s3",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the FIFTH GATE!");
+        funcall.actionCheck(client,message);
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
         sec[local[1]][local[2]][2][local[3]][3]=true;
@@ -170,6 +175,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s3",clientGates[2][0],clientGates[2][1],0,clientid];
         message.channel.send("Entering the SIXTH GATE!");
+        funcall.actionCheck(client,message);
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
         sec[local[1]][local[2]][2][local[3]][3]=true;
@@ -181,6 +187,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
         local = ["s4",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
         message.channel.send("Entering the SEVENTH GATE!");
+        funcall.actionCheck(client,message);
         sec = client.landMap.get(local[4],local[0]);
         sec[local[1]][local[2]][2][local[3]][4].push(occset);
         sec[local[1]][local[2]][2][local[3]][3]=true;
@@ -218,6 +225,7 @@ exports.run = (client, message, args) => {
     sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
     message.channel.send("Returning home");
+    funcall.actionCheck(client,message);
 
     client.landMap.set(local[4],sec,local[0]);
 
@@ -233,6 +241,7 @@ exports.run = (client, message, args) => {
     }
 
     message.channel.send("Entering the gate!");
+    funcall.actionCheck(client,message);
     sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
     local = ["h",0,0,0,serverid];
 
@@ -252,11 +261,13 @@ exports.run = (client, message, args) => {
 
      local[0]+="d";
     message.channel.send("Entering the Dungeon!");
+    funcall.actionCheck(client,message);
     landcall.miniMap(client,message);
 
    } else {
      local[0]=local[0].slice(0,-1);
     message.channel.send("Leaving the Dungeon!");
+    funcall.actionCheck(client,message);
     landcall.miniMap(client,message);
    }
    sec = client.landMap.get(land,local[0]);

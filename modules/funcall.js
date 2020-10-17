@@ -16,6 +16,104 @@ function dubs(x){
 
 
 
+
+exports.actionCheck = function(client, message, score){
+try{
+  let charid = message.guild.id.concat(message.author.id);
+  let curCount = client.playerMap.get(charid,"act");
+curCount++;
+switch(score){
+  case "alchemized":
+    increase = client.playerMap.get(charid,"itemsAlchemized");
+    increase++;
+    client.playerMap.set(charid,increase,"itemsAlchemized");
+    if(increase>client.playerMap.get("leaderboard","itemsAlchemized")[1]){
+      client.playerMap.set("leaderboard",[message.author.username,increase],"itemsAlchemized");
+    }
+    break;
+  case "tile":
+    increase = client.playerMap.get(charid,"tilesDiscovered");
+    increase++;
+    client.playerMap.set(charid,increase,"tilesDiscovered");
+
+    if(increase>client.playerMap.get("leaderboard","tilesDiscovered")[1]){
+      client.playerMap.set("leaderboard",[message.author.username,increase],"tilesDiscovered");
+    }
+    break;
+  case "underling":
+    increase = client.playerMap.get(charid,"underlingsDefeated");
+    increase++;
+    client.playerMap.set(charid,increase,"underlingsDefeated");
+    if(increase>client.playerMap.get("leaderboard","underlingsDefeated")[1]){
+      client.playerMap.set("leaderboard",[message.author.username,increase],"underlingsDefeated");
+    }
+    break;
+  case "player":
+    increase = client.playerMap.get(charid,"playersDefeated");
+    increase++;
+    client.playerMap.set(charid,increase,"playersDefeated");
+    if(increase>client.playerMap.get("leaderboard","playersDefeated")[1]){
+      client.playerMap.set("leaderboard",[message.author.username,increase],"playersDefeated");
+    }
+    break;
+  case "boss":
+    increase = client.playerMap.get(charid,"bossesDefeated");
+    increase++;
+    client.playerMap.set(charid,increase,"bossesDefeated");
+    if(increase>client.playerMap.get("leaderboard","bossesDefeated")[1]){
+      client.playerMap.set("leaderboard",[message.author.username,increase],"bossesDefeated");
+    }
+    break;
+  case "item":
+    increase = client.playerMap.get(charid,"itemsCaptchalogued");
+    increase++;
+    client.playerMap.set(charid,increase,"itemsCaptchalogued");
+    if(increase>client.playerMap.get("leaderboard","itemsCaptchalogued")[1]){
+      client.playerMap.set("leaderboard",[message.author.username,increase],"itemsCaptchalogued");
+    }
+    break;
+}
+
+let b = client.playerMap.get(charid,"b");
+let xp = client.playerMap.get(charid,"xp");
+if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
+  client.playerMap.set("leaderboard",[message.author.username,b],"bossesDefeated");
+}
+if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
+  client.playerMap.set("leaderboard",[message.author.username,xp],"bossesDefeated");
+}
+
+if(curCount>=client.limit&&client.limit!=0){
+
+  let tiles = client.playerMap.get(charid,"tilesDiscovered");
+  let alchemized = client.playerMap.get(charid,"itemsAlchemized");
+  let underlings =  client.playerMap.get(charid,"underlingsDefeated");
+  let players =  client.playerMap.get(charid,"playersDefeated");
+  let bosses = client.playerMap.get(charid,"bossesDefeated");
+  let items = client.playerMap.get(charid,"itemsCaptchalogued");
+
+  message.channel.send("That was your last action in the tournament, here's your final stats:");
+  let stats = new client.Discord.MessageEmbed()
+  .setTitle(`**HERE'S HOW YOU DID**`)
+  .addField(`**EXPERIENCE GAINED**`,`${xp}`,true)
+  .addField(`**BOONDOLLARS GAINED**`,`${b}`,true)
+  .addField(`**TILES DISCOVERED**`,`${tiles}`,true)
+  .addField(`**ITEMS ALCHEMIZED**`,`${alchemized}`,true)
+  .addField(`**ITEMS CAPTCHALOGUED**`,`${items}`,true)
+  .addField(`**UNDERLNGS DEFEATED**`,`${underlings}`,true)
+  .addField(`**PLAYERS DEFEATED**`,`${players}`,true)
+  .addField(`**BOSSES DEFEATED**`,`${bosses}`,true)
+
+  message.channel.send(stats);
+  //enter stat stuff here
+}
+  client.playerMap.set(charid,curCount,"act")
+}catch(err){
+}
+}
+
+
+
 //defining tables to determine information about an area in ranArea
 //0 is empty, 1 is dungeon, 2 is construct, 3 is return node, 4 is village
 const areaTable = [1,0,2,0,3,0,4];

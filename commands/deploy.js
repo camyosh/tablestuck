@@ -21,7 +21,7 @@ exports.run = (client, message, args) => {
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   var currentInv = client.playerMap.get(charid,"sdex");
-  const phernalia = ["cruxtruder","totem lathe","alchemiter","pre-punched card","punch designix"]
+  const phernalia = ["cruxtruder","totem lathe","alchemiter","pre-punched card","punch designix","instant alchemiter"]
 
   let compCheck = funcall.compTest(client,message,charid,room,currentInv);
 

@@ -32,7 +32,14 @@ exports.run = (client, message, args) => {
   .addField(`**Boondollars**`,`${client.emojis.cache.get('735664076180422758')} ${b}`,true)
   .addField(`**Rung**`,rung,true)
   .addField(`**Experience**`,xp,true)
-  .addField(`**XP to next Rung**`,(rungReq[rung+1])-xp,true);
+  .addField(`**XP to next Rung**`,(rungReq[rung+1])-xp,true)
+  .addField(`**ACTIONS LEFT**`,client.limit - client.playerMap.get(target,"act"),true)
+  .addField(`**TILES DISCOVERED**`,client.playerMap.get(target,"tilesDiscovered"),true)
+  .addField(`**ITEMS ALCHEMIZED**`,client.playerMap.get(target,"itemsAlchemized"),true)
+  .addField(`**ITEMS CAPTCHALOGUED**`,client.playerMap.get(target,"itemsCaptchalogued"),true)
+  .addField(`**UNDERLNGS DEFEATED**`,client.playerMap.get(target,"underlingsDefeated"),true)
+  .addField(`**PLAYERS DEFEATED**`,client.playerMap.get(target,"playersDefeated"),true)
+  .addField(`**BOSSES DEFEATED**`,client.playerMap.get(target,"bossesDefeated"),true)
 
   message.channel.send(stats);
 

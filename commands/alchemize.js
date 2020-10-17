@@ -29,11 +29,13 @@ exports.run = (client, message, args) => {
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
   var playerGrist = client.playerMap.get(charid,"grist");
+  let sdex = client.playerMap.get(charid,"sdex");
 
 //define variables for the FOR loop
 
   let i;
   let alchemiter = [false,false];
+  let ialchemiter = false;
   let item;
   let cost1;
   let cost2;
@@ -41,7 +43,11 @@ exports.run = (client, message, args) => {
 
 //Check every item in the room to find alchemiter, if there is check for any cruxite artifact
 
+
   for(i=0;i<room[5].length;i++){
+    if(room[5][i][1]=="////////"&&room[5][i][0]=="INSTANT ALCHEMITER"){
+      ialchemiter = true;
+    }
     if(room[5][i][1]=="////////"&&room[5][i][0]=="ALCHEMITER"){
       alchemiter[0]=true;
       if(room[5][i][4].length==1){
@@ -51,7 +57,139 @@ exports.run = (client, message, args) => {
     }
   }
 
-  if(alchemiter[0]==true){
+
+if (ialchemiter == true){
+
+  if(args.length == 1){
+    select1 = parseInt(args[0], 10) - 1;
+    if(isNaN(select1)){
+      message.channel.send("Item 1 is not a valid argument!");
+      return;
+    }
+
+    if(select1 >= sdex.length || select1< 0){
+      message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+      return;
+    }
+    item1 = sdex[select1]
+
+
+    if(item1[1] == "////////"||item1[1]=="########"){
+      message.channel.send("You can't alchemize that!");
+      return;
+    }
+
+    cost1=tierCost[item1[2]];
+    cost2=tierCost[item1[2]-1];
+    grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(item1[1].charAt(1))]];
+
+    if(playerGrist[0]<cost1||playerGrist[client.grist[grist].pos]<cost2){
+      message.channel.send("You can't afford to alchemize that!");
+      return;
+    }
+
+    playerGrist[0]-=cost1;
+    playerGrist[client.grist[grist].pos]-=cost2;
+    room[5].push(item1);
+    client.playerMap.set(charid,playerGrist,"grist");
+    sec[local[1]][local[2]][2][local[3]] = room;
+    client.landMap.set(land,sec,local[0]);
+
+    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]}**`);
+funcall.actionCheck(client,message,"alchemized");
+    return;
+
+  }
+
+  if(!args[0]||!args[1]||!args[2]){
+    message.channel.send("To use the Instant Alchemiter, you need to select an item from your sylladex, select an alchemy type (&& or ||), and select a second item from your sylladex. For example, >alchemize 1 && 2. If you want to just reproduce a single item, just select the first item.");
+    return;
+  }
+
+  select1 = parseInt(args[0], 10) - 1;
+  if(isNaN(select1)){
+
+    message.channel.send("Item 1 is not a valid argument!");
+    return;
+  }
+  if(select1 >= sdex.length || select1< 0){
+    message.channel.send("The first selection is not a valid item! Check the list of items in your Sylladex with >sylladex");
+    return;
+  }
+  select2 = parseInt(args[2], 10) - 1;
+  if(isNaN(select2)){
+
+    message.channel.send("Item 2 is not a valid argument!");
+    return;
+  }
+  if(select2 >= sdex.length || select2< 0){
+    message.channel.send("The second selection is not a valid item! Check the list of items in your Sylladex with >sylladex");
+    return;
+  }
+
+  if(select1==select2){
+
+  }
+
+  item1 = sdex[select1];
+  item2 = sdex[select2];
+
+  if(args[1]=="||"){
+
+    newItem = funcall.oror(client,item1,item2);
+
+    cost1=tierCost[newItem[2]];
+    cost2=tierCost[newItem[2]-1];
+    grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(newItem[1].charAt(1))]];
+
+    if(playerGrist[0]<cost1||playerGrist[client.grist[grist].pos]<cost2){
+      message.channel.send("You can't afford to alchemize that!");
+      return;
+    }
+
+    playerGrist[0]-=cost1;
+    playerGrist[client.grist[grist].pos]-=cost2;
+    room[5].push(newItem);
+    client.playerMap.set(charid,playerGrist,"grist");
+    sec[local[1]][local[2]][2][local[3]] = room;
+    client.landMap.set(land,sec,local[0]);
+
+    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]}**`);
+  funcall.actionCheck(client,message,"alchemized");
+    return;
+
+
+  } else if(args[1]=="&&"){
+
+    newItem = funcall.andand(client,item1,item2);
+
+    cost1=tierCost[newItem[2]];
+    cost2=tierCost[newItem[2]-1];
+    grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(newItem[1].charAt(1))]];
+
+    if(playerGrist[0]<cost1||playerGrist[client.grist[grist].pos]<cost2){
+      message.channel.send("You can't afford to alchemize that!");
+      return;
+    }
+
+    playerGrist[0]-=cost1;
+    playerGrist[client.grist[grist].pos]-=cost2;
+    room[5].push(newItem);
+    client.playerMap.set(charid,playerGrist,"grist");
+    sec[local[1]][local[2]][2][local[3]] = room;
+    client.landMap.set(land,sec,local[0]);
+
+    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]}**`);
+    funcall.actionCheck(client,message,"alchemized");
+    return;
+
+  } else {
+    message.channel.send("That is not a valid alchemy type!");
+    return;
+  }
+
+
+}else if(alchemiter[0]==true){
 
     if(alchemiter[1]==true){
 
@@ -101,6 +239,7 @@ exports.run = (client, message, args) => {
         client.landMap.set(land,sec,local[0]);
 
         message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item[0]} x${quantity}**`);
+        funcall.actionCheck(client,message,"alchemized");
         return;
 
       } else {

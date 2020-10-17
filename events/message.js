@@ -7,6 +7,8 @@ module.exports = (client, message) => {
   //Ignore all messages not starting with the prefix
   if(message.content.indexOf(client.auth.prefix) !== 0) return;
 
+
+
   //standard argument/command name definition
   const args = message.content.slice(client.auth.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
@@ -16,6 +18,16 @@ module.exports = (client, message) => {
 
   // If that command doesn't exist, silently exit and do nothing
   if (!cmd) return;
+
+  try{
+    let charid = message.guild.id.concat(message.author.id);
+    if(client.playerMap.get(charid,"act")>=client.limit&&client.limit!=0&&command!="register"&&command!="leaderboard"&&command!="stats"){
+      message.channel.send("You have reached your maximum number of actions for this tournament!");
+      return;
+    }
+  } catch(err){
+ console.log("the error did an error");
+  }
 
 	client.user.setActivity("@SAHCON 2020");
   // Run the command

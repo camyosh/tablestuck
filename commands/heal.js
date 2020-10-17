@@ -23,6 +23,7 @@ exports.run = (client, message, args) => {
   if(local[0]=="h"){
     if(enter==true){
       message.channel.send("You are fully healed by your sprite!");
+      funcall.actionCheck(client,message);
       client.playerMap.set(charid,gel,"vit");
     } else {
       message.channel.send("You don't have a sprite to heal you!");

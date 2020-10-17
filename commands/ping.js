@@ -4,10 +4,6 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  var charid = message.guild.id.concat(message.author.id);
-  let chan = client.playerMap.get(charid,"channel");
-  let ping = client.playerMap.get(charid,"ping");
-
-  client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} Pong!`);
+  message.channel.send("PONGERS");
 
 }
