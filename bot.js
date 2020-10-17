@@ -24,6 +24,9 @@ client.traitcall = traitcall;
 client.strifecall = strifecall;
 client.funcall = funcall;
 //declare enmaps
+if (!fs.existsSync("../data")){
+  console.log("Data directory missing, please create it!")
+}
 
 const playerMap = new Enmap({
   name: "playerData",
