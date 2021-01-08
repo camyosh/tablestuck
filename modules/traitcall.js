@@ -142,8 +142,12 @@ exports.inspectItem = function(client, item){
   let msg3=``;
   if(item[4].length > 0){
     let i;
-    for(i=0;i<item[4].length;i++){
+    for(i=0;i<item[4].length && i<20;i++){
       msg3 += `**[${i+1}] ${item[4][i][0]} x${item[4][i][3]}** \n${item[4][i][1]} TIER - ${item[4][i][2]}\n\n`
+    }
+    if (item[4].length > 20)
+    {
+      msg3 += `**` + (item[4].length - 20) + ` more items**\n\n`
     }
   } else {
     msg3 = "N/A"
