@@ -39,8 +39,12 @@ exports.run = (client, message, args) => {
   let room = area[2][local[3]];
 
   let currentInv = client.playerMap.get(charid,"sdex");
+  let itemName = "CUSTOM ITEM";
+  if(args[3]){
+    itemName = args[3];
+  }
 
-  let item = ["CUSTOM ITEM",code,tier,1,[]];
+  let item = [itemName,code,tier,1,[]];
 
   currentInv.unshift(item);
   let mess = `CAPTCHALOGUED the ${item[0]}.`

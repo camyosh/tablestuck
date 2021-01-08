@@ -368,31 +368,10 @@ for (d=0;d<4;d++){
 
 function dungeonRoomGen(client,sec,gristSet) {
   switch(Math.floor((Math.random() * 4))){
-  case 0:
-   return [0,1,[[0,0,"DUNGEON ROOM",false,[
-     [false,'ogre',gristSet[Math.floor((Math.random() * 4))]],
-     [false,'ogre',gristSet[Math.floor((Math.random() * 4))]],
-     [false,'ogre',gristSet[Math.floor((Math.random() * 4))]],
-     [false,'ogre',gristSet[Math.floor((Math.random() * 4))]],
-   ],[]]]];
-  break;
-  case 1:
-  return [0,1,[[0,0,"DUNGEON ROOM",false,[
-    [false,'ogre',gristSet[Math.floor((Math.random() * 4))]],
-    [false,'ogre',gristSet[Math.floor((Math.random() * 4))]],
-    [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]]
-  ],[]]]];
- break;
- case 2:
- return [0,1,[[0,0,"DUNGEON ROOM",false,[
-   [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
-   [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]]
- ],[]]]];
-break;
+
 case 3:
 return [0,1,[[0,0,"DUNGEON ROOM",false,[],[lootcall.lootB(client, sec, dubs(8))]]]];
 break;
-
 
   default:
   return [0,1,[[0,0,"DUNGEON ROOM",false,[],[]]]];

@@ -28,7 +28,6 @@ exports.run = (client, message, args) => {
     } else {
 
       let pos = client.playerMap.get(charid,"pos");
-
       let active = client.strifeMap.get(strifeLocal,"active");
       let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
       //remove player from all strife variables in database

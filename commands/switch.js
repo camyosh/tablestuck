@@ -28,7 +28,37 @@ exports.run = (client, message, args) => {
     return;
   };
 
+  if(client.strifecall.strifeTest(client,message,message.author)){
+
+    let local = client.playerMap.get(charid,"local");
+    let pos = client.playerMap.get(charid,"pos");
+    let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
+
+    let list = client.strifeMap.get(strifeLocal,"list");
+
+    if(list[pos][5]>1||client.traitcall.traitCheck(client,charid,"STORAGE")[1]){
+
+      if(client.traitcall.traitCheck(client,charid,"STORAGE")[1]==false){
+      list[pos][5]-=1;
+      client.strifeMap.set(strifeLocal,list,"list");
+      message.channel.send(`Expending 1 stamina to Switch to the ${spec[value][0]}`);
+      client.playerMap.set(charid,value,"equip");
+    } else {
+
+      message.channel.send(`Switching to the ${spec[value][0]}`);
+      client.playerMap.set(charid,value,"equip");
+
+    }
+
+
+
+    }
+
+  }else{
+
   message.channel.send(`Switching to the ${spec[value][0]}`);
   client.playerMap.set(charid,value,"equip");
+
+}
 
 }

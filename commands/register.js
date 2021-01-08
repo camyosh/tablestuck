@@ -168,6 +168,7 @@ regImport();
     scards:2,
     sdex:[],
     equip:0,
+    trinket:[],
     armor:[armorsets[randnum]],
     itemsAlchemized:0,
     underlingsDefeated:0,

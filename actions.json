@@ -42,7 +42,7 @@
   "name" : "AGGREGATE",
   "cst"  : 0,
   "dmg" : 0,
-  "aa": "INSTANT, any unused stamina from this turn is added to your stamina roll on your next turn",
+  "aa": "Carry unused stamina over to your next turn",
   "add":["INSTANT","CARRY"],
   "col": "0x38f43d",
   "img" : "https://cdn.discordapp.com/attachments/701168146559533087/701599374500954132/AGGREGATE.png",

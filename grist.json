@@ -78,12 +78,12 @@
   "artifact":{
     "pos":13,
     "effective":["zillium","zillium","zillium","zillium"],
-    "ineffective":["rainbow","rainbow","rainbow","rainbow"],
+    "ineffective":["rainbow","rainbow","rainbow","rainbow","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"],
     "emoji":"715632438377971734"
   },
   "zillium":{
     "pos":14,
-    "effective":["rainbow","rainbow","rainbow","rainbow"],
+    "effective":["rainbow","rainbow","rainbow","rainbow","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"],
     "ineffective":["artifact","artifact","artifact","artifact"],
     "emoji":"715632438478504007"
   },

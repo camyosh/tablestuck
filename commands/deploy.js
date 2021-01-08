@@ -23,7 +23,7 @@ exports.run = (client, message, args) => {
   var currentInv = client.playerMap.get(charid,"sdex");
   const phernalia = ["cruxtruder","totem lathe","alchemiter","pre-punched card","punch designix","instant alchemiter"]
 
-  let compCheck = funcall.compTest(client,message,charid,room,currentInv);
+  let compCheck = client.traitcall.compTest(client,message,charid,room,currentInv);
 
   if(compCheck[0]==false){
     message.channel.send("To use SBURB commands, you must have an item with the COMPUTER trait either in your Inventory or in the room you are in.");

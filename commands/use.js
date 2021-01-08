@@ -51,9 +51,10 @@ exports.run = (client, message, args) => {
       message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
       return;
     }
-    var roomCode = room[5][selectRoom][1]
+    //var roomCode = room[5][selectRoom][1]
 
-    if(client.trait1[client.codeCypher[2][client.captchaCode.indexOf(roomCode.charAt(2))]] == "STORAGE" || client.trait2[client.codeCypher[3][client.captchaCode.indexOf(roomCode.charAt(3))]] == "STORAGE"){
+    //if(client.traitList[client.captchaCode.indexOf(roomCode.charAt(2))] == "STORAGE" || client.traitList[client.captchaCode.indexOf(roomCode.charAt(3))] == "STORAGE"){
+    if(client.traitcall.itemTrait(client,room[5][selectRoom],"STORAGE")){
       message.channel.send(`Stored the ${sdex[selectDex][0]} in the ${room[5][selectRoom][0]}`)
       let targetItem = sdex.splice(selectDex,1)[0];
       room[5][selectRoom][4].push(targetItem);
@@ -62,7 +63,8 @@ exports.run = (client, message, args) => {
       client.playerMap.set(charid,sdex,"sdex");
       return;
     }
-    else if(client.trait1[client.codeCypher[2][client.captchaCode.indexOf(roomCode.charAt(2))]] == "COMPUTER" || client.trait2[client.codeCypher[3][client.captchaCode.indexOf(roomCode.charAt(3))]] == "COMPUTER"){
+    //else if(client.traitList[client.captchaCode.indexOf(roomCode.charAt(2))] == "COMPUTER" || client.traitList[client.captchaCode.indexOf(roomCode.charAt(3))] == "COMPUTER"){
+    else if(client.traitcall.itemTrait(client,room[5][selectRoom],"COMPUTER")){
 
       if(selectCode == "////////" && (sdex[selectDex][0] == "SBURB SERVER" || sdex[selectDex][0] == "SBURB CLIENT")){
 
@@ -78,7 +80,7 @@ exports.run = (client, message, args) => {
       return;
     }
     }
-    else if(roomCode == "////////"){
+    else if(room[5][selectRoom][1] == "////////"){
       if(room[5][selectRoom][0] == "TOTEM LATHE"){
         if(selectCode == "11111111"){
           if(room[5][selectRoom][4].length<2){
@@ -286,6 +288,9 @@ exports.run = (client, message, args) => {
         message.channel.send("You can't use that item!")
         return;
       }
+    } else {
+      message.channel.send("You can't use that item!");
+      return;
     }
 
   }

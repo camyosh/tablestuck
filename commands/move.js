@@ -1,5 +1,5 @@
 const funcall = require("../modules/funcall.js");
-//command usage: >move [direection / room]
+//command usage: >move [direction / room]
 const strifecall = require("../modules/strifecall.js");
 const landcall = require("../modules/landcall.js");
 
@@ -87,8 +87,11 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
+      /*if(sec[local[1]][local[2]][2][local[3]][3]==false){
       sec =  strifecall.underSpawn(client,local,sec);
+    }*/
       if(sec[local[1]][local[2]][2][local[3]][3]==false){
+        sec =  strifecall.underSpawn(client,local,sec);
         funcall.actionCheck(client,message,"tile");
       } else {
         funcall.actionCheck(client,message);
@@ -125,8 +128,8 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      sec =  strifecall.underSpawn(client,local,sec);
       if(sec[local[1]][local[2]][2][local[3]][3]==false){
+        sec =  strifecall.underSpawn(client,local,sec);
         funcall.actionCheck(client,message,"tile");
       } else {
         funcall.actionCheck(client,message);
@@ -161,8 +164,8 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      sec =  strifecall.underSpawn(client,local,sec);
       if(sec[local[1]][local[2]][2][local[3]][3]==false){
+        sec =  strifecall.underSpawn(client,local,sec);
         funcall.actionCheck(client,message,"tile");
       } else {
         funcall.actionCheck(client,message);
@@ -198,8 +201,9 @@ exports.run = (client, message, args) => {
       local[3]=0;
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
-      sec =  strifecall.underSpawn(client,local,sec);
+
       if(sec[local[1]][local[2]][2][local[3]][3]==false){
+        sec =  strifecall.underSpawn(client,local,sec);
         funcall.actionCheck(client,message,"tile");
       } else {
         funcall.actionCheck(client,message);

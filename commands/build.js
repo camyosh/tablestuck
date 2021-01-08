@@ -4,10 +4,6 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
 
   if(strifecall.strifeTest(client, message, message.author) == true){
     message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
@@ -27,7 +23,7 @@ exports.run = (client, message, args) => {
 
   //check for computer with sburb installed in room or inventory
 
-  let compCheck = funcall.compTest(client,message,charid,room,currentInv);
+  let compCheck = client.traitcall.compTest(client,message,charid,room,currentInv);
 
   if(compCheck[0]==false){
     message.channel.send("To use SBURB commands, you must have an item with the COMPUTER trait either in your Inventory or in the room you are in.");

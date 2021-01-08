@@ -104,7 +104,7 @@ exports.run = (client, message, args) => {
 
 //Check to see if action has reuse, and if not check if action has been used this turn
 
-  if(!client.actionList[action[select]].add.includes("REUSE") && list[pos][6].includes(select)){
+  if(!client.actionList[action[select]].add.includes("REUSE") && list[pos][6].includes(""+select+equip)){
     message.channel.send("You can't use that ACTION more than once per turn!");
     return;
   };
@@ -166,7 +166,7 @@ exports.run = (client, message, args) => {
     message.channel.send("Absconding!");
   } else {
   list[pos][5] -= cost;
-  list[pos][6].push(select);
+  list[pos][6].push(""+select+equip);
   client.strifeMap.set(strifeLocal,list,"list")
   strifecall.act(client,message,local,action[select],active[target]);
 }

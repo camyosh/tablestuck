@@ -151,12 +151,11 @@ try{
 
     if(active.length<=1){
       message.channel.send(`Last opponent defeated!`);
-      //leaveStrife(client,message,local,pos);
+      leaveStrife(client,message,local,pos);
 
     }
 
   } else {
-
     try{
       if(list[target][1]=="unicorn"||list[target][1]=="kraken"||list[target][1]=="hecatoncheires"||list[target][1]=="denizen"){
         increase = client.playerMap.get(message.guild.id.concat(message.author.id),"bossesDefeated");
@@ -184,6 +183,7 @@ try{
     let underling = list[target][1];
     let xp = client.underlings[underling].xp;
     let ranroll = (Math.floor((Math.random() * 8) + 1)) + (Math.floor((Math.random() * 20) + 1));
+    let repgrist = "build";
     switch(ranroll){
       case 2:
         secondType = "rainbow";
@@ -199,9 +199,14 @@ try{
         secondType = gristTypes[typeRoll];
     }
 
+    if(list[target][7].includes("CORRUPT")){
+      repgrist = "artifact";
+      primaryType = "artifact";
+      secondType = "artifact";
+    }
     //split rewards between all participating players
 
-    let amount = Math.ceil(client.underlings[underling].drop) / players;
+    let amount = Math.ceil(client.underlings[underling].drop / players);
 
     let i;
 
@@ -210,11 +215,19 @@ try{
       let rung = client.playerMap.get(charid,"rung");
       let grist = client.playerMap.get(charid,"grist");
 
+  if(list[target][7].includes("CORRUPT")){
+    if(grist[13]+(amount*4)>rungGrist[rung]){
+      grist[13]=rungGrist[rung];
+    } else {
+      grist[13]+=(amount*4);
+    }
+  } else {
       if(grist[0]+(amount*4)>rungGrist[rung]){
         grist[0]=rungGrist[rung];
       } else {
         grist[0]+=(amount*4);
       }
+    }
       if(grist[client.grist[primaryType].pos]+(amount*2)>rungGrist[rung]){
         grist[client.grist[primaryType].pos]=rungGrist[rung];
       } else {
@@ -244,20 +257,19 @@ try{
 //send message to all players currently in strife
       let chan = client.playerMap.get(charid,"channel");
 
-      client.channels.cache.get(chan).send(`The **${primaryType} ${underling}** has been defeated! \nYou get **${client.emojis.cache.get(client.grist.build.emoji)} ${amount*4}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${amount*2}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${amount}** and **${xp} XP**`);
+      client.channels.cache.get(chan).send(`The **${primaryType} ${underling}** has been defeated! \nYou get **${client.emojis.cache.get(client.grist[repgrist].emoji)} ${amount*4}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${amount*2}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${amount}** and **${xp} XP**`);
 //call function to give players XP
       giveXp(client,charid,xp);
-
       client.playerMap.set(charid,grist,"grist");
+}
 //call function to remove the dead target from strife
       leaveStrife(client,message,local,target);
-
       if(active.length<=1){
         message.channel.send(`Last Underling defeated!`);
-        //leaveStrife(client,message,local,pos);
+        leaveStrife(client,message,local,pos);
       }
 
-    }
+
 
   }
 
@@ -332,19 +344,25 @@ function leaveStrife(client,message,local,pos){
 
   let players = client.strifeMap.get(strifeLocal,"players");
 
-  //if player leaving is the last in strife, delete strife database
+
+let chan = client.playerMap.get(charid,"channel");
+//if player leaving is the last in strife, delete strife database
   if(players <= 1){
     client.strifeMap.delete(strifeLocal);
     client.playerMap.set(charid,list[pos][3],"vit");
     client.playerMap.set(charid,false,"strife");
+
   } else {
 
     let active = client.strifeMap.get(strifeLocal,"active");
+
+    console.log("pre splice player: "+active);
     let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
     let sec = client.landMap.get(local[4],local[0]);
     //remove player from list of active characters, player positions, and lower player count by 1
     let removed = [active.splice(active.indexOf(pos),1),playerpos.splice(playerpos.indexOf(pos),1)];
     players --;
+    console.log("post splice player:"+active);
 
     client.strifeMap.set(strifeLocal,active,"active");
     client.strifeMap.set(strifeLocal,players,"players");
@@ -353,22 +371,31 @@ function leaveStrife(client,message,local,pos){
     client.playerMap.set(charid,false,"strife");
     client.playerMap.set(charid,list[pos][3],"vit");
 
-    let chan = client.playerMap.get(charid,"channel");
-
-    client.channels.cache.get(chan).send("Leaving Strife!");
-
-    /*if(turn == pos){
+    if(turn == pos){
       passTurn(client,message,local);
-    }*/
+    }
 
   }
-
+client.channels.cache.get(chan).send("Leaving Strife!");
 } else {
 
   let active = client.strifeMap.get(strifeLocal,"active");
+  console.log(`Pre splice underling ${active}`);
   let sec = client.landMap.get(local[4],local[0]);
 
   let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[target][1] && occpos[2] === list[target][2]),1)];
+
+  /*for(i=0;i<sec[local[1]][local[2]][2][local[3]][4].length;i++){
+
+    if(sec[local[1]][local[2]][2][local[3]][4][i][1]==list[pos][1]&&sec[local[1]][local[2]][2][local[3]][4][i][2]==list[pos][2]){
+
+      sec[local[1]][local[2]][2][local[3]][4].splice(i,1);
+
+    }
+
+  }*/
+  console.log(`Post splice underling ${active}`);
+
 
   client.strifeMap.set(strifeLocal,active,"active");
   client.landMap.set(local[4],sec,local[0]);
@@ -401,19 +428,20 @@ function startTurn(client, message, local) {
   let stamsg;
   let carry = false;
   let removed;
+  let stunned = false;
 //go through checking for status effects and applying them
   for(i=(list[init[turn][0]][7].length-1);i>=0;i--){
     switch(list[init[turn][0]][7][i]){
       case "STAMFAV":
-        stamroll++;
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
-      case "STUNNED":
-        stamroll--;
+        stamfav++;
         removed = list[init[turn][0]][7].splice(i,1);
       break;
       case "CARRY":
         carry=true;
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
+      case "STUN":
+        stunned=true;
         removed = list[init[turn][0]][7].splice(i,1);
       break;
       case "ALLBD":
@@ -428,15 +456,16 @@ function startTurn(client, message, local) {
       case "DISCOUNT":
         removed = list[init[turn][0]][7].splice(i,1);
       break;
+      case "DAZED":
+      stamfav--;
+        removed = list[init[turn][0]][7].splice(i,1);
     }
   }
 //check if player or underling
   if(list[init[turn][0]][0]==true){
 //roll player stamina
     stamroll = [Math.floor((Math.random() * 8) + 1),Math.floor((Math.random() * 8) + 1)];
-//check if carry is in effect
-    if(carry==false){
-//if stamina roll is not favorable, take first roll, if true take higher roll
+
     if(stamfav==0){
       stamina=stamroll[0];
       stamsg=`${stamroll[0]}`
@@ -457,35 +486,32 @@ function startTurn(client, message, local) {
         stamsg=`~~${stamroll[0]}~~ ${stamroll[1]}`
       }
     }
+
+    if(carry==true){
+      let carrystam = list[init[turn][0]][5];
+
+      stamsg +=` + ${carrystam}`;
+      stamina += carrystam;
+    }
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CANDY")[1]==true){
+      stamina+=1;
+      stamsg += ` + 1`;
+    }
+
+    if(list[init[turn][0]][7].includes("FROSTBITE")){
+      stamina-=1;
+      stamsg += ` - 1`;
+    }
+    if(stunned){
+      stamina = 0;
+      stamsg =`0 (STUNNED)`;
+    }
+
     //set rolled stamina to strife data
     list[init[turn][0]][5]=stamina;
 
-  } else {
-    //if carry is true, keep stamina from last turn and add it to new rolled stamina
-    let carrystam = list[init[turn][0]][5];
-  if(stamfav==0){
-    stamina=stamroll[0]+carrystam;
-    stamsg=`${stamroll[0]} + ${carrystam}`
-  } else if(stamfav>0){
-    if(stamroll[0]>stamroll[1]){
-      stamina=stamroll[0]+carrystam;
-      stamsg=`~~${stamroll[1]}~~ ${stamroll[0]} + ${carrystam}`
-    } else {
-      stamina=stamroll[1]+carrystam;
-      stamsg=`~~${stamroll[0]}~~ ${stamroll[1]} + ${carrystam}`
-    }
-  } else {
-    if(stamroll[0]<stamroll[1]){
-      stamina=stamroll[0]+carrystam;
-      stamsg=`~~${stamroll[1]}~~ ${stamroll[0]} + ${carrystam}`
-    } else {
-      stamina=stamroll[1]+carrystam;
-      stamsg=`~~${stamroll[0]}~~ ${stamroll[1]} + ${carrystam}`
-    }
-  }
 
-  list[init[turn][0]][5]=stamina;
-}
 
     client.strifeMap.set(strifeLocal,list,"list");
 //retrieve player channel information
@@ -499,7 +525,7 @@ function startTurn(client, message, local) {
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
         let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamina} STAMINA!`);
+        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!`);
       }
     }
 
@@ -528,6 +554,14 @@ function startTurn(client, message, local) {
       }
     }
 
+    if(list[init[turn][0]][7].includes("FROSTBITE")){
+      stamina-=1;
+      stamsg += ` - 1`;
+    }
+    if(stunned){
+      stamina = 0;
+      stamsg =`0 (STUNNED)`;
+    }
     client.strifeMap.set(strifeLocal,list,"list");
 
     let i;
@@ -588,421 +622,61 @@ exports.turnTest = function(client, message, local) {
 
 exports.underSpawn = function(client, local, sec) {
 //chance to spawn an underling everytime a player moves in house or on underling tile
-
 //roll random numbers to decide what underlings spawn where under specific circumstance
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
 
-
-  if(local[0]=="h"){
-
-    if(client.landMap.get(local[4],"enter")==true){
-      let ranroll = Math.floor(Math.random() * 4);
-
-      if(ranroll > 0){
-        let rung = client.playerMap.get(local[4],"rung");
-        if(rung < 3){
-          sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-        } else if(rung < 6){
-          switch(ranroll){
-            case 1:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"))
-            break;
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-          }
-        } else if(rung < 10){
-          switch(ranroll){
-            case 1:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-          }
-        } else if(rung < 13){
-          switch(ranroll){
-            case 1:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-          }
-        } else if(rung < 16){
-          switch(ranroll){
-            case 1:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-          }
-        } else if(rung < 20){
-          switch(ranroll){
-            case 1:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-          }
-        } else {
-          switch(ranroll){
-            case 1:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-          }
-        }
-      }
-    }
-  } else if(sec[local[1]][local[2]][2][local[3]][3]==false){
-    if(local[0]=="s1"){
-      if(area[0]==0){
-        let ranroll = Math.floor(Math.random() * 8);
-        if(ranroll>1){
-          switch(ranroll){
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-            case 4:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-            case 5:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            break;
-            case 6:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-            case 7:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            break;
-          }
-
-        }
-      } else if(area[0]==1){
-        let ranroll = Math.floor(Math.random() * 4);
-        switch(ranroll){
-          case 0:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"imp"));
-          break;
-          case 1:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-          break;
-          case 2:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-          break;
-          case 3:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-          break;
-        }
-
-      }
-    } else if(local[0]=="s2"){
-      if(area[0]==0){
-        let ranroll = Math.floor(Math.random() * 8);
-        if(ranroll>1){
-          switch(ranroll){
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            break;
-            case 4:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-            case 5:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            break;
-            case 6:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            break;
-            case 7:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            break;
-          }
-
-        }
-      } else if(area[0]==1){
-        let ranroll = Math.floor(Math.random() * 6);
-        switch(ranroll){
-          case 0:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-          break;
-          case 1:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-          break;
-          case 2:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-          break;
-          case 3:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-          break;
-          case 4:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-          break;
-          case 5:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"ogre"));
-          break;
-        }
-
-      }
-    } else if(local[0]=="s3"){
-      if(area[0]==0){
-        let ranroll = Math.floor(Math.random() * 8);
-        if(ranroll>1){
-          switch(ranroll){
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            break;
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            break;
-            case 4:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            break;
-            case 5:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            break;
-            case 6:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            break;
-            case 7:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            break;
-          }
-
-        }
-      } else if(area[0]==1){
-        let ranroll = Math.floor(Math.random() * 6);
-        switch(ranroll){
-          case 0:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-          break;
-          case 1:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-          break;
-          case 2:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-          break;
-          case 3:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-          break;
-          case 4:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-          break;
-          case 5:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"basilisk"));
-          break;
-        }
-
-      }
-    } else if(local[0]=="s4"){
-      if(area[0]==0){
-        let ranroll = Math.floor(Math.random() * 8);
-        if(ranroll>1){
-          switch(ranroll){
-            case 2:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            break;
-            case 3:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            break;
-            case 4:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            break;
-            case 5:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            break;
-            case 6:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            break;
-            case 7:
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
-              sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
-            break;
-          }
-
-        }
-      } else if(area[0]==1){
-        let ranroll = Math.floor(Math.random() * 6);
-        switch(ranroll){
-          case 0:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-          break;
-          case 1:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
-          break;
-          case 2:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"titachnid"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-          break;
-          case 3:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-          break;
-          case 4:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"giclopse"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-          break;
-          case 5:
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-            sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,"lich"));
-          break;
-        }
-
-      }
-    }
-  }
-
+let underlingChoice;
+let rung = client.playerMap.get(local[4],"rung");
+if(client.landMap.get(local[4],"enter")==false&&local[0]=="h"){
 return sec;
-
+}
+console.log(local[0]);
+switch (local[0]){
+  case "h":
+    if(rung < 15){
+    underlingChoice=["imp"];
+      } else {
+    underlingChoice = ["imp","ogre"];
+  }
+  break;
+  case "s1":
+  underlingChoice = ["imp","ogre","basilisk"];
+  break;
+  case "s1d":
+  underlingChoice = ["ogre","basilisk"];
+  break;
+  case "s2":
+  underlingChoice = ["ogre","basilisk","lich"];
+  break;
+  case "s3":
+  underlingChoice = ["basilisk","lich","giclopse"];
+  break;
+  case "s4":
+  underlingChoice = ["lich","giclopse","titachnid"];
+  break;
+}
+if(rung < 5){
+spawnBank = Math.ceil(Math.random() * 2);
+} else if( rung < 10){
+  spawnBank = Math.ceil(Math.random() * 3);
+} else {
+spawnBank = Math.ceil(Math.random() * 6);
+}
+console.log("Rung: "+rung);
+console.log("pre-spawnBank: "+spawnBank);
+while(spawnBank!=0){
+let cost = Math.ceil(Math.random() * underlingChoice.length);
+console.log("cost: "+cost);
+  if((spawnBank-(cost)) >= 0){
+  sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,underlingChoice[cost-1]));
+  spawnBank = spawnBank - (cost);
+  console.log("Spawned "+underlingChoice[cost-1]+"! post spawnBank: "+spawnBank);
+} else {
+  console.log("Couldn't afford that, trying again...");
+}
+}
+return sec;
 }
 
 exports.leaveStrife = function(client,message,local,target){
@@ -1068,7 +742,7 @@ exports.underRally = function(client, local) {
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 //if strife database does not exist, cancel code
     if(client.strifeMap.has(strifeLocal)==false){
-      console.log("Stopped another crash!")
+      console.log("Stopped another crash!");
       return;
     }
 
@@ -1076,6 +750,7 @@ exports.underRally = function(client, local) {
     let list = client.strifeMap.get(strifeLocal,"list");
     let active = client.strifeMap.get(strifeLocal,"active");
     let init = client.strifeMap.get(strifeLocal,"init");
+    let alert = ``;
 //check action tags
     let aa = client.actionList[action].add;
 
@@ -1273,6 +948,9 @@ exports.underRally = function(client, local) {
           case "ALLFAV":
             fav++;
             break;
+          case "CORRUPT":
+            fav--;
+            break;
           case "NEXTFAV":
             if(att == true){
               fav++;
@@ -1294,10 +972,15 @@ exports.underRally = function(client, local) {
 //roll to hit, similar to how stamina is handled
     let strikeRoll = [Math.floor((Math.random() * 20) + 1),Math.floor((Math.random() * 20) + 1)];
 
+    console.log(list[target][7]);
+    console.log(fav);
+
     if(fav == 0) {
       strikeCheck = strikeRoll[0];
       strikeMsg = `${strikeRoll[0]}`;
-    } else if(fav>0) {
+    }
+    if(fav>0 || list[target][7].includes("CORRUPT")) {
+
       if(strikeRoll[0]>strikeRoll[1]){
         strikeCheck=strikeRoll[0];
         strikeMsg = `~~${strikeRoll[1]}~~ ${strikeRoll[0]}`;
@@ -1305,7 +988,7 @@ exports.underRally = function(client, local) {
         strikeCheck=strikeRoll[1]
         strikeMsg = `~~${strikeRoll[0]}~~ ${strikeRoll[1]}`;
       }
-    } else {
+    } else if(fav<0){
       if(strikeRoll[0]>strikeRoll[1]){
         strikeCheck=strikeRoll[1];
         strikeMsg = `~~${strikeRoll[0]}~~ ${strikeRoll[1]}`;
@@ -1317,7 +1000,72 @@ exports.underRally = function(client, local) {
 
   if(strikeCheck>av){
 
+    //check traits that inflict status effects on hit
+
+    //if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CANDY")[1]==true){
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOT")[0]){
+    if(!list[target][7].includes("BURN")){
+      if(Math.floor((Math.random() * 12)==0)){
+        list[target][7].push("BURN");
+        alert+=`**INFLICTED BURN ON OPPONENT!**\n`;
+      }
+    }
+    }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHARP")[0]){
+    if(!list[target][7].includes("BLEED")){
+      if(Math.floor((Math.random() * 12)==0)){
+        list[target][7].push("BLEED");
+        alert+=`**INFLICTED BLEED ON OPPONENT!**\n`;
+      }
+    }
+    }
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD")[0]){
+  if(!list[target][7].includes("FROSTBITE")){
+    if(Math.floor((Math.random() * 12)==0)){
+      list[target][7].push("FROSTBITE");
+      alert+=`**INFLICTED FROSTBITE ON OPPONENT!**\n`;
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD")[1]){
+        list[target][7].push("DAZED");
+        alert+=`**INFLICTED DAZE ON OPPONENT!**\n`;
+      }
+    }
+}
+}
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
+   if(!list[target][7].includes("STUN")){
+     if(Math.floor((Math.random() * 12)==0)){
+       if(!client.traitcall.traitCheck(client,list[target][1],"ELECTRIC")[1]){
+       list[target][7].push("STUN");
+       alert+=`**INFLICTED STUN ON OPPONENT!**\n`;
+     }else {
+       alert+=`**TARGET IS IMMUNE TO STUN!**\n`;
+     }
+     }
+   }
+}
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BLUNT")[0]){
+    let dchance=12;
+  if(!list[target][7].includes("DAZED")){
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BLUNT")[1]){
+      dchance = 6;
+    }
+    if(Math.floor((Math.random() * dchance)==0)){
+      list[target][7].push("DAZED");
+      alert+=`**INFLICTED DAZED ON OPPONENT!**\n`;
+    }
+  }
+  }
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHITTY")[1]){
+  if(!list[target][7].includes("CORRUPT")){
+    if(Math.floor((Math.random() * 12)==0)){
+      list[target][7].push("CORRUPT");
+      alert+=`**OPPONENT HAS BEEN CORRUPTED!**\n`;
+    }
+  }
+  }
     //check for all COMBATATIVE COMBAT TAGS
+    //check target status effects
 
     let postcon;
     for(postcon=(list[target][7].length-1);postcon>=0;postcon--){
@@ -1334,7 +1082,12 @@ exports.underRally = function(client, local) {
           break;
         case "BURN":
           bd++;
+          if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOT")[1]){
+            bd++;
+          }
           break;
+        case "BLEED":
+          bd++;
       }
 
     }
@@ -1372,29 +1125,78 @@ exports.underRally = function(client, local) {
     let bonusDmg = 0;
     let bonusRes = 0;
 
+    let k;
+    for(k=0;k<list[init[turn][0]][7].length;k++){
+    try{
+      if(`${list[init[turn][0]][7][k].charAt(0)}${list[init[turn][0]][7][k].charAt(1)}${list[init[turn][0]][7][k].charAt(2)}${list[init[turn][0]][7][k].charAt(3)}`==`MEAT`){
+        let meat = list[init[turn][0]][7].splice(k,1);
+        console.log(meat);
+        meat = meat[0].substring(4);
+
+        meatVal = parseInt(meat, 10);
+
+        bd+=meatVal;
+
+      }
+
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
+
+  let damagemsg = `${dmg * client.actionList[action].dmg}`;
 
     if(bd>0){
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MEAT")[1]){
+        bd++;
+      }
       let i;
       for(i=0;i<bd;i++){
-        bonusDmg += Math.floor((Math.random() * (bdroll[1] - 1)) + bdroll[0]);
+        let bddice =[Math.floor((Math.random() * (bdroll[1] - 1)) + bdroll[0]),Math.floor((Math.random() * (bdroll[1] - 1)) + bdroll[0])];
+        let bdadd;
+        if(!client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHARP")[1]){
+          bdadd = bddice[0];
+
+          damagemsg+= ` + ${bdadd}`;
+        } else {
+          if (bddice[0]>bddice[1]){
+            damagemsg += ` + ~~${bddice[1]}~~ ${bddice[0]}`
+            bdadd = bddice[0];
+          } else{
+            damagemsg += ` +~~${bddice[0]}~~ ${bddice[1]}`
+            bdadd = bddice[1];
+          }
+      }
+      bonusDmg += bdadd;
       }
     }
     if(br>0){
       let i;
       for(i=0;i<br;i++){
-        bonusRes += Math.floor((Math.random() * (brroll[1] - 1)) + brroll[0]);
+        let bradd = Math.floor((Math.random() * (brroll[1] - 1)) + brroll[0]);
+        bonusRes += bradd;
+        damagemsg+= ` - ${bradd}`;
       }
     }
 
-    let damage = ((dmg * client.actionList[action].dmg) + bonusDmg) - bonusRes;
+  let damage = ((dmg * client.actionList[action].dmg) + bonusDmg) - bonusRes;
+    if(strikeCheck == 20){
+      damage *= 2;
+      damagemsg += ` * 2`
+    };
 
     if(damage < 0 || att == false) {
       damage = 0;
     };
 
-    if(strikeCheck == 20){
-      damage *= 2;
-    };
+    if(br>0||bd>0||strikeCheck == 20)
+    damagemsg+= ` = **${damage}**`;
+
+
+
+
+
 
     let last = [list[init[turn][0]][1],list[target][1],damage];
 
@@ -1409,6 +1211,10 @@ exports.underRally = function(client, local) {
 
     client.strifeMap.set(strifeLocal,last,"last");
 
+    if(alert.length==0){
+      alert=`NONE`;
+    }
+
     let embed = new client.Discord.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
     .addField('CST', client.actionList[action].cst, true)
@@ -1417,7 +1223,8 @@ exports.underRally = function(client, local) {
     .addField("STRIKE",strikeMsg,true)
     .addField("TARGET AV",av,true)
     .addField("HIT",`${effective}`)
-    .addField("DAMAGE", damage, true)
+    .addField("DAMAGE", damagemsg, true)
+    .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
 
@@ -1432,6 +1239,10 @@ exports.underRally = function(client, local) {
 
     //if attack misses
 
+    if(alert.length==0){
+      alert=`NONE`;
+    }
+
     let embed = new client.Discord.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
     .addField('CST', client.actionList[action].cst, true)
@@ -1440,6 +1251,7 @@ exports.underRally = function(client, local) {
     .addField("STRIKE",strikeMsg,true)
     .addField("TARGET AV",av,true)
     .addField("HIT",`${`MISS!`}`)
+    .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
 
@@ -1455,11 +1267,16 @@ exports.underRally = function(client, local) {
   } else {
     //if att is false
 
+    if(alert.length==0){
+      alert=`NONE`;
+    }
+
     let embed = new client.Discord.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
     .addField('CST', client.actionList[action].cst, true)
     .addField('DMG', `${(dmg * client.actionList[action].dmg)}`, true)
     .addField("ADDITIONAL ACTION", client.actionList[action].aa )
+    .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
 
@@ -1501,6 +1318,9 @@ exports.underRally = function(client, local) {
     switch (underling){
       case "imp":
         switch(stamina){
+          case 0:
+            setTimeout(passTurn,3000,client,message,local);
+          break;
           case 1:
             setTimeout(passTurn,3000,client,message,local);
           break;
@@ -1520,6 +1340,9 @@ exports.underRally = function(client, local) {
       break;
       case "ogre":
         switch(stamina){
+          case 0:
+            setTimeout(passTurn,3000,client,message,local);
+          break;
           case 1:
             setTimeout(passTurn,3000,client,message,local);
           break;
@@ -1540,6 +1363,9 @@ exports.underRally = function(client, local) {
       break;
       case "basilisk":
         switch(stamina){
+          case 0:
+            setTimeout(passTurn,3000,client,message,local);
+          break;
           case 1:
             setTimeout(act,3000,client,message,local,"arborize",target);
             setTimeout(passTurn,6000,client,message,local);
@@ -1573,6 +1399,9 @@ exports.underRally = function(client, local) {
       break;
       case "lich":
         switch(stamina){
+          case 0:
+            setTimeout(passTurn,3000,client,message,local);
+          break;
           case 1:
             setTimeout(act,3000,client,message,local,"acupressure",target);
             setTimeout(passTurn,6000,client,message,local);
@@ -1601,6 +1430,9 @@ exports.underRally = function(client, local) {
         break;
         case "giclopse":
           switch(stamina){
+            case 0:
+              setTimeout(passTurn,3000,client,message,local);
+            break;
             case 1:
               setTimeout(passTurn,6000,client,message,local);
             break;
@@ -1630,6 +1462,9 @@ exports.underRally = function(client, local) {
         break;
         case "titachnid":
           switch(stamina){
+            case 0:
+              setTimeout(passTurn,3000,client,message,local);
+            break;
             case 1:
               setTimeout(act,3000,client,message,local,"abuse",target);
               setTimeout(passTurn,6000,client,message,local);

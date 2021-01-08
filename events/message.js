@@ -15,12 +15,15 @@ module.exports = (client, message) => {
 
   // Grab the command data from the client.commands Enmap
   const cmd = client.commands.get(command);
-
   // If that command doesn't exist, silently exit and do nothing
   if (!cmd) return;
-
   try{
     let charid = message.guild.id.concat(message.author.id);
+    if(!client.playerMap.has(charid)&&command!="register"&&command!="help"){
+      message.channel.send("You are not registered! Register using the >register command!");
+      return;
+    }
+
     if(client.playerMap.get(charid,"act")>=client.limit&&client.limit!=0&&command!="register"&&command!="leaderboard"&&command!="stats"){
       message.channel.send("You have reached your maximum number of actions for this tournament!");
       return;
@@ -28,7 +31,6 @@ module.exports = (client, message) => {
   } catch(err){
  console.log("the error did an error");
   }
-
 	client.user.setActivity("@SAHCON 2020");
   // Run the command
   cmd.run(client, message, args);

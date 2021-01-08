@@ -58,7 +58,7 @@ exports.run = (client, message, args) => {
   }
 
 
-if (ialchemiter == true){
+if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")[1]){
 
   if(args.length == 1){
     select1 = parseInt(args[0], 10) - 1;
@@ -138,8 +138,28 @@ funcall.actionCheck(client,message,"alchemized");
 
     newItem = funcall.oror(client,item1,item2);
 
+    if(client.traitcall.itemTrait(client,newItem,"SHITTY")){
+
+      newItem[2]=1;
+      newItem[1].charAt(1)="0";
+
+    } else if(client.traitcall.itemTrait(client,newItem,"TRICKSTER")){
+      newItem[2]=16;
+      newItem[1].charAt(1)="?";
+    } else if(client.traitcall.itemTrait(client,newItem,"EXQUISITE")){
+
+      newItem[1].charAt(1)="!";
+
+    }
+
     cost1=tierCost[newItem[2]];
     cost2=tierCost[newItem[2]-1];
+
+    if(newItem[1].charAt(1)="!"){
+      cost1*=2;
+      cost2*=2;
+    }
+
     grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(newItem[1].charAt(1))]];
 
     if(playerGrist[0]<cost1||playerGrist[client.grist[grist].pos]<cost2){
@@ -163,8 +183,29 @@ funcall.actionCheck(client,message,"alchemized");
 
     newItem = funcall.andand(client,item1,item2);
 
+    if(client.traitcall.itemTrait(client,newItem,"SHITTY")){
+
+      newItem[2]=1;
+      newItem[1].charAt(1)="0";
+
+    } else if(client.traitcall.itemTrait(client,newItem,"TRICKSTER")){
+      newItem[2]=16;
+      newItem[1].charAt(1)="?";
+    } else if(client.traitcall.itemTrait(client,newItem,"EXQUISITE")){
+
+      newItem[1].charAt(1)="!";
+
+    }
+
     cost1=tierCost[newItem[2]];
     cost2=tierCost[newItem[2]-1];
+
+    if(newItem[1].charAt(1)="!"){
+      cost1*=2;
+      cost2*=2;
+    }
+
+
     grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(newItem[1].charAt(1))]];
 
     if(playerGrist[0]<cost1||playerGrist[client.grist[grist].pos]<cost2){
@@ -193,6 +234,7 @@ funcall.actionCheck(client,message,"alchemized");
 
     if(alchemiter[1]==true){
 
+
 //check if alchemized item is a cruxite artifact
 
       if(item[1]=="////////" && item[0]=="CRUXITE ARTIFACT"){
@@ -200,8 +242,29 @@ funcall.actionCheck(client,message,"alchemized");
         cost2=0;
         grist="artifact";
       } else {
+
+        if(client.traitcall.itemTrait(client,item,"SHITTY")){
+
+          item[2]=1;
+          item[1].charAt(1)="0";
+
+        } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
+          item[2]=16;
+          item[1].charAt(1)="?";
+        } else if(client.traitcall.itemTrait(client,item,"EXQUISITE")){
+
+          item[1].charAt(1)="!";
+
+        }
+
         cost1=tierCost[item[2]];
         cost2=tierCost[item[2]-1];
+
+        if(item[1].charAt(1)="!"){
+          cost1*=2;
+          cost2*=2;
+        }
+
         grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(item[1].charAt(1))]];
       }
 
@@ -229,6 +292,16 @@ funcall.actionCheck(client,message,"alchemized");
         }
 
 //Deduct price from grist and place alchemized artifact in room
+
+        if(client.traitcall.itemTrait(client,item,"SHITTY")){
+
+          item[2]=1;
+          item[1].charAt(1)="0";
+
+        } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
+          item[2]=16;
+          item[1].charAt(1)="?";
+        }
 
         playerGrist[0]-=cost1;
         playerGrist[client.grist[grist].pos]-=cost2;
