@@ -148,9 +148,7 @@ exports.run = (client, message, args) => {
        cost--;
      }
   }
-  if(list[pos][7].includes("FROSTBITE")){
-    cost++;
-  }
+
 
   //Check if player can pay the stamina cost
 

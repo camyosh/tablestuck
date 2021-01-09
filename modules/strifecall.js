@@ -436,6 +436,17 @@ function startTurn(client, message, local) {
         stamfav++;
         removed = list[init[turn][0]][7].splice(i,1);
       break;
+      case "HAUNT1":
+        removed = list[init[turn][0]][7].splice(i,1);
+        list[init[turn][0]][7].push("HAUNT2");
+      break;
+      case "HAUNT2":
+        removed = list[init[turn][0]][7].splice(i,1);
+        list[init[turn][0]][7].push("HAUNT3");
+      break;
+      case "HAUNT3":
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
       case "CARRY":
         carry=true;
         removed = list[init[turn][0]][7].splice(i,1);
@@ -464,7 +475,22 @@ function startTurn(client, message, local) {
 //check if player or underling
   if(list[init[turn][0]][0]==true){
 //roll player stamina
+
+    let stamroll;
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[1]){
+
+      stamroll = [Math.floor((Math.random() * 4) + 5),Math.floor((Math.random() * 4) + 5)];
+
+    } else if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[0]){
+
+      stamroll = [Math.floor((Math.random() * 6) + 3),Math.floor((Math.random() * 6) + 3)];
+
+    } else {
+
     stamroll = [Math.floor((Math.random() * 8) + 1),Math.floor((Math.random() * 8) + 1)];
+
+  }
 
     if(stamfav==0){
       stamina=stamroll[0];
@@ -487,7 +513,7 @@ function startTurn(client, message, local) {
       }
     }
 
-    if(carry==true){
+    if(carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
       let carrystam = list[init[turn][0]][5];
 
       stamsg +=` + ${carrystam}`;
@@ -495,6 +521,10 @@ function startTurn(client, message, local) {
     }
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CANDY")[1]==true){
+      stamina+=1;
+      stamsg += ` + 1`;
+    }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[1]==true){
       stamina+=1;
       stamsg += ` + 1`;
     }
@@ -773,6 +803,8 @@ exports.underRally = function(client, local) {
     let bd = 0;
     let br = 0;
     let fav = list[init[turn][0]][4];
+    let bdmax = false;
+    let strikeBonus = 0;
 
     let att = client.actionList[action].att;
 
@@ -854,7 +886,7 @@ exports.underRally = function(client, local) {
 
     try{
 //check for grist effectivity, if effective change message accordingly and increase BR or BD accordingly
-    if(grist=="artifact"){
+  /*  if(grist=="artifact"){
       if(tarGrist!="artifact"&&tarGrist!="diamond"&&tarGrist!="zillium"){
         br++;
         effective="INEFFECTIVE!"
@@ -870,10 +902,13 @@ exports.underRally = function(client, local) {
         br++;
         effective="INEFFECTIVE!"
       }
-    } else if(client.grist[tarGrist].effective.includes(grist)){
+    } else*/ if(client.grist[tarGrist].ineffective.includes(grist)){
       bd++
       effective="EFFECTIVE!"
-    } else if(client.grist[tarGrist].ineffective.includes(grist)){
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"REFINED")[0]){
+        strikeBonus+=2;
+      }
+    } else if(client.grist[tarGrist].effective.includes(grist)){
       br++
       effective="INEFFECTIVE!"
     }
@@ -951,6 +986,11 @@ exports.underRally = function(client, local) {
           case "CORRUPT":
             fav--;
             break;
+            case "HAUNT1":
+            case "HAUNT2":
+            case "HAUNT3":
+              fav--;
+              break;
           case "NEXTFAV":
             if(att == true){
               fav++;
@@ -964,8 +1004,33 @@ exports.underRally = function(client, local) {
             fav--;
             break;
         }
-
       }
+
+      //check enemy tags
+
+      let precont;
+        for(precont=(list[target][7].length - 1);precont>=0;precont--){
+          let removed;
+
+          switch(list[target][7][precont]){
+            case "CORRUPT":
+              fav++
+            break;
+            case "HAUNT1":
+            case "HAUNT2":
+            case "HAUNT3":
+              fav++
+            break;
+            case "GRAPPLE":
+              fav++
+            break;
+          }
+
+}
+
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BROKEN")[0]){
+  fav--;
+}
 
     let strikeCheck;
     let strikemsg;
@@ -979,7 +1044,7 @@ exports.underRally = function(client, local) {
       strikeCheck = strikeRoll[0];
       strikeMsg = `${strikeRoll[0]}`;
     }
-    if(fav>0 || list[target][7].includes("CORRUPT")) {
+    if(fav>0) {
 
       if(strikeRoll[0]>strikeRoll[1]){
         strikeCheck=strikeRoll[0];
@@ -997,8 +1062,24 @@ exports.underRally = function(client, local) {
         strikeMsg = `~~${strikeRoll[1]}~~ ${strikeRoll[0]}`;
       }
     }
+if(strikeBonus>0){
+  strikeMsg += ` + ${strikeBonus} = ${strikeCheck+strikeBonus}`;
+}
+if(strikeBonus<0){
+  strikeMsg += ` - ${strikeBonus} = ${strikeCheck+strikeBonus}`;
+}
 
-  if(strikeCheck>av){
+  if(client.traitcall.traitCheck(client,list[target][1],"FROG")[0]){
+    av++;
+  }
+
+  if((strikeCheck+strikeBonus)>av && (client.traitcall.traitCheck(client,list[target][1],"FROG")[1] && !(Math.floor((Math.random() * 12))))){
+    strikeCheck=0;
+    alert+=`TARGET JUMPED OUT OF THE WAY! FROGGERS!!!\n`;
+  }
+
+
+  if((strikeCheck+strikeBonus)>av){
 
     //check traits that inflict status effects on hit
 
@@ -1006,7 +1087,7 @@ exports.underRally = function(client, local) {
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOT")[0]){
     if(!list[target][7].includes("BURN")){
-      if(Math.floor((Math.random() * 12)==0)){
+      if(!Math.floor((Math.random() * 12))){
         list[target][7].push("BURN");
         alert+=`**INFLICTED BURN ON OPPONENT!**\n`;
       }
@@ -1014,7 +1095,15 @@ exports.underRally = function(client, local) {
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHARP")[0]){
     if(!list[target][7].includes("BLEED")){
-      if(Math.floor((Math.random() * 12)==0)){
+      if(!Math.floor((Math.random() * 12))){
+        list[target][7].push("BLEED");
+        alert+=`**INFLICTED BLEED ON OPPONENT!**\n`;
+      }
+    }
+    }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"VAMPIRIC")[0]){
+    if(!list[target][7].includes("BLEED")){
+      if(!Math.floor((Math.random() * 12))){
         list[target][7].push("BLEED");
         alert+=`**INFLICTED BLEED ON OPPONENT!**\n`;
       }
@@ -1022,7 +1111,7 @@ exports.underRally = function(client, local) {
     }
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD")[0]){
   if(!list[target][7].includes("FROSTBITE")){
-    if(Math.floor((Math.random() * 12)==0)){
+    if(!Math.floor((Math.random() * 12))){
       list[target][7].push("FROSTBITE");
       alert+=`**INFLICTED FROSTBITE ON OPPONENT!**\n`;
       if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD")[1]){
@@ -1034,7 +1123,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD")[0]){
 }
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
    if(!list[target][7].includes("STUN")){
-     if(Math.floor((Math.random() * 12)==0)){
+     if(!Math.floor((Math.random() * 12))){
        if(!client.traitcall.traitCheck(client,list[target][1],"ELECTRIC")[1]){
        list[target][7].push("STUN");
        alert+=`**INFLICTED STUN ON OPPONENT!**\n`;
@@ -1050,7 +1139,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BLUNT")[1]){
       dchance = 6;
     }
-    if(Math.floor((Math.random() * dchance)==0)){
+    if(!Math.floor((Math.random() * dchance))){
       list[target][7].push("DAZED");
       alert+=`**INFLICTED DAZED ON OPPONENT!**\n`;
     }
@@ -1058,12 +1147,40 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
   }
   if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHITTY")[1]){
   if(!list[target][7].includes("CORRUPT")){
-    if(Math.floor((Math.random() * 12)==0)){
+    if(!Math.floor((Math.random() * 12))){
       list[target][7].push("CORRUPT");
       alert+=`**OPPONENT HAS BEEN CORRUPTED!**\n`;
     }
   }
   }
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SPOOKY")[0]){
+  if(!list[target][7].includes("HAUNT1")&&!list[target][7].includes("HAUNT2")&&!list[target][7].includes("HAUNT3")){
+    if(!Math.floor((Math.random() * 12))){
+      list[target][7].push("HAUNT1");
+      alert+=`**INFLICTED HAUNT ON OPPONENT!**\n`;
+    }
+  }
+  }
+if(client.traitcall.traitCheck(client,list[target][1],"CAT")[0]){
+  br++;
+}
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BROKEN")[1]){
+  if(!Math.floor((Math.random() * 12))){
+    bdmax = true;
+  }
+
+}
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"STICKY")[0]){
+if(!list[target][7].includes("GRAPPLE")){
+  if(!Math.floor((Math.random() * 12))){
+    list[target][7].push("GRAPPLE");
+    alert+=`**INFLICTED GRAPPLE ON OPPONENT!**\n`;
+  }
+}
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"STICKY")[1] && list[target][7].includes("GRAPPLE")){
+    bd++;
+  }
+}
     //check for all COMBATATIVE COMBAT TAGS
     //check target status effects
 
@@ -1146,32 +1263,53 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
 
   let damagemsg = `${dmg * client.actionList[action].dmg}`;
+  let equals = false;
 
     if(bd>0){
+      equals=true;
       if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MEAT")[1]){
         bd++;
       }
       let i;
       for(i=0;i<bd;i++){
-        let bddice =[Math.floor((Math.random() * (bdroll[1] - 1)) + bdroll[0]),Math.floor((Math.random() * (bdroll[1] - 1)) + bdroll[0])];
+        let bddice =[Math.floor((Math.random() * (bdroll[1] - bdroll[0])) + bdroll[0]),Math.floor((Math.random() * (bdroll[1] - bdroll[0])) + bdroll[0])];
+        if (bdmax){
+          bddice = [bdroll[1],bdroll[1]];
+        }
+        if(client.traitcall.traitCheck(client,list[target][1],"CUTE")[1]||client.traitcall.traitCheck(client,list[target][1],"REFINED")[1]){
+          bddice[0]= Math.floor(bddice[0]/2);
+          bddice[1]= Math.floor(bddice[1]/2);
+        }
+
         let bdadd;
         if(!client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHARP")[1]){
           bdadd = bddice[0];
-
           damagemsg+= ` + ${bdadd}`;
         } else {
           if (bddice[0]>bddice[1]){
-            damagemsg += ` + ~~${bddice[1]}~~ ${bddice[0]}`
+            damagemsg += ` + (~~${bddice[1]}~~ ${bddice[0]})`
             bdadd = bddice[0];
           } else{
-            damagemsg += ` +~~${bddice[0]}~~ ${bddice[1]}`
+            damagemsg += ` + (~~${bddice[0]}~~ ${bddice[1]})`
             bdadd = bddice[1];
           }
       }
       bonusDmg += bdadd;
-      }
+
     }
+    if(client.traitcall.traitCheck(client,list[target][1],"CUTE")[1]){
+      alert += `TARGET IS TOO CUTE, THEY TOOK REDUCED BD!\n`
+    }
+    if(client.traitcall.traitCheck(client,list[target][1],"REFINED")[1]){
+      alert += `TARGET IS REFINED, THEY TOOK REDUCED BD!\n`
+    }
+  }
+
     if(br>0){
+      equals=true;
+      if(client.traitcall.traitCheck(client,list[target][1],"CUTE")[0]){
+        br++;
+      }
       let i;
       for(i=0;i<br;i++){
         let bradd = Math.floor((Math.random() * (brroll[1] - 1)) + brroll[0]);
@@ -1181,7 +1319,15 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
     }
 
   let damage = ((dmg * client.actionList[action].dmg) + bonusDmg) - bonusRes;
+
+    if(client.traitcall.traitCheck(client,list[target][1],"SPOOKY")[1]&&(list[init[turn][0]][7].includes("HAUNT2")||list[init[turn][0]][7].includes("HAUNT1")||list[init[turn][0]][7].includes("HAUNT3"))){
+      equals=true;
+      damage=Math.floor(damage/2);
+      damagemsg +=` / 2`;
+    }
+
     if(strikeCheck == 20){
+      equals=true;
       damage *= 2;
       damagemsg += ` * 2`
     };
@@ -1190,7 +1336,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
       damage = 0;
     };
 
-    if(br>0||bd>0||strikeCheck == 20)
+    if(equals)
     damagemsg+= ` = **${damage}**`;
 
 
@@ -1200,10 +1346,28 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
     let last = [list[init[turn][0]][1],list[target][1],damage];
 
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"VAMPIRIC")[1]&&list[target][7].includes("BLEED") ){
+      list[init[turn][0]][3]+= bonusDmg;
+      alert+= `VAMPIRICALLY SIPHONED ${bonusDmg} VITALITY!`
+
+      if(client.playerMap.get(list[init[turn][0]][1],"gel")<list[init[turn][0]][3]){
+        list[init[turn][0]][3]=client.playerMap.get(list[init[turn][0]][1],"gel");
+      }
+
+    }
+
     list[target][3] -= damage;
     if(absorb==true){
       list[init[turn][0]][3]+= damage;
     }
+
+
+if(list[target][3] < 1 && client.traitcall.traitCheck(client,list[target][1],"CAT")[1] && !list[target][7].includes("NINELIVES")) {
+  list[target][3] = 1;
+  alert += `THE TARGET USED ITS LAST OF 9 LIVES, SURVIVED AT 1 HP!`;
+  list[target][7].push("NINELIVES");
+
+}
 
     //if(list[target][3] < 1){
       //kill(client,message,local,target,turn);
@@ -1290,9 +1454,19 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
   }
 
+  let bounceChance=12;
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[1]){
+
+    bounceChance=6;
+  }
+
   client.strifeMap.set(strifeLocal,list,"list");
   if(list[target][3] < 1){
     kill(client,message,local,target,init[turn][0]);
+  }else{
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0] && !Math.floor((Math.random() * bounceChance))){
+      setTimeout(act,3000,client,message,local,"aggrieve",target);
+  }
   }
 
   }
