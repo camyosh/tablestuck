@@ -113,9 +113,15 @@ exports.run = (client, message, args) => {
   } else {
 //if no strife exists, create strife database
 
+let initRoll = Math.floor((Math.random() * 20) + 1);
+//if rocket trait, always roll 20 on init
+if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
+  initRoll=20;
+}
+
     var strifeSet = {
       list:[profile],
-      init:[[0,Math.floor((Math.random() * 20) + 1)]],
+      init:[[0,initRoll]],
       turn:0,
       active:[0],
       players:1,

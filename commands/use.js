@@ -277,12 +277,37 @@ exports.run = (client, message, args) => {
       }
       if(sdex[selectDex][0]=="BOONDOLLARS"){
 
-        message.channel.send(`Added ${sdex[selectDex][3]} BOONDOLLARS to your PORKHOLLOW`);
+        let boonMsg = `Adding BOONDOLLARS to PORKHOLLOW...`;
+        let newBoon = sdex[selectDex][3];
+
+        if(client.traitcall.traitCheck(client,charid,"GAMBLING")[1]){
+
+          boonMsg+=`\nGAMBLING TRAIT doubles your BOONDOLLARS!`;
+          newBoon*=2;
+
+        } else if(client.traitcall.traitCheck(client,charid,"GAMBLING")[0]){
+          switch(Math.floor((Math.random() * 4))){
+
+            case 0:
+              newBoon = Math.floor(newBoon/2);
+              boonMsg+=`\nGAMBLING TRAIT halves your BOONDOLLARS! Better luck next time!`;
+            break;
+            case 3:
+              newBoon*=2;
+              boonMsg+=`\nGAMBLING TRAIT doubles your BOONDOLLARS!`;
+            break;
+
+          }
+        }
+
         let b = client.playerMap.get(charid,"b");
-        b+= sdex[selectDex][3];
+        b+= newBoon;
         let targetItem = sdex.splice(selectDex,1);
         client.playerMap.set(charid,b,"b");
         client.playerMap.set(charid,sdex,"sdex");
+
+        boonMsg+=`\nAdded ${newBoon} BOONDOLLARS to PORKHOLLOW! You now have ${b} BOONDOLLARS!`
+        message.channel.send(boonMsg);
 
       } else {
         message.channel.send("You can't use that item!")
