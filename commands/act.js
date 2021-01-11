@@ -148,13 +148,29 @@ exports.run = (client, message, args) => {
        cost--;
      }
   }
+  if(client.traitcall.traitCheck(client,charid,"MIND")[1]){
+    if(cost > 1){
+      cost--;
+    }
+  }
 
 
   //Check if player can pay the stamina cost
 
   if(cost > list[pos][5]){
+    if(client.traitcall.traitCheck(client,charid,"DOOM")[0]){
+      let maxvit = client.playerMap.get(charid,"gel");
+      let doomcost= Math.floor(cost-list[pos][5])*.1*maxvit;
+      if(list[pos][3]-doomcost<=0){
+        message.channel.send(`You don't have enough STAMINA to afford that action, or enough VITALITY to sacrifice for it! That action costs ${cost} STAMINA and you have ${list[pos][5]} STAMINA!`);
+        return;
+      }
+      list[pos][3]-=doomcost;
+        message.channel.send(`You paid ${list[pos][5]} STAMINA and ${doomcost} VITALITY to take this action. ${list[pos][3]} VITALITY REMAINING!`);
+    } else {
     message.channel.send(`You don't have enough STAMINA to afford that action! That action costs ${cost} STAMINA and you have ${list[pos][5]} STAMINA!`);
     return;
+   }
   }
 
   //If action is ABSCOND, leave combat by calling leaveStrife function. Otherwise, spend stamina for the action and call the act function
@@ -164,6 +180,9 @@ exports.run = (client, message, args) => {
     message.channel.send("Absconding!");
   } else {
   list[pos][5] -= cost;
+  if(list[pos][5]<0){
+    list[pos][5]=0;
+  }
   list[pos][6].push(""+select+equip);
   client.strifeMap.set(strifeLocal,list,"list")
   strifecall.act(client,message,local,action[select],active[target]);

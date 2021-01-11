@@ -94,12 +94,14 @@ return;
     client.playerMap.set(charid,vit,"vit");
 
     msg+=`\n You heal ${Math.ceil(gel*heal)} VITALITY, you now have ${vit} / ${gel} VITALITY!`;
-
+if(strifeCheck){
+    list[pos][3]=vit;
+  }
   }
 
   message.channel.send(msg);
 
-  if(strifeCheck ==true){
+  if(strifeCheck){
   list[pos][6].push("CONSUME");
   client.strifeMap.set(strifeLocal,list,"list");
 }

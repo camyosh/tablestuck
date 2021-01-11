@@ -9,7 +9,6 @@ exports.traitCheck = function(client,target,traitName){
   let specibus = client.playerMap.get(target,"spec");
   let equip = client.playerMap.get(target,"equip");
   let armor = client.playerMap.get(target,"armor");
-  console.log(armor);
   let trinket = client.playerMap.get(target,"trinket");
   //Check weapon first\
 
@@ -58,7 +57,6 @@ exports.traitCheck = function(client,target,traitName){
   return check;
 
 }catch(err){
-  console.log("Tried to check an Underling's traits!");
   return [false,false];
 }
 
