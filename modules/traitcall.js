@@ -1,4 +1,3 @@
-
 const tList = ["MELEE","RANGED","MAGIC","NA"];
 
 exports.traitCheck = function(client,target,traitName){
@@ -17,7 +16,7 @@ exports.traitCheck = function(client,target,traitName){
     if(client.traitList[client.captchaCode.indexOf(specibus[equip][1].charAt(2))]==traitName){
       traitCount++;
     }
-    if(client.traitList[client.captchaCode.indexOf(specibus[equip][1].charAt(3))]==traitName){
+    if(client.traitList2[client.captchaCode.indexOf(specibus[equip][1].charAt(3))]==traitName){
       traitCount++;
     }
   }
@@ -28,7 +27,7 @@ exports.traitCheck = function(client,target,traitName){
     if(client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))]==traitName){
       traitCount++;
     }
-    if(client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(3))]==traitName){
+    if(client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))]==traitName){
       traitCount++;
     }
   }
@@ -39,7 +38,7 @@ exports.traitCheck = function(client,target,traitName){
     if(client.traitList[client.captchaCode.indexOf(trinket[1].charAt(2))]==traitName){
       traitCount++;
     }
-    if(client.traitList[client.captchaCode.indexOf(trinket[1].charAt(3))]==traitName){
+    if(client.traitList2[client.captchaCode.indexOf(trinket[1].charAt(3))]==traitName){
       traitCount++;
     }
   }
@@ -64,7 +63,7 @@ exports.traitCheck = function(client,target,traitName){
 
 exports.itemTrait = function(client,item,trait){
 
-  if(client.traitList[client.captchaCode.indexOf(item[1].charAt(2))]==trait||client.traitList[client.captchaCode.indexOf(item[1].charAt(3))]==trait){
+  if(client.traitList[client.captchaCode.indexOf(item[1].charAt(2))]==trait||client.traitList2[client.captchaCode.indexOf(item[1].charAt(3))]==trait){
     return true;
   } else {
     return false;
@@ -81,7 +80,7 @@ exports.compTest = function(client, message, charid, room, currentInv) {
 
     for(i=0; i < room[5].length; i++) {
 
-      if(client.traitList[client.captchaCode.indexOf(room[5][i][1].charAt(2))] == "COMPUTER" || client.traitList[client.captchaCode.indexOf(room[5][i][1].charAt(3))] == "COMPUTER") {
+      if(client.traitList[client.captchaCode.indexOf(room[5][i][1].charAt(2))] == "COMPUTER" || client.traitList2[client.captchaCode.indexOf(room[5][i][1].charAt(3))] == "COMPUTER") {
         comp[0]=true;
 
         let j;
@@ -93,7 +92,7 @@ exports.compTest = function(client, message, charid, room, currentInv) {
       }
     }
     for(i=0; i < currentInv.length; i++) {
-      if(client.traitList[client.captchaCode.indexOf(currentInv[i][1].charAt(2))] == "COMPUTER" || client.traitList[client.captchaCode.indexOf(currentInv[i][1].charAt(3))] == "COMPUTER"){
+      if(client.traitList[client.captchaCode.indexOf(currentInv[i][1].charAt(2))] == "COMPUTER" || client.traitList2[client.captchaCode.indexOf(currentInv[i][1].charAt(3))] == "COMPUTER"){
         comp[0]=true;
 
         let j;
@@ -112,7 +111,7 @@ exports.inspectItem = function(client, item){
   let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(item[1].charAt(0)) /*-1*/  ]];
   let gristType = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(item[1].charAt(1))]];
   let trait1 = client.traitList[client.captchaCode.indexOf(item[1].charAt(2))];
-  let trait2 = client.traitList[client.captchaCode.indexOf(item[1].charAt(3))];
+  let trait2 = client.traitList2[client.captchaCode.indexOf(item[1].charAt(3))];
   let action1 = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(item[1].charAt(4))]];
   let action2 = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(item[1].charAt(5))]];
   let action3 = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(item[1].charAt(6))]];
@@ -125,7 +124,7 @@ exports.inspectItem = function(client, item){
     }\n**INEFFECTIVE -** ${
     client.emojis.cache.get(client.grist[client.grist[gristType].ineffective[0]].emoji)}${client.emojis.cache.get(client.grist[client.grist[gristType].ineffective[1]].emoji)}${client.emojis.cache.get(client.grist[client.grist[gristType].ineffective[2]].emoji)}${client.emojis.cache.get(client.grist[client.grist[gristType].ineffective[3]].emoji)
     }`;
-  msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 1 -** ${trait2}`;
+  msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 2 -** ${trait2}`;
   msg2 = `${client.emojis.cache.get(client.actionList[action1].emoji[0])}${client.emojis.cache.get(client.actionList[action1].emoji[1])}${client.emojis.cache.get(client.actionList[action1].emoji[2])}${client.emojis.cache.get(client.actionList[action1].emoji[3])}${client.emojis.cache.get(client.actionList[action1].emoji[4])
   } **CST - **${client.actionList[action1].cst} **DMG - **${client.actionList[action1].dmg}\n${client.actionList[action1].aa}\n\n${
     client.emojis.cache.get(client.actionList[action2].emoji[0])}${client.emojis.cache.get(client.actionList[action2].emoji[1])}${client.emojis.cache.get(client.actionList[action2].emoji[2])}${client.emojis.cache.get(client.actionList[action2].emoji[3])}${client.emojis.cache.get(client.actionList[action2].emoji[4])

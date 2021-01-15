@@ -51,7 +51,7 @@ exports.run = (client, message, args) => {
       let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(armor[0][1].charAt(0))]];
       let gristType = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(armor[0][1].charAt(1))]];
       let trait1 = client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))];
-      let trait2 = client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(3))];
+      let trait2 = client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))];
 
       msg = `**TIER -** ${armor[0][2]}  **  QTY -** ${armor[0][3]}\n**KIND - **${weaponkind.toUpperCase()} **TYPE -** ${tList[client.weaponkinds[weaponkind].t]}\n\n**GRIST TYPE -** ${
         client.emojis.cache.get(client.grist[gristType].emoji)} ${gristType.toUpperCase()}\n**EFFECTIVE -** ${
