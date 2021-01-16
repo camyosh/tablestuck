@@ -53,6 +53,11 @@ exports.run = (client, message, args) => {
       return;
     }
 
+    if (!charid==args[1]){
+      message.channel.send(`You cannot add yourself to your chumroll!`);
+      return;
+    }
+
     chumroll.push(args[1]);
     let targetRoll = client.playerMap.get(args[1],"chumroll");
     targetRoll.push(charid);
