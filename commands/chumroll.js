@@ -76,6 +76,14 @@ const offline = await client.Canvas.loadImage(`./miscsprites/IDLE.png`);
 //ctx.drawImage(pesterbackground,0,0,canvas.width,canvas.height);
 ctx.fillStyle =`#ffffff`;
 ctx.font = `bold 24px Courier Standard Bold`;
+applyText = (canvas, msg) => {
+let fontsize = 24
+ctx.font = `bold ${fontsize}px Courier Standard Bold`;
+   while (ctx.measureText(msg).width > canvas.width){
+ctx.font = `bold ${fontSize -= 2}px Courier Standard Bold`;
+}
+  return ctx.font;
+}
 ctx.fillText(client.playerMap.get(charid,"chumhandle"),60,628);
 let plonline = client.traitcall.compTest(client,message,charid,room,currentInv);
 if(plonline[0]){
@@ -86,11 +94,11 @@ if(plonline[0]){
 let pagenumber = 0;
 let targonline = [false,false];
 for(i=pagenumber*10;i<chumroll.length&&i<pagenumber+10;i++){
-
-  ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,207+((i-(pagenumber*10))*40));
+ctx.font= applyText(canvas,client.playerMap.get(chumroll[i],"chumhandle"));
+ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,207+((i-(pagenumber*10))*40));
 
   targlocal = client.playerMap.get(chumroll[i],"local");
-  targroom = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
+  targroom = client.landMap.get(targlocal[4],targlocal[0])[targlocal[1]][targlocal[2]][2][targlocal[3]];
   targcurrentInv = client.playerMap.get(chumroll[i],"sdex");
 
 targonline = client.traitcall.compTest(client,message,chumroll[i],targroom,targcurrentInv);
@@ -115,29 +123,29 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom,targc
       return;
     }
 
-    if(!client.playerMap.has(args[1])){
-      message.channel.send("That is not a registered player!");
+    let h;
+    let hcheck =false;
+    let handleList = client.sessionMap.get(message.guild.id,"handleList");
+    for(h=0;h<handleList.length&&hcheck==false;h++){
+      if(handleList[h][1]==args[1]){
+        if(handleList[h][0]==charid){
+          message.channel.send("You can't add yourself as a chum, dummy!");
+          return;
+        }
+        if(chumroll.includes(handleList[h][0])){
+          message.channel.send("You've already added that chum!");
+          return;
+        }
+        chumroll.push(handleList[h][0]);
+        message.channel.send(`Added ${handleList[h][1]} to your chumroll!`);
+        hcheck =true;
+      }
+    }
+    if(!hcheck){
+      message.channel.send("Couldn't find a chum with that handle in this session!");
       return;
     }
-
-    let targetHandle = client.playerMap.get(args[1],"chumhandle");
-
-    if(chumroll.includes(args[1])){
-      message.channel.send(`${targetHandle} is already on your chumroll!`);
-      return;
-    }
-    if(charid==args[1]){
-      message.channel.send(`You can't add yourself as a chum, dummy!`);
-      return;
-    }
-
-    chumroll.push(args[1]);
-    let targetRoll = client.playerMap.get(args[1],"chumroll");
-    targetRoll.push(charid);
-
-    client.playerMap.set(args[1],targetRoll,"chumroll");
     client.playerMap.set(charid,chumroll,"chumroll");
-    message.channel.send(`Registered ${targetHandle}!`);
 
 
   }

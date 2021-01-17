@@ -10,11 +10,17 @@ exports.run = (client, message, args) => {
   var gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"]
 
 //checks to see if the command user is Cam, as we don't want anyone else registering players for the tournament
+  let charid = message.guild.id.concat(message.author.id);
 
 if(!client.sessionMap.has(message.guild.id)){
+let castlegen;
 do {
-let castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]];
+castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]];
 }while(castlegen[0][0]==5||castlegen[0][1]==5||castlegen[1][0]==5||castlegen[1][1]==5);
+
+  let dreamMoon = client.landcall.moonGen(client,castlegen[0],castlegen[1]);
+
+//chumhandle [charid,chumhandle]
 
   var sessionSheet = {
     playerList:[],
@@ -25,16 +31,13 @@ let castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 1
     handleList:[],
     castleLocal: castlegen[0],
     towerlLocal: castlegen[1],
-    prospit:client.landcall.moonGen(client,"P",castleLocal,towerLocal),
-    derse:client.landcall.moonGen(client,"D",castleLocal,towerLocal)
+    prospit:dreamMoon,
+    derse:dreamMoon
   }
+
+  client.sessionMap.set(message.guild.id, sessionSheet);
 
 }
-
-  if(!message.author.id == client.auth.admin) {
-    message.channel.send("You don't have permission to do that!");
-    return;
-  }
 
 //checks to see if the command user mentioned a target
 
@@ -43,9 +46,30 @@ let castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 1
   //declaring who the target to be registered is and their charid (The server id + the user id)
  let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
   let target = message.author;
-  let charid = message.guild.id.concat(target.id);
   var occset = [true,charid];
   let preset;
+
+  let playerList = client.sessionMap.get(message.guild.id,"playerList");
+  let handleList = client.sessionMap.get(message.guild.id,"handleList");
+
+  let chumhandle = message.author.username;
+
+  if(!playerList.includes(charid)){
+    playerList.push(charid);
+    handleList.push([charid,chumhandle]);
+
+    client.sessionMap.set(message.guild.id,playerList,"playerList");
+    client.sessionMap.set(message.guild.id,handleList,"handleList");
+
+
+  }else{
+    let h;
+    for(h=0;h<handleList.length;h++){
+      if(handleList[h][0]==charid){
+        chumhandle = handleList[h][1];
+      }
+    }
+  }
 
   let randnum = Math.floor((Math.random() * 12));
 
@@ -161,6 +185,8 @@ regImport();
 */
   //random item - funcall.preItem()
 
+
+
   var charSheet = {
     name: message.author.username,
     ping: message.author.id,
@@ -196,7 +222,7 @@ regImport();
     playersDefeated:0,
     bossesDefeated:0,
     itemsCaptchalogued:0,
-    chumhandle:message.author.username,
+    chumhandle:chumhandle,
     chumpic:message.author.avatarURL(),
     chumroll:[],
     pesterchannel:message.channel.id
