@@ -13,6 +13,8 @@ var charid = message.guild.id.concat(message.author.id);
 
 let chan = client.playerMap.get(charid,"channel");
 
+message.channel.send(`${client.emojis.cache.get("761001131035066378")} this is 7`);
+
 client.hookcall.pogChamp(client,message,chan);
 
 message.channel.send("pog");

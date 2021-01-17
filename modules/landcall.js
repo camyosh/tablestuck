@@ -12,8 +12,10 @@ var defaultGate = [6,1,[[0,0,"GATE",false,[],[]]]];
 function dubs(x){
   return Math.floor(Math.random() * x) + Math.floor(Math.random() * x);
 }
-//Land Key(0-6):
-//EMPTY, DUNGEON, CONSTRUCT, NODE, VILLAGE, HOUSE, GATE
+//Land Key(0-9):
+//EMPTY, DUNGEON, CONSTRUCT, NODE, VILLAGE, HOUSE, GATE, WALL, BOSS, DENIZEN
+
+//10
 
 //let defaultDungeon =[1,2,[0,0,"ROOM 1",false,[],[]],[0,0,"ROOM 2",false,[],[]]];
 var defaultConstruct =[2,1,[[0,0,"LAND CONSTRUCT",false,[],[]]]];
@@ -21,7 +23,6 @@ var defaultNode =[3,1,[[0,0,"RETURN NODE",false,[],[]]]];
 var defaultVillage =[4,2,[[0,0,"ROOM 1",false,[],[]],[0,0,"ROOM 2",false,[],[]]]];
 
 exports.landGen = function(client,sec,gateCoor,gristSet) {
-
   let section = [];
   for(i=0;i<11;i++){
     section.push([[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]]]);
@@ -36,65 +37,64 @@ empty =[];
       empty.push([i,j]);
     }
   }
+
   let dunCount;
   let denizenCheck = false;
-//Creates the Gate on the Land
-let pos = (gateCoor[0]*11)+(gateCoor[1]);
-if (sec!=3){
-let gate = empty.splice(pos,1);
-section[gate[0][0]][gate[0][1]]=[6,1,[[0,0,"GATE",false,[],[]]]];
-} else {
-  denizenCheck = true;
-  let temp=empty.splice(60,1);
-  section[temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DENIZEN LAIR ENTRANCE",false,[],[]]]];
+  //Creates the Gate on the Land
+  let pos = (gateCoor[0]*11)+(gateCoor[1]);
+  if (sec!=3){
+  let gate = empty.splice(pos,1);
+  section[gate[0][0]][gate[0][1]]=[6,1,[[0,0,"GATE",false,[],[]]]];
+  } else {
+    denizenCheck = true;
+    let temp=empty.splice(60,1);
+    section[temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DENIZEN LAIR ENTRANCE",false,[],[]]]];
+    dungeon = dungeonGen(client,temp,sec,dungeon,gristSet)[0];
+  }
+  if(sec>1){
+    dunCount = 1;
+  } else {
+    dunCount =2;
+  }
+  for(j=3;j>0;j--){
+    let length = 40;
+  //Creates Dungeons
+  for(i=0;i<dunCount;i++){
+    if(!denizenCheck){
+  let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
+  length--;
+  section[temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DUNGEON ENTRANCE",false,[],[]]]];
+  //section[temp[0][0]][temp[0][1]]=[1,6,[funcall.roomGenCall(client,1,sec,1),funcall.roomGenCall(client,1,sec,2),funcall.roomGenCall(client,1,sec,3),funcall.roomGenCall(client,1,sec,4)]];
   dungeon = dungeonGen(client,temp,sec,dungeon,gristSet)[0];
-}
-
-if(sec>1){
-  dunCount = 1;
-} else {
-  dunCount =2;
-}
-
-for(j=3;j>0;j--){
-  let length = 40;
-//Creates Dungeons
-for(i=0;i<dunCount;i++){
-  if(!denizenCheck){
-let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
-length--;
-section[temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DUNGEON ENTRANCE",false,[],[]]]];
-//section[temp[0][0]][temp[0][1]]=[1,6,[funcall.roomGenCall(client,1,sec,1),funcall.roomGenCall(client,1,sec,2),funcall.roomGenCall(client,1,sec,3),funcall.roomGenCall(client,1,sec,4)]];
-dungeon = dungeonGen(client,temp,sec,dungeon,gristSet)[0];
-}
-}
-//Creates a Village
-for(i=0;i<3;i++){
-  let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
-  length--;
-  section[temp[0][0]][temp[0][1]]=[4,2,[[0,0,"ROOM 1",false,[],[]],[0,0,"ROOM 2",false,[],[]]]];
-}
-//Creates the Land Constructs
-for(i=0;i<3;i++){
-  let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
-  length--;
-  section[temp[0][0]][temp[0][1]]=[2,1,[[0,0,"LAND CONSTRUCT",false,[],[]]]];
-}
-//Creates the return nodes
-for(i=0;i<4;i++){
-  let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
-  length--;
-  section[temp[0][0]][temp[0][1]]=[3,1,[[0,0,"RETURN NODE",false,[],[]]]];
-}
-//Creates free loot
-for(i=0;i<3;i++){
-  let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
-  length--;
-  section[temp[0][0]][temp[0][1]]=[0,1,[[0,0,"CLEARING",false,[],[lootcall.lootA(client, sec, dubs(8))]]]];
-}
-}
-
+  }
+  }
+  //Creates a Village
+  for(i=0;i<3;i++){
+    let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
+    length--;
+    section[temp[0][0]][temp[0][1]]=[4,2,[[0,0,"ROOM 1",false,[],[]],[0,0,"ROOM 2",false,[],[]]]];
+  }
+  //Creates the Land Constructs
+  for(i=0;i<3;i++){
+    let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
+    length--;
+    section[temp[0][0]][temp[0][1]]=[2,1,[[0,0,"LAND CONSTRUCT",false,[],[]]]];
+  }
+  //Creates the return nodes
+  for(i=0;i<4;i++){
+    let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
+    length--;
+    section[temp[0][0]][temp[0][1]]=[3,1,[[0,0,"RETURN NODE",false,[],[]]]];
+  }
+  //Creates free loot
+  for(i=0;i<3;i++){
+    let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
+    length--;
+    section[temp[0][0]][temp[0][1]]=[0,1,[[0,0,"CLEARING",false,[],[lootcall.lootA(client, sec, dubs(8))]]]];
+  }
+  }
 return [section,dungeon];
+
 
 }
 
@@ -380,7 +380,17 @@ break;
 }
 
 
+exports.moonGen = function(client,moon,castleLocal,towerLocal){
 
+  let section = [];
+  for(i=0;i<11;i++){
+    section.push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
+  }
+
+  return section;
+
+
+}
 
 
 
