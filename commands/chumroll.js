@@ -100,11 +100,9 @@ ctx.drawImage(online,15,605,32,32);
 let pagenumber = 0;
 let targonline = [false,false];
 for(i=pagenumber*10;i<chumroll.length&&i<pagenumber+10;i++){
-
-<<<<<<< HEAD
-=======
+  
 ctx.font = applyText(canvas,`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`);
->>>>>>> c575c6e29841cb162bd45a725a24f12d2851e1e7
+
 ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,207+((i-(pagenumber*10))*40));
 
   targlocal = client.playerMap.get(chumroll[i],"local");
