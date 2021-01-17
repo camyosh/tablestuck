@@ -29,9 +29,9 @@ module.exports = (client, message) => {
       return;
     }
   } catch(err){
- console.log("the error did an error");
+ console.log("failed when checking to see if someone is registered, or if they're over the tournament action limit.");
   }
-	client.user.setActivity("@SAHCON 2020");
+	 client.user.setActivity("Tablestuck Development");
   // Run the command
   cmd.run(client, message, args);
 };

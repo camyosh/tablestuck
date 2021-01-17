@@ -33,6 +33,7 @@ if (!fs.existsSync("../data")){
   console.log("Data directory missing, please create it!")
 }
 
+
 const playerMap = new Enmap({
   name: "playerData",
   dataDir:"../data"
@@ -96,6 +97,7 @@ client.Canvas = Canvas;
 
 client.on('ready', () =>{
   console.log("You have a feeling it's going to be a long day");
+  client.user.setActivity("Tablestuck Development");
 });
 
 // Using the standard .then() promise method:
