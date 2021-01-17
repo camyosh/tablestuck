@@ -1,5 +1,7 @@
 const funcall = require("../modules/funcall.js");
 
+
+
 exports.run = async function(client, message, args) {
 
   if(client.funcall.regTest(client, message, message.author) == false){
@@ -19,6 +21,16 @@ client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier
 
 const canvas = client.Canvas.createCanvas(400,650);
 const ctx = canvas.getContext('2d');
+
+function applyText(canvas, msg){
+let fontsize = 24
+ctx.font = `bold ${fontsize}px Courier Standard Bold`;
+   while (ctx.measureText(msg).width > 320){
+ctx.font = `bold ${fontsize -= 2}px Courier Standard Bold`;
+}
+  return ctx.font;
+}
+
 //old code to generate the OG background
 ctx.beginPath();
 ctx.rect(0,0,canvas.width,canvas.height);
@@ -76,14 +88,7 @@ const offline = await client.Canvas.loadImage(`./miscsprites/IDLE.png`);
 //ctx.drawImage(pesterbackground,0,0,canvas.width,canvas.height);
 ctx.fillStyle =`#ffffff`;
 ctx.font = `bold 24px Courier Standard Bold`;
-applyText = (canvas, msg) => {
-let fontsize = 24
-ctx.font = `bold ${fontsize}px Courier Standard Bold`;
-   while (ctx.measureText(msg).width > canvas.width){
-ctx.font = `bold ${fontSize -= 2}px Courier Standard Bold`;
-}
-  return ctx.font;
-}
+
 ctx.fillText(client.playerMap.get(charid,"chumhandle"),60,628);
 let plonline = client.traitcall.compTest(client,message,charid,room,currentInv);
 if(plonline[0]){
@@ -94,7 +99,8 @@ if(plonline[0]){
 let pagenumber = 0;
 let targonline = [false,false];
 for(i=pagenumber*10;i<chumroll.length&&i<pagenumber+10;i++){
-ctx.font= applyText(canvas,client.playerMap.get(chumroll[i],"chumhandle"));
+
+ctx.font = applyText(canvas,`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`);
 ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,207+((i-(pagenumber*10))*40));
 
   targlocal = client.playerMap.get(chumroll[i],"local");
