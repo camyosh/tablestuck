@@ -235,7 +235,7 @@ exports.run = (client, message, args) => {
       }
     }
     message.channel.send(msg);
-    landcall.miniMap(client,message);
+    landcall.drawMap(client,message,true);
 
   } else {
 

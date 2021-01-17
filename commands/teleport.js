@@ -5,6 +5,11 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  if(!client.traitcall.traitCheck(client,charid,"SPACE")[1]){
+    message.channel.send("bruh");
+    return;
+  }
+
   var charid = message.guild.id.concat(message.author.id);
 
   if(!message.mentions.members.first()){

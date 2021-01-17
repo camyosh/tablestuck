@@ -11,6 +11,26 @@ exports.run = (client, message, args) => {
 
 //checks to see if the command user is Cam, as we don't want anyone else registering players for the tournament
 
+if(!client.sessionMap.has(message.guild.id)){
+do {
+let castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]];
+}while(castlegen[0][0]==5||castlegen[0][1]==5||castlegen[1][0]==5||castlegen[1][1]==5);
+
+  var sessionSheet = {
+    playerList:[],
+    prototype:[],
+    prospitList:[],
+    derseList:[],
+    dmList:[],
+    handleList:[],
+    castleLocal: castlegen[0],
+    towerlLocal: castlegen[1],
+    prospit:client.landcall.moonGen(client,"P",castleLocal,towerLocal),
+    derse:client.landcall.moonGen(client,"D",castleLocal,towerLocal)
+  }
+
+}
+
   if(!message.author.id == client.auth.admin) {
     message.channel.send("You don't have permission to do that!");
     return;
@@ -175,10 +195,21 @@ regImport();
     tilesDiscovered:0,
     playersDefeated:0,
     bossesDefeated:0,
-    itemsCaptchalogued:0
+    itemsCaptchalogued:0,
+    chumhandle:message.author.username,
+    chumpic:message.author.avatarURL(),
+    chumroll:[],
+    pesterchannel:message.channel.id
   };
 
-client.playerMap.set(charid,charSheet)
+client.playerMap.set(charid,charSheet);
+
+
+//create pesterchum webhook
+
+client.hookcall.hookCheck(client,message);
+
+
 
 let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]

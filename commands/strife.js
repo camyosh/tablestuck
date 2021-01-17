@@ -23,13 +23,15 @@ exports.run = (client, message, args) => {
 
     let players = client.strifeMap.get(strifeLocal,"players");
     //if character is the only player in strife, delete strife database
+    let pos = client.playerMap.get(charid,"pos");
+    let active = client.strifeMap.get(strifeLocal,"active");
+    let list = client.strifeMap.get(strifeLocal,"list");
+    let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
+
     if(players == 1){
       client.strifeMap.delete(strifeLocal);
+      client.playerMap.set(charid,list[pos][3],"vit");
     } else {
-
-      let pos = client.playerMap.get(charid,"pos");
-      let active = client.strifeMap.get(strifeLocal,"active");
-      let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
       //remove player from all strife variables in database
       let removed = [active.splice(active.indexOf(pos),1),playerpos.splice(playerpos.indexOf(pos),1)];
       players --;
@@ -37,6 +39,7 @@ exports.run = (client, message, args) => {
       client.strifeMap.set(strifeLocal,active,"active");
       client.strifeMap.set(strifeLocal,players,"players");
       client.strifeMap.set(strifeLocal,playerpos,"playerpos");
+      client.playerMap.set(charid,list[pos][3],"vit");
 
     }
     client.playerMap.set(charid,false,"strife");
@@ -113,9 +116,15 @@ exports.run = (client, message, args) => {
   } else {
 //if no strife exists, create strife database
 
+let initRoll = Math.floor((Math.random() * 20) + 1);
+//if rocket trait, always roll 20 on init
+if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
+  initRoll=20;
+}
+
     var strifeSet = {
       list:[profile],
-      init:[[0,Math.floor((Math.random() * 20) + 1)]],
+      init:[[0,initRoll]],
       turn:0,
       active:[0],
       players:1,

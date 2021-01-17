@@ -7,11 +7,51 @@ const rungGrist = [20,22,24,26,28,30,32,34,36,38,40,44,48,52,56,60,64,68,72,76,8
 const rungReq = [0,1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24,26,28,30,34,38,42,46,50,54,58,62,66,70,78,86,94,102,110,118,126,134,142,150,166,182,198,214,230,246,262,278,294,310,342,374,406,438,470,502,534,566,598,630,694,758,822,886,950,1014,1078,1142,1206,1270,1398,1526,1654,1782,1910,2038,2166,2294,2422,2550,2806,3062,3318,3574,3830,4086,4342,4598,4854,5110,5622,6134,6646,7158,7670,8182,8694,9206,9718,10230,9999999999999999];
 const rungGel = [100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,565,580,595,610,625,640,655,670,685,700,715,730,745,760,775,790,805,820,835,850,865,880,895,910,925,940,955,970,985,1000,1020,1040,1060,1080,1100,1120,1140,1160,1180,1200]
 const rungBoon = [0,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,40,40,40,40,40,40,40,40,40,40,80,80,80,80,80,80,80,80,80,80,160,160,160,160,160,160,160,160,160,160,320,320,320,320,320,320,320,320,320,320,640,640,640,640,640,640,640,640,640,640,1280,1280,1280,1280,1280,1280,1280,1280,1280,1280,2560,2560,2560,2560,2560,2560,2560,2560,2560,2560,5120,5120,5120,5120,5120,5120,5120,5120,5120,5120]
+const actionList = ["accede","accelerate","accessorize","acclaim","acclimate","accomplish","account","accumulate","accuse","acerbate","acknowledge","acquaint","acquire","actualize","actuate","activate","acupressure","arbitrate","arborize","archive","ardor","arf","argufy","arise","arithmetize","armamentify","arraign","arrange","arrest","arrive","arrogate","arsenalize","articulate","artillerate","asphixiate","aspire","ass","assail","assassinate","assault","assemble","assert","assess","asseverate","assign","assimilate","assist","assure","astonish","astound","astrict","arsonate","accomodate","abuse","abjure","abstain","absorb","abolish","abstract","abate"]
 
 
 const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
 
 //Function called to pass the turn in strife
+
+function inflict(client, message, local, list, target, chance, status, attacker){
+  //quickjump
+    let alert = ``;
+  if(!list[target][7].includes(status)){
+    if(!Math.floor((Math.random() * chance))){
+
+      if(client.traitcall.traitCheck(client,list[target][1],"BREATH")[1]){
+        alert+= `**UNRESTRAINED** TARGET IS IMMUNE TO ALL STATUS EFFECTS!\n`;
+        return alert;
+      }
+      if(list[target][7].includes("STATUSIMMUNE")){
+        alert+=  `TARGET IS IMMUNE TO STATUS EFFECTS THIS TURN!\n`;
+        return alert;
+      }
+      if(client.traitcall.traitCheck(client,list[target][1],"ELECTRIC")[1]&& status=="STUN"){
+        alert+= `TARGET IS IMMUNE TO STUN!\n`;
+        return alert;
+      }
+
+      list[target][7].push(status);
+      alert+= `INFLICTED ${status} ON OPPONENT!\n`;
+
+      if(client.traitcall.traitCheck(client,list[target][1],"BLOOD")[1]){
+        let bl;
+          alert+=`**THICKER THAN WATER** Target shared status effect with everyone!\n`;
+        for(bl=0;bl<list.length;bl++){
+          alert+= inflict(client,message,local,list,bl,1,status,attacker);
+        }
+      }
+      if(client.traitcall.traitCheck(client,list[attacker][1],"COLD")[1]&& status=="FROSTBITE"){
+        list[target][7].push("DAZED");
+        alert+= `INFLICTED DAZE ON OPPONENT!\n`;
+      }
+    }
+
+}
+return alert;
+}
 
 function passTurn(client, message, local) {
 
@@ -204,9 +244,21 @@ try{
       primaryType = "artifact";
       secondType = "artifact";
     }
+    if(client.traitcall.traitCheck(client,list[pos][1],"TRICKSTER")[1]){
+      repgrist = "zillium";
+      primaryType = "zillium";
+      secondType = "zillium";
+    }
     //split rewards between all participating players
 
     let amount = Math.ceil(client.underlings[underling].drop / players);
+
+    if(client.traitcall.traitCheck(client,list[pos][1],"META")[1]){
+      amount*=2;
+    }
+    if(list[target][7].includes("DOUBLEGRIST")){
+      amount*=2;
+    }
 
     let i;
 
@@ -356,13 +408,13 @@ let chan = client.playerMap.get(charid,"channel");
 
     let active = client.strifeMap.get(strifeLocal,"active");
 
-    console.log("pre splice player: "+active);
+
     let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
     let sec = client.landMap.get(local[4],local[0]);
     //remove player from list of active characters, player positions, and lower player count by 1
     let removed = [active.splice(active.indexOf(pos),1),playerpos.splice(playerpos.indexOf(pos),1)];
     players --;
-    console.log("post splice player:"+active);
+
 
     client.strifeMap.set(strifeLocal,active,"active");
     client.strifeMap.set(strifeLocal,players,"players");
@@ -380,10 +432,9 @@ client.channels.cache.get(chan).send("Leaving Strife!");
 } else {
 
   let active = client.strifeMap.get(strifeLocal,"active");
-  console.log(`Pre splice underling ${active}`);
   let sec = client.landMap.get(local[4],local[0]);
 
-  let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[target][1] && occpos[2] === list[target][2]),1)];
+  let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1] && occpos[2] === list[pos][2]),1)];
 
   /*for(i=0;i<sec[local[1]][local[2]][2][local[3]][4].length;i++){
 
@@ -394,15 +445,14 @@ client.channels.cache.get(chan).send("Leaving Strife!");
     }
 
   }*/
-  console.log(`Post splice underling ${active}`);
 
 
   client.strifeMap.set(strifeLocal,active,"active");
   client.landMap.set(local[4],sec,local[0]);
 
-  if(init[turn][0] == pos && active.length>1){
+  /*if(init[turn][0] == pos && active.length>1){
     passTurn(client,message,local);
-  }
+  }*/
 
 }
 
@@ -421,7 +471,6 @@ function startTurn(client, message, local) {
 //reset actions taken this turn
   list[init[turn][0]][6]=[];
 
-
   let stamina;
   let stamfav = 0;
   let stamroll;
@@ -429,11 +478,26 @@ function startTurn(client, message, local) {
   let carry = false;
   let removed;
   let stunned = false;
+  let alert = ``;
 //go through checking for status effects and applying them
+
+//CLEARSTART
+
   for(i=(list[init[turn][0]][7].length-1);i>=0;i--){
     switch(list[init[turn][0]][7][i]){
       case "STAMFAV":
         stamfav++;
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
+      case "HAUNT":
+        removed = list[init[turn][0]][7].splice(i,1);
+        list[init[turn][0]][7].push("HAUNT2");
+      break;
+      case "HAUNT2":
+        removed = list[init[turn][0]][7].splice(i,1);
+        list[init[turn][0]][7].push("HAUNT3");
+      break;
+      case "HAUNT3":
         removed = list[init[turn][0]][7].splice(i,1);
       break;
       case "CARRY":
@@ -456,15 +520,70 @@ function startTurn(client, message, local) {
       case "DISCOUNT":
         removed = list[init[turn][0]][7].splice(i,1);
       break;
+      case "ROLLOUT1":
+      case "ROLLOUT2":
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
+      case "STATUSIMMUNE":
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
+      case "AV":
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
+      case "DEFLECT":
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
+      case "DEFROST":
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
+      case "DEGRAP":
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
       case "DAZED":
       stamfav--;
         removed = list[init[turn][0]][7].splice(i,1);
+      break;
+      case "GRISTINVERT":
+        removed = list[init[turn][0]][7].splice(i,1);
+      break;
     }
   }
 //check if player or underling
   if(list[init[turn][0]][0]==true){
 //roll player stamina
+
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CHARLATAN")[0]){
+
+  let specibus = client.playerMap.get(list[init[turn][0]][1],"spec");
+  let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
+
+  let charlaCode = specibus[equip][1].substring(0,4)+client.captchaCode[Math.floor((Math.random() * (client.captchaCode.length-4)))+2]+client.captchaCode[Math.floor((Math.random() * (client.captchaCode.length-4)))+2]+client.captchaCode[Math.floor((Math.random() * (client.captchaCode.length-4)))+2]+client.captchaCode[Math.floor((Math.random() * (client.captchaCode.length-4)))+2];
+
+  specibus[equip][1] = charlaCode;
+
+  client.playerMap.set(list[init[turn][0]][1],specibus,"spec");
+
+}
+
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
+  stamfav++;
+}
+
+    let stamroll;
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[1]){
+
+      stamroll = [Math.floor((Math.random() * 4) + 5),Math.floor((Math.random() * 4) + 5)];
+
+    } else if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[0]){
+
+      stamroll = [Math.floor((Math.random() * 6) + 3),Math.floor((Math.random() * 6) + 3)];
+
+    } else {
+
     stamroll = [Math.floor((Math.random() * 8) + 1),Math.floor((Math.random() * 8) + 1)];
+
+  }
 
     if(stamfav==0){
       stamina=stamroll[0];
@@ -487,14 +606,52 @@ function startTurn(client, message, local) {
       }
     }
 
-    if(carry==true){
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"LIFE")[0]&&list[init[turn][0]][5]>0){
+      //let curVit = list[init[turn][0]][3];
+      let gel = client.playerMap.get(list[init[turn][0]][1],"gel");
+
+      let heal = Math.floor((list[init[turn][0]][5]*.04)*gel);
+      if((heal+list[init[turn][0]][3])>gel){
+        list[init[turn][0]][3]=gel;
+      } else {
+        list[init[turn][0]][3]+=heal;
+      }
+      alert+=`Life trait consumed ${list[init[turn][0]][5]} stamina and restored ${heal} vitality!\n`;
+    }
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"LIFE")[1]){
+      let armor = client.playerMap.get(list[init[turn][0]][1],"armor");
+      let gel = client.playerMap.get(list[init[turn][0]][1],"gel");
+      let heal = Math.floor((Math.random() * (tierBD[armor[0][2]][1] - 1)) + tierBD[armor[0][2]][0]);
+
+      if((heal+list[init[turn][0]][3])>gel){
+        list[init[turn][0]][3]=gel;
+      } else {
+        list[init[turn][0]][3]+=heal;
+      }
+      alert+=`**GARDEN OF EDEN** passivley regenerated ${heal} vitality!\n`;
+    }
+
+    if(carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
       let carrystam = list[init[turn][0]][5];
 
       stamsg +=` + ${carrystam}`;
       stamina += carrystam;
     }
 
-    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CANDY")[1]==true){
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CANDY")[1]){
+      stamina+=1;
+      stamsg += ` + 1`;
+    }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[1]){
+      stamina+=1;
+      stamsg += ` + 1`;
+    }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"WELSH")[0]){
+      stamina+=1;
+      stamsg += ` + 1`;
+    }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[0]){
       stamina+=1;
       stamsg += ` + 1`;
     }
@@ -511,25 +668,49 @@ function startTurn(client, message, local) {
     //set rolled stamina to strife data
     list[init[turn][0]][5]=stamina;
 
-
-
     client.strifeMap.set(strifeLocal,list,"list");
+
+    let active = client.strifeMap.get(strifeLocal,"active");
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HEART")[1]){
+      alert+=`**FEAR THE SUPEREGO** - Performed a random action for free!\n`;
+    }
+
+
+
 //retrieve player channel information
     let chan = client.playerMap.get(list[init[turn][0]][1],"channel");
     let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
 //send message to player's channel
-    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actionList you can take with >act, and >pass your turn once you're done!`);
-
-    let active = client.strifeMap.get(strifeLocal,"active");
+    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actionList you can take with >act, and >pass your turn once you're done!${alert}`);
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
         let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!`);
+        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
       }
     }
 
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HEART")[1]){
+
+    let heartTarg;
+    let heartAttack =false;
+
+    while(!heartAttack){
+
+      heartTarg=active[Math.floor(Math.random()*active.length)];
+      if(heartTarg!=init[turn][0]){
+        heartAttack=true;
+      }
+
+    }
+    let action = actionList[Math.floor(Math.random()*actionList.length)];
+    act(client,message,local,action,heartTarg)
+    }
+
   } else {
+
+    //list[init[turn][0]][5]=0;
 //if turn is underling, roll stamina based on underling document
     stamroll = [Math.floor((Math.random() * client.underlings[list[init[turn][0]][1]].stm) + 1),Math.floor((Math.random() * client.underlings[list[init[turn][0]][1]].stm) + 1)];
 
@@ -562,6 +743,7 @@ function startTurn(client, message, local) {
       stamina = 0;
       stamsg =`0 (STUNNED)`;
     }
+    list[init[turn][0]][5]=stamina;
     client.strifeMap.set(strifeLocal,list,"list");
 
     let i;
@@ -570,11 +752,12 @@ function startTurn(client, message, local) {
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true){
         let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(` The ${list[init[turn][0]][2]} ${list[init[turn][0]][1]} starts its turn with ${stamsg} STAMINA!`);
+        client.channels.cache.get(chan).send(` The ${list[init[turn][0]][2]} ${list[init[turn][0]][1]} starts its turn with ${stamsg} STAMINA!${alert}`);
       }
     }
 
-    underTurn(client,message,local,list[init[turn][0]][1],stamina);
+
+    underTurn(client,message,local,list[init[turn][0]][1]);
 
   }
 
@@ -631,7 +814,7 @@ let rung = client.playerMap.get(local[4],"rung");
 if(client.landMap.get(local[4],"enter")==false&&local[0]=="h"){
 return sec;
 }
-console.log(local[0]);
+
 switch (local[0]){
   case "h":
     if(rung < 15){
@@ -649,11 +832,20 @@ switch (local[0]){
   case "s2":
   underlingChoice = ["ogre","basilisk","lich"];
   break;
+  case "s2d":
+  underlingChoice = ["basilisk"];
+  break;
   case "s3":
   underlingChoice = ["basilisk","lich","giclopse"];
   break;
+  case "s3d":
+  underlingChoice = ["ogre","basilisk"];
+  break;
   case "s4":
   underlingChoice = ["lich","giclopse","titachnid"];
+  break;
+  case "s4d":
+  underlingChoice = ["ogre","basilisk"];
   break;
 }
 if(rung < 5){
@@ -663,17 +855,12 @@ spawnBank = Math.ceil(Math.random() * 2);
 } else {
 spawnBank = Math.ceil(Math.random() * 6);
 }
-console.log("Rung: "+rung);
-console.log("pre-spawnBank: "+spawnBank);
 while(spawnBank!=0){
 let cost = Math.ceil(Math.random() * underlingChoice.length);
-console.log("cost: "+cost);
+
   if((spawnBank-(cost)) >= 0){
   sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,underlingChoice[cost-1]));
   spawnBank = spawnBank - (cost);
-  console.log("Spawned "+underlingChoice[cost-1]+"! post spawnBank: "+spawnBank);
-} else {
-  console.log("Couldn't afford that, trying again...");
 }
 }
 return sec;
@@ -746,11 +933,16 @@ exports.underRally = function(client, local) {
       return;
     }
 
+    if(action=="arbitrate"){
+      action = actionList[Math.floor(Math.random()*actionList.length)];
+    }
     var turn = client.strifeMap.get(strifeLocal,"turn");
     let list = client.strifeMap.get(strifeLocal,"list");
     let active = client.strifeMap.get(strifeLocal,"active");
     let init = client.strifeMap.get(strifeLocal,"init");
     let alert = ``;
+    let dmgLvl = client.actionList[action].dmg;
+
 //check action tags
     let aa = client.actionList[action].add;
 
@@ -773,6 +965,8 @@ exports.underRally = function(client, local) {
     let bd = 0;
     let br = 0;
     let fav = list[init[turn][0]][4];
+    let bdmax = false;
+    let strikeBonus = 0;
 
     let att = client.actionList[action].att;
 
@@ -782,15 +976,31 @@ exports.underRally = function(client, local) {
     let absorb = false;
     let tarGrist;
 
+    if(client.traitcall.traitCheck(client,list[target][1],"BLOOD")[0]){
+      if(!Math.floor(Math.random()*12)&&active.length>2){
+          let bloodCheck = false;
+          while(!bloodCheck){
+            let newTarget = active[Math.floor(Math.random()*active.length)];
+            if(newTarget!=target&&newTarget!=init[turn][0]){
+              target = newTarget;
+              bloodCheck=true;
+
+            }
+          }
+        alert+=`The target was changed!\n`;
+      }
+    }
+
+    if(aa.includes("RANDMG")){
+        dmgLvl = Math.ceil(Math.random()*3);
+    }
+
     try{
       //retrieve target grist
     tarGrist = list[target][2];
   } catch(err) {
     console.log(message.author.username);
     console.log("THIS IS THE GUY, TAKE HIM OUT");
-    console.log(action);
-    console.log(list);
-    console.log(target);
   }
     let targName = "Target"
     let attName = "Attacker"
@@ -854,7 +1064,7 @@ exports.underRally = function(client, local) {
 
     try{
 //check for grist effectivity, if effective change message accordingly and increase BR or BD accordingly
-    if(grist=="artifact"){
+  /*  if(grist=="artifact"){
       if(tarGrist!="artifact"&&tarGrist!="diamond"&&tarGrist!="zillium"){
         br++;
         effective="INEFFECTIVE!"
@@ -870,12 +1080,37 @@ exports.underRally = function(client, local) {
         br++;
         effective="INEFFECTIVE!"
       }
-    } else if(client.grist[tarGrist].effective.includes(grist)){
+    } else*/ if(client.grist[tarGrist].ineffective.includes(grist)){
+
+      if(list[target][7].includes("GRISTINVERT")||list[init[turn][0]][7].includes("GRISTINVERT")){
+
+        br++
+        effective="INEFFECTIVE!"
+
+      }else{
+
       bd++
       effective="EFFECTIVE!"
-    } else if(client.grist[tarGrist].ineffective.includes(grist)){
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"REFINED")[0]){
+        strikeBonus+=2;
+      }
+    }
+    } else if(client.grist[tarGrist].effective.includes(grist)){
+
+
+      if(list[target][7].includes("GRISTINVERT")||list[init[turn][0]][7].includes("GRISTINVERT")){
+        bd++
+        effective="EFFECTIVE!"
+        if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"REFINED")[0]){
+          strikeBonus+=2;
+        }
+      } else {
       br++
       effective="INEFFECTIVE!"
+    }
+    }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[0]){
+      strikeBonus += Math.ceil(Math.random()*4);
     }
 
 } catch(err) {
@@ -884,6 +1119,7 @@ exports.underRally = function(client, local) {
   console.log(tarGrist);
 }
     //check for each action tag that is NONCOMBATIVE
+    //PREROLLACT
 
     let pre;
     for(pre=(aa.length - 1);pre>=0;pre--){
@@ -900,9 +1136,6 @@ exports.underRally = function(client, local) {
         case "ALLBD":
           list[init[turn][0]][7].push("ALLBD");
           break;
-        case "CARRY":
-          list[init[turn][0]][7].push("CARRY");
-          break;
         case "ALLFAV":
           list[init[turn][0]][7].push("ALLFAV");
           break;
@@ -912,31 +1145,108 @@ exports.underRally = function(client, local) {
         case "NEXTFAV":
           list[init[turn][0]][7].push("NEXTFAV");
           break;
+
         case "STAMFAV":
           list[init[turn][0]][7].push("STAMFAV");
           break;
         case "STAMADD":
-          let newStam = Math.floor((Math.random() * 4) + 1);
+          let newStam = Math.ceil(Math.random() * 4);
           list[init[turn][0]][5]+= newStam;
           let j;
           for(j=0;j<active.length;j++){
             if(list[active[j]][0]==true){
               let chan = client.playerMap.get(list[active[j]][1],"channel");
-              client.channels.cache.get(chan).send(`${attName} gains ${newStam} STAMINA, they now have ${list[init[turn][0]][5]} STAMINA!`);
+              alert+=`${attName} gains ${newStam} STAMINA, they now have ${list[init[turn][0]][5]} STAMINA!\n`
             }
           }
           break;
         case "DISCOUNT":
           list[init[turn][0]][7].push("DISCOUNT");
           break;
+        case "STATUSIMMUNE":
+          list[init[turn][0]][7].push("STATUSIMMUNE");
+          break;
         case "PROTECT":
           list[target][7].push("PROTECT");
           break;
+        case "NEXTBD":
+          list[init[turn][0]][7].push("NEXTBD");
+          break;
+        case "AV":
+          list[init[turn][0]][7].push("AV");
+          break;
+        case "CLEARSTATUS":
+          list[init[turn][0]][7]=[];
+          break;
+        case "STATUSDROP":
+
+          removed = list[init[turn][0]][7].splice(Math.floor(Math.random()*list[init[turn][0]][7].length),1);
+          alert+=`REMOVED THE ${removed} STATUS EFFECT\n`;
+
+          break;
+        case "DEFLECT":
+          list[init[turn][0]][7].push("DEFLECT");
+          break;
+        case "DEFROST":
+          list[init[turn][0]][7].push("DEFROST");
+          break;
+        case "BLOCK":
+          list[init[turn][0]][7].push("BLOCK");
+          break;
+        case "GRISTINVERT":
+          list[init[turn][0]][7].push("GRISTINVERT");
+          break;
+
+        case "DEGRAP":
+          list[init[turn][0]][7].push("DEGRAP");
+          break;
+          case "ROLLOUT":
+            if(list[init[turn][0]][7].includes("ROLLOUT1")){
+              dmgLvl=2;
+              removed = list[init[turn][0]][7].splice(list[init[turn][0]][7].indexOf("ROLLOUT1"),1);
+              list[init[turn][0]][7].push("ROLLOUT2")
+            }else if(list[init[turn][0]][7].includes("ROLLOUT2")){
+              dmgLvl=3;
+            }else{
+              list[init[turn][0]][7].push("ROLLOUT1");
+            }
+            break;
+            case "SCALEDMG":
+              if(list[init[turn][0]][0]){
+                if(list[init[turn][0]][3]<Math.floor(client.playerMap.get(list[init[turn][0]][1],"gel")/4)){
+                  dmgLvl=3;
+                } else if(list[init[turn][0]][3]<Math.floor(client.playerMap.get(list[init[turn][0]][1],"gel")/2)) {
+                  dmgLvl=2;
+                }
+              } else {
+                if(list[init[turn][0]][3]<Math.floor(client.underlings[list[init[turn][0]][1]].vit/4)){
+                  dmgLvl=3;
+                } else if(list[init[turn][0]][3]<Math.floor(client.underlings[list[init[turn][0]][1]].vit/2)) {
+                  dmgLvl=2;
+                }
+              }
+              break;
       }
     }
 
     //
     //if action deals damage or imposes effect
+
+    let costMsg = `${client.actionList[action].cst}`;
+
+    if(list[init[turn][0]][7].includes("DISCOUNT")){
+      if(client.actionList[action].cst>1){
+      alert += `ACTIONS DISCOUNTED THIS TURN`;
+      costMsg +=` - 1`;
+       }
+     }
+   //closing here
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MIND")[1]){
+      if(client.actionList[action].cst > 1){
+        alert += `**BUTTERFLY EFFECT** - ACTIONS DISCOUNTED`;
+        costMsg += ` - 1`;
+      }
+    }
     if(att == true) {
 
       let precon;
@@ -951,6 +1261,11 @@ exports.underRally = function(client, local) {
           case "CORRUPT":
             fav--;
             break;
+            case "HAUNT":
+            case "HAUNT2":
+            case "HAUNT3":
+              fav--;
+              break;
           case "NEXTFAV":
             if(att == true){
               fav++;
@@ -960,26 +1275,141 @@ exports.underRally = function(client, local) {
             case "ALLBD":
               bd++
               break;
+              case "NEXTBD":
+                bd++
+                removed = list[init[turn][0]][7].splice(precon,1);
+                break;
           case "GRAPPLE":
             fav--;
             break;
         }
-
       }
+
+
+
+      //check enemy tags
+
+      let precont;
+        for(precont=(list[target][7].length - 1);precont>=0;precont--){
+          let removed;
+
+          switch(list[target][7][precont]){
+            case "CORRUPT":
+              fav++
+            break;
+            case "HAUNT":
+            case "HAUNT2":
+            case "HAUNT3":
+              fav++
+            break;
+            case "GRAPPLE":
+              fav++
+            break;
+            case "ALLUNFAV":
+              fav--;
+              break;
+            case "PROTECT":
+              fav--;
+              break;
+            case "TARGFAV":
+              fav++;
+              break;
+            case "AV":
+              av++;
+              break;
+          }
+
+}
+
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BROKEN")[0]){
+  fav--;
+}
+if(client.traitcall.traitCheck(client,list[target][1],"VOID")[1]){
+  fav--;
+}
 
     let strikeCheck;
     let strikemsg;
 //roll to hit, similar to how stamina is handled
     let strikeRoll = [Math.floor((Math.random() * 20) + 1),Math.floor((Math.random() * 20) + 1)];
 
-    console.log(list[target][7]);
-    console.log(fav);
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"META")[0]){
+      if(strikeRoll[0]==1||strikeRoll[0]==20||strikeRoll[1]==1||strikeRoll[1]==20){
+        alert += `YOUR META GEAR AVOIDED A 1 (OR A 20...)\n`;
+        let metaCheck = true;
+        while(metaCheck) {
+
+          strikeRoll = [Math.floor((Math.random() * 20) + 1),Math.floor((Math.random() * 20) + 1)];
+          if(strikeRoll[0]!=1&&strikeRoll[0]!=20&&strikeRoll[1]!=1&&strikeRoll[1]!=20){
+            metaCheck=false;
+          }
+
+        }
+
+      }
+    }
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"WELSH")[1]||client.traitcall.traitCheck(client,list[init[turn][0]][1],"LIGHT")[0]){
+      if(strikeRoll[0]==1){
+        alert+=`TURNED A 1 INTO A 20!\n`;
+        strikeRoll[0]=20;
+      }
+      if(strikeRoll[1]==1){
+        if(fav!=0){
+          alert+=`TURNED A 1 INTO A 20!\n`;
+          strikeRoll[1]=20;
+        }
+
+      }
+    }
+    if(client.traitcall.traitCheck(client,list[target][1],"WELSH")[1]||client.traitcall.traitCheck(client,list[target][1],"VOID")[0]){
+      if(strikeRoll[0]==20){
+        alert+=`TARGET TURNED A 20 INTO A 1!\n`;
+        strikeRoll[0]=1;
+      }
+      if(strikeRoll[1]==20){
+        if(fav!=0){
+        alert+=`TARGET TURNED A 20 INTO A 1!\n`;
+        strikeRoll[1]=1;
+        }
+      }
+    }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"LIGHT")[1]){
+      if(strikeRoll[0]<6){
+        alert+=`**BORN LUCKY** - Rerolled a roll less than 5\n`
+        let lightCheck=true;
+        while (lightCheck){
+          strikeRoll[0] = Math.floor((Math.random() * 20) + 1)
+          if(strikeRoll[0]>5){
+            lightCheck=false;
+          } else if(strikeRoll[0]==1){
+            strikeRoll[0]=20;
+            lightCheck=false;
+            alert+=`TURNED A 1 INTO A 20!\n`
+          }
+        }
+      }
+      if(strikeRoll[1]<6&&fav!=0){
+        alert+=`**BORN LUCKY** - Rerolled a roll less than 5\n`
+        let lightCheck=true;
+        while (lightCheck){
+          strikeRoll[1] = Math.floor((Math.random() * 20) + 1)
+          if(strikeRoll[1]>5){
+            lightCheck=false;
+          } else if(strikeRoll[1]==1){
+            strikeRoll[1]=20;
+            lightCheck=false;
+            alert+=`TURNED A 1 INTO A 20!\n`
+          }
+        }
+      }
+    }
 
     if(fav == 0) {
       strikeCheck = strikeRoll[0];
       strikeMsg = `${strikeRoll[0]}`;
     }
-    if(fav>0 || list[target][7].includes("CORRUPT")) {
+    if(fav>0) {
 
       if(strikeRoll[0]>strikeRoll[1]){
         strikeCheck=strikeRoll[0];
@@ -997,52 +1427,69 @@ exports.underRally = function(client, local) {
         strikeMsg = `~~${strikeRoll[1]}~~ ${strikeRoll[0]}`;
       }
     }
+if(strikeBonus>0){
+  strikeMsg += ` + ${strikeBonus} = ${strikeCheck+strikeBonus}`;
+}
+if(strikeBonus<0){
+  strikeMsg += ` - ${strikeBonus} = ${strikeCheck+strikeBonus}`;
+}
 
-  if(strikeCheck>av){
+
+  if(client.traitcall.traitCheck(client,list[target][1],"FROG")[0]){
+    av++;
+  }
+  if(client.traitcall.traitCheck(client,list[target][1],"EXQUISITE")[1]){
+    av = av+2;
+  }
+  if(client.traitcall.traitCheck(client,list[target][1],"BREATH")[0]){
+    av = av+2;
+  }
+
+  if((strikeCheck+strikeBonus)>av && (client.traitcall.traitCheck(client,list[target][1],"FROG")[1] && !(Math.floor((Math.random() * 12))))){
+    strikeCheck=0;
+    alert+=`TARGET JUMPED OUT OF THE WAY! FROGGERS!!!\n`;
+  }
+
+
+  if((strikeCheck+strikeBonus)>av){
+
+    if(aa.includes("AUTOCRIT")){
+      strikeCheck=20;
+    }
 
     //check traits that inflict status effects on hit
 
     //if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CANDY")[1]==true){
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOT")[0]){
-    if(!list[target][7].includes("BURN")){
-      if(Math.floor((Math.random() * 12)==0)){
-        list[target][7].push("BURN");
-        alert+=`**INFLICTED BURN ON OPPONENT!**\n`;
-      }
+    alert+=inflict(client, message, local, list, target, 12, "BURN", init[turn][0]);
     }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"IRRADIATED")[0]){
+    alert+=inflict(client, message, local, list, target, 12, "BURN", init[turn][0]);
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHARP")[0]){
-    if(!list[target][7].includes("BLEED")){
-      if(Math.floor((Math.random() * 12)==0)){
-        list[target][7].push("BLEED");
-        alert+=`**INFLICTED BLEED ON OPPONENT!**\n`;
-      }
+    alert+=inflict(client, message, local, list, target, 12, "BLEED", init[turn][0]);
     }
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"VAMPIRIC")[0]){
+    alert+=inflict(client, message, local, list, target, 12, "BLEED", init[turn][0]);
     }
-if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD")[0]){
-  if(!list[target][7].includes("FROSTBITE")){
-    if(Math.floor((Math.random() * 12)==0)){
-      list[target][7].push("FROSTBITE");
-      alert+=`**INFLICTED FROSTBITE ON OPPONENT!**\n`;
-      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD")[1]){
-        list[target][7].push("DAZED");
-        alert+=`**INFLICTED DAZE ON OPPONENT!**\n`;
-      }
+    if(aa.includes("BLEED8")){
+    alert+=inflict(client, message, local, list, target, 8, "BLEED", init[turn][0]);
     }
-}
+    if(aa.includes("BLEED4")){
+    alert+=inflict(client, message, local, list, target, 4, "BLEED", init[turn][0]);
+    }
+    if(aa.includes("STUN4")){
+    alert+=inflict(client, message, local, list, target, 4, "STUN", init[turn][0]);
+    }
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"COLD", init[turn][0])[0]){
+  alert+=inflict(client, message, local, list, target, 12, "FROSTBITE", init[turn][0]);
 }
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
-   if(!list[target][7].includes("STUN")){
-     if(Math.floor((Math.random() * 12)==0)){
-       if(!client.traitcall.traitCheck(client,list[target][1],"ELECTRIC")[1]){
-       list[target][7].push("STUN");
-       alert+=`**INFLICTED STUN ON OPPONENT!**\n`;
-     }else {
-       alert+=`**TARGET IS IMMUNE TO STUN!**\n`;
-     }
-     }
-   }
+   alert+=inflict(client, message, local, list, target, 12, "STUN", init[turn][0]);
+}
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[0]){
+   alert+=inflict(client, message, local, list, target, 6, "STUN", init[turn][0]);
 }
   if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BLUNT")[0]){
     let dchance=12;
@@ -1050,20 +1497,110 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BLUNT")[1]){
       dchance = 6;
     }
-    if(Math.floor((Math.random() * dchance)==0)){
-      list[target][7].push("DAZED");
-      alert+=`**INFLICTED DAZED ON OPPONENT!**\n`;
-    }
+    alert+=inflict(client, message, local, list, target, dchance, "DAZED", init[turn][0]);
   }
   }
   if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHITTY")[1]){
-  if(!list[target][7].includes("CORRUPT")){
-    if(Math.floor((Math.random() * 12)==0)){
-      list[target][7].push("CORRUPT");
-      alert+=`**OPPONENT HAS BEEN CORRUPTED!**\n`;
+  alert+=inflict(client, message, local, list, target, 12, "CORRUPT", init[turn][0]);
+  }
+  if(client.traitcall.traitCheck(client,list[target][1],"THORNS")[0]){
+  alert+=inflict(client, message, local, list, init[turn][0], 12, "BLEED", target);
+  }
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"SPOOKY")[0]){
+  if(!list[target][7].includes("HAUNT")&&!list[target][7].includes("HAUNT2")&&!list[target][7].includes("HAUNT3")){
+      alert+=inflict(client, message, local, list, target, 12, "HAUNT", init[turn][0]);
+  }
+  }
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"GRIMDARK")[0]){
+  if(!list[target][7].includes("HAUNT")&&!list[target][7].includes("HAUNT2")&&!list[target][7].includes("HAUNT3")){
+    alert+=inflict(client, message, local, list, target, 12, "HAUNT", init[turn][0]);
+  }
+  }
+if(client.traitcall.traitCheck(client,list[target][1],"CAT")[0]){
+  br++;
+}
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BROKEN")[1]){
+  if(!Math.floor((Math.random() * 12))){
+    bdmax = true;
+  }
+}
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"STICKY")[0]){
+  alert+=inflict(client, message, local, list, target, 12, "GRAPPLE", init[turn][0]);
+}
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"STICKY")[1] && list[target][7].includes("GRAPPLE")){
+    bd++;
+  }
+
+  if(list[target][7].includes("DEFROST")){
+    removed = list[target][7].splice(list[target][7].indexOf("DEFROST"),1);
+    alert+=`TARGETS INFLICTS FROSTBITE ON ATTACKER!\n`
+    alert+=inflict(client, message, local, list, init[turn][0], 1, "FROSTBITE", target);
+  }
+  if(list[target][7].includes("DEGRAP")){
+    removed = list[target][7].splice(list[target][7].indexOf("DEGRAP"),1);
+    alert+=`TARGETS GRAPPLES ATTACKER!\n`
+    alert+=inflict(client, message, local, list, init[turn][0], 1, "GRAPPLE", target);
+  }
+
+
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"IRRADIATED")[1]&&strikeCheck==20){
+
+let radioburn=false;
+
+  for(let ir=0;ir<list.length;ir++){
+    if((init[turn][0]!=ir)&&(!list[ir][7].includes("BURN"))){
+      if(client.traitcall.traitCheck(client,list[ir][1],"BREATH")[1]){
+        alert+= `**UNRESTRAINED** - TARGET IS IMMUNE TO ALL STATUS EFFECTS!\n`;
+      } else {
+      list[ir][7].push("BURN");
+      radioburn = true;
+      if(client.traitcall.traitCheck(client,list[ir][1],"BLOOD")[1]){
+        if(!list[init[turn][0]][7].includes("BURN")){
+          list[init[turn][0]][7].push("BURN");
+          alert+=`**THICKER THAN WATER** - Target shared status effect with everyone!\n`;
+        }
+      }
+    }
     }
   }
+    if(radioburn){
+    alert+=`RADIOACTIVE!!! BURNED ALL OPPONENTS!\n`;
   }
+}
+
+
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CHARLATAN")[1]){
+  let rageList = ["BURN","GRAPPLE","BLEED","FROSTBITE","DAZED","STUN","CORRUPT","HAUNT"];
+  if(list[target][7].includes("HAUNT")||list[target][7].includes("HAUNT2")||list[target][7].includes("HAUNT3")){
+    removed = rageList.splice(rageList.indexOf("HAUNT"),1);
+  }
+alert+=inflict(client, message, local, list, target, 6, rageList[Math.floor((Math.random() * rageList.length))], init[turn][0]);
+};
+
+if(aa.includes("RANDSTATUS")){
+
+  let statusList = ["BURN","GRAPPLE","BLEED","FROSTBITE","DAZED","STUN","CORRUPT","HAUNT"];
+
+  let rs;
+
+  if(list[target][7].includes("HAUNT")||list[target][7].includes("HAUNT2")||list[target][7].includes("HAUNT3")){
+    removed = statusList.splice(statusList.indexOf("HAUNT"),1);
+  }
+
+  for(rs=0;rs<list[target][7].length;rs++){
+    if(statusList.includes(list[target][7][rs])){
+      removed = statusList.splice(statusList.indexOf(list[target][7][rs]),1);
+    }
+  }
+
+  if(statusList.length==0){
+    alert+=`TARGET ALREADY HAS ALL INFLICTABLE STATUS EFFECTS!\n`;
+  } else {
+    alert+=inflict(client, message, local, list, target, 1, statusList[Math.floor((Math.random() * statusList.length))], init[turn][0]);
+  }
+
+}
+
     //check for all COMBATATIVE COMBAT TAGS
     //check target status effects
 
@@ -1071,15 +1608,6 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
     for(postcon=(list[target][7].length-1);postcon>=0;postcon--){
 
       switch(list[target][7][postcon]){
-        case "ALLUNFAV":
-          fav--;
-          break;
-        case "PROTECT":
-          fav--;
-          break;
-        case "TARGFAV":
-          fav++;
-          break;
         case "BURN":
           bd++;
           if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOT")[1]){
@@ -1099,23 +1627,44 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
           bd++;
           break;
         case "TARGFAV":
-          list[target][7].push("TARGFAV");
+        alert+=inflict(client, message, local, list, target, 1, "TARGFAV", init[turn][0]);
           break;
         case "GRAPPLE":
-          list[target][7].push("GRAPPLE");
+        alert+=inflict(client, message, local, list, target, 1, "GRAPPLE", init[turn][0]);
           break;
         case "BURN":
-          list[target][7].push("BURN");
+        alert+=inflict(client, message, local, list, target, 1, "BURN", init[turn][0]);
           break;
         case "FROSTBITE":
-          list[target][7].push("FROSTBITE");
+        alert+=inflict(client, message, local, list, target, 1, "FROSTBITE", init[turn][0]);
           break;
         case "STUN":
-          list[target][7].push("STUN");
+        alert+=inflict(client, message, local, list, target, 1, "STUN", init[turn][0]);
+          break;
+        case "STUNCHANCE":
+        alert+=inflict(client, message, local, list, target, 4, "STUN", init[turn][0]);
+          break;
+        case "BDSELFSTATUS":
+          bd+=list[init[turn][0]][7].length;
+          break;
+        case "BDTARGSTATUS":
+          bd+=list[target][7].length;
+          break;
+        case "DAZED":
+        alert+=inflict(client, message, local, list, target, 1, "DAZED", init[turn][0]);
           break;
         case "ABSORB":
           absorb = true;
           break;
+        case "DOUBLEGRIST":
+          list[target][7].push("DOUBLEGRIST");
+          break;
+
+          case  "CORRUPTING":
+          list[target][7].push("CORRUPT");
+          break;
+
+
 
       }
     }
@@ -1130,7 +1679,6 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
     try{
       if(`${list[init[turn][0]][7][k].charAt(0)}${list[init[turn][0]][7][k].charAt(1)}${list[init[turn][0]][7][k].charAt(2)}${list[init[turn][0]][7][k].charAt(3)}`==`MEAT`){
         let meat = list[init[turn][0]][7].splice(k,1);
-        console.log(meat);
         meat = meat[0].substring(4);
 
         meatVal = parseInt(meat, 10);
@@ -1145,33 +1693,54 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
   }
 
 
-  let damagemsg = `${dmg * client.actionList[action].dmg}`;
+  let damagemsg = `${dmg * dmgLvl}`;
+  let equals = false;
 
     if(bd>0){
+      equals=true;
       if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MEAT")[1]){
         bd++;
       }
       let i;
       for(i=0;i<bd;i++){
-        let bddice =[Math.floor((Math.random() * (bdroll[1] - 1)) + bdroll[0]),Math.floor((Math.random() * (bdroll[1] - 1)) + bdroll[0])];
+        let bddice =[Math.floor((Math.random() * (bdroll[1] - bdroll[0])) + bdroll[0]),Math.floor((Math.random() * (bdroll[1] - bdroll[0])) + bdroll[0])];
+        if (bdmax){
+          bddice = [bdroll[1],bdroll[1]];
+        }
+        if(client.traitcall.traitCheck(client,list[target][1],"CUTE")[1]||client.traitcall.traitCheck(client,list[target][1],"REFINED")[1]){
+          bddice[0]= Math.floor(bddice[0]/2);
+          bddice[1]= Math.floor(bddice[1]/2);
+        }
+
         let bdadd;
         if(!client.traitcall.traitCheck(client,list[init[turn][0]][1],"SHARP")[1]){
           bdadd = bddice[0];
-
           damagemsg+= ` + ${bdadd}`;
         } else {
           if (bddice[0]>bddice[1]){
-            damagemsg += ` + ~~${bddice[1]}~~ ${bddice[0]}`
+            damagemsg += ` + (~~${bddice[1]}~~ ${bddice[0]})`
             bdadd = bddice[0];
           } else{
-            damagemsg += ` +~~${bddice[0]}~~ ${bddice[1]}`
+            damagemsg += ` + (~~${bddice[0]}~~ ${bddice[1]})`
             bdadd = bddice[1];
           }
       }
       bonusDmg += bdadd;
-      }
+
     }
+    if(client.traitcall.traitCheck(client,list[target][1],"CUTE")[1]){
+      alert += `TARGET IS TOO CUTE, THEY TOOK REDUCED BD!\n`
+    }
+    if(client.traitcall.traitCheck(client,list[target][1],"REFINED")[1]){
+      alert += `TARGET IS REFINED, THEY TOOK REDUCED BD!\n`
+    }
+  }
+
     if(br>0){
+      equals=true;
+      if(client.traitcall.traitCheck(client,list[target][1],"CUTE")[0]){
+        br++;
+      }
       let i;
       for(i=0;i<br;i++){
         let bradd = Math.floor((Math.random() * (brroll[1] - 1)) + brroll[0]);
@@ -1180,17 +1749,63 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
       }
     }
 
-  let damage = ((dmg * client.actionList[action].dmg) + bonusDmg) - bonusRes;
+  let damage = ((dmg * dmgLvl) + bonusDmg) - bonusRes;
+
+    if(client.traitcall.traitCheck(client,list[target][1],"SPOOKY")[1]&&(list[init[turn][0]][7].includes("HAUNT2")||list[init[turn][0]][7].includes("HAUNT")||list[init[turn][0]][7].includes("HAUNT3"))){
+      equals=true;
+      damage=Math.floor(damage/2);
+      damagemsg +=` / 2`;
+    }
+
     if(strikeCheck == 20){
+
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOPE")[0]){
+
+        let hopeStam = client.actionList[action].cst;
+        alert+=`ACTION IS FREE!\n`;
+
+        if(list[init[turn][0]][7].includes("DISCOUNT")){
+          if(client.actionList[action].cst>1){
+          hopeStam--;
+           }
+         }
+       //closing here
+        if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MIND")[1]){
+          if(client.actionList[action].cst > 1){
+            hopeStam--;
+          }
+        }
+
+        if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOPE")[1]){
+          alert+=`**BURNING SPIRIT** - GOT ${hopeStam} STAMINA!\n`
+          hopeStam*=2;
+        }
+
+        list[init[turn][0]][5]+=hopeStam;
+
+      }
+
+      equals=true;
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[1]){
+        damage *= 4;
+        damagemsg += ` * 4`;
+        alert +=`**BLASPHEMOUS WORD** - QUADRUPLE DAMAGE!`;
+      } else if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[1]){
+        damage *= 3;
+        damagemsg += ` * 3`;
+        alert +=`1000/1000 CLOCKS DESTROYED! TRIPPLE DAMAGE!`;
+      } else {
       damage *= 2;
       damagemsg += ` * 2`
+    }
     };
 
     if(damage < 0 || att == false) {
       damage = 0;
     };
 
-    if(br>0||bd>0||strikeCheck == 20)
+
+    if(equals)
     damagemsg+= ` = **${damage}**`;
 
 
@@ -1198,12 +1813,139 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
 
 
+    if(client.traitcall.traitCheck(client,list[target][1],"HEART")[0]){
+      if(!Math.floor(Math.random()*20)){
+        list[target][3]+= damage;
+        alert+=`The pain fuels their soul, damage converted to ${damage} points of healing!\n`;
+        damage=0;
+        if(list[target][0]){
+          if(client.playerMap.get(list[target][1],"gel")<list[target][3]){
+          list[target][3]=client.playerMap.get(list[target][1],"gel");
+        }
+      } else {
+        if(client.underlings[list[target][1]].vit<list[target][3]){
+          list[target][3]=client.underlings[list[target][1]].vit;
+        }
+      }
+
+      }
+    }
+
+    if(aa.includes("HEAL")){
+      list[target][3]+= damage;
+      alert+=`HEALED TARGET BY ${damage} POINTS OF HEALING!\n`;
+      damage=0;
+      if(list[target][0]){
+        if(client.playerMap.get(list[target][1],"gel")<list[target][3]){
+        list[target][3]=client.playerMap.get(list[target][1],"gel");
+      }
+    } else {
+      if(client.underlings[list[target][1]].vit<list[target][3]){
+        list[target][3]=client.underlings[list[target][1]].vit;
+      }
+    }
+    }
+
     let last = [list[init[turn][0]][1],list[target][1],damage];
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"VAMPIRIC")[1]&&list[target][7].includes("BLEED") ){
+      list[init[turn][0]][3]+= bonusDmg;
+      alert+= `VAMPIRICALLY SIPHONED ${bonusDmg} VITALITY!\n`
+
+      if(client.playerMap.get(list[init[turn][0]][1],"gel")<list[init[turn][0]][3]){
+        list[init[turn][0]][3]=client.playerMap.get(list[init[turn][0]][1],"gel");
+      }
+
+    }
+
+    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"DOOM")[1]&&strikeCheck==20){
+
+
+        alert+= `**MORTAL DECAY** YOUR DAMAGE SPREADS TO ALL FOES.\n`;
+        let id;
+        for(id=0;id<active.length;id++){
+          if(active[id]!=init[turn][0]&&active[id]!=target){
+            list[id][3]-= damage;
+            if(list[id][3] < 1 && client.traitcall.traitCheck(client,list[id][1],"CAT")[1] && !list[id][7].includes("NINELIVES")) {
+              list[id][3] = 1;
+              alert += `ONE TARGET USED ITS LAST OF 9 LIVES, SURVIVED AT 1 HP!\n`;
+              list[id][7].push("NINELIVES");
+            }
+          }
+        }
+      }
+
+
+    if(aa.includes("SPLASHBD")){
+      if(active.length>2){
+      let id;
+      let splashbd= Math.floor((Math.random() * (bdroll[1] - bdroll[0])) + bdroll[0]);
+      alert+=`DEALT ${splashbd} DAMAGE TO ALL FOES.\n`
+      for(id=0;id<active.length;id++){
+        if(active[id]!=init[turn][0]&&active[id]!=target){
+          list[id][3]-= splashbd;
+          if(list[id][3] < 1 && client.traitcall.traitCheck(client,list[id][1],"CAT")[1] && !list[id][7].includes("NINELIVES")) {
+            list[id][3] = 1;
+            alert += `ONE TARGET USED ITS LAST OF 9 LIVES, SURVIVED AT 1 HP!\n`;
+            list[id][7].push("NINELIVES");
+          }
+        }
+      }
+    }
+  }
+
+    if(list[target][7].includes("BLOCK")){
+      alert+= `TARGET BLOCKED ALL DAMAGE!\n`;
+      damage=0;
+      let dc;
+      for(dc=(list[target][7].length - 1);dc>=0;dc--){
+        if(list[target][7][dc]=="BLOCK"){
+          removed = list[target][7].splice(dc,1);
+          }
+      }
+    }
+
+    if(list[target][7].includes("DEFLECT")){
+
+      alert+= `TARGET REFLECTED ${damage} DAMAGE TO ATTACKER!\n`;
+
+      list[init[turn][0]][3]-=damage;
+      damage=0;
+      let dc;
+
+      for(dc=(list[target][7].length - 1);dc>=0;dc--){
+        if(list[target][7][dc]=="DEFLECT"){
+          removed = list[target][7].splice(dc,1);
+          }
+      }
+
+    }
 
     list[target][3] -= damage;
     if(absorb==true){
       list[init[turn][0]][3]+= damage;
+      alert +=`ATTACKER HEALS FOR ${damage} VITALITY!\n`
     }
+
+
+if(client.traitcall.traitCheck(client,list[target][1],"THORNS")[1]){
+  let thornDmg = Math.floor((Math.random() * (brroll[1] - 1)) + brroll[0]);
+  list[init[turn][0]][3]-= thornDmg;
+  alert += `TOOK ${thornDmg} DAMAGE FROM TARGET THORNS!`;
+
+}
+
+
+if(list[target][3] < 1 && client.traitcall.traitCheck(client,list[target][1],"CAT")[1] && !list[target][7].includes("NINELIVES")) {
+  list[target][3] = 1;
+  alert += `THE TARGET USED ITS LAST OF 9 LIVES, SURVIVED AT 1 HP!\n`;
+  list[target][7].push("NINELIVES");
+
+}
+
+
+
+
 
     //if(list[target][3] < 1){
       //kill(client,message,local,target,turn);
@@ -1217,8 +1959,8 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
     let embed = new client.Discord.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
-    .addField('CST', client.actionList[action].cst, true)
-    .addField('DMG', `${(dmg * client.actionList[action].dmg)}`, true)
+    .addField('CST', costMsg, true)
+    .addField('DMG', `${(dmg * dmgLvl)}`, true)
     .addField("ADDITIONAL ACTION", client.actionList[action].aa )
     .addField("STRIKE",strikeMsg,true)
     .addField("TARGET AV",av,true)
@@ -1239,14 +1981,35 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
     //if attack misses
 
+    if(aa.includes("REFUND")){
+
+      let hopeStam = client.actionList[action].cst;
+      alert+=`ACTION IS FREE!\n`;
+
+      if(list[init[turn][0]][7].includes("DISCOUNT")){
+        if(client.actionList[action].cst>1){
+        hopeStam--;
+         }
+       }
+     //closing here
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MIND")[1]){
+        if(client.actionList[action].cst > 1){
+          hopeStam--;
+        }
+      }
+
+      list[init[turn][0]][5]+=hopeStam;
+
+    }
+
     if(alert.length==0){
       alert=`NONE`;
     }
 
     let embed = new client.Discord.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
-    .addField('CST', client.actionList[action].cst, true)
-    .addField('DMG', `${(dmg * client.actionList[action].dmg)}`, true)
+    .addField('CST', costMsg, true)
+    .addField('DMG', `${(dmg * dmgLvl)}`, true)
     .addField("ADDITIONAL ACTION", client.actionList[action].aa )
     .addField("STRIKE",strikeMsg,true)
     .addField("TARGET AV",av,true)
@@ -1264,7 +2027,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
   }
 
-  } else {
+} else {
     //if att is false
 
     if(alert.length==0){
@@ -1273,8 +2036,8 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
     let embed = new client.Discord.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
-    .addField('CST', client.actionList[action].cst, true)
-    .addField('DMG', `${(dmg * client.actionList[action].dmg)}`, true)
+    .addField('CST', costMsg, true)
+    .addField('DMG', `${(dmg * dmgLvl)}`, true)
     .addField("ADDITIONAL ACTION", client.actionList[action].aa )
     .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
@@ -1290,11 +2053,29 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
   }
 
-  client.strifeMap.set(strifeLocal,list,"list");
-  if(list[target][3] < 1){
-    kill(client,message,local,target,init[turn][0]);
+  let bounceChance=12;
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[1]){
+    bounceChance=6;
   }
 
+  client.strifeMap.set(strifeLocal,list,"list");
+
+  if(list[target][7].includes("DOUBLEGRIST")&&list[target][3]>0){
+    removed = list[target][7].splice(list[target][7].indexOf("DOUBLEGRIST"));
+  }
+try{
+for(ik=0;ik<active.length;ik++){
+if(list[active[ik]][3] < 1){
+  setTimeout(kill,1000,client,message,local,active[ik],init[turn][0]);
+}else{
+  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0] && !Math.floor((Math.random() * bounceChance))){
+    setTimeout(act,3000,client,message,local,"aggrieve",active[ik]);
+}
+}
+}
+}catch(err){
+  console.log("Tried to kill someone in a database that did not exist");
+}
   }
 
   exports.act = function(client,message,local,action,target){
@@ -1302,7 +2083,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
   }
 
 
-  function underTurn(client, message, local, underling, stamina) {
+  function underTurn(client, message, local, underling) {
 
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
@@ -1311,8 +2092,14 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
     let list = client.strifeMap.get(strifeLocal,"list")
     let turn = client.strifeMap.get(strifeLocal,"turn")
+    let init = client.strifeMap.get(strifeLocal,"init")
+
+    let stamina = list[init[turn][0]][5];
+    console.log(stamina);
+    console.log(list[init[turn][0]][5]);
 //randomly decide target from list
     let target = playerpos[Math.floor((Math.random() * playerpos.length))];
+
     try{
       //depending on underling, take actions in order before passing turn with 3 second delay between each
     switch (underling){
@@ -1329,11 +2116,11 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
             setTimeout(passTurn,6000,client,message,local);
           break;
           case 3:
-            setTimeout(act,3000,client,message,local,"aggress",target);
+            setTimeout(act,3000,client,message,local,"astrict",target);
             setTimeout(passTurn,6000,client,message,local);
           break;
           case 4:
-            setTimeout(act,3000,client,message,local,"aggravate",target);
+            setTimeout(act,3000,client,message,local,"asphixiate",target);
             setTimeout(passTurn,6000,client,message,local);
           break;
         }
@@ -1367,28 +2154,28 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
             setTimeout(passTurn,3000,client,message,local);
           break;
           case 1:
-            setTimeout(act,3000,client,message,local,"arborize",target);
+            setTimeout(act,3000,client,message,local,"assimilate",target);
             setTimeout(passTurn,6000,client,message,local);
           break;
           case 2:
-            setTimeout(act,3000,client,message,local,"arborize",target);
-            setTimeout(act,6000,client,message,local,"arborize",target);
+            setTimeout(act,3000,client,message,local,"assimilate",target);
+            setTimeout(act,6000,client,message,local,"assimilate",target);
             setTimeout(passTurn,9000,client,message,local);
           break;
           case 3:
-            setTimeout(act,3000,client,message,local,"arborize",target);
-            setTimeout(act,6000,client,message,local,"arborize",target);
-            setTimeout(act,9000,client,message,local,"arborize",target);
+            setTimeout(act,3000,client,message,local,"assimilate",target);
+            setTimeout(act,6000,client,message,local,"assimilate",target);
+            setTimeout(act,9000,client,message,local,"assimilate",target);
             setTimeout(passTurn,12000,client,message,local);
           break;
           case 4:
 
           list = client.strifeMap.get(strifeLocal,"list")
           if(list[target][7].includes("BURN")){
-            setTimeout(act,3000,client,message,local,"arborize",target);
-            setTimeout(act,6000,client,message,local,"arborize",target);
-            setTimeout(act,9000,client,message,local,"arborize",target);
-            setTimeout(act,12000,client,message,local,"arborize",target);
+            setTimeout(act,3000,client,message,local,"assimilate",target);
+            setTimeout(act,6000,client,message,local,"assimilate",target);
+            setTimeout(act,9000,client,message,local,"assimilate",target);
+            setTimeout(act,12000,client,message,local,"assimilate",target);
             setTimeout(passTurn,15000,client,message,local);
           } else {
             setTimeout(act,3000,client,message,local,"arsonate",target);
@@ -1403,28 +2190,16 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
             setTimeout(passTurn,3000,client,message,local);
           break;
           case 1:
-            setTimeout(act,3000,client,message,local,"acupressure",target);
+            setTimeout(act,3000,client,message,local,"assimilate",target);
             setTimeout(passTurn,6000,client,message,local);
 
           break;
-          case 2:
-
+          default:
+            list[init[turn][0]][5]-=2;
+            client.strifeMap.set(strifeLocal,list,"list");
             setTimeout(act,3000,client,message,local,"acquire",target);
 
-            setTimeout(lichTurn,6000,client,message,local,underling,stamina,target);
-
-          break;
-          case 3:
-
-            setTimeout(act,3000,client,message,local,"acquire",target);
-
-            setTimeout(lichTurn,6000,client,message,local,underling,stamina,target);
-          break;
-          case 4:
-
-            setTimeout(act,3000,client,message,local,"acquire",target);
-
-            setTimeout(lichTurn,6000,client,message,local,underling,stamina,target);
+            setTimeout(lichTurn,6000,client,message,local,underling,target);
           break;
         }
         break;
@@ -1441,21 +2216,21 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
               setTimeout(passTurn,6000,client,message,local);
             break;
             case 3:
-              setTimeout(act,3000,client,message,local,"assure",target);
+              setTimeout(act,3000,client,message,local,"assault",target);
               setTimeout(passTurn,6000,client,message,local);
             break;
             case 4:
 
-              setTimeout(act,3000,client,message,local,"assert",target);
+              setTimeout(act,3000,client,message,local,"assure",target);
               setTimeout(passTurn,6000,client,message,local);
             break;
             case 5:
               setTimeout(act,3000,client,message,local,"assail",target);
-              setTimeout(act,6000,client,message,local,"assure",target);
+              setTimeout(act,6000,client,message,local,"assault",target);
               setTimeout(passTurn,9000,client,message,local);
             break;
             case 6:
-              setTimeout(act,3000,client,message,local,"annul",target);
+              setTimeout(act,3000,client,message,local,"abolish",target);
               setTimeout(passTurn,6000,client,message,local);
             break;
           }
@@ -1493,14 +2268,14 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
             case 5:
             list = client.strifeMap.get(strifeLocal,"list")
             if(list[target][7].includes("BURN")){
-              setTimeout(act,3000,client,message,local,"artillerate",target);
+              setTimeout(act,3000,client,message,local,"actualize",target);
               setTimeout(act,6000,client,message,local,"abuse",target);
               setTimeout(act,9000,client,message,local,"abuse",target);
-              setTimeout(act,12000,client,message,local,"abuse",target);
-              setTimeout(passTurn,15000,client,message,local);
+              setTimeout(passTurn,12000,client,message,local);
             } else {
               setTimeout(act,3000,client,message,local,"arsonate",target);
-              setTimeout(passTurn,6000,client,message,local);
+              setTimeout(act,6000,client,message,local,"abuse",target);
+              setTimeout(passTurn,9000,client,message,local);
             }
             break;
             case 6:
@@ -1509,12 +2284,12 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
 
             if(list[target][7].includes("BURN")){
-              setTimeout(act,3000,client,message,local,"artillerate",target);
+              setTimeout(act,3000,client,message,local,"astound",target);
               setTimeout(act,6000,client,message,local,"absorb",target);
               setTimeout(passTurn,9000,client,message,local);
             } else {
-              setTimeout(act,3000,client,message,local,"artillerate",target);
-              setTimeout(act,6000,client,message,local,"arsonate",target);
+              setTimeout(act,3000,client,message,local,"arsonate",target);
+              setTimeout(act,6000,client,message,local,"astound",target);
               setTimeout(passTurn,9000,client,message,local);
             }
             break;
@@ -1539,7 +2314,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
     return(occset);
   }
 
-  function lichTurn(client,message,local,underling,stamina,target) {
+  function lichTurn(client,message,local,underling,target) {
 
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
@@ -1550,32 +2325,32 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ELECTRIC")[0]){
 
   switch(stamina){
     case 1:
-      setTimeout(act,3000,client,message,local,"acupressure",target);
+      setTimeout(act,3000,client,message,local,"assimilate",target);
       setTimeout(passTurn,6000,client,message,local);
     case 2:
-      setTimeout(act,3000,client,message,local,"acerbate",target);
+      setTimeout(act,3000,client,message,local,"astound",target);
       setTimeout(passTurn,6000,client,message,local);
     break;
     case 3:
-      setTimeout(act,3000,client,message,local,"acerbate",target);
-      setTimeout(act,6000,client,message,local,"acupressure",target);
+      setTimeout(act,3000,client,message,local,"astound",target);
+      setTimeout(act,6000,client,message,local,"assimilate",target);
       setTimeout(passTurn,9000,client,message,local);
     break;
     case 4:
-      setTimeout(act,3000,client,message,local,"acerbate",target);
-      setTimeout(act,6000,client,message,local,"acupressure",target);
-      setTimeout(act,9000,client,message,local,"acupressure",target);
+      setTimeout(act,3000,client,message,local,"astound",target);
+      setTimeout(act,6000,client,message,local,"assimilate",target);
+      setTimeout(act,9000,client,message,local,"assimilate",target);
       setTimeout(passTurn,12000,client,message,local);
     break;
     case 5:
-      setTimeout(act,3000,client,message,local,"acerbate",target);
-      setTimeout(act,6000,client,message,local,"acupressure",target);
-      setTimeout(act,9000,client,message,local,"acupressure",target);
-      setTimeout(act,12000,client,message,local,"acupressure",target);
+      setTimeout(act,3000,client,message,local,"astound",target);
+      setTimeout(act,6000,client,message,local,"assimilate",target);
+      setTimeout(act,9000,client,message,local,"assimilate",target);
+      setTimeout(act,12000,client,message,local,"assimilate",target);
       setTimeout(passTurn,15000,client,message,local);
     break;
     case 6:
-      setTimeout(act,3000,client,message,local,"annihalate",target);
+      setTimeout(act,3000,client,message,local,"abate",target);
       setTimeout(passTurn,6000,client,message,local);
     break;
   }
