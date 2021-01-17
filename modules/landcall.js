@@ -372,7 +372,6 @@ function dungeonRoomGen(client,sec,gristSet) {
 case 3:
 return [0,1,[[0,0,"DUNGEON ROOM",false,[],[lootcall.lootB(client, sec, dubs(8))]]]];
 break;
-
   default:
   return [0,1,[[0,0,"DUNGEON ROOM",false,[],[]]]];
   }
@@ -395,13 +394,11 @@ exports.moonGen = function(client,moon,castleLocal,towerLocal){
 
 
 
-
-exports.miniMap = function(client,message) {
+exports.drawMap = async function(client,message,mini) {
 
 let charid = message.guild.id.concat(message.author.id);
 let local = client.playerMap.get(charid,`local`);
 let input = client.landMap.get(local[4],local[0]);
-
 let aspect;
 
 try {
@@ -409,20 +406,165 @@ try {
 } catch(err){
   aspect = "BREATH";
 }
+//loading all of the images I need. This might be stupid inefficent, but I need to at least see what it looks like at it's worst.
+const ax = await client.Canvas.loadImage(`./MAP/x.png`);
+const ax0 = await client.Canvas.loadImage(`./MAP/0.png`);
+const ax1 = await client.Canvas.loadImage(`./MAP/1.png`);
+const ax2 = await client.Canvas.loadImage(`./MAP/2.png`);
+const ax3 = await client.Canvas.loadImage(`./MAP/3.png`);
+const ax4 = await client.Canvas.loadImage(`./MAP/4.png`);
+const ax5 = await client.Canvas.loadImage(`./MAP/5.png`);
+const ax6 = await client.Canvas.loadImage(`./MAP/6.png`);
+const ax7 = await client.Canvas.loadImage(`./MAP/7.png`);
+const ax8 = await client.Canvas.loadImage(`./MAP/8.png`);
+const ax9 = await client.Canvas.loadImage(`./MAP/9.png`);
+const ax10 = await client.Canvas.loadImage(`./MAP/10.png`);
+const blank = await client.Canvas.loadImage(`./MAP/BLANK.png`);
+const plblank = await client.Canvas.loadImage(`./MAP/PLBLANK.png`);
+const fog = await client.Canvas.loadImage(`./MAP/FOGBLANK.png`);
+const player = await client.Canvas.loadImage(`./MAP/PLAYER.png`);
+const plplayer = await client.Canvas.loadImage(`./MAP/PLPLAYER.png`);
+const playerf = await client.Canvas.loadImage(`./MAP/PLAYERF.png`);
+const dungeon = await client.Canvas.loadImage(`./MAP/DUNGEON.png`);
+const pldungeon = await client.Canvas.loadImage(`./MAP/PLDUNGEON.png`);
+const dungeonf = await client.Canvas.loadImage(`./MAP/DUNGEONF.png`);
+const village = await client.Canvas.loadImage(`./MAP/VILLAGE.png`);
+const plvillage = await client.Canvas.loadImage(`./MAP/PLVILLAGE.png`);
+const villagef = await client.Canvas.loadImage(`./MAP/VILLAGEF.png`);
+const maspect = await client.Canvas.loadImage(`./MAP/${aspect}.png`);
+const plaspect = await client.Canvas.loadImage(`./MAP/PL${aspect}.png`);
+const aspectf = await client.Canvas.loadImage(`./MAP/${aspect}F.png`);
+const node = await client.Canvas.loadImage(`./MAP/NODE.png`);
+const plnode = await client.Canvas.loadImage(`./MAP/PLNODE.png`);
+const nodef = await client.Canvas.loadImage(`./MAP/NODEF.png`);
+const gate = await client.Canvas.loadImage(`./MAP/GATE.gif`);
+const plgate = await client.Canvas.loadImage(`./MAP/PLGATE.gif`);
+const boss = await client.Canvas.loadImage(`./MAP/BOSS.png`);
+const plboss = await client.Canvas.loadImage(`./MAP/BOSSPL.png`);
+const bossf = await client.Canvas.loadImage(`./MAP/BOSSFOG.png`);
+const denizen = await client.Canvas.loadImage(`./MAP/DENIZEN.png`);
+const pldenizen = await client.Canvas.loadImage(`./MAP/DENIZENPL.png`);
+const denizenf = await client.Canvas.loadImage(`./MAP/DENIZENFOG.png`);
+const darkblank = await client.Canvas.loadImage(`./MAP/DARKBLANK.png`);
+let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,ax,boss,plboss,bossf,denizen,pldenizen,denizenf];
+if(!mini){
+const canvas = client.Canvas.createCanvas(404,424);
+const ctx = canvas.getContext('2d');
+const background = await client.Canvas.loadImage('./background.jpg');
+ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+ctx.strokeStyle = '#3e3e3e';
+ctx.lineWidth = 10;
+ctx.strokeRect(0, 0, canvas.width, canvas.height);
+ //landcall.landGen(client,0,[5,5]);
+/*
+section[gate[0][0]][gate[0][1]]=defaultGate;
+*/
+
+let sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 1.png`);
+  switch(local[0]){
+    case "s2":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 2.png`);
+    break;
+    case "s3":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 3.png`);
+    break;
+    case "s4":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 4.png`);
+    break;
+    case "s1d":
+    case "s2d":
+    case "s3d":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/DUNGEONTITLE.png`);
+    break;
+    case "s4d":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/DENIZENLAIRTITLE.png`);
+    break;
+  }
+
+ctx.drawImage(sectionTitleImg,5,5,394,32);
 
 
-let msg =``;
-let str =``;
+ for(k=0;k<12;k++){
+   ctx.drawImage(legend[k],5+(32.8*k),37,32.8,32.8);
+}
+for(i=0;i<11;i++){
+  ctx.drawImage(legend[i+1],5,5+(32*(i+2)),32.8,31);
+    for(j=0;j<11;j++){
+
+      if(!input[i][j][2][0][3]){
+          ctx.drawImage(fog,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+
+      } else {
+        let tile = 0;
+        if(i==local[1]&& j==local[2]){
+          tile = 1;
+        }
+       //str=`${client.emojis.cache.get("760188336245309512")}`;
+       switch(input[i][j][0]){
+         case 0:
+         let player = false;
+         if(input[i][j][2][0][4].length > 0){
+         for(k=0;k<input[i][j][2][0][4].length;k++){
+           if(input[i][j][2][0][4][k][0]&& input[i][j][2][0][4][k][1]!=charid){
+             player=true;
+           }
+         }}
+         if(player){
+
+           ctx.drawImage(legend[15+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         } else {
+
+           ctx.drawImage(legend[12+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         }
+         break;
+         case 1:
+           ctx.drawImage(legend[18+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         break;
+         case 2:
+          ctx.drawImage(legend[24+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         break;
+         case 3:
+           ctx.drawImage(legend[27+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         break;
+         case 4:
+           ctx.drawImage(legend[21+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         break;
+         case 6:
+           ctx.drawImage(legend[30+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         break;
+         case 7:
+          ctx.drawImage(darkblank,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 8:
+            ctx.drawImage(legend[33+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 9:
+            ctx.drawImage(legend[36+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+         default:
+           ctx.drawImage(ax,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+       }
+    }
+  }
+}
+
+let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'landmap.png');
+message.channel.send(attachment);
+} else {
+
+const canvas = client.Canvas.createCanvas(192,192);
+const ctx = canvas.getContext('2d');
+
 for(i=-1;i<2;i++){
   for (j=-1;j<2;j++){
-    let tile = "TILE";
+    let tile = 0;
      if(j + local[2] > 10 || j + local[2] < 0 || i +local[1] > 10 || i + local[1] <0){
-    str = `${client.emojis.cache.get("761001131035066378")}`
+    ctx.drawImage(darkblank,(64*(j+1)),(64*(i+1)),64,64);
     } else {
       if(i==0 && j==0){
-        tile = `PLTILE`;
+        tile = 1;
       } else if(!input[i+local[1]][j+local[2]][2][0][3]){
-        tile = `FOGTILE`;
+        tile = 2;
       //} else if(i==local[1]&& j==local[2]){
       }
       switch(input[i+local[1]][j+local[2]][0]){
@@ -436,47 +578,48 @@ for(i=-1;i<2;i++){
           }
         }}
         if(player){
-          str=`${client.emojis.cache.get(client.map[tile].PLAYER)}`;
+
+          ctx.drawImage(legend[15+tile],(64*(j+1)),(64*(i+1)),64,64);
         } else {
-          str=`${client.emojis.cache.get(client.map[tile].BLANK)}`;
+
+          ctx.drawImage(legend[12+tile],(64*(j+1)),(64*(i+1)),64,64);
         }
         break;
         case 1:
-          str=`${client.emojis.cache.get(client.map[tile].DUNGEON)}`;
+          ctx.drawImage(legend[18+tile],(64*(j+1)),(64*(i+1)),64,64);
         break;
         case 2:
-         str = `${client.emojis.cache.get(client.map[tile][aspect])}`;
+         ctx.drawImage(legend[24+tile],(64*(j+1)),(64*(i+1)),64,64);
         break;
         case 3:
-          str = `${client.emojis.cache.get(client.map[tile].NODE)}`;
+          ctx.drawImage(legend[27+tile],(64*(j+1)),(64*(i+1)),64,64);
         break;
         case 4:
-          str=`${client.emojis.cache.get(client.map[tile].VILLAGE)}`;
+          ctx.drawImage(legend[21+tile],(64*(j+1)),(64*(i+1)),64,64);
         break;
         case 6:
-          str=`${client.emojis.cache.get(client.map[tile].GATE)}`;
+          ctx.drawImage(legend[30+tile],(64*(j+1)),(64*(i+1)),64,64);
         break;
         case 7:
-         str=`${client.emojis.cache.get("761001131035066378")}`;
+         ctx.drawImage(darkblank,(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 8:
-           str=`${client.emojis.cache.get(client.map[tile].BOSS)}`;
+           ctx.drawImage(legend[33+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 9:
-           str=`${client.emojis.cache.get(client.map[tile].DENIZEN)}`;
+           ctx.drawImage(legend[36+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
         default:
-          str=`:x:`;
+          ctx.drawImage(ax,(64*(j+1)),(64*(i+1)),64,64);
       }
     }
- msg += `${str}`;
   }
- msg += '\n';
   }
-message.channel.send(msg);
+  attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'landmap.png');
+  message.channel.send(attachment);
 return;
 }
-
+}
 
 exports.underlingCheck = function(occList) {
   check = false;
