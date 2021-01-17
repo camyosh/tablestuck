@@ -20,6 +20,7 @@ client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier
 const canvas = client.Canvas.createCanvas(400,650);
 const ctx = canvas.getContext('2d');
 //old code to generate the OG background
+/*
 ctx.beginPath();
 ctx.rect(0,0,canvas.width,canvas.height);
 ctx.fillStyle =`#ffb600`;
@@ -68,18 +69,18 @@ ctx.rect(10,600,375,40);
 ctx.fillStyle = `#000000`;
 ctx.fill();
 ctx.lineWidth = 4;
-ctx.strokeRect(10,600,375,40);
+ctx.strokeRect(10,600,375,40);*/
 
-//const pesterbackground = await client.Canvas.loadImage(`./miscsprites/pestercord.png`);
+const pesterbackground = await client.Canvas.loadImage(`./miscsprites/pestercord.png`);
 const online = await client.Canvas.loadImage(`./miscsprites/CHUMMY.png`);
 const offline = await client.Canvas.loadImage(`./miscsprites/IDLE.png`);
-//ctx.drawImage(pesterbackground,0,0,canvas.width,canvas.height);
+ctx.drawImage(pesterbackground,0,0,canvas.width,canvas.height);
 ctx.fillStyle =`#ffffff`;
 ctx.font = `bold 24px Courier Standard Bold`;
 ctx.fillText(client.playerMap.get(charid,"chumhandle"),60,628);
 let plonline = client.traitcall.compTest(client,message,charid,room,currentInv);
 if(plonline[0]){
-  ctx.drawImage(online,15,605,32,32);
+ctx.drawImage(online,15,605,32,32);
 } else {
   ctx.drawImage(offline,15,605,32,32);
 }
@@ -87,7 +88,7 @@ let pagenumber = 0;
 let targonline = [false,false];
 for(i=pagenumber*10;i<chumroll.length&&i<pagenumber+10;i++){
 
-  ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,207+((i-(pagenumber*10))*40));
+ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,207+((i-(pagenumber*10))*40));
 
   targlocal = client.playerMap.get(chumroll[i],"local");
   targroom = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
