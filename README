@@ -8,6 +8,7 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
 2- Once Node.js is installed, open the command terminal on your computer and type the following --
   npm install discord.js
   npm install enmap
+  npm install canvas
 
 3- Put this folder in the same folder as a text file called auth.json and paste the following into it --
   {
