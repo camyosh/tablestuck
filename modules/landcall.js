@@ -379,7 +379,7 @@ break;
 }
 
 
-exports.moonGen = function(client,moon,castleLocal,towerLocal){
+exports.moonGen = function(client,castleLocal,towerLocal){
 
   let section = [];
   for(i=0;i<11;i++){
