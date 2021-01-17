@@ -196,7 +196,7 @@ exports.run = (client, message, args) => {
       break;
 
     }
-    landcall.miniMap(client,message);
+    landcall.drawMap(client,message,true);
 
 
     /*local = ["s1",Math.floor(Math.random() * 11),Math.floor(Math.random() * 11),0,land];
@@ -262,13 +262,13 @@ exports.run = (client, message, args) => {
      local[0]+="d";
     message.channel.send("Entering the Dungeon!");
     funcall.actionCheck(client,message);
-    landcall.miniMap(client,message);
+    landcall.drawMap(client,message,true);
 
    } else {
      local[0]=local[0].slice(0,-1);
     message.channel.send("Leaving the Dungeon!");
     funcall.actionCheck(client,message);
-    landcall.miniMap(client,message);
+    landcall.drawMap(client,message,true);
    }
    sec = client.landMap.get(land,local[0]);
    sec[local[1]][local[2]][2][local[3]][4].push(occset);

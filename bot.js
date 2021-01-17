@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const Enmap = require('enmap');
 const fs = require('fs');
+const Canvas = require("canvas");
 //const GoogleSpreadsheet = require('google-spreadsheet');
 
 //declare json files
@@ -76,6 +77,7 @@ client.underlings = require("./underlings.json");
 client.strifeMap = strifeMap;
 client.map = require("./map.json");
 client.limit = 0;
+client.Canvas = Canvas;
 //client.GoogleSpreadsheet = GoogleSpreadsheet;
 
 
