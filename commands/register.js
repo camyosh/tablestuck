@@ -12,8 +12,9 @@ exports.run = (client, message, args) => {
 //checks to see if the command user is Cam, as we don't want anyone else registering players for the tournament
 
 if(!client.sessionMap.has(message.guild.id)){
+let castlegen = [[0,0],[0,0]]
 do {
-let castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]];
+castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]];
 }while(castlegen[0][0]==5||castlegen[0][1]==5||castlegen[1][0]==5||castlegen[1][1]==5);
 
   var sessionSheet = {
@@ -25,8 +26,8 @@ let castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 1
     handleList:[],
     castleLocal: castlegen[0],
     towerlLocal: castlegen[1],
-    prospit:client.landcall.moonGen(client,"P",castleLocal,towerLocal),
-    derse:client.landcall.moonGen(client,"D",castleLocal,towerLocal)
+    prospit:client.landcall.moonGen(client,"P",castlegen[0],castlegen[1]),
+    derse:client.landcall.moonGen(client,"D",castlegen[0],castlegen[1])
   }
 
 }
