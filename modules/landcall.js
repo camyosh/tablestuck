@@ -381,10 +381,23 @@ break;
 
 exports.moonGen = function(client,castleLocal,towerLocal){
 
-  let section = [];
+  let section = [[],[],[],[]];
   for(i=0;i<11;i++){
-    section.push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
+
+    section[0].push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
+    section[1].push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
+    section[2].push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
+    section[3].push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
+
+
+
   }
+
+//            prospit,derse,prospitmoon,dersemoon
+
+
+  section[2][towerLocal[0]][towerLocal[1]]=[11,1,[[0,0,"PROSPIT TOWER BASE",true,[],[]]]];
+  section[3][towerLocal[0]][towerLocal[1]]=[11,1,[[0,0,"DERSE TOWER BASE",true,[],[]]]];
 
   return section;
 
@@ -403,6 +416,9 @@ let aspect;
 
 try {
   aspect = client.landMap.get(local[4],"aspect");
+  if(aspect = `undefined`){
+    aspect = "BREATH";
+  }
 } catch(err){
   aspect = "BREATH";
 }
@@ -479,6 +495,12 @@ let sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 1.png`);
     case "s4d":
     sectionTitleImg = await client.Canvas.loadImage(`./MAP/DENIZENLAIRTITLE.png`);
     break;
+    case "p":
+    case "pm":
+    case "d":
+    case "dm":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 3.png`);
+    break;
   }
 
 ctx.drawImage(sectionTitleImg,5,5,394,32);
@@ -540,6 +562,12 @@ for(i=0;i<11;i++){
           break;
           case 9:
             ctx.drawImage(legend[36+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 10:
+          ctx.drawImage(legend[12+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 11:
+          ctx.drawImage(legend[21+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
          default:
            ctx.drawImage(ax,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
@@ -608,6 +636,12 @@ for(i=-1;i<2;i++){
          break;
          case 9:
            ctx.drawImage(legend[36+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 10:
+         ctx.drawImage(legend[12+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 11:
+         ctx.drawImage(legend[21+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
         default:
           ctx.drawImage(ax,(64*(j+1)),(64*(i+1)),64,64);

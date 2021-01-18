@@ -87,10 +87,10 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      /*if(sec[local[1]][local[2]][2][local[3]][3]==false){
+      /*if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
       sec =  strifecall.underSpawn(client,local,sec);
     }*/
-      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+      if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
         sec =  strifecall.underSpawn(client,local,sec);
         funcall.actionCheck(client,message,"tile");
       } else {
@@ -128,7 +128,7 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+      if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
         sec =  strifecall.underSpawn(client,local,sec);
         funcall.actionCheck(client,message,"tile");
       } else {
@@ -164,7 +164,7 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+      if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
         sec =  strifecall.underSpawn(client,local,sec);
         funcall.actionCheck(client,message,"tile");
       } else {
@@ -202,7 +202,7 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+      if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
         sec =  strifecall.underSpawn(client,local,sec);
         funcall.actionCheck(client,message,"tile");
       } else {
@@ -270,7 +270,7 @@ exports.run = (client, message, args) => {
 
     message.channel.send(`Moving to the ${area[2][value][2]}!`);
     funcall.actionCheck(client,message);
-    if(sec[local[1]][local[2]][2][local[3]][4].length <= 1){
+    if(sec[local[1]][local[2]][2][local[3]][4].length <= 1&&local[4]!=message.guild.id+"medium"){
 
     sec =  strifecall.underSpawn(client,local,sec);
     }

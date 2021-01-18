@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
 //checks to see if the command user is Cam, as we don't want anyone else registering players for the tournament
   let charid = message.guild.id.concat(message.author.id);
 
-if(!client.sessionMap.has(message.guild.id)){
+if(!client.landMap.has(message.guild.id+"medium")){
 let castlegen;
 do {
 castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]];
@@ -22,7 +22,7 @@ castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]
 
 //chumhandle [charid,chumhandle]
 
-  var sessionSheet = {
+  var medium = {
     playerList:[],
     prototype:[],
     prospitList:[],
@@ -30,12 +30,14 @@ castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]
     dmList:[],
     handleList:[],
     castleLocal: castlegen[0],
-    towerlLocal: castlegen[1],
-    prospit:dreamMoon,
-    derse:dreamMoon
+    towerLocal: castlegen[1],
+    p:dreamMoon[0],
+    pm:dreamMoon[2],
+    d:dreamMoon[1],
+    dm:dreamMoon[3]
   }
 
-  client.sessionMap.set(message.guild.id, sessionSheet);
+  client.landMap.set(message.guild.id+"medium", medium);
 
 }
 
@@ -47,10 +49,10 @@ castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]
  let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
   let target = message.author;
   var occset = [true,charid];
-  let preset;
 
-  let playerList = client.sessionMap.get(message.guild.id,"playerList");
-  let handleList = client.sessionMap.get(message.guild.id,"handleList");
+
+  let playerList = client.landMap.get(message.guild.id+"medium","playerList");
+  let handleList = client.landMap.get(message.guild.id+"medium","handleList");
 
   let chumhandle = message.author.username;
 
@@ -58,8 +60,8 @@ castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]
     playerList.push(charid);
     handleList.push([charid,chumhandle]);
 
-    client.sessionMap.set(message.guild.id,playerList,"playerList");
-    client.sessionMap.set(message.guild.id,handleList,"handleList");
+    client.landMap.set(message.guild.id+"medium",playerList,"playerList");
+    client.landMap.set(message.guild.id+"medium",handleList,"handleList");
 
 
   }else{
@@ -75,57 +77,17 @@ castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]
 
   const armorsets = [  ["CLOTHES","sQWWm9Kn",1,1,[]],["CLOTHES","sdH21UGt",1,1,[]],["CLOTHES","s4WW1jKQ",1,1,[]],["CLOTHES","s5WWMEF3",1,1,[]],["CLOTHES","sI2WllDd",1,1,[]],["CLOTHES","shHHjXDH",1,1,[]],["CLOTHES","sKW2dTnZ",1,1,[]],["CLOTHES","sjHWZVxB",1,1,[]],["CLOTHES","sYWHt9oW",1,1,[]],["CLOTHES","slH2RSD8",1,1,[]],["CLOTHES","sOH2jCtu",1,1,[]],["CLOTHES","sDWH2ydM",1,1,[]]  ];
 
-  const cade = [[[5,7,[
-    [0,0,"BEDROOM",false,[occset],[["COMPUTER","yQiKRZH8",1,1,[]],["HANDGUN","9AHWYUuR",1,1,[]],["FLAT EARTH GLOBE","yI2f3aKN",1,1,[]],["CONSPIRACY BOARD","McWDSvSF",1,1,[]],["COFFEE","0mYWZ0hT",1,4,[]],["HOT PLATE","05c2bj6y",1,1,[]]]],
-    [0,0,"LIVING ROOM",false,[],[["CRT TV","ycAQBint",1,1,[]],["ANTIQUE LAMP","yiUNVJPh",1,1,[]],["FANCY SANTA","N32bdOcn",1,1,[]],["COFFEE TABLE","yOHU3FhE",1,1,[]],["COUCH","yd2FVRHK",1,1,[]],["GLUE","0lbW2ypQ",1,1,[]],["CANDLE","0M8X8qz7",1,1,[]]]],
-    [0,0,"FATHERS ROOM",false,[],[["HUNTING RIFLE","5RHHH320",1,1,[]],["BEN SHAPIRO BUST","xIMDkcDB",1,1,[]]]],
-    [0,0,"STUDY",false,[],[["DESK","yLGjNwPf",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]],["NEWSPAPER","XhHHoMUg",1,1,[]],["BOOK","XGW2rZ2j",1,1,[]],["DECK OF CARDS","rdW2VmtN",1,1,[]],["READING GLASSES","vSWWcavE",1,1,[]],["BOWLER HAT","uNWWBSDV",1,1,[]],["INK JAR","0yWYiwUY",1,1,[]],["OLD COMPUTER","yeiQxD2s",1,1,[]],["SCISSORS","ergWpjDh",1,1,[]]]],
-    [0,0,"KITCHEN",false,[],[["FRIDGE","y9dUU1qy",1,1,[["FRUIT GUSHERS","08YWJ3ZR",1,2,[]],["STEAK","0kZjzFvm",1,2,[]],["SALAD","0DI3Mt9D",1,2,[]],["ROCKET POP","0hYdl7RH",1,2,[]],["ICE CUBE","0JdWv89f",1,4,[]]]],["TOASTER","0reHWNK3",1,1,[]],["OVEN","yAcFDFTD",1,1,[]],["FORK","6XWH1aeL",1,1,[]],["STEAK KNIFE","frCHRunB",1,1,[]]]],
-    [0,0,"BATHROOM",false,[],[["TOOTHPASTE","0UbH2NUT",1,1,[]],["TOOTHBRUSH","cg23mfhd",1,1,[]],["TOILET PAPER","MhWIw0tr",1,1,[]]]],
-    [0,0,"YARD",false,[],[["MAILBOX","yHkIqlBC",1,1,[["SBURB CLIENT","////////",1,1,[]],["SBURB SERVER","////////",1,1,[]]]],["LAWN GNOME","xFWMZ5R0",1,1,[]]]],
-    [0,0,"SHED",false,[],[["HAMMER","2Z2WCHwF",1,1,[]],["FIREWORKS","0wDdKKDf",1,1,[]],["CHAINSAW","Ef2W6ibV",1,1,[]],["SPRING","0rLW5L4P",1,1,[]],["POWER COORD","hQAWLcfb",1,1,[]],["SHOES","tCWH7NQ8",1,1,[]]]]
-  ]]]];
-
-  const edo = [[[5,7,[
-    [0,0,"BEDROOM",false,[occset],[["COMPUTER","yQiKRZH8",1,1,[]],["KNITTING NEEDLES","34W2UD3d",1,1,[]],["MAGNIFYING GLASS","0BWDQcwe",1,1,[]],["CONSPIRACY BOARD","McWDSvSF",1,1,[]],["SHOVEL","gr2HgkaC",1,4,[]],["RPG DICE","GrHWOx7c",1,1,[]],["NOKIA 7600","0oiXldWZ",1,1,[]]]],
-    [0,0,"LIVING ROOM",false,[],[["CRT TV","ycAQBint",1,1,[]],["FAIRY LIGHTS","hcAkFgLX",1,1,[]],["BEAN BAG CHAIR","yJ2ImeBT",1,1,[]],["COFFEE TABLE","yOHU3FhE",1,1,[]],["COUCH","yd2FVRHK",1,1,[]],["WII","0gTDxUf6",1,1,[]],["YOYO","YuWHpv1O",1,1,[]]]],
-    [0,0,"SISTERS ROOM",false,[],[["BEDAZZLED FLIP PHONE","0oiXldWZ",1,1,[]],["HELLO KITTY LAMP","yKPkJiUy",1,1,[]]]],
-    [0,0,"STUDY",false,[],[["DESK","yLGjNwPf",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]],["STICKER COVERED LAPTOP","02iKkCLD",1,1,[]],["BOOK","XGW2rZ2j",1,1,[]],["BERRET","udW2o0Xd",1,1,[]],["PAPER","MhWXWrRp",1,1,[]],["SCARF","uNWWBSDV",1,1,[]],["PENCIL","bbWWcFi0",1,1,[]],["PAINTBRUSH","cBW2yXyW",1,1,[]]]],
-    [0,0,"KITCHEN",false,[],[["FRIDGE","y9dUU1qy",1,1,[["FRUIT GUSHERS","08YWJ3ZR",1,2,[]],["STEAK","0kZjzFvm",1,2,[]],["SALAD","0DI3Mt9D",1,2,[]],["ROCKET POP","0hYdl7RH",1,2,[]],["ICE CUBE","0JdWv89f",1,4,[]]]],["TOASTER","0reHWNK3",1,1,[]],["OVEN","yAcFDFTD",1,1,[]],["FORK","6XWH1aeL",1,1,[]],["STEAK KNIFE","frCHRunB",1,1,[]]]],
-    [0,0,"BATHROOM",false,[],[["TOOTHPASTE","0UbH2NUT",1,1,[]],["TOOTHBRUSH","cg23mfhd",1,1,[]],["TOILET PAPER","MhWIw0tr",1,1,[]]]],
-    [0,0,"YARD",false,[],[["MAILBOX","yHkIqlBC",1,1,[["SBURB CLIENT","////////",1,1,[]],["SBURB SERVER","////////",1,1,[]]]],["LAWN GNOME","xFWMZ5R0",1,1,[]]]],
-    [0,0,"SHED",false,[],[["HAMMER","2Z2WCHwF",1,1,[]],["FIREWORKS","0wDdKKDf",1,1,[]],["CHAINSAW","Ef2W6ibV",1,1,[]],["SPRING","0rLW5L4P",1,1,[]],["POWER COORD","hQAWLcfb",1,1,[]],["SHOES","tCWH7NQ8",1,1,[]]]]
-  ]]]];
-
-  const doc = [[[5,7,[
-    [0,0,"BEDROOM",false,[occset],[["LAPTOP","02iKkCLD",1,1,[]],["FLIP PHONE","0oiXldWZ",1,1,[]],["TAROT CARDS","rsWM2biu",1,1,[]],["CRYSTALS","m42elGgN",1,1,[]],["OUIJA BOARD","0v2fHxfR",1,4,[]],["CRYSTAL BALL","ld2eEi1S",1,1,[]],["AHKMED THE DEAD TERRORIST","8mW4oY6k",1,1,[]]]],
-    [0,0,"LIVING ROOM",false,[],[["CRT TV","ycAQBint",1,1,[]],["JEFF DUNHAM DVD BOX SET","0ZbBNctH",1,1,[]],["WALTER","8lHNlZjx",1,1,[]],["COFFEE TABLE","yOHU3FhE",1,1,[]],["COUCH","yd2FVRHK",1,1,[]],["YOYO","YuWHpv1O",1,1,[]]]],
-    [0,0,"STUDY",false,[],[["DESK","yLGjNwPf",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]],["BUBBA J","8JHQK8Jp",1,1,[]],["VENTRILOQUISM FOR DUMMIES","XGW2rZ2j",1,1,[]],["PEANUT","8RbESr01",1,1,[["SBURB CLIENT","////////",1,1,[]],["SBURB SERVER","////////",1,1,[]]]],["PAPER","MhWXWrRp",1,1,[]],["SWEET DADDY D","8C6f9IKA",1,1,[]],["PENCIL","bbWWcFi0",1,1,[]],["PAINTBRUSH","cBW2yXyW",1,1,[]]]],
-    [0,0,"KITCHEN",false,[],[["FRIDGE","y9dUU1qy",1,1,[["FRUIT GUSHERS","08YWJ3ZR",1,2,[]],["STEAK","0kZjzFvm",1,2,[]],["SALAD","0DI3Mt9D",1,2,[]],["ROCKET POP","0hYdl7RH",1,2,[]],["ICE CUBE","0JdWv89f",1,4,[]]]],["TOASTER","0reHWNK3",1,1,[]],["OVEN","yAcFDFTD",1,1,[]],["FORK","6XWH1aeL",1,1,[]],["JOSE JALEPENO ON A STICK","8Dcf1A5y",1,1,[]],["STEAK KNIFE","frCHRunB",1,1,[]]]],
-    [0,0,"BATHROOM",false,[],[["TOOTHPASTE","0UbH2NUT",1,1,[]],["TOOTHBRUSH","cg23mfhd",1,1,[]],["TOILET PAPER","MhWIw0tr",1,1,[]]]],
-    [0,0,"YARD",false,[],[["MAILBOX","yHkIqlBC",1,1,[]],["LAWN GNOME","xFWMZ5R0",1,1,[]]]],
-    [0,0,"SHED",false,[],[["HAMMER","2Z2WCHwF",1,1,[]],["FIREWORKS","0wDdKKDf",1,1,[]],["LITTLE UGLY JEFF","89WRF0YB",1,1,[]],["SPRING","0rLW5L4P",1,1,[]],["POWER COORD","hQAWLcfb",1,1,[]],["SHOES","tCWH7NQ8",1,1,[]]]]
-  ]]]];
-
   const def = [[[5,7,[
-    [0,0,"BEDROOM",false,[occset],[["COMPUTER","yQiKRZH8",1,1,[]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-    [0,0,"LIVING ROOM",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-    [0,0,"STUDY",false,[],[["DESK","yLGjNwPf",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-    [0,0,"KITCHEN",false,[],[["FRIDGE","y9dUU1qy",1,1,[["FRUIT GUSHERS","08YWJ3ZR",1,2,[]],["STEAK","0kZjzFvm",1,2,[]],["SALAD","0DI3Mt9D",1,2,[]],["ROCKET POP","0hYdl7RH",1,2,[]],["ICE CUBE","0JdWv89f",1,4,[]]]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-    [0,0,"BATHROOM",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-    [0,0,"YARD",false,[],[["MAILBOX","yHkIqlBC",1,1,[["SBURB CLIENT","////////",1,1,[]],["SBURB SERVER","////////",1,1,[]]]],funcall.preItem()]],
-    [0,0,"SHED",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]]
-  ]]]];
+     [0,0,"BEDROOM",false,[occset],[["COMPUTER","yQiKRZH8",1,1,[]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
+     [0,0,"LIVING ROOM",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
+     [0,0,"STUDY",false,[],[["DESK","yLGjNwPf",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
+     [0,0,"KITCHEN",false,[],[["FRIDGE","y9dUU1qy",1,1,[["FRUIT GUSHERS","08YWJ3ZR",1,2,[]],["STEAK","0kZjzFvm",1,2,[]],["SALAD","0DI3Mt9D",1,2,[]],["ROCKET POP","0hYdl7RH",1,2,[]],["ICE CUBE","0JdWv89f",1,4,[]]]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
+     [0,0,"BATHROOM",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem()]],
+     [0,0,"YARD",false,[],[["MAILBOX","yHkIqlBC",1,1,[["SBURB CLIENT","////////",1,1,[]],["SBURB SERVER","////////",1,1,[]]]],funcall.preItem()]],
+     [0,0,"SHED",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]]
+   ]]]];
 
-  if(args[0]=="cade"){
-    preset = cade;
-  } else if(args[0]=="edo"){
-    preset = edo;
-  } else if(args[0]=="doc"){
-    preset = doc;
-  } else {
-    preset = def;
-  };
+
 /*
   async function regImport() {
     var doc = new GoogleSpreadsheet(args[0]);
@@ -185,6 +147,44 @@ regImport();
 */
   //random item - funcall.preItem()
 
+  let prospitList = client.landMap.get(message.guild.id+"medium","prospitList");
+  let derseList = client.landMap.get(message.guild.id+"medium","derseList");
+
+  let lunarSway;
+
+  if(prospitList.length==derseList.length){
+    if(!Math.floor(Math.random()*2)){
+      lunarSway="dm";
+      derseList.push(charid);
+    } else {
+      lunarSway="pm";
+      prospitList.push(charid);
+    }
+  }else if(prospitList>derseList){
+    lunarSway="dm";
+    derseList.push(charid);
+  }else{
+    lunarSway="pm";
+    prospitList.push(charid);
+  }
+
+  client.landMap.set(message.guild.id+"medium",prospitList,"prospitList");
+  client.landMap.set(message.guild.id+"medium",derseList,"derseList");
+
+  let moonMap = client.landMap.get(message.guild.id+"medium",lunarSway);
+  let towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
+
+  console.log(moonMap[towerLocal[0]])
+
+  let towerRoom = moonMap[towerLocal[0]][towerLocal[1]][2].length;
+
+  moonMap[towerLocal[0]][towerLocal[1]][2].push([0,0,`${message.author.username}'S DREAM TOWER'`,false,[
+    [true,charid]],[]])
+
+  client.landMap.set(message.guild.id+"medium",moonMap,lunarSway);
+
+
+
 
 
   var charSheet = {
@@ -192,30 +192,43 @@ regImport();
     ping: message.author.id,
     channel: message.channel.id,
     act:0,
+    lunarSway:lunarSway,
     strife:false,
     pos:0,
     server:"NA",
     client:"NA",
     alive:true,
     local:["h",0,0,0,charid],
+    dreamlocal:[lunarSway,towerLocal[0],towerLocal[1],towerRoom,message.guild.id+"medium"],
     deploy:[false,false,false,false,false],
     xp: 0,
     rung: 0,
     b: 0,
     bank: 0,
     vit: 100,
+    dreamvit: 100,
     gel: 100,
     grist:[20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     port: 1,
+    dreamport: 1,
     kinds:[],
+    dreamkinds:[],
     spec:[],
+    dreamspec:[],
     modus: "STACK",
+    dreammodus: "STACK",
     cards:4,
+    dreamcards:4,
     scards:2,
+    dreamscards:2,
     sdex:[],
+    dreamsdex:[],
     equip:0,
+    dreamequip:0,
     trinket:[],
+    dreamtrinket:[],
     armor:[armorsets[randnum]],
+    dreamarmor:[],
     itemsAlchemized:0,
     underlingsDefeated:0,
     tilesDiscovered:0,
@@ -254,7 +267,7 @@ var land = {
     floors: 100000,
     gate: 7,
     gates:gategen,
-    h:preset,
+    h:def,
     s1:s1[0],
     s1d:s1[1],
     s2:s2[0],

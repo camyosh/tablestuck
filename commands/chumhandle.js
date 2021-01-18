@@ -6,7 +6,7 @@ exports.run = (client, message, args) => {
   }
 
   var charid = message.guild.id.concat(message.author.id);
-  let handleList = client.sessionMap.get(message.guild.id,"handleList");
+  let handleList = client.landMap.get(message.guild.id+"medium","handleList");
 
   if(!args[0]){
     message.channel.send("Enter a chumhandle you want to appear when pestering other players!");
@@ -32,7 +32,7 @@ exports.run = (client, message, args) => {
   }
 
   handleList[index][1]=args[0];
-  client.sessionMap.set(message.guild.id,handleList,"handleList");
+  client.landMap.set(message.guild.id+"medium",handleList,"handleList");
 
   client.playerMap.set(charid,args[0],"chumhandle");
 

@@ -24,6 +24,8 @@ if(local[0]==`h`){
   return;
 }
 
+
+
 landcall.drawMap(client,message,false);
 
 }

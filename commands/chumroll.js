@@ -22,6 +22,11 @@ client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier
 const canvas = client.Canvas.createCanvas(400,650);
 const ctx = canvas.getContext('2d');
 
+
+
+
+
+
 function applyText(canvas, msg){
 let fontsize = 24
 ctx.font = `bold ${fontsize}px Courier Standard Bold`;
@@ -82,11 +87,31 @@ ctx.fillStyle = `#000000`;
 ctx.fill();
 ctx.lineWidth = 4;
 ctx.strokeRect(10,600,375,40);*/
+let pagenumber = 0;
+let pageMax = Math.ceil(chumroll.length/10);
+let pageturn = false;
+if(args[0]&&args[0]!="add"){
+let value = parseInt(args[0], 10) - 1;
+if(isNaN(value)){
+  message.channel.send("That is not a valid page number!");
+  return;
+}
+
+if(value > pageMax-1 || value < 0) {
+  message.channel.send("That isn't a page on your chumroll!");
+  return;
+}
+pagenumber=value;
+pageturn = true;
+}
 
 const pesterbackground = await client.Canvas.loadImage(`./miscsprites/pestercord.png`);
 const online = await client.Canvas.loadImage(`./miscsprites/CHUMMY.png`);
 const offline = await client.Canvas.loadImage(`./miscsprites/IDLE.png`);
 ctx.drawImage(pesterbackground,0,0,canvas.width,canvas.height);
+ctx.fillStyle =`#000000`;
+ctx.font = `12px fontstuck`;
+ctx.fillText(`PAGE ${pagenumber+1}/${pageMax}`,300,170);
 ctx.fillStyle =`#ffffff`;
 ctx.font = `bold 24px Courier Standard Bold`;
 
@@ -97,13 +122,13 @@ ctx.drawImage(online,15,605,32,32);
 } else {
   ctx.drawImage(offline,15,605,32,32);
 }
-let pagenumber = 0;
+
 let targonline = [false,false];
-for(i=pagenumber*10;i<chumroll.length&&i<pagenumber+10;i++){
-  
+for(let i=pagenumber*10;i<chumroll.length&&i<(pagenumber+1)*10;i++){
+
 ctx.font = applyText(canvas,`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`);
 
-ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,207+((i-(pagenumber*10))*40));
+ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,203+((i-(pagenumber*10))*40));
 
   targlocal = client.playerMap.get(chumroll[i],"local");
   targroom = client.landMap.get(targlocal[4],targlocal[0])[targlocal[1]][targlocal[2]][2][targlocal[3]];
@@ -111,14 +136,14 @@ ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,207+
 
 targonline = client.traitcall.compTest(client,message,chumroll[i],targroom,targcurrentInv);
   if(targonline[0]){
-    ctx.drawImage(online,15,183+((i-(pagenumber*10))*40),32,32);
+    ctx.drawImage(online,15,179+((i-(pagenumber*10))*40),32,32);
   } else {
-    ctx.drawImage(offline,15,183+((i-(pagenumber*10))*40),32,32);
+    ctx.drawImage(offline,15,179+((i-(pagenumber*10))*40),32,32);
   }
 
 }
 
-  if(!args[0]){
+  if(!args[0]||pageturn){
     let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'pestercord.png');
     message.channel.send(attachment);
     return;
@@ -133,7 +158,7 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom,targc
 
     let h;
     let hcheck =false;
-    let handleList = client.sessionMap.get(message.guild.id,"handleList");
+    let handleList = client.landMap.get(message.guild.id+"medium","handleList");
     for(h=0;h<handleList.length&&hcheck==false;h++){
       if(handleList[h][1]==args[1]){
         if(handleList[h][0]==charid){
