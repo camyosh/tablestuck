@@ -110,7 +110,7 @@ return comp;
 exports.inspectItem = async function(client, item, message){
   client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
-  const canvas = client.Canvas.createCanvas(510,750);
+  const canvas = client.Canvas.createCanvas(1170,800);
   const ctx = canvas.getContext('2d');
 
   function applyText(canvas, msg, width){
@@ -151,20 +151,36 @@ const uranium= await client.Canvas.loadImage(`./GRIST/URANIUM.png`);
 const zillium = await client.Canvas.loadImage(`./GRIST/ZILLIUM.png`);
 const build = await client.Canvas.loadImage(`./GRIST/BUILD.png`);
 
-let gristList = [artifact,uranium,amethyst,garnet,iron,marble,chalk,shale,cobalt,ruby,caulk,tar,amber,diamond,zillium];
-//draw the captcha card background
-
+let gristList = [artifact,uranium,amethyst,garnet,iron,marble,chalk,shale,cobalt,ruby,caulk,tar,amber,diamond,zillium,build];
+//draw the captcha card background (both sides of the card)
+//front
+ctx.strokeStyle = '#036b37';
 ctx.fillStyle = '#008c45';
+ctx.lineWidth = 50;
 ctx.beginPath();
-ctx.moveTo(0,0);
-ctx.lineTo(400,0);
-ctx.lineTo(400,65);
-ctx.lineTo(450,65);
-ctx.lineTo(450,130);
-ctx.lineTo(510,130);
-ctx.lineTo(510,750);
-ctx.lineTo(0,750);
-ctx.lineTo(0,0);
+ctx.moveTo(25,25);
+ctx.lineTo(425,25);
+ctx.lineTo(425,80);
+ctx.lineTo(475,80);
+ctx.lineTo(475,155);
+ctx.lineTo(535,155);
+ctx.lineTo(535,775);
+ctx.lineTo(25,775);
+ctx.closePath();
+ctx.stroke();
+ctx.fill();
+//back
+ctx.beginPath();
+ctx.moveTo(1145,25);
+ctx.lineTo(745,25);
+ctx.lineTo(745,80);
+ctx.lineTo(720,80);
+ctx.lineTo(720,155);
+ctx.lineTo(660,155);
+ctx.lineTo(660,775);
+ctx.lineTo(1145,775);
+ctx.closePath();
+ctx.stroke();
 ctx.fill();
 
 //---------settings for all the shapes----------
@@ -174,46 +190,46 @@ ctx.shadowOffsetY = 5;
 ctx.shadowColor = `#0e6037`;
 
 //Title bar
-ctx.fillRect(10,10,370,50);
+ctx.fillRect(35,35,370,50);
 
 //code and tier bar
-ctx.fillRect(10,80,200,50);
-ctx.fillRect(230,80,200,50);
+ctx.fillRect(35,105,200,50);
+ctx.fillRect(255,105,200,50);
 
 //-kind box
-ctx.fillRect(10,145,315,50);
+ctx.fillRect(35,170,315,50);
 
 //grist boxes
 ctx.fillStyle = `#d9ead3`
-ctx.fillRect(10,210,55,55);
-ctx.fillRect(90,275,55,55);
-ctx.fillRect(150,275,55,55);
-ctx.fillRect(210,275,55,55);
-ctx.fillRect(270,275,55,55);
-ctx.fillRect(90,335,55,55);
-ctx.fillRect(150,335,55,55);
-ctx.fillRect(210,335,55,55);
-ctx.fillRect(270,335,55,55);
+ctx.fillRect(35,235,55,55);
+ctx.fillRect(115,300,55,55);
+ctx.fillRect(175,300,55,55);
+ctx.fillRect(235,300,55,55);
+ctx.fillRect(295,300,55,55);
+ctx.fillRect(115,360,55,55);
+ctx.fillRect(175,360,55,55);
+ctx.fillRect(235,360,55,55);
+ctx.fillRect(295,360,55,55);
 ctx.fillStyle = `#00e371`;
-ctx.fillRect(70,210,255,55);
-ctx.fillRect(10,275,75,55);
-ctx.fillRect(10,335,75,55);
+ctx.fillRect(95,235,255,55);
+ctx.fillRect(35,300,75,55);
+ctx.fillRect(35,360,75,55);
 
 //damage boxes
-ctx.fillRect(335,145,70,50);
-ctx.fillRect(415,145,70,50);
-ctx.fillRect(335,210,70,50);
-ctx.fillRect(335,275,70,50);
-ctx.fillRect(335,340,70,50);
+ctx.fillRect(360,170,70,50);
+ctx.fillRect(440,170,70,50);
+ctx.fillRect(360,235,70,50);
+ctx.fillRect(360,300,70,50);
+ctx.fillRect(360,365,70,50);
 ctx.fillStyle = `#d9ead3`;
-ctx.fillRect(415,210,70,50);
-ctx.fillRect(415,275,70,50);
-ctx.fillRect(415,340,70,50);
+ctx.fillRect(440,235,70,50);
+ctx.fillRect(440,300,70,50);
+ctx.fillRect(440,365,70,50);
 
 //trait boxes
 ctx.fillStyle = `#00e371`;
-ctx.fillRect(10,400,230,50);
-ctx.fillRect(257,400,230,50);
+ctx.fillRect(35,425,230,50);
+ctx.fillRect(282,425,230,50);
 
 //weapon attacks (text as well)
 ctx.font = "30px FONTSTUCK";
@@ -245,14 +261,29 @@ for(i=0;i<4;i++){
 ctx.shadowOffsetX = 5;
 ctx.shadowOffsetY = 5;
 ctx.strokeStyle = tempcolor;
-ctx.strokeRect(15,465+(70*i),470,50);
+ctx.strokeRect(40,490+(70*i),470,50);
 ctx.shadowOffsetX = 0;
 ctx.shadowOffsetY = 0;
 ctx.fillStyle =`#ffffff`;
-ctx.fillRect(15,465+(70*i),470,50);
+ctx.fillRect(40,490+(70*i),470,50);
 ctx.fillStyle =tempcolor;
-ctx.fillText(actions[i],260,505+(70*i));
+ctx.fillText(actions[i].toUpperCase(),285,530+(70*i));
 
+}
+ctx.fillStyle = `#00e371`;
+ctx.shadowOffsetX = 5;
+ctx.shadowOffsetY = 5;
+//back of card trait boxes
+ctx.fillRect(760,35,200,40);
+ctx.fillRect(730,85,405,40);
+ctx.fillRect(760,135,200,40);
+ctx.fillRect(730,185,405,40);
+//back of card action boxes
+for(i=0;i<4;i++){
+ctx.fillRect(670,290+(i*120),200,50);
+ctx.fillRect(890,290+(i*120),50,50);
+ctx.fillRect(950,290+(i*120),50,50);
+ctx.fillRect(670,350+(i*120),465,50);
 }
 //-------settings for all the text----------
 
@@ -264,48 +295,60 @@ ctx.font = "32px Courier Standard Bold";
 
 //Title Bar
 ctx.font = applyText(canvas,item[0],370);
-ctx.fillText(item[0],195,45);
+ctx.fillText(item[0],220,70);
 
 //code and tier
 ctx.font = "32px Courier Standard Bold";
-ctx.fillText(item[1],110,115);
-ctx.fillText(`TIER ${item[2]}`,325,115);
+ctx.fillText(item[1],135,140);
+ctx.fillText(`TIER ${item[2]}`,350,140);
 
 //-kind text
-ctx.fillText(weaponkind.toUpperCase(),167,180);
+ctx.fillText(weaponkind.toUpperCase(),192,205);
 
 
 //grist img & text
-ctx.drawImage(gristList[gristType],13,212,50,50);
-ctx.fillText(gristName.toUpperCase(),197,245);
-ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].effective[0])],93,277,50,50);
-ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].effective[1])],153,277,50,50);
-ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].effective[2])],213,277,50,50);
-ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].effective[3])],273,277,50,50);
-ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].ineffective[0])],93,337,50,50);
-ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].ineffective[1])],153,337,50,50);
-ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].ineffective[2])],213,337,50,50);
-ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].ineffective[3])],273,337,50,50);
+ctx.drawImage(gristList[gristType],38,237,50,50);
+ctx.fillText(gristName.toUpperCase(),222,270);
+ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].effective[0])],118,302,50,50);
+ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].effective[1])],178,302,50,50);
+ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].effective[2])],238,302,50,50);
+ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].effective[3])],298,302,50,50);
+ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].ineffective[0])],118,362,50,50);
+ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].ineffective[1])],178,362,50,50);
+ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].ineffective[2])],238,362,50,50);
+ctx.drawImage(gristList[client.gristTypes.indexOf(client.grist[gristName].ineffective[3])],298,362,50,50);
 ctx.font = "22px Courier Standard Bold";
-ctx.fillText("EFF.",50,310);
-ctx.fillText("INEFF.",50,370);
+ctx.fillText("EFF.",75,335);
+ctx.fillText("INEFF.",75,395);
 
 //damage text
-ctx.fillText("Lvl",370,175);
-ctx.fillText("Dmg",450,175);
-ctx.fillText("1",370,240);
-ctx.fillText("2",370,305);
-ctx.fillText("3",370,370);
-ctx.fillText(tierDmg[item[2]],450,240);
-ctx.fillText(tierDmg[item[2]]*2,450,305);
-ctx.fillText(tierDmg[item[2]]*3,450,370);
+ctx.fillText("Lvl",395,200);
+ctx.fillText("Dmg",475,200);
+ctx.fillText("1",395,265);
+ctx.fillText("2",395,330);
+ctx.fillText("3",395,395);
+ctx.fillText(tierDmg[item[2]],475,265);
+ctx.fillText(tierDmg[item[2]]*2,475,330);
+ctx.fillText(tierDmg[item[2]]*3,475,395);
 
 //trait text
 ctx.font = "30px Courier Standard Bold";
-ctx.fillText(trait1,125,433);
-ctx.fillText(trait2,375,433);
+ctx.fillText(trait1,150,458);
+ctx.fillText(trait2,400,458);
 
+//backside trait text
+ctx.fillText(trait1,860,65);
+ctx.fillText(trait2,860,165);
+//backside action text
+for(i=0;i<4;i++){
+  ctx.font = applyText(canvas,actions[i].toUpperCase(),200);
+ctx.fillText(actions[i].toUpperCase(),770,325+(120*i));
+ctx.fillText(client.actionList[actions[i]].cst,915,324+(120*i));
+ctx.fillText(client.actionList[actions[i]].dmg,975,325+(120*i));
+  ctx.font = applyText(canvas,client.actionList[actions[i]].aa,460);
+ctx.fillText(client.actionList[actions[i]].aa,903,385+(120*i));
 
+}
 let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'captchacard.png');
 message.channel.send(attachment);
 
