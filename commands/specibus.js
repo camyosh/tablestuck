@@ -110,7 +110,7 @@ if(value >= spec.length || value < 0) {
   return;
 };
 
-message.channel.send(client.traitcall.inspectItem(client,spec[value]));
+  client.traitcall.inspectItem(client,dex[value],message);
 
 }
 

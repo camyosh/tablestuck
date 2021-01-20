@@ -4,17 +4,13 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
+
   if(strifecall.strifeTest(client, message, message.author) == true){
     message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
     return;
   }
 
   var charid = message.guild.id.concat(message.author.id);
-
   let local = client.playerMap.get(charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
@@ -80,6 +76,6 @@ if(!args[0]){
 
   //decypher captcha code and convert into weapon information
 
-  message.channel.send(client.traitcall.inspectItem(client,dex[value]));
+  client.traitcall.inspectItem(client,dex[value],message);
 
 }
