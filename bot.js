@@ -48,8 +48,8 @@ const strifeMap = new Enmap({
   dataDir:"../data"
 })
 
-const sessionMap = new Enmap({
-  name: "sessionData",
+const npcMap = new Enmap({
+  name: "npcData",
   dataDir:"../data"
 })
 
@@ -78,7 +78,7 @@ client.cache = [20,22,24,26,28,30,32,34,36,38,40,44,48,52,56,60,64,68,72,76,80,8
 client.auth = auth;
 client.playerMap = playerMap;
 client.landMap = landMap;
-client.sessionMap = sessionMap;
+client.npcMap = npcMap;
 client.grist = grist;
 //client.creds = creds;
 client.Discord = Discord;

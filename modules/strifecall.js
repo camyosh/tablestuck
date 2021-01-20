@@ -196,8 +196,13 @@ try{
     }
 
   } else {
+
+
+    let underling = client.playerMap.get(list[target][1],"type");
+
+
     try{
-      if(list[target][1]=="unicorn"||list[target][1]=="kraken"||list[target][1]=="hecatoncheires"||list[target][1]=="denizen"){
+      if(underling=="unicorn"||underling=="kraken"||underling=="hecatoncheires"||underling=="denizen"){
         increase = client.playerMap.get(message.guild.id.concat(message.author.id),"bossesDefeated");
         increase++;
         client.playerMap.set(message.guild.id.concat(message.author.id),increase,"bossesDefeated");
@@ -220,7 +225,6 @@ try{
 
     let primaryType = list[target][2];
     let secondType;
-    let underling = list[target][1];
     let xp = client.underlings[underling].xp;
     let ranroll = (Math.floor((Math.random() * 8) + 1)) + (Math.floor((Math.random() * 20) + 1));
     let repgrist = "build";
@@ -803,7 +807,7 @@ exports.turnTest = function(client, message, local) {
 
 }
 
-exports.underSpawn = function(client, local, sec) {
+exports.underSpawn = function(client, local, sec, sessionID) {
 //chance to spawn an underling everytime a player moves in house or on underling tile
 //roll random numbers to decide what underlings spawn where under specific circumstance
   let area = sec[local[1]][local[2]];
@@ -855,14 +859,19 @@ spawnBank = Math.ceil(Math.random() * 2);
 } else {
 spawnBank = Math.ceil(Math.random() * 6);
 }
+
+let npcCount = client.landMap.get(sessionID,"npcCount");
+
 while(spawnBank!=0){
 let cost = Math.ceil(Math.random() * underlingChoice.length);
 
   if((spawnBank-(cost)) >= 0){
-  sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,underlingChoice[cost-1]));
+  npcCount++;
+  sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,underlingChoice[cost-1],sessionID,npcCount));
   spawnBank = spawnBank - (cost);
 }
 }
+client.landMap.set(sessionID,npcCount,"npcCount");
 return sec;
 }
 
@@ -2301,11 +2310,33 @@ if(list[active[ik]][3] < 1){
   }
 }
 
-  function underSpawn(client,local,underling){
-    let landGrist = client.landMap.get(local[4],"grist");
-    let occset = [false,underling,landGrist[Math.floor((Math.random() * 4))]];
+  function underSpawn(client,local,underling,sessionID,npcCount){
 
-    let sec = client.landMap.get(local[4],local[0]);
+    let landGrist = client.landMap.get(local[4],"grist");
+    let grist = landGrist[Math.floor((Math.random() * 4))];
+
+    let npcSet = {
+      name: `${grist} ${underling}`,
+      type: underling,
+      faction: "underling",
+      grist: grist,
+      strife:false,
+      pos:0,
+      alive:true,
+      local:local,
+      inv:[],
+      equip:0,
+      trinket:[],
+      armor:[],
+      weapon:[],
+      prototype:[]
+    }
+
+    npcID = `n${sessionID}/${npcCount}`;
+
+    client.playerMap.set(npcID,npcSet);
+
+    let occset = [false,npcID,grist];
 
     //sec[local[1]][local[2]][2][local[3]][4].push(occset);
 

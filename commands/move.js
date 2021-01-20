@@ -19,6 +19,7 @@ exports.run = (client, message, args) => {
   //declare variables
 
   var charid = message.guild.id.concat(message.author.id);
+  var sessionID = message.guild.id+="medium";
   var occset = [true,charid];
   let msg = ``;
   let local = client.playerMap.get(charid,"local");
@@ -88,10 +89,10 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       /*if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
-      sec =  strifecall.underSpawn(client,local,sec);
+      sec =  strifecall.underspawn(client,local,sec,sessionID);
     }*/
       if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
-        sec =  strifecall.underSpawn(client,local,sec);
+        sec =  strifecall.underspawn(client,local,sec,sessionID);
         funcall.actionCheck(client,message,"tile");
       } else {
         funcall.actionCheck(client,message);
@@ -129,7 +130,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
-        sec =  strifecall.underSpawn(client,local,sec);
+        sec =  strifecall.underspawn(client,local,sec,sessionID);
         funcall.actionCheck(client,message,"tile");
       } else {
         funcall.actionCheck(client,message);
@@ -165,7 +166,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
-        sec =  strifecall.underSpawn(client,local,sec);
+        sec =  strifecall.underspawn(client,local,sec,sessionID);
         funcall.actionCheck(client,message,"tile");
       } else {
         funcall.actionCheck(client,message);
@@ -203,7 +204,7 @@ exports.run = (client, message, args) => {
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
       if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
-        sec =  strifecall.underSpawn(client,local,sec);
+        sec =  strifecall.underspawn(client,local,sec,sessionID);
         funcall.actionCheck(client,message,"tile");
       } else {
         funcall.actionCheck(client,message);
@@ -272,7 +273,7 @@ exports.run = (client, message, args) => {
     funcall.actionCheck(client,message);
     if(sec[local[1]][local[2]][2][local[3]][4].length <= 1&&local[4]!=message.guild.id+"medium"){
 
-    sec =  strifecall.underSpawn(client,local,sec);
+    sec =  strifecall.underspawn(client,local,sec,sessionID);
     }
 
     client.playerMap.set(charid,local,"local");

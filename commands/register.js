@@ -24,6 +24,7 @@ castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]
 
   var medium = {
     playerList:[],
+    npcCount:0,
     prototype:[],
     prospitList:[],
     derseList:[],
