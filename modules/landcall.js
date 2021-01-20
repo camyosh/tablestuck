@@ -455,6 +455,7 @@ const plnode = await client.Canvas.loadImage(`./MAP/PLNODE.png`);
 const nodef = await client.Canvas.loadImage(`./MAP/NODEF.png`);
 const gate = await client.Canvas.loadImage(`./MAP/GATE.gif`);
 const plgate = await client.Canvas.loadImage(`./MAP/PLGATE.gif`);
+const drgate = await client.Canvas.loadImage(`./MAP/DRGATE.gif`);
 const boss = await client.Canvas.loadImage(`./MAP/BOSS.png`);
 const plboss = await client.Canvas.loadImage(`./MAP/BOSSPL.png`);
 const bossf = await client.Canvas.loadImage(`./MAP/BOSSFOG.png`);
@@ -462,7 +463,7 @@ const denizen = await client.Canvas.loadImage(`./MAP/DENIZEN.png`);
 const pldenizen = await client.Canvas.loadImage(`./MAP/DENIZENPL.png`);
 const denizenf = await client.Canvas.loadImage(`./MAP/DENIZENFOG.png`);
 const darkblank = await client.Canvas.loadImage(`./MAP/DARKBLANK.png`);
-let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,ax,boss,plboss,bossf,denizen,pldenizen,denizenf];
+let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,drgate,boss,plboss,bossf,denizen,pldenizen,denizenf];
 if(!mini){
 const canvas = client.Canvas.createCanvas(404,424);
 const ctx = canvas.getContext('2d');

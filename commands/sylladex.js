@@ -49,6 +49,6 @@ if(value >= dex.length || value < 0) {
   return;
 };
 
-message.channel.send(client.traitcall.inspectItem(client,dex[value]));
+  client.traitcall.inspectItem(client,dex[value],message);
 
 }
