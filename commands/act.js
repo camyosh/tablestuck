@@ -115,11 +115,7 @@ exports.run = (client, message, args) => {
     let msg = ``;
     let i;
     for(i=0;i<active.length;i++){
-      if(list[active[i]][0]==true){
         msg += `**[${i+1}]** **${client.playerMap.get(list[active[i]][1],"name").toUpperCase()}** [VIT - ${list[active[i]][3]}]\n\n`
-      } else {
-        msg += `**[${i+1}]**  **${list[active[i]][2].toUpperCase()} ${list[active[i]][1].toUpperCase()}** [VIT - ${list[active[i]][3]}]\n\n`
-      }
     }
 
     let embed = new client.Discord.MessageEmbed()

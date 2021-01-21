@@ -274,15 +274,18 @@ ctx.fillStyle = `#00e371`;
 ctx.shadowOffsetX = 5;
 ctx.shadowOffsetY = 5;
 //back of card trait boxes
-ctx.fillRect(760,35,200,40);
-ctx.fillRect(730,85,405,40);
-ctx.fillRect(760,135,200,40);
-ctx.fillRect(730,185,405,40);
+ctx.fillRect(760,40,200,35);
+ctx.fillRect(760,155,200,35);
+ctx.fillStyle = `#d9ead3`
+ctx.fillRect(730,80,405,70);
+ctx.fillRect(730,195,405,70);
 //back of card action boxes
 for(i=0;i<4;i++){
+  ctx.fillStyle = `#00e371`;
 ctx.fillRect(670,290+(i*120),200,50);
 ctx.fillRect(890,290+(i*120),50,50);
 ctx.fillRect(950,290+(i*120),50,50);
+ctx.fillStyle = `#d9ead3`
 ctx.fillRect(670,350+(i*120),465,50);
 }
 //-------settings for all the text----------
@@ -338,7 +341,7 @@ ctx.fillText(trait2,400,458);
 
 //backside trait text
 ctx.fillText(trait1,860,65);
-ctx.fillText(trait2,860,165);
+ctx.fillText(trait2,860,180);
 //backside action text
 for(i=0;i<4;i++){
   ctx.font = applyText(canvas,actions[i].toUpperCase(),200);

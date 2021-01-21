@@ -45,11 +45,7 @@ if(!args[0]){
 }else{
   //list all occupants in room
   for(j=0;j<occList.length&&j<10;j++){
-    if(occList[j][0]==true){
       occ += `**${client.playerMap.get(occList[j][1],"name")}**\n\n`
-    } else {
-      occ += `**${occList[j][2]} ${occList[j][1]}**\n\n`
-    }
   }
 }
   sylladexPrint = new client.Discord.MessageEmbed()

@@ -102,13 +102,9 @@ function passTurn(client, message, local) {
 
   //determine if character passing turn is a player or underling
 
-  if(list[init[turn][0]][0]==true) {
 
    msg = `${client.playerMap.get(list[init[turn][0]][1],"name")} passes their turn!`;
 
- } else {
-   msg = `The ${list[init[turn][0]][2]} ${list[init[turn][0]][1]} passes its turn!`;
- }
 
  //send passing turn message to every participating player's terminal channel
 
@@ -319,6 +315,7 @@ try{
       client.playerMap.set(charid,grist,"grist");
 }
 //call function to remove the dead target from strife
+      client.playerMap.delete(list[target][1]);
       leaveStrife(client,message,local,target);
       if(active.length<=1){
         message.channel.send(`Last Underling defeated!`);
@@ -438,8 +435,8 @@ client.channels.cache.get(chan).send("Leaving Strife!");
   let active = client.strifeMap.get(strifeLocal,"active");
   let sec = client.landMap.get(local[4],local[0]);
 
-  let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1] && occpos[2] === list[pos][2]),1)];
-
+//  let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1] && occpos[2] === list[pos][2]),1)];
+  let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1)];
   /*for(i=0;i<sec[local[1]][local[2]][2][local[3]][4].length;i++){
 
     if(sec[local[1]][local[2]][2][local[3]][4][i][1]==list[pos][1]&&sec[local[1]][local[2]][2][local[3]][4][i][2]==list[pos][2]){
@@ -716,7 +713,10 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
 
     //list[init[turn][0]][5]=0;
 //if turn is underling, roll stamina based on underling document
-    stamroll = [Math.floor((Math.random() * client.underlings[list[init[turn][0]][1]].stm) + 1),Math.floor((Math.random() * client.underlings[list[init[turn][0]][1]].stm) + 1)];
+
+let underling = client.playerMap.get(list[init[turn][0]][1],"type");
+
+    stamroll = [Math.floor((Math.random() * client.underlings[underling].stm) + 1),Math.floor((Math.random() * client.underlings[underling].stm) + 1)];
 
     if(stamfav==0){
       stamina=stamroll[0];
@@ -756,12 +756,12 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true){
         let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(` The ${list[init[turn][0]][2]} ${list[init[turn][0]][1]} starts its turn with ${stamsg} STAMINA!${alert}`);
+        client.channels.cache.get(chan).send(` The ${client.playerMap.get(list[init[turn][0]][1],"name")} starts its turn with ${stamsg} STAMINA!${alert}`);
       }
     }
 
 
-    underTurn(client,message,local,list[init[turn][0]][1]);
+    underTurn(client,message,local,underling);
 
   }
 
@@ -860,7 +860,7 @@ spawnBank = Math.ceil(Math.random() * 2);
 spawnBank = Math.ceil(Math.random() * 6);
 }
 
-let npcCount = client.landMap.get(sessionID,"npcCount");
+let npcCount = client.landMap.get(sessionID+"medium","npcCount");
 
 while(spawnBank!=0){
 let cost = Math.ceil(Math.random() * underlingChoice.length);
@@ -871,7 +871,7 @@ let cost = Math.ceil(Math.random() * underlingChoice.length);
   spawnBank = spawnBank - (cost);
 }
 }
-client.landMap.set(sessionID,npcCount,"npcCount");
+client.landMap.set(sessionID+"medium",npcCount,"npcCount");
 return sec;
 }
 
@@ -892,7 +892,7 @@ exports.underRally = function(client, local) {
 
     if(occList[i][0]==false){
 
-      let profile = [false,occList[i][1],occList[i][2],client.underlings[occList[i][1]].vit,0,0,[],[]]
+      let profile = [false,occList[i][1],client.playerMap.get(occList[i][1],"grist"),client.underlings[client.playerMap.get(occList[i][1],"type")].vit,0,0,[],[]]
 
       let list = client.strifeMap.get(strifeLocal,"list");
       let init = client.strifeMap.get(strifeLocal,"init");
@@ -1036,17 +1036,17 @@ exports.underRally = function(client, local) {
 
     } else {
       //if player is underling, get information from underling document
-      dmg = client.underlings[list[init[turn][0]][1]].d;
-      bdroll = client.underlings[list[init[turn][0]][1]].bd;
+
+      let underling = client.playerMap.get(list[init[turn][0]][1],"type");
+      dmg = client.underlings[underling].d;
+      bdroll = client.underlings[underling].bd;
       grist = list[init[turn][0]][2];
-      attName = `${list[init[turn][0]][2]} ${list[init[turn][0]][1]}`
+      attName = `${client.playerMap.get(list[init[turn][0]][1],"name")}`
     }
 //if target is player, retrieve name from database, if underling default underling name
-    if(list[target][0]==true){
+
       targName = client.playerMap.get(list[target][1],"name");
-    } else {
-      targName = `${list[target][2]} ${list[target][1]}`
-    }
+
 
     let brroll;
     let av;
@@ -1065,8 +1065,8 @@ exports.underRally = function(client, local) {
 
     } else {
       //if underling, retrieve armor information from underling doc
-      av = client.underlings[list[target][1]].av;
-      brroll = client.underlings[list[target][1]].bd;
+      av = client.underlings[client.playerMap.get(list[target][1],"type")].av;
+      brroll = client.underlings[client.playerMap.get(list[target][1],"type")].bd;
     }
 
     let effective = "HIT!"
@@ -1228,9 +1228,9 @@ exports.underRally = function(client, local) {
                   dmgLvl=2;
                 }
               } else {
-                if(list[init[turn][0]][3]<Math.floor(client.underlings[list[init[turn][0]][1]].vit/4)){
+                if(list[init[turn][0]][3]<Math.floor(client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit/4) ){
                   dmgLvl=3;
-                } else if(list[init[turn][0]][3]<Math.floor(client.underlings[list[init[turn][0]][1]].vit/2)) {
+                } else if(list[init[turn][0]][3]<Math.floor(client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit/2)) {
                   dmgLvl=2;
                 }
               }
@@ -1832,8 +1832,8 @@ if(aa.includes("RANDSTATUS")){
           list[target][3]=client.playerMap.get(list[target][1],"gel");
         }
       } else {
-        if(client.underlings[list[target][1]].vit<list[target][3]){
-          list[target][3]=client.underlings[list[target][1]].vit;
+        if(client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit<list[target][3]){
+          list[target][3]=client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit;
         }
       }
 
@@ -1849,8 +1849,8 @@ if(aa.includes("RANDSTATUS")){
         list[target][3]=client.playerMap.get(list[target][1],"gel");
       }
     } else {
-      if(client.underlings[list[target][1]].vit<list[target][3]){
-        list[target][3]=client.underlings[list[target][1]].vit;
+      if(client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit<list[target][3]){
+        list[target][3]=client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit;
       }
     }
     }
