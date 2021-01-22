@@ -152,20 +152,26 @@ regImport();
   let derseList = client.landMap.get(message.guild.id+"medium","derseList");
 
   let lunarSway;
+  let repDef=[0,0];
 
   if(prospitList.length==derseList.length){
     if(!Math.floor(Math.random()*2)){
       lunarSway="dm";
+      repDef=[-10,10]
       derseList.push(charid);
     } else {
       lunarSway="pm";
+
+      repDef=[10,-10]
       prospitList.push(charid);
     }
   }else if(prospitList>derseList){
     lunarSway="dm";
+    repDef=[-10,10]
     derseList.push(charid);
   }else{
     lunarSway="pm";
+    repDef=[10,-10]
     prospitList.push(charid);
   }
 
@@ -192,6 +198,8 @@ regImport();
     name: message.author.username,
     ping: message.author.id,
     channel: message.channel.id,
+    faction:"player",
+    type:"player",
     act:0,
     lunarSway:lunarSway,
     strife:false,
@@ -239,7 +247,11 @@ regImport();
     chumhandle:chumhandle,
     chumpic:message.author.avatarURL(),
     chumroll:[],
-    pesterchannel:message.channel.id
+    pesterchannel:message.channel.id,
+    prospitRep:repDef[0],
+    derseRep:repDef[1],
+    underlingRep:-1,
+    playerRep:0
   };
 
 client.playerMap.set(charid,charSheet);

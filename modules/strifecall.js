@@ -468,6 +468,7 @@ function startTurn(client, message, local) {
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let list = client.strifeMap.get(strifeLocal,"list");
   let init = client.strifeMap.get(strifeLocal,"init");
+  let type = client.playerMap.get(list[init[turn][0]][1],"type");
   let i;
 //reset actions taken this turn
   list[init[turn][0]][6]=[];
@@ -550,8 +551,11 @@ function startTurn(client, message, local) {
     }
   }
 //check if player or underling
-  if(list[init[turn][0]][0]==true){
+
+
 //roll player stamina
+  stamMax = client.underlings[type].stm;
+
 
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CHARLATAN")[0]){
 
@@ -570,19 +574,18 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
   stamfav++;
 }
 
-    let stamroll;
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[1]){
 
-      stamroll = [Math.floor((Math.random() * 4) + 5),Math.floor((Math.random() * 4) + 5)];
+      stamroll = [Math.floor((Math.random() * stamMax/2) + Math.floor(stamMax/2)+1),Math.floor((Math.random() * stamMax/2) + Math.floor(stamMax/2)+1)];
 
     } else if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[0]){
 
-      stamroll = [Math.floor((Math.random() * 6) + 3),Math.floor((Math.random() * 6) + 3)];
+      stamroll = [Math.floor((Math.random() * (stamMax-stamMax/4)) + Math.floor(stamMax/4)+1),Math.floor((Math.random() * (stamMax-stamMax/4)) + Math.floor(stamMax/4)+1)];
 
     } else {
 
-    stamroll = [Math.floor((Math.random() * 8) + 1),Math.floor((Math.random() * 8) + 1)];
+    stamroll = [Math.floor((Math.random() * stamMax) + 1),Math.floor((Math.random() * stamMax) + 1)];
 
   }
 
@@ -680,11 +683,13 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
 
 
 //retrieve player channel information
+
+if(client.playerMap.has(list[init[turn][0]][1],"channel")){
     let chan = client.playerMap.get(list[init[turn][0]][1],"channel");
     let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
 //send message to player's channel
     client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actionList you can take with >act, and >pass your turn once you're done!${alert}`);
-
+}
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
         let chan = client.playerMap.get(list[active[i]][1],"channel");
@@ -709,7 +714,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
     act(client,message,local,action,heartTarg)
     }
 
-  } else {
+  /*}  else {
 
     //list[init[turn][0]][5]=0;
 //if turn is underling, roll stamina based on underling document
@@ -761,8 +766,13 @@ let underling = client.playerMap.get(list[init[turn][0]][1],"type");
     }
 
 
-    underTurn(client,message,local,underling);
+    //underTurn(client,message,local,underling);
 
+    npcTurn(client,message,local);
+  }*/
+
+  if(!list[init[turn][0]][0]){
+    npcTurn(client,message,local);
   }
 
 }
@@ -892,7 +902,7 @@ exports.underRally = function(client, local) {
 
     if(occList[i][0]==false){
 
-      let profile = [false,occList[i][1],client.playerMap.get(occList[i][1],"grist"),client.underlings[client.playerMap.get(occList[i][1],"type")].vit,0,0,[],[]]
+      let profile = [false,occList[i][1],client.playerMap.get(occList[i][1],"grist"),client.playerMap.get(occList[i][1],"vit"),0,0,[],[]]
 
       let list = client.strifeMap.get(strifeLocal,"list");
       let init = client.strifeMap.get(strifeLocal,"init");
@@ -1014,35 +1024,28 @@ exports.underRally = function(client, local) {
     let targName = "Target"
     let attName = "Attacker"
 //check if current turn is a player
-    if(list[init[turn][0]][0]==true){
-
-      try{
-        //retrieve player information
-        let specibus = client.playerMap.get(list[init[turn][0]][1],"spec");
-        let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
-
-        grist = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(specibus[equip][1].charAt(1))]];
-        dmg = tierDmg[specibus[equip][2]];
-        bdroll = tierBD[specibus[equip][2]];
-        attName = client.playerMap.get(list[init[turn][0]][1],"name");
-      } catch(err) {
 
 
-        grist = "artifact";
-        dmg = 5;
-        bdroll = [1,4];
-        attName = client.playerMap.get(list[init[turn][0]][1],"name");
-      }
 
-    } else {
-      //if player is underling, get information from underling document
+let specibus = client.playerMap.get(list[init[turn][0]][1],"spec");
+let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
 
-      let underling = client.playerMap.get(list[init[turn][0]][1],"type");
-      dmg = client.underlings[underling].d;
-      bdroll = client.underlings[underling].bd;
-      grist = list[init[turn][0]][2];
-      attName = `${client.playerMap.get(list[init[turn][0]][1],"name")}`
-    }
+if(specibus.length>0){
+
+grist = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(specibus[equip][1].charAt(1))]];
+dmg = tierDmg[specibus[equip][2]];
+bdroll = tierBD[specibus[equip][2]];
+
+} else {
+  let underling = client.playerMap.get(list[init[turn][0]][1],"type");
+  dmg = client.underlings[underling].d;
+  bdroll = client.underlings[underling].bd;
+  grist = list[init[turn][0]][2];
+
+}
+
+
+attName = client.playerMap.get(list[init[turn][0]][1],"name");
 //if target is player, retrieve name from database, if underling default underling name
 
       targName = client.playerMap.get(list[target][1],"name");
@@ -1051,20 +1054,13 @@ exports.underRally = function(client, local) {
     let brroll;
     let av;
 //if target is player
-    if(list[target][0]==true){
-//retrieve target armor
-      try{
-        let armor = client.playerMap.get(list[target][1],"armor");
 
-        av = tierAv[armor[0][2]];
-        brroll = tierBD[armor[0][2]];
-      } catch(err) {
-        av = 1;
-        brroll = [1,2];
-      }
+    let armor = client.playerMap.get(list[target][1],"armor");
 
+    if(armor.length>0){
+      av = tierAv[armor[0][2]];
+      brroll = tierBD[armor[0][2]];
     } else {
-      //if underling, retrieve armor information from underling doc
       av = client.underlings[client.playerMap.get(list[target][1],"type")].av;
       brroll = client.underlings[client.playerMap.get(list[target][1],"type")].bd;
     }
@@ -2315,22 +2311,55 @@ if(list[active[ik]][3] < 1){
     let landGrist = client.landMap.get(local[4],"grist");
     let grist = landGrist[Math.floor((Math.random() * 4))];
 
+    let sessionProto = client.landMap.get(sessionID+"medium",`prototype`);
+    let protoCheck = [];
+
+    for(let i=0; i<sessionProto.length; i++){
+      protoCheck.push(i);
+    }
+
+    let undername = ``;
+    let prototype = [];
+    let protoCount = Math.ceil(Math.random()*3);
+    if(sessionProto.length<protoCount){
+      prototype = sessionProto;
+    } else {
+      for(i=0;i<protoCount;i++){
+        prototype.push(sessionProto[protoCheck.splice(Math.floor(Math.random()*protoCheck.length),1)]);
+      }
+    }
+    for(i=0;i<prototype.length;i++){
+      undername += prototype[i][0]+` `;
+    }
+
     let npcSet = {
-      name: `${grist} ${underling}`,
+      name: `${grist.toUpperCase()} ${undername}${underling.toUpperCase()}`,
       type: underling,
       faction: "underling",
+      vit:client.underlings[underling].vit,
+      gel:client.underlings[underling].vit,
       grist: grist,
       strife:false,
       pos:0,
       alive:true,
       local:local,
-      inv:[],
+      sdex:[],
       equip:0,
       trinket:[],
       armor:[],
-      weapon:[],
-      prototype:[]
+      spec:[],
+      equip:0,
+      scards:1,
+      kinds:[],
+      port:1,
+      prototype:prototype,
+      prospitRep:0,
+      derseRep:0,
+      underlingRep:0,
+      playerRep:-1,
+      prefTarg:[]
     }
+    //rep [prospit,derse,underling,player]
 
     npcID = `n${sessionID}/${npcCount}`;
 
@@ -2385,5 +2414,103 @@ if(list[active[ik]][3] < 1){
       setTimeout(passTurn,6000,client,message,local);
     break;
   }
+
+}
+
+function npcTurn(client, message, local){
+
+  let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
+
+  let playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+  let active = client.strifeMap.get(strifeLocal,"active")
+
+  let list = client.strifeMap.get(strifeLocal,"list")
+  let turn = client.strifeMap.get(strifeLocal,"turn")
+  let init = client.strifeMap.get(strifeLocal,"init")
+
+  let faction = client.playerMap.get(list[init[turn][0]][1],"faction");
+  let spec = client.playerMap.get(list[init[turn][0]][1],"spec");
+  let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
+  let type = client.playerMap.get(list[init[turn][0]][1],"type");
+  let prototype = client.playerMap.get(list[init[turn][0]][1],"prototype");
+
+  let prefTarg = client.playerMap.get(list[init[turn][0]][1],"prefTarg");
+
+  let targetList = [];
+
+  //create a list of targets based on faction reputation.
+
+  if(prefTarg.length>0&&active.includes(prefTarg[0])){
+    targetList=prefTarg;
+  }else{
+
+  for(let i=0;i<active.length;i++){
+    if(client.playerMap.get(list[active[i]][1],`${faction}Rep`)<0){
+      targetList.push(active[i]);
+    }
+  }
+}
+//randomly decide target from list
+  let target = targetList[Math.floor((Math.random() * targetList.length))];
+
+  let actionSet = [];
+  let tempAct;
+  if(spec.length==0){
+
+    tempAct=client.underlings[type].act;
+
+    for(let i=0;i<tempAct.length;i++){
+      console.log(tempAct[0])
+      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("reuse")))&&tempAct!="no action"){
+        actionSet.push(tempAct[i]);
+        console.log(actionSet);
+      }
+    }
+
+  }else{
+    let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
+    for(let i=0;i<4;i++){
+      tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(spec[equip][1].charAt(i+4))]];
+      console.log(tempAct);
+      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("reuse")))&&tempAct!="no action"){
+        actionSet.push(tempAct);
+      }
+
+    }
+  }
+  for(let j =0;j<prototype.length;j++){
+    let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(prototype[j][1].charAt(0))]];
+    for(let i=0;i<4;i++){
+      tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]];
+      console.log(tempAct);
+      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("reuse")))&&tempAct!="no action"){
+        actionSet.push(tempAct);
+  }
+}
+}
+
+    if(actionSet.length>0){
+
+      let action = actionSet[Math.floor((Math.random() * actionSet.length))];
+      list[init[turn][0]][5]-=client.actionList[action].cst;
+      client.strifeMap.set(strifeLocal,list,"list");
+
+      if(action=="arf"){
+        targetList=[];
+        for(let i=0;i<active.length;i++){
+          if(client.playerMap.get(list[active[i]][1],`${faction}Rep`)>0){
+            targetList.push(active[i]);
+          }
+        }
+        target = targetList[Math.floor((Math.random() * targetList.length))];
+      }
+
+      setTimeout(act,1500,client,message,local,action,target);
+      setTimeout(npcTurn,3000,client,message,local,action,target);
+
+    }else{
+      setTimeout(passTurn,1500,client,message,local);
+    }
+
 
 }

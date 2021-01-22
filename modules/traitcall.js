@@ -11,6 +11,18 @@ exports.traitCheck = function(client,target,traitName){
   let armor = client.playerMap.get(target,"armor");
   let trinket = client.playerMap.get(target,"trinket");
   //Check weapon first\
+  let prototype = [];
+  if(client.playerMap.has(target,"prototype")){
+    prototype = client.playerMap.get(target,"prototype");
+    for(i=0;i<prototype.length;i++){
+      if(client.traitList[client.captchaCode.indexOf(prototype[i][1].charAt(2))]==traitName){
+        traitCount++;
+      }
+      if(client.traitList2[client.captchaCode.indexOf(prototype[i][1].charAt(3))]==traitName){
+        traitCount++;
+      }
+    }
+  }
 
   if(specibus.length != 0){
 
@@ -150,8 +162,9 @@ const tar = await client.Canvas.loadImage(`./GRIST/TAR.png`);
 const uranium= await client.Canvas.loadImage(`./GRIST/URANIUM.png`);
 const zillium = await client.Canvas.loadImage(`./GRIST/ZILLIUM.png`);
 const build = await client.Canvas.loadImage(`./GRIST/BUILD.png`);
+const rainbow = await client.Canvas.loadImage(`./GRIST/RAINBOW.png`);
 
-let gristList = [artifact,uranium,amethyst,garnet,iron,marble,chalk,shale,cobalt,ruby,caulk,tar,amber,diamond,zillium,build];
+let gristList = [artifact,uranium,amethyst,garnet,iron,marble,chalk,shale,cobalt,ruby,caulk,tar,amber,diamond,zillium,build,rainbow];
 //draw the captcha card background (both sides of the card)
 //front
 ctx.strokeStyle = '#036b37';

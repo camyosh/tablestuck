@@ -6,7 +6,7 @@
 
     "d":5,
     "bd":[1,4],
-    "act":["AGGRIEVE","AGGRESS","AGGRAVATE","NO ACTION"],
+    "act":["aggrieve","astrict","asphixiate"],
     "stats":[0,0,0,0,0,0],
 
   "xp":2,
@@ -19,7 +19,7 @@
 
     "d":10,
     "bd":[1,10],
-    "act":["ASSAIL","ASSAULT","AGGRAVATE","NO ACTION"],
+    "act":["assail","assault"],
     "stats":[1,1,0,0,0,0],
 
   "xp":8,
@@ -32,7 +32,7 @@
 
     "d":20,
     "bd":[2,20],
-    "act":["ARBORIZE","ARSONATE","NO ACTION","NO ACTION"],
+    "act":["assimilate","arsonate"],
     "stats":[1,1,2,2,0,1],
 
     "xp":32,
@@ -45,7 +45,7 @@
 
     "d":40,
     "bd":[4,40],
-    "act":["ACQUIRE","ACCUPRESSURE","ACERBATE","ANNIHALATE"],
+    "act":["acquire","assimilate","astound","abate"],
     "stats":[0,0,0,3,3,3],
 
     "xp":128,
@@ -58,7 +58,7 @@
 
     "d":80,
     "bd":[8,80],
-    "act":["ASSURE","ASSAIL","ASSERT","ANNUL"],
+    "act":["assail","assault","assure","abolish"],
     "stats":[4,4,0,1,2,0],
 
     "xp":512,
@@ -71,10 +71,28 @@
 
     "d":160,
     "bd":[16,160],
-    "act":["ARTILLERATE","ABUSE","ARSONATE","ABSORB"],
+    "act":["abuse","absorb","arsonate","actualize"],
     "stats":[5,5,3,5,2,1],
 
     "xp":2048,
     "drop":3125
+  },
+  "player":{
+    "stm":8,
+    "av":1,
+
+    "d":1,
+    "bd":[1,2],
+    "act":["aggrieve"],
+    "stats":[0,0,0,0,0,0]
+  },
+  "sprite":{
+    "stm":8,
+    "av":3,
+
+    "d":5,
+    "bd":[1,4],
+    "act":["aggrieve"],
+    "stats":[0,0,0,0,0,0]
   }
 }

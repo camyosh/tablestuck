@@ -121,6 +121,44 @@ exports.run = (client, message, args) => {
       gristCheck[0] -= client.registry[phernalia[value[0]]].cost
     }
 
+
+    if(phernalia[value[0]]=="cruxtruder"){
+
+      let spriteID = `n${clientId}`;
+
+      var spriteSheet = {
+        name: `${client.playerMap.get(clientId,"name").toUpperCase()}'S SPRITE`,
+        type: "sprite",
+        faction: "player",
+        vit:100,
+        gel:100,
+        strife:false,
+        grist:"diamond",
+        pos:0,
+        alive:true,
+        local:clientLocal,
+        sdex:["h",0,0,value[1],clientId],
+        equip:0,
+        trinket:[],
+        armor:[],
+        spec:[],
+        equip:0,
+        scards:1,
+        kinds:[],
+        port:1,
+        prototype:[],
+        prospitRep:0,
+        derseRep:0,
+        underlingRep:-1,
+        playerRep:0,
+        prefTarg:[]
+      }
+      client.playerMap.set(spriteID,spriteSheet);
+
+      clientSec[0][0][2][value[1]][4].push([0,spriteID]);
+
+    }
+
     deployCheck[value[0]]=true
     client.playerMap.set(clientId,deployCheck,"deploy");
 
@@ -146,11 +184,13 @@ exports.run = (client, message, args) => {
     }
   }
 
+
   clientSec[0][0][2][value[1]][5].push(client.registry[phernalia[value[0]]].item);
   client.landMap.set(clientId,clientSec,"h");
   client.playerMap.set(clientId,gristCheck,"grist");
 
   message.channel.send(`Deployed the ${phernalia[value[0]].toUpperCase()}`)
+
 
 
 }

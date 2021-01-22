@@ -231,6 +231,11 @@ exports.run = (client, message, args) => {
 
 
       if(sdex[selectDex][0]=="CRUXITE ARTIFACT"){
+        let landName = client.landMap.get(charid,"name");
+      /*  if(client.landMap.get(charid,"enter")){
+          message.channel.send(`You've already entered the land of ${landName[0]} and ${landName[1]}`);
+          return;
+        }*/
 
         /*let sec1 = client.landMap.get(charid,"s1");
         let sec2 = client.landMap.get(charid,"s2");
@@ -251,12 +256,14 @@ exports.run = (client, message, args) => {
         sec3[gates[2][1]][gates[2][2]][1]=1;
         sec3[gates[2][1]][gates[2][2]][2]=[[0,0,"GATE 6",false,[],[]]];*/
 
-        let landName = client.landMap.get(charid,"name");
+        let mediumPrototype = client.landMap.get(message.guild.id+"medium","prototype");
+
+        let spriteProto = client.playerMap.get(`n${charid}`,"prototype");
+
+        client.landMap.set(message.guild.id+"medium",mediumPrototype.concat(spriteProto),"prototype");
+
         client.landMap.set(charid,true,"enter");
-        message.channel.send(`Entered the Land of ${landName[0]} and ${landName[1]}`)
-
-
-
+        message.channel.send(`Entered the Land of ${landName[0]} and ${landName[1]}`);
 
         return;
 
