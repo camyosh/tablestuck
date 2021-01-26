@@ -563,8 +563,8 @@ for(i=0;i<4;i++){//33
 for(i=0;i<2;i++){//31
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"court",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"court",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"COURT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"COURT",false,[],[]]]];
 }
 for(i=0;i<2;i++){//29
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
@@ -687,8 +687,13 @@ const plappartment = await client.Canvas.loadImage(`./MAP/PLAPPARTMENT.png`);
 const appartment = await client.Canvas.loadImage(`./MAP/APPARTMENT.png`);
 const plroad = await client.Canvas.loadImage(`./MAP/PLROAD.png`);
 const road = await client.Canvas.loadImage(`./MAP/ROAD.png`);
-
-let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,drgate,boss,plboss,bossf,denizen,pldenizen,denizenf];
+const chain = await client.Canvas.loadImage(`./MAP/CHAIN.png`);
+const plchain = await client.Canvas.loadImage(`./MAP/PLCHAIN.png`);
+const tower = await client.Canvas.loadImage(`./MAP/TOWERS.png`);
+const pltower = await client.Canvas.loadImage(`./MAP/PLTOWERS.png`);
+const castle = await client.Canvas.loadImage(`./MAP/CASTLE.png`);
+const plcastle = await client.Canvas.loadImage(`./MAP/PLCASTLE.png`);
+let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,drgate,boss,plboss,bossf,denizen,pldenizen,denizenf,prison,plprison,bank,plbank,library,pllibrary,police,plpolice,postal,plpostal,casino,plcasino,store,plstore,restaurant,plrestaurant,theatre,pltheatre,armory,plarmory,haberdashery,plhaberdashery,candyshop,plcandyshop,butcher,plbutcher,court,plcourt,appartment,plappartment,road,plroad,chain,plchain,tower,pltower,castle,plcastle];
 if(!mini){
 const canvas = client.Canvas.createCanvas(404,424);
 const ctx = canvas.getContext('2d');
@@ -722,10 +727,16 @@ let sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 1.png`);
     sectionTitleImg = await client.Canvas.loadImage(`./MAP/DENIZENLAIRTITLE.png`);
     break;
     case "p":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/PR.png`);
+    break;
     case "pm":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/PROSPIT_MOON.png`);
+    break;
     case "d":
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/DERSE.png`);
     case "dm":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 3.png`);
+    sectionTitleImg = await client.Canvas.loadImage(`./MAP/DERSE_MOON.png`);
+
     break;
   }
 
@@ -790,17 +801,60 @@ for(i=0;i<11;i++){
             ctx.drawImage(legend[36+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
           case 10:
-          ctx.drawImage(legend[12+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(legend[legend.indexOf(road)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
           case 11:
-          ctx.drawImage(legend[21+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(legend[legend.indexOf(tower)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
           case 12:
-            ctx.drawImage(legend[18+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(legend[legend.indexOf(castle)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
           case 13:
-            ctx.drawImage(legend[18+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(legend[legend.indexOf(chain)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
+          case 14:
+          ctx.drawImage(legend[legend.indexOf(store)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 15:
+          ctx.drawImage(legend[legend.indexOf(candyshop)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 16:
+          ctx.drawImage(legend[legend.indexOf(restaurant)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 17:
+          ctx.drawImage(legend[legend.indexOf(haberdashery)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 18:
+          ctx.drawImage(legend[legend.indexOf(theatre)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 19:
+          ctx.drawImage(legend[legend.indexOf(police)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 20:
+          ctx.drawImage(legend[legend.indexOf(casino)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 21:
+          ctx.drawImage(legend[legend.indexOf(court)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 22:
+          ctx.drawImage(legend[legend.indexOf(bank)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 23:
+          ctx.drawImage(legend[legend.indexOf(postal)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 24:
+          ctx.drawImage(legend[legend.indexOf(appartment)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 25:
+          ctx.drawImage(legend[legend.indexOf(appartment)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 26:
+          ctx.drawImage(legend[legend.indexOf(butcher)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 27:
+          ctx.drawImage(legend[legend.indexOf(armory)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+
          default:
            ctx.drawImage(ax,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
        }
@@ -870,18 +924,59 @@ for(i=-1;i<2;i++){
            ctx.drawImage(legend[36+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 10:
-         ctx.drawImage(legend[12+tile],(64*(j+1)),(64*(i+1)),64,64);
+         ctx.drawImage(legend[legend.indexOf(road)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 11:
-         ctx.drawImage(legend[21+tile],(64*(j+1)),(64*(i+1)),64,64);
+         ctx.drawImage(legend[legend.indexOf(tower)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 12:
-           ctx.drawImage(legend[18+tile],(64*(j+1)),(64*(i+1)),64,64);
+         ctx.drawImage(legend[legend.indexOf(castle)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 13:
-           ctx.drawImage(legend[18+tile],(64*(j+1)),(64*(i+1)),64,64);
+         ctx.drawImage(legend[legend.indexOf(chain)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
-        default:
+         case 14:
+         ctx.drawImage(legend[legend.indexOf(store)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 15:
+         ctx.drawImage(legend[legend.indexOf(candyshop)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 16:
+         ctx.drawImage(legend[legend.indexOf(restaurant)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 17:
+         ctx.drawImage(legend[legend.indexOf(haberdashery)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 18:
+         ctx.drawImage(legend[legend.indexOf(theatre)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 19:
+         ctx.drawImage(legend[legend.indexOf(police)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 20:
+         ctx.drawImage(legend[legend.indexOf(casino)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 21:
+         ctx.drawImage(legend[legend.indexOf(court)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 22:
+         ctx.drawImage(legend[legend.indexOf(bank)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 23:
+         ctx.drawImage(legend[legend.indexOf(postal)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 24:
+         ctx.drawImage(legend[legend.indexOf(appartment)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 25:
+         ctx.drawImage(legend[legend.indexOf(appartment)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 26:
+         ctx.drawImage(legend[legend.indexOf(butcher)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 27:
+         ctx.drawImage(legend[legend.indexOf(armory)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
           ctx.drawImage(ax,(64*(j+1)),(64*(i+1)),64,64);
       }
     }
