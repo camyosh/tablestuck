@@ -383,25 +383,216 @@ exports.moonGen = function(client,castleLocal,towerLocal){
 
   let section = [[],[],[],[]];
   for(i=0;i<11;i++){
-
-    section[0].push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
-    section[1].push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
-    section[2].push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
-    section[3].push([[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]],[0,1,[[0,0,"STREET",false,[],[]]]]]);
-
-
+//   prospit,derse,prospitmoon,dersemoon
+    section[0].push([[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]]]);
+    section[1].push([[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]]]);
+    section[2].push([[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]]]);
+    section[3].push([[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]]]);
 
   }
+  let select = [0,1,3,4,6,7,9,10]
+  let empty = [];
+  for(i=0;i<8;i++){
+    for(j=0;j<8;j++){
+      empty.push([select[i],select[j]]);
+    }
+  }
 
-//            prospit,derse,prospitmoon,dersemoon
+  let empty2 = [];
+  for(i=0;i<8;i++){
+    for(j=0;j<8;j++){
+      empty2.push([select[i],select[j]]);
+    }
+  }
 
+  section[0][5][5]=[13,1,[[0,0,"CHAIN",false,[],[]]]];
+  section[1][5][5]=[13,1,[[0,0,"CHAIN",false,[],[]]]];
+  section[2][5][5]=[13,1,[[0,0,"CHAIN",false,[],[]]]];
+  section[3][5][5]=[13,1,[[0,0,"CHAIN",false,[],[]]]];
 
   section[2][towerLocal[0]][towerLocal[1]]=[11,1,[[0,0,"PROSPIT TOWER BASE",true,[],[]]]];
   section[3][towerLocal[0]][towerLocal[1]]=[11,1,[[0,0,"DERSE TOWER BASE",true,[],[]]]];
+  empty.splice(select.indexOf(towerLocal[0])*8+select.indexOf(towerLocal[1]),1);
+
+  section[0][castleLocal[0]][castleLocal[1]]=[12,1,[[0,0,"PROSPIT CASTLE",true,[],[]]]];
+  section[0][castleLocal[0]][castleLocal[1]]=[12,1,[[0,0,"DERSE CASTLE",true,[],[]]]];
+  empty2.splice(select.indexOf(castleLocal[0])*8+select.indexOf(castleLocal[1]),1);
+
+//Dreamplanet Proper
+//63 to cover
+//general store 14 // 10
+//Bakery/Butcher 15 // 4
+//Resturant/Pub 16 // 4
+//Habadashery/Armory 17
+//Theather/Arena 18
+//Police station 19
+//Bingo Hall/Casino 20
+//court 21
+//appartment building/slum 22
+//Public Park/Abandoned Building 23
+//post office 24
+//bank 25
+
+//Dream Moon
+//63 to cover
+//post Office //
+//Bingo hall/Casino //
+//court //
+//court //
+//police station //
+//appartment building/slum
+
+//general store
+for(i=0;i<10;i++){//53
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+}
+for(i=0;i<4;i++){//49
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"CANDY SHOP",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"BUTCHER",false,[],[]]]];
+}
+for(i=0;i<4;i++){//45
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"RESTAURANT",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"PUB",false,[],[]]]];
+}
+for(i=0;i<4;i++){//41
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"FINE APPAREL",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"ARMORY",false,[],[]]]];
+}
+for(i=0;i<2;i++){//39
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"THEATRE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"ARENA",false,[],[]]]];
+}
+for(i=0;i<2;i++){//37
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POLICE STATION",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POLICE STATION",false,[],[]]]];
+}
+for(i=0;i<4;i++){//33
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"BINGO HALL",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"CASINO",false,[],[]]]];
+}
+for(i=0;i<2;i++){//31
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"court",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"court",false,[],[]]]];
+}
+for(i=0;i<2;i++){//29
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"BANK",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"BANK",false,[],[]]]];
+}
+for(i=0;i<2;i++){//27
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"POST OFFICE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"POST OFFICE",false,[],[]]]];
+}
+for(i=0;i<10;i++){//17
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[24,1,[[0,0,"APPARTMENT BUILDING",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[24,1,[[0,0,"APPARTMENT BUILDING",false,[],[]]]];
+}
+
+while(empty2.length>0){
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"PUBLIC PARK",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"ABANDONED BUILDING",false,[],[]]]];
+}
+
+
+for(i=0;i<10;i++){//53
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+}
+for(i=0;i<4;i++){//49
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"CANDY SHOP",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"BUTCHER",false,[],[]]]];
+}
+for(i=0;i<4;i++){//45
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"RESTAURANT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"PUB",false,[],[]]]];
+}
+for(i=0;i<4;i++){//41
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"FINE APPAREL",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"ARMORY",false,[],[]]]];
+}
+for(i=0;i<2;i++){//39
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"THEATRE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"ARENA",false,[],[]]]];
+}
+for(i=0;i<2;i++){//37
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POLICE STATION",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POLICE STATION",false,[],[]]]];
+}
+for(i=0;i<4;i++){//33
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"BINGO HALL",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"CASINO",false,[],[]]]];
+}
+for(i=0;i<2;i++){//31
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"court",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"court",false,[],[]]]];
+}
+for(i=0;i<2;i++){//29
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"BANK",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"BANK",false,[],[]]]];
+}
+for(i=0;i<2;i++){//27
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"POST OFFICE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"POST OFFICE",false,[],[]]]];
+}
+for(i=0;i<10;i++){//17
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[25,1,[[0,0,"APPARTMENTS",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[25,1,[[0,0,"SLUMS",false,[],[]]]];
+}
+
+while(empty.length>0){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"PUBLIC PARK",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"ABANDONED BUILDING",false,[],[]]]];
+}
 
   return section;
-
-
 }
 
 
@@ -463,6 +654,40 @@ const denizen = await client.Canvas.loadImage(`./MAP/DENIZEN.png`);
 const pldenizen = await client.Canvas.loadImage(`./MAP/DENIZENPL.png`);
 const denizenf = await client.Canvas.loadImage(`./MAP/DENIZENFOG.png`);
 const darkblank = await client.Canvas.loadImage(`./MAP/DARKBLANK.png`);
+
+const plprison = await client.Canvas.loadImage(`./MAP/PLPRISON.png`);
+const prison = await client.Canvas.loadImage(`./MAP/PRISON.png`);
+const plbank = await client.Canvas.loadImage(`./MAP/PLBANK.png`);
+const bank = await client.Canvas.loadImage(`./MAP/BANK.png`);
+const pllibrary = await client.Canvas.loadImage(`./MAP/PLLIBRARY.png`);
+const library = await client.Canvas.loadImage(`./MAP/LIBRARY.png`);
+const plpolice = await client.Canvas.loadImage(`./MAP/PLPOLICE.png`);
+const police = await client.Canvas.loadImage(`./MAP/POLICE.png`);
+const plpostal = await client.Canvas.loadImage(`./MAP/PLPOSTAL.png`);
+const postal = await client.Canvas.loadImage(`./MAP/POSTAL.png`);
+const plcasino = await client.Canvas.loadImage(`./MAP/PLCASINO.png`);
+const casino = await client.Canvas.loadImage(`./MAP/CASINO.png`);
+const plstore = await client.Canvas.loadImage(`./MAP/PLSTORE.png`);
+const store = await client.Canvas.loadImage(`./MAP/STORE.png`);
+const plrestaurant = await client.Canvas.loadImage(`./MAP/PLRESTAURANT.png`);
+const restaurant = await client.Canvas.loadImage(`./MAP/RESTAURANT.png`);
+const pltheatre = await client.Canvas.loadImage(`./MAP/PLTHEATRE.png`);
+const theatre = await client.Canvas.loadImage(`./MAP/THEATRE.png`);
+const plarmory = await client.Canvas.loadImage(`./MAP/PLARMORY.png`);
+const armory = await client.Canvas.loadImage(`./MAP/ARMORY.png`);
+const plhaberdashery = await client.Canvas.loadImage(`./MAP/PLHABERDASHERY.png`);
+const haberdashery = await client.Canvas.loadImage(`./MAP/HABERDASHERY.png`);
+const plcandyshop = await client.Canvas.loadImage(`./MAP/PLCANDYSHOP.png`);
+const candyshop = await client.Canvas.loadImage(`./MAP/CANDYSHOP.png`);
+const plbutcher = await client.Canvas.loadImage(`./MAP/PLBUTCHER.png`);
+const butcher = await client.Canvas.loadImage(`./MAP/BUTCHER.png`);
+const plcourt = await client.Canvas.loadImage(`./MAP/PLCOURT.png`);
+const court = await client.Canvas.loadImage(`./MAP/COURT.png`);
+const plappartment = await client.Canvas.loadImage(`./MAP/PLAPPARTMENT.png`);
+const appartment = await client.Canvas.loadImage(`./MAP/APPARTMENT.png`);
+const plroad = await client.Canvas.loadImage(`./MAP/PLROAD.png`);
+const road = await client.Canvas.loadImage(`./MAP/ROAD.png`);
+
 let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,drgate,boss,plboss,bossf,denizen,pldenizen,denizenf];
 if(!mini){
 const canvas = client.Canvas.createCanvas(404,424);
@@ -513,8 +738,8 @@ ctx.drawImage(sectionTitleImg,5,5,394,32);
 for(i=0;i<11;i++){
   ctx.drawImage(legend[i+1],5,5+(32*(i+2)),32.8,31);
     for(j=0;j<11;j++){
-
-      if(!input[i][j][2][0][3]){
+            //comment out this if check to turn off fog of war on the main map
+      if(!input[i][j][2][0][3]&&local[0].charAt(0)!="p"&&local[0].charAt(0)!="d"){
           ctx.drawImage(fog,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
 
       } else {
@@ -570,6 +795,12 @@ for(i=0;i<11;i++){
           case 11:
           ctx.drawImage(legend[21+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
+          case 12:
+            ctx.drawImage(legend[18+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 13:
+            ctx.drawImage(legend[18+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
          default:
            ctx.drawImage(ax,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
        }
@@ -592,7 +823,7 @@ for(i=-1;i<2;i++){
     } else {
       if(i==0 && j==0){
         tile = 1;
-      } else if(!input[i+local[1]][j+local[2]][2][0][3]){
+      } else if(!input[i+local[1]][j+local[2]][2][0][3]&&local[0].charAt(0)!="p"&&local[0].charAt(0)!="d"){
         tile = 2;
       //} else if(i==local[1]&& j==local[2]){
       }
@@ -643,6 +874,12 @@ for(i=-1;i<2;i++){
          break;
          case 11:
          ctx.drawImage(legend[21+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 12:
+           ctx.drawImage(legend[18+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 13:
+           ctx.drawImage(legend[18+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
         default:
           ctx.drawImage(ax,(64*(j+1)),(64*(i+1)),64,64);

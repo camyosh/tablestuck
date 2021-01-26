@@ -24,8 +24,12 @@ exports.run = (client, message, args) => {
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
 
-  if(!client.traitcall.traitCheck(client,charid,"ROCKET")[1]&&!client.traitcall.traitCheck(client,charid,"SPACE")[0]){
+  if((!client.traitcall.traitCheck(client,charid,"ROCKET")[1]&&!client.traitcall.traitCheck(client,charid,"SPACE")[0]&&local[0]!="p"&&local[0]!="pm"&&local[0]!="d"&&local[0]!="dm")){
     message.channel.send("You close your eyes and believe as hard as you can in the idea that maybe with a little bit of magic and a little bit of pixie dust you might be able to fly... you open your eyes to find your feet still planeted firmly on the ground as you remember that magic most definitely is not real.");
+    return;
+  }
+  if(local[0].charAt(local[0].length-1)=="d"||local[0].charAt(local[0].length-1)=="c"){
+    message.channel.send("The hallways are too narrow for you to fly here!");
     return;
   }
 
@@ -56,8 +60,10 @@ exports.run = (client, message, args) => {
   local[3]=0;
 
   sec[local[1]][local[2]][2][local[3]][4].push(occset);
+  if(local[0].charAt(0)!="p"&&local[0].charAt(0)!="d"&&local[0].charAt(0)!="b"){
   sec =  strifecall.underSpawn(client,local,sec);
   sec[local[1]][local[2]][2][local[3]][3]=true;
+}
   client.playerMap.set(charid,local,"local");
   client.landMap.set(land,sec,local[0]);
   msg+=`You fly to the coordinates and find a ${typeList[sec[local[1]][local[2]][0]]}`;
@@ -82,7 +88,7 @@ exports.run = (client, message, args) => {
     }
   }
   message.channel.send(msg);
-  landcall.miniMap(client,message);
+  client.landcall.drawMap(client,message,true);
 
 
 }

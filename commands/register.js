@@ -13,11 +13,14 @@ exports.run = (client, message, args) => {
   let charid = message.guild.id.concat(message.author.id);
 
 if(!client.landMap.has(message.guild.id+"medium")){
-let castlegen;
-do {
-castlegen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]];
-}while(castlegen[0][0]==5||castlegen[0][1]==5||castlegen[1][0]==5||castlegen[1][1]==5);
+let castlegen = [[0,0],[0,0]];
 
+for(i=0;i<2;i++){
+  for(j=0;j<2;j++){
+  castlegen[i][j]=Math.floor(Math.random()*2)+(Math.floor(Math.random()*4)*3);
+}
+}
+console.log(castlegen);
   let dreamMoon = client.landcall.moonGen(client,castlegen[0],castlegen[1]);
 
 //chumhandle [charid,chumhandle]
@@ -185,7 +188,7 @@ regImport();
 
   let towerRoom = moonMap[towerLocal[0]][towerLocal[1]][2].length;
 
-  moonMap[towerLocal[0]][towerLocal[1]][2].push([0,0,`${message.author.username}'S DREAM TOWER'`,false,[
+  moonMap[towerLocal[0]][towerLocal[1]][2].push([0,0,`${message.author.username.toUpperCase()}'S DREAM TOWER`,false,[
     [true,charid]],[]])
 
   client.landMap.set(message.guild.id+"medium",moonMap,lunarSway);

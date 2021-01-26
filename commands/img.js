@@ -1,41 +1,57 @@
 
-
-
  exports.run = async function(client, message, args){
 if(!args[0]){
   message.channel.send("Please include the text you want to display in this image!");
   return;
 }
-let msg = '';
+let msg=``;
 for(i=0;args[i];i++){
   msg+=`${args[i]} `;
 }
-const canvas = client.Canvas.createCanvas(700,250);
+client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
+const canvas = client.Canvas.createCanvas(230,50);
 	const ctx = canvas.getContext('2d');
-
-const background = await client.Canvas.loadImage(`./background.jpg`);
-
-const applyText = (canvas, msg) => {
-
-	let fontSize = 70;
-ctx.font = `${fontSize}px sans-serif`;
-	 while (ctx.measureText(msg).width > canvas.width){
-ctx.font = `${fontSize -= 10}px sans-serif`;
-if(fontSize<=0){
-  fontSize = 2;
-  return ctx.font;
+  function applyText(canvas, msg, width){
+  let fontsize = 24
+  ctx.font = `bold ${fontsize}px FONTSTUCK`;
+     while (ctx.measureText(msg).width > width){
+  ctx.font = `bold ${fontsize -= 2}px FONTSTUCK`;
+  }
+    return ctx.font;
+  }
+  ctx.textBaseline = "middle";
+  ctx.font = applyText(canvas,msg,220);
+  ctx.lineWidth = 10;
+let tempcolor;
+  switch(msg.substring(0,2)){
+    case `no`:
+    tempcolor= `#6D6D6D`;
+    break;
+    case `ac`:
+    tempcolor=  `#6688FE`;
+    break;
+    case `ar`:
+    tempcolor= `#9B38F4`;
+    break;
+    case `as`:
+    tempcolor=  `#ffae00`;
+    break;
+    case `ab`:
+    tempcolor=  `#ffe91f`;
+    break;
+    default:
+    tempcolor= `#6D6D6D`;
 }
-}
-	// Return the result to use in the actual canvas
-	return ctx.font;
-};
-ctx.font = applyText(canvas,msg);
-ctx.drawImage (background,0,0,canvas.width,canvas.height);
-ctx.fillStyle = '#ffffff';
-ctx.textAlign = `center`;
-ctx.fillText(msg, canvas.width/2, canvas.height / 1.8);
-const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'welcome-image.png');
+ctx.fillStyle = "#ffffff";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.strokeStyle = tempcolor;
+ctx.strokeRect(0,0,canvas.width,canvas.height);
 
+
+ctx.fillStyle = tempcolor;
+ctx.fillText(msg.toUpperCase(),10,28);
+
+const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'weaponattack.png');
 message.channel.send(attachment);
 return;
 }

@@ -263,7 +263,7 @@ for(i=0;i<4;i++){
     tempcolor= `#9B38F4`;
     break;
     case `as`:
-    tempcolor=  `#FF4B2D`;
+    tempcolor=  `#ffae00`;
     break;
     case `ab`:
     tempcolor=  `#ffe91f`;

@@ -562,12 +562,15 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CHARLATAN")[0]){
   let specibus = client.playerMap.get(list[init[turn][0]][1],"spec");
   let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
 
+  if(specibus.length>0){
+
   let charlaCode = specibus[equip][1].substring(0,4)+client.captchaCode[Math.floor((Math.random() * (client.captchaCode.length-4)))+2]+client.captchaCode[Math.floor((Math.random() * (client.captchaCode.length-4)))+2]+client.captchaCode[Math.floor((Math.random() * (client.captchaCode.length-4)))+2]+client.captchaCode[Math.floor((Math.random() * (client.captchaCode.length-4)))+2];
 
   specibus[equip][1] = charlaCode;
 
   client.playerMap.set(list[init[turn][0]][1],specibus,"spec");
 
+  } 
 }
 
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
