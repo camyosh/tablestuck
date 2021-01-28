@@ -41,19 +41,6 @@ exports.run = (client, message, args) => {
 
   let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
 
-  //retrieve client's grist totals
-
-  const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
-  let grist = client.playerMap.get(clientId,"grist");
-  let name = client.playerMap.get(clientId,"name");
-  let msg;
-  let i;
-  for(i=0;i<gristTypes.length;i++){
-    msg += `${client.emojis.cache.get(client.grist[gristTypes[i]].emoji)} **${gristTypes[i].toUpperCase()} ${grist[i]}\n\n`
-  }
-  cachePrint = new client.Discord.MessageEmbed()
-  .setTitle(`**${name.toUpperCase()}'S GRIST**`)
-  .addField("**GRIST CACHE**",msg);
-  message.channel.send(cachePrint);
+  message.channel.send(funcall.gristCacheEmbed(client, clientId));
   return;
 }

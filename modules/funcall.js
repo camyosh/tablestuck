@@ -617,3 +617,25 @@ exports.combineArgs = function(args) {
   }
   return output;
 }
+
+exports.gristCacheEmbed = function(client, charid) {
+  //retrieve character's grist details
+  const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
+  let rung = client.playerMap.get(charid,"rung");
+  let max = client.cache[rung];
+  let grist = client.playerMap.get(charid,"grist");
+  let name = client.playerMap.get(charid,"name");
+  let msg =``;
+  let i;
+  
+  //loop to list all of a player's grist types and ammounts
+  
+  for(i=0;i<gristTypes.length;i++){
+    msg += `${client.emojis.cache.get(client.grist[gristTypes[i]].emoji)} **${gristTypes[i].toUpperCase()} - ${grist[i]}**\n\n`
+  }
+  cachePrint = new client.Discord.MessageEmbed()
+  .setTitle(`**${name.toUpperCase()}'S GRIST**`)
+  .addField(`**GRIST CAP**`,`**${max}**`)
+  .addField("**GRIST CACHE**",msg);
+  return cachePrint;
+}
