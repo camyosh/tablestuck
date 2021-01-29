@@ -260,7 +260,7 @@ funcall.actionCheck(client,message,"alchemized");
         cost1=tierCost[item[2]];
         cost2=tierCost[item[2]-1];
 
-        if(item[1].charAt(1)="!"){
+        if(item[1].charAt(1)=="!"){
           cost1*=2;
           cost2*=2;
         }
