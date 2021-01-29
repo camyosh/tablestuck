@@ -273,8 +273,31 @@ exports.run = (client, message, args) => {
    sec = client.landMap.get(land,local[0]);
    sec[local[1]][local[2]][2][local[3]][4].push(occset);
    sec[local[1]][local[2]][2][local[3]][3]=true;
+   client.playerMap.set(charid,local,"local");
    client.landMap.set(local[4],sec,local[0]);
-  } else {
+ } else if(area[0]==13){
+
+   sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
+   if(local[0].length==2){
+     local[0]=local[0].slice(0,-1);
+     funcall.actionCheck(client,message);
+     landcall.drawMap(client,message,true);
+   }else{
+     local[0]+="m";
+    funcall.actionCheck(client,message);
+    landcall.drawMap(client,message,true);
+   }
+   sec = client.landMap.get(land,local[0]);
+   sec[local[1]][local[2]][2][local[3]][4].push(occset);
+   sec[local[1]][local[2]][2][local[3]][3]=true;
+   client.playerMap.set(charid,local,"local");
+   client.landMap.set(local[4],sec,local[0]);
+   message.channel.send("Crossing the Chain!");
+
+ }
+
+
+  else {
     message.channel.send("You can't do that here!")
   }
 

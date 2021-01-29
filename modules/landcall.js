@@ -418,178 +418,259 @@ exports.moonGen = function(client,castleLocal,towerLocal){
   section[0][castleLocal[0]][castleLocal[1]]=[12,1,[[0,0,"DERSE CASTLE",true,[],[]]]];
   empty2.splice(select.indexOf(castleLocal[0])*8+select.indexOf(castleLocal[1]),1);
 
-//Dreamplanet Proper
-//63 to cover
-//general store 14 // 10
-//Bakery/Butcher 15 // 4
-//Resturant/Pub 16 // 4
-//Habadashery/Armory 17
-//Theather/Arena 18
-//Police station 19
-//Bingo Hall/Casino 20
-//court 21
-//appartment building/slum 22
-//Public Park/Abandoned Building 23
-//post office 24
-//bank 25
 
-//Dream Moon
-//63 to cover
-//post Office //
-//Bingo hall/Casino //
-//court //
-//court //
-//police station //
-//appartment building/slum
+//Prospit / Derse Main
 
-//general store
-for(i=0;i<10;i++){//53
+for(i=0;i<2;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"GENERAL STORE",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"POLICE STATION",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"POLICE STATION",false,[],[]]]];
 }
-for(i=0;i<4;i++){//49
+for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"CANDY SHOP",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"BUTCHER",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON",false,[],[]]]];
 }
-for(i=0;i<4;i++){//45
+for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"RESTAURANT",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"PUB",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"COURT",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"COURT",false,[],[]]]];
 }
-for(i=0;i<4;i++){//41
+for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"FINE APPAREL",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"ARMORY",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"HOSPITAL",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"HOSPITAL",false,[],[]]]];
 }
-for(i=0;i<2;i++){//39
+for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"THEATRE",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"ARENA",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"BANK",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"BANK",false,[],[]]]];
 }
-for(i=0;i<2;i++){//37
+for(i=0;i<2;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POLICE STATION",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POLICE STATION",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POST OFFICE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POST OFFICE",false,[],[]]]];
 }
-for(i=0;i<4;i++){//33
+for(i=0;i<4;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"BINGO HALL",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"CASINO",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"MILITARY OUTPOST",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"MILITARY OUTPOST",false,[],[]]]];
 }
-for(i=0;i<2;i++){//31
+for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"court",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"court",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"GUILD HALL",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"GUILD HALL",false,[],[]]]];
 }
-for(i=0;i<2;i++){//29
+for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"BANK",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"BANK",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"THEATRE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"THEATRE",false,[],[]]]];
 }
-for(i=0;i<2;i++){//27
+for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"POST OFFICE",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"POST OFFICE",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"BINGO HALL",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"CASINO",false,[],[]]]];
 }
-for(i=0;i<10;i++){//17
+for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[24,1,[[0,0,"APPARTMENT BUILDING",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[24,1,[[0,0,"APPARTMENT BUILDING",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[24,1,[[0,0,"MUSEUM",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[24,1,[[0,0,"MUSEUM",false,[],[]]]];
 }
+for(i=0;i<1;i++){
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[25,1,[[0,0,"LIBRARY",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[25,1,[[0,0,"LIBRARY",false,[],[]]]];
+}
+for(i=0;i<5;i++){
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"RESTAURANT",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"RESTAURANT",false,[],[]]]];
+}
+for(i=0;i<5;i++){
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+}
+for(i=0;i<5;i++){
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[28,1,[[0,0,"CANDY SHOP",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[29,1,[[0,0,"BUTCHER",false,[],[]]]];
+}
+for(i=0;i<5;i++){
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[31,1,[[0,0,"TAILOR",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[30,1,[[0,0,"ARMORY",false,[],[]]]];
+}
+for(i=0;i<5;i++){
+  let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
+
+  section[0][temp[0][0]][temp[0][1]]=[32,1,[[0,0,"JEWELER",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[32,1,[[0,0,"JEWELER",false,[],[]]]];
+}
+
+
+
+
 
 while(empty2.length>0){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"PUBLIC PARK",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"ABANDONED BUILDING",false,[],[]]]];
+  let ran = Math.floor(Math.random()*6);
+
+  if(ran == 0){
+    section[0][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"PUBLIC PARK",false,[],[]]]];
+    section[1][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"ABANDONED BUILDING",false,[],[]]]];
+  } else {
+  section[0][temp[0][0]][temp[0][1]]=[45,1,[[0,0,"APPARTMENT",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[45,1,[[0,0,"SLUMS",false,[],[]]]];
+}
 }
 
 
-for(i=0;i<10;i++){//53
+for(i=0;i<2;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"GENERAL STORE",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"POLICE STATION",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"POLICE STATION",false,[],[]]]];
 }
-for(i=0;i<4;i++){//49
+for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"CANDY SHOP",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"BUTCHER",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"HOSPITAL",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"HOSPITAL",false,[],[]]]];
 }
-for(i=0;i<4;i++){//45
+for(i=0;i<2;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"RESTAURANT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"PUB",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POST OFFICE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POST OFFICE",false,[],[]]]];
 }
-for(i=0;i<4;i++){//41
+for(i=0;i<4;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"FINE APPAREL",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"ARMORY",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[1,1,[[0,0,"CRYPT ENTRANCE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[1,1,[[0,0,"CRYPT ENTRANCE",false,[],[]]]];
 }
-for(i=0;i<2;i++){//39
+for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"THEATRE",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"ARENA",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"RESTAURANT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"RESTAURANT",false,[],[]]]];
 }
-for(i=0;i<2;i++){//37
+for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POLICE STATION",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POLICE STATION",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"GENERAL STORE",false,[],[]]]];
 }
-for(i=0;i<4;i++){//33
+for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"BINGO HALL",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"CASINO",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[32,1,[[0,0,"JEWELER",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[32,1,[[0,0,"JEWELER",false,[],[]]]];
 }
-for(i=0;i<2;i++){//31
+
+for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"COURT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"COURT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[33,1,[[0,0,"TIME MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[33,1,[[0,0,"TIME MONUMENT",false,[],[]]]];
 }
-for(i=0;i<2;i++){//29
+for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"BANK",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"BANK",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[34,1,[[0,0,"SPACE MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[34,1,[[0,0,"SPACE MONUMENT",false,[],[]]]];
 }
-for(i=0;i<2;i++){//27
+for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"POST OFFICE",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"POST OFFICE",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[35,1,[[0,0,"LIGHT MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[35,1,[[0,0,"LIGHT MONUMENT",false,[],[]]]];
 }
-for(i=0;i<10;i++){//17
+for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[25,1,[[0,0,"APPARTMENTS",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[25,1,[[0,0,"SLUMS",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[36,1,[[0,0,"VOID MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[36,1,[[0,0,"VOID MONUMENT",false,[],[]]]];
+}
+for(i=0;i<1;i++){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[37,1,[[0,0,"LIFE MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[37,1,[[0,0,"LIFE MONUMENT",false,[],[]]]];
+}
+for(i=0;i<1;i++){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[38,1,[[0,0,"DOOM MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[38,1,[[0,0,"DOOM MONUMENT",false,[],[]]]];
+}
+for(i=0;i<1;i++){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[39,1,[[0,0,"BREATH MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[39,1,[[0,0,"BREATH MONUMENT",false,[],[]]]];
+}
+for(i=0;i<1;i++){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[40,1,[[0,0,"BLOOD MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[40,1,[[0,0,"BLOOD MONUMENT",false,[],[]]]];
+}
+for(i=0;i<1;i++){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[41,1,[[0,0,"HOPE MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[41,1,[[0,0,"HOPE MONUMENT",false,[],[]]]];
+}
+for(i=0;i<1;i++){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[42,1,[[0,0,"RAGE MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[42,1,[[0,0,"RAGE MONUMENT",false,[],[]]]];
+}
+for(i=0;i<1;i++){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[43,1,[[0,0,"MIND MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[43,1,[[0,0,"MIND MONUMENT",false,[],[]]]];
+}
+for(i=0;i<1;i++){
+  let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
+
+  section[2][temp[0][0]][temp[0][1]]=[44,1,[[0,0,"HEART MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[44,1,[[0,0,"HEART MONUMENT",false,[],[]]]];
 }
 
 while(empty.length>0){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"PUBLIC PARK",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"ABANDONED BUILDING",false,[],[]]]];
+  let ran = Math.floor(Math.random()*6);
+
+  if(ran == 0){
+    section[2][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"PUBLIC PARK",false,[],[]]]];
+    section[3][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"ABANDONED BUILDING",false,[],[]]]];
+  } else {
+  section[2][temp[0][0]][temp[0][1]]=[45,1,[[0,0,"APPARTMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[45,1,[[0,0,"SLUMS",false,[],[]]]];
+}
 }
 
   return section;
@@ -693,7 +774,42 @@ const tower = await client.Canvas.loadImage(`./MAP/TOWERS.png`);
 const pltower = await client.Canvas.loadImage(`./MAP/PLTOWERS.png`);
 const castle = await client.Canvas.loadImage(`./MAP/CASTLE.png`);
 const plcastle = await client.Canvas.loadImage(`./MAP/PLCASTLE.png`);
-let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,drgate,boss,plboss,bossf,denizen,pldenizen,denizenf,prison,plprison,bank,plbank,library,pllibrary,police,plpolice,postal,plpostal,casino,plcasino,store,plstore,restaurant,plrestaurant,theatre,pltheatre,armory,plarmory,haberdashery,plhaberdashery,candyshop,plcandyshop,butcher,plbutcher,court,plcourt,appartment,plappartment,road,plroad,chain,plchain,tower,pltower,castle,plcastle];
+
+const time = await client.Canvas.loadImage(`./MAP/TIME.png`);
+const pltime = await client.Canvas.loadImage(`./MAP/PLTIME.png`);
+const space = await client.Canvas.loadImage(`./MAP/SPACE.png`);
+const plspace = await client.Canvas.loadImage(`./MAP/PLSPACE.png`);
+const light = await client.Canvas.loadImage(`./MAP/LIGHT.png`);
+const pllight = await client.Canvas.loadImage(`./MAP/PLLIGHT.png`);
+const mvoid = await client.Canvas.loadImage(`./MAP/VOID.png`);
+const plvoid = await client.Canvas.loadImage(`./MAP/PLVOID.png`);
+const life = await client.Canvas.loadImage(`./MAP/LIFE.png`);
+const pllife = await client.Canvas.loadImage(`./MAP/PLLIFE.png`);
+const doom = await client.Canvas.loadImage(`./MAP/DOOM.png`);
+const pldoom = await client.Canvas.loadImage(`./MAP/PLDOOM.png`);
+const breath = await client.Canvas.loadImage(`./MAP/BREATH.png`);
+const plbreath = await client.Canvas.loadImage(`./MAP/PLBREATH.png`);
+const blood = await client.Canvas.loadImage(`./MAP/BLOOD.png`);
+const plblood = await client.Canvas.loadImage(`./MAP/PLBLOOD.png`);
+const hope = await client.Canvas.loadImage(`./MAP/HOPE.png`);
+const plhope = await client.Canvas.loadImage(`./MAP/PLHOPE.png`);
+const rage = await client.Canvas.loadImage(`./MAP/RAGE.png`);
+const plrage = await client.Canvas.loadImage(`./MAP/PLRAGE.png`);
+const mind = await client.Canvas.loadImage(`./MAP/MIND.png`);
+const plmind = await client.Canvas.loadImage(`./MAP/PLMIND.png`);
+const heart = await client.Canvas.loadImage(`./MAP/HEART.png`);
+const plheart = await client.Canvas.loadImage(`./MAP/PLHEART.png`);
+const museum = await client.Canvas.loadImage(`./MAP/MUSEUM.png`);
+const plmuseum = await client.Canvas.loadImage(`./MAP/PLMUSEUM.png`);
+const hospital = await client.Canvas.loadImage(`./MAP/HOSPITAL.png`);
+const plhospital = await client.Canvas.loadImage(`./MAP/PLHOSPITAL.png`);
+const guild = await client.Canvas.loadImage(`./MAP/GUILD.png`);
+const plguild = await client.Canvas.loadImage(`./MAP/PLGUILD.png`);
+const jeweler = await client.Canvas.loadImage(`./MAP/JEWELER.png`);
+const pljeweler = await client.Canvas.loadImage(`./MAP/PLJEWELER.png`);
+const military = await client.Canvas.loadImage(`./MAP/MILITARY.png`);
+const plmilitary = await client.Canvas.loadImage(`./MAP/PLMILITARY.png`);
+let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,drgate,boss,plboss,bossf,denizen,pldenizen,denizenf,prison,plprison,bank,plbank,library,pllibrary,police,plpolice,postal,plpostal,casino,plcasino,store,plstore,restaurant,plrestaurant,theatre,pltheatre,armory,plarmory,haberdashery,plhaberdashery,candyshop,plcandyshop,butcher,plbutcher,court,plcourt,appartment,plappartment,road,plroad,chain,plchain,tower,pltower,castle,plcastle,time,pltime,space,plspace,light,pllight,mvoid,plvoid,life,pllife,doom,pldoom,breath,plbreath,blood,plblood,hope,plhope,rage,plrage,mind,plmind,heart,plheart,museum,plmuseum,hospital,plhospital,guild,plguild,jeweler,pljeweler,military,plmilitary];
 if(!mini){
 const canvas = client.Canvas.createCanvas(404,424);
 const ctx = canvas.getContext('2d');
@@ -734,9 +850,9 @@ let sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 1.png`);
     break;
     case "d":
     sectionTitleImg = await client.Canvas.loadImage(`./MAP/DERSE.png`);
+    break;
     case "dm":
     sectionTitleImg = await client.Canvas.loadImage(`./MAP/DERSE_MOON.png`);
-
     break;
   }
 
@@ -813,46 +929,100 @@ for(i=0;i<11;i++){
           ctx.drawImage(legend[legend.indexOf(chain)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
           case 14:
-          ctx.drawImage(legend[legend.indexOf(store)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 15:
-          ctx.drawImage(legend[legend.indexOf(candyshop)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 16:
-          ctx.drawImage(legend[legend.indexOf(restaurant)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 17:
-          ctx.drawImage(legend[legend.indexOf(haberdashery)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 18:
-          ctx.drawImage(legend[legend.indexOf(theatre)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 19:
           ctx.drawImage(legend[legend.indexOf(police)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
-          case 20:
-          ctx.drawImage(legend[legend.indexOf(casino)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          case 15:
+          ctx.drawImage(legend[legend.indexOf(prison)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
-          case 21:
+          case 16:
           ctx.drawImage(legend[legend.indexOf(court)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
-          case 22:
+          case 17:
+          ctx.drawImage(legend[legend.indexOf(hospital)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 18:
           ctx.drawImage(legend[legend.indexOf(bank)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
-          case 23:
+          case 19:
           ctx.drawImage(legend[legend.indexOf(postal)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
+          case 20:
+          ctx.drawImage(legend[legend.indexOf(military)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 21:
+          ctx.drawImage(legend[legend.indexOf(guild)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 22:
+          ctx.drawImage(legend[legend.indexOf(theatre)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 23:
+          ctx.drawImage(legend[legend.indexOf(casino)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
           case 24:
-          ctx.drawImage(legend[legend.indexOf(appartment)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(legend[legend.indexOf(museum)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
           case 25:
-          ctx.drawImage(legend[legend.indexOf(appartment)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(legend[legend.indexOf(library)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
           case 26:
-          ctx.drawImage(legend[legend.indexOf(butcher)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(legend[legend.indexOf(restaurant)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
           case 27:
+          ctx.drawImage(legend[legend.indexOf(store)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 28:
+          ctx.drawImage(legend[legend.indexOf(candyshop)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 29:
+          ctx.drawImage(legend[legend.indexOf(butcher)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 30:
           ctx.drawImage(legend[legend.indexOf(armory)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 31:
+          ctx.drawImage(legend[legend.indexOf(haberdashery)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 32:
+          ctx.drawImage(legend[legend.indexOf(jeweler)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 33:
+          ctx.drawImage(legend[legend.indexOf(time)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 34:
+          ctx.drawImage(legend[legend.indexOf(space)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 35:
+          ctx.drawImage(legend[legend.indexOf(light)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 36:
+          ctx.drawImage(legend[legend.indexOf(mvoid)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 37:
+          ctx.drawImage(legend[legend.indexOf(life)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 38:
+          ctx.drawImage(legend[legend.indexOf(doom)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 39:
+          ctx.drawImage(legend[legend.indexOf(breath)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 40:
+          ctx.drawImage(legend[legend.indexOf(blood)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 41:
+          ctx.drawImage(legend[legend.indexOf(hope)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 42:
+          ctx.drawImage(legend[legend.indexOf(rage)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 43:
+          ctx.drawImage(legend[legend.indexOf(mind)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 44:
+          ctx.drawImage(legend[legend.indexOf(heart)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          break;
+          case 45:
+          ctx.drawImage(legend[legend.indexOf(appartment)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
           break;
 
          default:
@@ -936,48 +1106,103 @@ for(i=-1;i<2;i++){
          ctx.drawImage(legend[legend.indexOf(chain)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 14:
-         ctx.drawImage(legend[legend.indexOf(store)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 15:
-         ctx.drawImage(legend[legend.indexOf(candyshop)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 16:
-         ctx.drawImage(legend[legend.indexOf(restaurant)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 17:
-         ctx.drawImage(legend[legend.indexOf(haberdashery)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 18:
-         ctx.drawImage(legend[legend.indexOf(theatre)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 19:
          ctx.drawImage(legend[legend.indexOf(police)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
-         case 20:
-         ctx.drawImage(legend[legend.indexOf(casino)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         case 15:
+         ctx.drawImage(legend[legend.indexOf(prison)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
-         case 21:
+         case 16:
          ctx.drawImage(legend[legend.indexOf(court)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
-         case 22:
+         case 17:
+         ctx.drawImage(legend[legend.indexOf(hospital)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 18:
          ctx.drawImage(legend[legend.indexOf(bank)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
-         case 23:
+         case 19:
          ctx.drawImage(legend[legend.indexOf(postal)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
+         case 20:
+         ctx.drawImage(legend[legend.indexOf(military)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 21:
+         ctx.drawImage(legend[legend.indexOf(guild)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 22:
+         ctx.drawImage(legend[legend.indexOf(theatre)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 23:
+         ctx.drawImage(legend[legend.indexOf(casino)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
          case 24:
-         ctx.drawImage(legend[legend.indexOf(appartment)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         ctx.drawImage(legend[legend.indexOf(museum)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 25:
-         ctx.drawImage(legend[legend.indexOf(appartment)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         ctx.drawImage(legend[legend.indexOf(library)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 26:
-         ctx.drawImage(legend[legend.indexOf(butcher)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         ctx.drawImage(legend[legend.indexOf(restaurant)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
          case 27:
+         ctx.drawImage(legend[legend.indexOf(store)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 28:
+         ctx.drawImage(legend[legend.indexOf(candyshop)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 29:
+         ctx.drawImage(legend[legend.indexOf(butcher)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 30:
          ctx.drawImage(legend[legend.indexOf(armory)+tile],(64*(j+1)),(64*(i+1)),64,64);
          break;
-          ctx.drawImage(ax,(64*(j+1)),(64*(i+1)),64,64);
+         case 31:
+         ctx.drawImage(legend[legend.indexOf(haberdashery)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 32:
+         ctx.drawImage(legend[legend.indexOf(jeweler)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 33:
+         ctx.drawImage(legend[legend.indexOf(time)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 34:
+         ctx.drawImage(legend[legend.indexOf(space)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 35:
+         ctx.drawImage(legend[legend.indexOf(light)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 36:
+         ctx.drawImage(legend[legend.indexOf(mvoid)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 37:
+         ctx.drawImage(legend[legend.indexOf(life)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 38:
+         ctx.drawImage(legend[legend.indexOf(doom)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 39:
+         ctx.drawImage(legend[legend.indexOf(breath)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 40:
+         ctx.drawImage(legend[legend.indexOf(blood)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 41:
+         ctx.drawImage(legend[legend.indexOf(hope)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 42:
+         ctx.drawImage(legend[legend.indexOf(rage)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 43:
+         ctx.drawImage(legend[legend.indexOf(mind)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 44:
+         ctx.drawImage(legend[legend.indexOf(heart)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         case 45:
+         ctx.drawImage(legend[legend.indexOf(appartment)+tile],(64*(j+1)),(64*(i+1)),64,64);
+         break;
+         default:
+           ctx.drawImage(ax,(64*(j+1)),(64*(i+1)),64,64);
       }
     }
   }
