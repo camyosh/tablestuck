@@ -193,9 +193,12 @@ try{
 
   } else {
 
-
-    let underling = client.playerMap.get(list[target][1],"type");
-
+    let underling;
+    try{
+      underling = client.playerMap.get(list[target][1],"type");
+    }catch(err){
+      return;
+    }
 
     try{
       if(underling=="unicorn"||underling=="kraken"||underling=="hecatoncheires"||underling=="denizen"){
