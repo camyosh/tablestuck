@@ -85,7 +85,9 @@ exports.itemTrait = function(client,item,trait){
 }
 
 //check if player has a computer in rooms
-exports.compTest = function(client, message, charid, room, currentInv, specibus) {
+exports.compTest = function(client, message, charid, room) {
+  let currentInv = client.playerMap.get(charid,"sdex");
+  let specibus = client.playerMap.get(charid,"spec");
 
     let i;
     //if first value in array is true, it means there is a computer, if both are true, it means the computer has sburbed installed
