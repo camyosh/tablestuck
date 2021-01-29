@@ -326,44 +326,6 @@ exports.regImport = async function(client, charSheet) {
 
 */
 
-//check if player has a computer in rooms
-exports.compTest = function(client, message, charid, room, currentInv) {
-
-    let i;
-    //if first value in array is true, it means there is a computer, if both are true, it means the computer has sburbed installed
-    let comp = [false,false];
-
-
-    for(i=0; i < room[5].length; i++) {
-
-      if(client.trait1[client.codeCypher[2][client.captchaCode.indexOf(room[5][i][1].charAt(2))]] == "COMPUTER" || client.trait2[client.codeCypher[3][client.captchaCode.indexOf(room[5][i][1].charAt(3))]] == "COMPUTER") {
-        comp[0]=true;
-
-        let j;
-        for(j=0;j<room[5][i][4].length; j++){
-          if(room[5][i][4][j][1]=="////////"&&room[5][i][4][j][0]=="SBURB SERVER"){
-            comp[1]=true;
-          }
-        }
-      }
-    }
-    for(i=0; i < currentInv.length; i++) {
-      if(client.trait1[client.codeCypher[2][client.captchaCode.indexOf(currentInv[i][1].charAt(2))]] == "COMPUTER" || client.trait2[client.codeCypher[3][client.captchaCode.indexOf(currentInv[i][1].charAt(3))]] == "COMPUTER"){
-        comp[0]=true;
-
-        let j;
-        for(j=0;j<currentInv[i][4].length; j++){
-          if(currentInv[i][4][j][1]=="////////"&&currentInv[i][4][j][0]=="SBURB SERVER"){
-            comp[1]=true;
-      }
-    }
-}
-}
-return comp;
-}
-
-
-
 //alchemy -- || takes lowest && takes highest
 //  1<A<a<1
 //  0-11  12-37  38-63
