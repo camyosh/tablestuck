@@ -197,6 +197,7 @@ try{
     try{
       underling = client.playerMap.get(list[target][1],"type");
     }catch(err){
+      console.log("Stopped a crash - underling not found!")
       return;
     }
 
@@ -694,7 +695,7 @@ if(client.playerMap.has(list[init[turn][0]][1],"channel")){
     let chan = client.playerMap.get(list[init[turn][0]][1],"channel");
     let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
 //send message to player's channel
-    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actionList you can take with >act, and >pass your turn once you're done!${alert}`);
+    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\nSee the list of actions you can take with >act, and >pass your turn once you're done!${alert}`);
 }
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
@@ -2427,7 +2428,13 @@ function npcTurn(client, message, local){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
-  let playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+  let playerpos;
+  try{
+    playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+  } catch(err) {
+    console.log("Stopped a crash - player not found!")
+    return;
+  }
   let active = client.strifeMap.get(strifeLocal,"active")
 
   let list = client.strifeMap.get(strifeLocal,"list")
