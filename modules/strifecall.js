@@ -2461,19 +2461,7 @@ function npcTurn(client, message, local){
 
   let actionSet = [];
   let tempAct;
-  if(spec.length==0){
-
-    tempAct=client.underlings[type].act;
-
-    for(let i=0;i<tempAct.length;i++){
-      console.log(tempAct[0])
-      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("reuse")))&&tempAct!="no action"){
-        actionSet.push(tempAct[i]);
-        console.log(actionSet);
-      }
-    }
-
-  }else{
+  if(spec.length!=0){
     let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
     for(let i=0;i<4;i++){
       tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(spec[equip][1].charAt(i+4))]];
@@ -2491,9 +2479,21 @@ function npcTurn(client, message, local){
       console.log(tempAct);
       if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("reuse")))&&tempAct!="no action"){
         actionSet.push(tempAct);
+      }
+    }
   }
-}
-}
+
+  if (actionSet.length==0) {
+    tempAct=client.underlings[type].act;
+  
+    for(let i=0;i<tempAct.length;i++){
+      console.log(tempAct[0])
+      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("reuse")))&&tempAct!="no action"){
+        actionSet.push(tempAct[i]);
+        console.log(actionSet);
+      }
+    }
+  }
 
     if(actionSet.length>0){
 
