@@ -12,7 +12,6 @@ exports.run = async function(client, message, args) {
   var charid = message.guild.id.concat(message.author.id);
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
-  var currentInv = client.playerMap.get(charid,"sdex");
   let chumroll = client.playerMap.get(charid,"chumroll");
 //registers the custom homestuck font
 client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`fontstuck`});
@@ -116,7 +115,7 @@ ctx.fillStyle =`#ffffff`;
 ctx.font = `bold 24px Courier Standard Bold`;
 
 ctx.fillText(client.playerMap.get(charid,"chumhandle"),60,628);
-let plonline = client.traitcall.compTest(client,message,charid,room,currentInv);
+let plonline = client.traitcall.compTest(client,message,charid,room);
 if(plonline[0]){
 ctx.drawImage(online,15,605,32,32);
 } else {
@@ -132,9 +131,8 @@ ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,203+
 
   targlocal = client.playerMap.get(chumroll[i],"local");
   targroom = client.landMap.get(targlocal[4],targlocal[0])[targlocal[1]][targlocal[2]][2][targlocal[3]];
-  targcurrentInv = client.playerMap.get(chumroll[i],"sdex");
 
-targonline = client.traitcall.compTest(client,message,chumroll[i],targroom,targcurrentInv);
+targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
   if(targonline[0]){
     ctx.drawImage(online,15,179+((i-(pagenumber*10))*40),32,32);
   } else {

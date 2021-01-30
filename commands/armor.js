@@ -39,7 +39,7 @@ exports.run = (client, message, args) => {
       msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 1 -** ${trait2}`;
 
       inspectItem = new client.Discord.MessageEmbed()
-      .setTitle(`**NO ARMOR EQUIPPED'**`)
+      .setTitle(`**NO ARMOR EQUIPPED**`)
       .addField(`**ITEM INFORMATION**`,msg)
       .addField(`**ITEM TRAITS**`,msg1)
       .addField(`**PROTECTION**`,`**AV -** 1 **BR -** 1d2`);

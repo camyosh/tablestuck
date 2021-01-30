@@ -193,9 +193,13 @@ try{
 
   } else {
 
-
-    let underling = client.playerMap.get(list[target][1],"type");
-
+    let underling;
+    try{
+      underling = client.playerMap.get(list[target][1],"type");
+    }catch(err){
+      console.log("Stopped a crash - underling not found!")
+      return;
+    }
 
     try{
       if(underling=="unicorn"||underling=="kraken"||underling=="hecatoncheires"||underling=="denizen"){
@@ -636,7 +640,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
       } else {
         list[init[turn][0]][3]+=heal;
       }
-      alert+=`**GARDEN OF EDEN** passivley regenerated ${heal} vitality!\n`;
+      alert+=`**GARDEN OF EDEN** passively regenerated ${heal} vitality!\n`;
     }
 
     if(carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
@@ -691,12 +695,12 @@ if(client.playerMap.has(list[init[turn][0]][1],"channel")){
     let chan = client.playerMap.get(list[init[turn][0]][1],"channel");
     let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
 //send message to player's channel
-    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actionList you can take with >act, and >pass your turn once you're done!${alert}`);
+    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\nSee the list of actions you can take with >act, and >pass your turn once you're done!\n${alert}`);
 }
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
         let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
+        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!\n${alert}`);
       }
     }
 
@@ -2424,7 +2428,13 @@ function npcTurn(client, message, local){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
-  let playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+  let playerpos;
+  try{
+    playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+  } catch(err) {
+    console.log("Stopped a crash - player not found!")
+    return;
+  }
   let active = client.strifeMap.get(strifeLocal,"active")
 
   let list = client.strifeMap.get(strifeLocal,"list")
@@ -2458,24 +2468,12 @@ function npcTurn(client, message, local){
 
   let actionSet = [];
   let tempAct;
-  if(spec.length==0){
-
-    tempAct=client.underlings[type].act;
-
-    for(let i=0;i<tempAct.length;i++){
-      console.log(tempAct[0])
-      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("reuse")))&&tempAct!="no action"){
-        actionSet.push(tempAct[i]);
-        console.log(actionSet);
-      }
-    }
-
-  }else{
+  if(spec.length!=0){
     let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
     for(let i=0;i<4;i++){
       tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(spec[equip][1].charAt(i+4))]];
       console.log(tempAct);
-      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("reuse")))&&tempAct!="no action"){
+      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"){
         actionSet.push(tempAct);
       }
 
@@ -2486,16 +2484,29 @@ function npcTurn(client, message, local){
     for(let i=0;i<4;i++){
       tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]];
       console.log(tempAct);
-      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("reuse")))&&tempAct!="no action"){
+      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"){
         actionSet.push(tempAct);
+      }
+    }
   }
-}
-}
+
+  if (actionSet.length==0) {
+    tempAct=client.underlings[type].act;
+  
+    for(let i=0;i<tempAct.length;i++){
+      console.log(tempAct[0])
+      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("REUSE")))&&tempAct!="no action"){
+        actionSet.push(tempAct[i]);
+        console.log(actionSet);
+      }
+    }
+  }
 
     if(actionSet.length>0){
 
       let action = actionSet[Math.floor((Math.random() * actionSet.length))];
       list[init[turn][0]][5]-=client.actionList[action].cst;
+      list[init[turn][0]][6]+=action;
       client.strifeMap.set(strifeLocal,list,"list");
 
       if(action=="arf"){

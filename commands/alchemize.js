@@ -141,21 +141,21 @@ funcall.actionCheck(client,message,"alchemized");
     if(client.traitcall.itemTrait(client,newItem,"SHITTY")){
 
       newItem[2]=1;
-      newItem[1].charAt(1)="0";
+      newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
 
     } else if(client.traitcall.itemTrait(client,newItem,"TRICKSTER")){
       newItem[2]=16;
-      newItem[1].charAt(1)="?";
+      newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
     } else if(client.traitcall.itemTrait(client,newItem,"EXQUISITE")){
 
-      newItem[1].charAt(1)="!";
+      newItem[1] = newItem[1][0] + "!" + newItem[1].substr(2);
 
     }
 
     cost1=tierCost[newItem[2]];
     cost2=tierCost[newItem[2]-1];
 
-    if(newItem[1].charAt(1)="!"){
+    if(newItem[1].charAt(1)=="!"){
       cost1*=2;
       cost2*=2;
     }
@@ -186,21 +186,21 @@ funcall.actionCheck(client,message,"alchemized");
     if(client.traitcall.itemTrait(client,newItem,"SHITTY")){
 
       newItem[2]=1;
-      newItem[1].charAt(1)="0";
+      newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
 
     } else if(client.traitcall.itemTrait(client,newItem,"TRICKSTER")){
       newItem[2]=16;
-      newItem[1].charAt(1)="?";
+      newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
     } else if(client.traitcall.itemTrait(client,newItem,"EXQUISITE")){
 
-      newItem[1].charAt(1)="!";
+      newItem[1] = newItem[1][0] + "!" + newItem[1].substr(2);
 
     }
 
     cost1=tierCost[newItem[2]];
     cost2=tierCost[newItem[2]-1];
 
-    if(newItem[1].charAt(1)="!"){
+    if(newItem[1].charAt(1)=="!"){
       cost1*=2;
       cost2*=2;
     }
@@ -246,14 +246,14 @@ funcall.actionCheck(client,message,"alchemized");
         if(client.traitcall.itemTrait(client,item,"SHITTY")){
 
           item[2]=1;
-          item[1].charAt(1)="0";
+          newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
 
         } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
           item[2]=16;
-          item[1].charAt(1)="?";
+          newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
         } else if(client.traitcall.itemTrait(client,item,"EXQUISITE")){
 
-          item[1].charAt(1)="!";
+          newItem[1] = newItem[1][0] + "!" + newItem[1].substr(2);
 
         }
 
@@ -296,11 +296,11 @@ funcall.actionCheck(client,message,"alchemized");
         if(client.traitcall.itemTrait(client,item,"SHITTY")){
 
           item[2]=1;
-          item[1].charAt(1)="0";
+          newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
 
         } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
           item[2]=16;
-          item[1].charAt(1)="?";
+          newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
         }
 
         playerGrist[0]-=cost1;
