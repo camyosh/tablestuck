@@ -640,7 +640,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
       } else {
         list[init[turn][0]][3]+=heal;
       }
-      alert+=`**GARDEN OF EDEN** passivley regenerated ${heal} vitality!\n`;
+      alert+=`**GARDEN OF EDEN** passively regenerated ${heal} vitality!\n`;
     }
 
     if(carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
@@ -695,12 +695,12 @@ if(client.playerMap.has(list[init[turn][0]][1],"channel")){
     let chan = client.playerMap.get(list[init[turn][0]][1],"channel");
     let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
 //send message to player's channel
-    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\nSee the list of actions you can take with >act, and >pass your turn once you're done!${alert}`);
+    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\nSee the list of actions you can take with >act, and >pass your turn once you're done!\n${alert}`);
 }
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
         let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
+        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!\n${alert}`);
       }
     }
 
