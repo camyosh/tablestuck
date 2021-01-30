@@ -79,16 +79,18 @@ console.log(castlegen);
 
   let randnum = Math.floor((Math.random() * 12));
 
+  const defBedroom = funcall.preItem("bedroom",7,[]);
+
   const armorsets = [  ["CLOTHES","sQWWm9Kn",1,1,[]],["CLOTHES","sdH21UGt",1,1,[]],["CLOTHES","s4WW1jKQ",1,1,[]],["CLOTHES","s5WWMEF3",1,1,[]],["CLOTHES","sI2WllDd",1,1,[]],["CLOTHES","shHHjXDH",1,1,[]],["CLOTHES","sKW2dTnZ",1,1,[]],["CLOTHES","sjHWZVxB",1,1,[]],["CLOTHES","sYWHt9oW",1,1,[]],["CLOTHES","slH2RSD8",1,1,[]],["CLOTHES","sOH2jCtu",1,1,[]],["CLOTHES","sDWH2ydM",1,1,[]]  ];
 
   const def = [[[5,7,[
-     [0,0,"BEDROOM",false,[occset],[["COMPUTER","yQiKRZH8",1,1,[]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-     [0,0,"LIVING ROOM",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-     [0,0,"STUDY",false,[],[["DESK","yLGjNwPf",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-     [0,0,"KITCHEN",false,[],[["FRIDGE","y9dUU1qy",1,1,[["FRUIT GUSHERS","08YWJ3ZR",1,2,[]],["STEAK","0kZjzFvm",1,2,[]],["SALAD","0DI3Mt9D",1,2,[]],["ROCKET POP","0hYdl7RH",1,2,[]],["ICE CUBE","0JdWv89f",1,4,[]]]],funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-     [0,0,"BATHROOM",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem()]],
-     [0,0,"YARD",false,[],[["MAILBOX","yHkIqlBC",1,1,[["SBURB CLIENT","////////",1,1,[]],["SBURB SERVER","////////",1,1,[]]]],funcall.preItem()]],
-     [0,0,"SHED",false,[],[funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem(),funcall.preItem()]]
+     [0,0,"BEDROOM",false,[occset],defBedroom],
+     [0,0,"LIVING ROOM",false,[],funcall.preItem("living room",7,[])],
+     [0,0,"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]]])],
+     [0,0,"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]]]]])],
+     [0,0,"BATHROOM",false,[],funcall.preItem("bathroom",4,[])],
+     [0,0,"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",1,1,[["SBURB CLIENT","////////",1,1,[]],["SBURB SERVER","////////",1,1,[]]]]])],
+     [0,0,"SHED",false,[],funcall.preItem("shed",8,[])]
    ]]]];
 
 
@@ -189,7 +191,7 @@ regImport();
   let towerRoom = moonMap[towerLocal[0]][towerLocal[1]][2].length;
 
   moonMap[towerLocal[0]][towerLocal[1]][2].push([0,0,`${message.author.username.toUpperCase()}'S DREAM TOWER`,false,[
-    [true,charid]],[]])
+    [true,charid]],defBedroom]);
 
   client.landMap.set(message.guild.id+"medium",moonMap,lunarSway);
 

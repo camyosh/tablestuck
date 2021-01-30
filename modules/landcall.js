@@ -415,7 +415,7 @@ exports.moonGen = function(client,castleLocal,towerLocal){
   empty.splice(select.indexOf(towerLocal[0])*8+select.indexOf(towerLocal[1]),1);
 
   section[0][castleLocal[0]][castleLocal[1]]=[12,1,[[0,0,"PROSPIT CASTLE",true,[],[]]]];
-  section[0][castleLocal[0]][castleLocal[1]]=[12,1,[[0,0,"DERSE CASTLE",true,[],[]]]];
+  section[1][castleLocal[0]][castleLocal[1]]=[12,1,[[0,0,"DERSE CASTLE",true,[],[]]]];
   empty2.splice(select.indexOf(castleLocal[0])*8+select.indexOf(castleLocal[1]),1);
 
 
