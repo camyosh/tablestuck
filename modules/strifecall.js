@@ -2506,6 +2506,7 @@ function npcTurn(client, message, local){
 
       let action = actionSet[Math.floor((Math.random() * actionSet.length))];
       list[init[turn][0]][5]-=client.actionList[action].cst;
+      list[init[turn][0]][6]+=action;
       client.strifeMap.set(strifeLocal,list,"list");
 
       if(action=="arf"){
