@@ -174,7 +174,7 @@ funcall.actionCheck(client,message,"alchemized");
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
 
-    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]}**`);
+    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${newItem[0]}**`);
   funcall.actionCheck(client,message,"alchemized");
     return;
 
@@ -220,7 +220,7 @@ funcall.actionCheck(client,message,"alchemized");
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
 
-    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]}**`);
+    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${newItem[0]}**`);
     funcall.actionCheck(client,message,"alchemized");
     return;
 
@@ -305,7 +305,6 @@ funcall.actionCheck(client,message,"alchemized");
 
         playerGrist[0]-=cost1;
         playerGrist[client.grist[grist].pos]-=cost2;
-        item[3]=quantity;
         room[5].push([item[0],item[1],item[2],quantity,[]]);
         client.playerMap.set(charid,playerGrist,"grist");
         sec[local[1]][local[2]][2][local[3]] = room;
