@@ -72,6 +72,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
       return;
     }
     item1 = sdex[select1]
+    item1[4] = [];
 
 
     if(item1[1] == "////////"||item1[1]=="########"){
@@ -81,6 +82,12 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
     cost1=tierCost[item1[2]];
     cost2=tierCost[item1[2]-1];
+
+    if (item1[1].charAt(1)=="!") {
+      cost1*=2;
+      cost2*=2;
+    }
+
     grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(item1[1].charAt(1))]];
 
     if(playerGrist[0]<cost1||playerGrist[client.grist[grist].pos]<cost2){
