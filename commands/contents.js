@@ -41,6 +41,7 @@ exports.run = (client, message, args) => {
 
   if (page > item[4].length / 20) {
     message.channel.send("Cannot view that page, only " + Math.floor(item[4].length / 20 + 1) + " pages exist");
+    return;
   }
 
   let inventory = ``;
