@@ -2381,6 +2381,19 @@ if(list[active[ik]][3] < 1){
     return(occset);
   }
 
+  exports.dungeonSpawn = function(client, section, coords, underling, message){
+    let sessionID = message.guild.id;
+    let charid = sessionID.concat(message.author.id);
+    let npcCount = client.landMap.get(sessionID+"medium","npcCount");
+    let local = ["s" + section + "d", coords[0], coords[1], 0, charid];
+
+    npcCount++;
+    let underlingSpawn = underSpawn(client, local, underling, sessionID, npcCount);
+
+    client.landMap.set(sessionID+"medium",npcCount,"npcCount");
+    return(underlingSpawn);
+  }
+
   function lichTurn(client,message,local,underling,target) {
 
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;

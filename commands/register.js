@@ -270,11 +270,12 @@ client.hookcall.hookCheck(client,message);
 
 let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
+client.landMap.set(charid,{grist: gristSet});
 
-var s1 = landcall.landGen(client,0,gategen[0],gristSet);
-var s2 = landcall.landGen(client,1,gategen[0],gristSet);
-var s3 = landcall.landGen(client,2,gategen[0],gristSet);
-var s4 = landcall.landGen(client,3,gategen[0],gristSet);
+var s1 = landcall.landGen(client,0,gategen[0],message);
+var s2 = landcall.landGen(client,1,gategen[0],message);
+var s3 = landcall.landGen(client,2,gategen[0],message);
+var s4 = landcall.landGen(client,3,gategen[0],message);
 
 var land = {
     name: ["Stumps","Dismay"],
