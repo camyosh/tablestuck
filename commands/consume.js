@@ -101,11 +101,15 @@ if(strifeCheck){
 
   message.channel.send(msg);
 
-  if(strifeCheck){
-  list[pos][6].push("CONSUME");
-  client.strifeMap.set(strifeLocal,list,"list");
-}
-  sdex.splice(selectDex,1);
-  client.playerMap.set(charid,sdex,"sdex");
+  if (strifeCheck) {
+    list[pos][6].push("CONSUME");
+    client.strifeMap.set(strifeLocal, list, "list");
+  }
+  if (sdex[selectDex][3] == 1) {
+    sdex.splice(selectDex, 1);
+  } else {
+    sdex[selectDex][3]--;
+  }
+  client.playerMap.set(charid, sdex, "sdex");
 
 }
