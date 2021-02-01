@@ -24,8 +24,17 @@ var charid = message.guild.id.concat(message.author.id);
 
  let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"];
 var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]];
-client.landMap.set(charid,{grist: gristSet});
 let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]];
+client.landMap.set(charid,{
+  name: client.landMap.get(charid,"name"),
+  aspect: aspects[Math.floor((Math.random() * 11))],
+  grist: gristSet,
+  enter:client.landMap.get(charid,"enter"),
+  spent: client.landMap.get(charid,"spent"),
+  floors: client.landMap.get(charid,"floors"),
+  gate: client.landMap.get(charid,"gate"),
+  gates:gategen,
+  h:client.landMap.get(charid,"h") });
 
 var s1 = landcall.landGen(client,0,gategen[0],message);
 var s2 = landcall.landGen(client,1,gategen[0],message);
