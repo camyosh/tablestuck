@@ -40,11 +40,21 @@ exports.run = (client, message, args) => {
 
   let currentInv = client.playerMap.get(charid,"sdex");
   let itemName = "CUSTOM ITEM";
-  if(args[3]){
-    itemName = args[3];
+  let quantity = parseInt(args[2], 10);
+  if (isNaN(quantity)) {
+    message.channel.send("That is not a valid quantity!");
+    return;
+  }
+  if (quantity < 1 || quantity > 8) {
+    message.channel.send("The quantity must be more than 0 and less than 8.");
+    return;
+  } 
+  if(args[4]){
+    args.splice(0,3);
+    itemName = funcall.combineArgs(args);
   }
 
-  let item = [itemName,code,tier,1,[]];
+  let item = [itemName,code,tier,quantity,[]];
 
   currentInv.unshift(item);
   let mess = `CAPTCHALOGUED the ${item[0]}.`
