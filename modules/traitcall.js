@@ -88,6 +88,7 @@ exports.itemTrait = function(client,item,trait){
 exports.compTest = function(client, message, charid, room) {
   let currentInv = client.playerMap.get(charid,"sdex");
   let specibus = client.playerMap.get(charid,"spec");
+  let armor = client.playerMap.get(charid,"armor");
 
     let i;
     //if first value in array is true, it means there is a computer, if both are true, it means the computer has sburbed installed
@@ -128,6 +129,16 @@ exports.compTest = function(client, message, charid, room) {
           if(specibus[i][4][j][1]=="////////"&&specibus[i][4][j][0]=="SBURB SERVER"){
             comp[1]=true;
           }
+        }
+      }
+    }
+    if(armor[0] && client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))] == "COMPUTER" || client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))] == "COMPUTER"){
+      comp[0]=true;
+
+      let j;
+      for(j=0;j<armor[0][4].length; j++){
+        if(armor[0][4][j][1]=="////////"&&armor[0][4][j][0]=="SBURB SERVER"){
+          comp[1]=true;
         }
       }
     }
