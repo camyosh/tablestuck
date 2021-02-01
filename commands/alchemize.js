@@ -266,14 +266,14 @@ funcall.actionCheck(client,message,"alchemized");
         if(client.traitcall.itemTrait(client,item,"SHITTY")){
 
           item[2]=1;
-          newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
+          item[1] = item[1][0] + "0" + item[1].substr(2);
 
         } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
           item[2]=16;
-          newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
+          item[1] = item[1][0] + "?" + item[1].substr(2);
         } else if(client.traitcall.itemTrait(client,item,"EXQUISITE")){
 
-          newItem[1] = newItem[1][0] + "!" + newItem[1].substr(2);
+          item[1] = item[1][0] + "!" + item[1].substr(2);
 
         }
 
@@ -316,11 +316,11 @@ funcall.actionCheck(client,message,"alchemized");
         if(client.traitcall.itemTrait(client,item,"SHITTY")){
 
           item[2]=1;
-          newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
+          item[1] = item[1][0] + "0" + item[1].substr(2);
 
         } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
           item[2]=16;
-          newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
+          item[1] = item[1][0] + "?" + item[1].substr(2);
         }
 
         playerGrist[0]-=cost1;
