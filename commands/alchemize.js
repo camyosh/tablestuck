@@ -83,7 +83,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
       message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
       return;
     }
-    item1 = sdex[select1]
+    item1 = sdex[select1].slice();
     item1[3] = quantity;
     item1[4] = [];
 
