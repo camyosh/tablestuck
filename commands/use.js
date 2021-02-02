@@ -94,7 +94,7 @@ exports.run = (client, message, args) => {
             return;
 
           } else {
-            message.channel.send("Both CARD SLOTS on the PUNCH DESIGNIX are full! Take them out using the >captcha command");
+            message.channel.send("Both CARD SLOTS on the TOTEM LATHE are full! Take them out using the >captcha command");
             return;
           }
         } else if(selectCode == "########" && sdex[selectDex][0] == "CRUXITE DOWEL"){

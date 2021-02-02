@@ -22,7 +22,7 @@ var defaultConstruct =[2,1,[[0,0,"LAND CONSTRUCT",false,[],[]]]];
 var defaultNode =[3,1,[[0,0,"RETURN NODE",false,[],[]]]];
 var defaultVillage =[4,2,[[0,0,"ROOM 1",false,[],[]],[0,0,"ROOM 2",false,[],[]]]];
 
-exports.landGen = function(client,sec,gateCoor,gristSet) {
+exports.landGen = function(client,sec,gateCoor,message) {
   let section = [];
   for(i=0;i<11;i++){
     section.push([[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]]]);
@@ -49,7 +49,7 @@ empty =[];
     denizenCheck = true;
     let temp=empty.splice(60,1);
     section[temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DENIZEN LAIR ENTRANCE",false,[],[]]]];
-    dungeon = dungeonGen(client,temp,sec,dungeon,gristSet)[0];
+    dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
   }
   if(sec>1){
     dunCount = 1;
@@ -65,7 +65,7 @@ empty =[];
   length--;
   section[temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DUNGEON ENTRANCE",false,[],[]]]];
   //section[temp[0][0]][temp[0][1]]=[1,6,[funcall.roomGenCall(client,1,sec,1),funcall.roomGenCall(client,1,sec,2),funcall.roomGenCall(client,1,sec,3),funcall.roomGenCall(client,1,sec,4)]];
-  dungeon = dungeonGen(client,temp,sec,dungeon,gristSet)[0];
+  dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
   }
   }
   //Creates a Village
@@ -98,7 +98,7 @@ return [section,dungeon];
 
 }
 
-function dungeonGen(client,roomCoor,sec,dungeon,gristSet) {
+function dungeonGen(client,roomCoor,sec,dungeon,message) {
   dungeon[roomCoor[0][0]][roomCoor[0][1]]=[1,1,[[0,0,"DUNGEON EXIT",false,[],[]]]];
   let s = 0;
   let lv2 = [];
@@ -129,13 +129,13 @@ let b = 0;
           if(dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] [0] != 1 && dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] [0] != 8){
             if ((b==5&&sec==0)||(b==10&&sec==1)){
               dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] =[8,1,[[0,0,"BOSS ROOM",false,[
-                [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
-                [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
-                [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
+                client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], 'basilisk', message),
+                client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], 'basilisk', message),
+                client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], 'basilisk', message),
               ],[lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
 
-            dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] = dungeonRoomGen(client,sec,gristSet);
+            dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
           }
         }
       }
@@ -147,9 +147,9 @@ let b = 0;
             b++;
           if(dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] [0] != 1 && dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] [0] != 8){
               if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] =[8,1,[[0,0,"DUNGEON ROOM",false,[[false,'imp',gristSet[Math.floor((Math.random() * 4))]]],[lootcall.lootA(client, sec, dubs(8))]]]];
+              dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] =[8,1,[[0,0,"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]-k,roomCoor[0][1]], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
-            dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] = dungeonRoomGen(client,sec,gristSet);
+            dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
             }
           }
         }
@@ -162,9 +162,9 @@ let b = 0;
           b++;
           if(dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] [0] != 1 && dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] [0] != 8 /*&& roomCoor[0][1]+k <= 10*/){
               if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] =[8,1,[[0,0,"DUNGEON ROOM",false,[[false,'imp',gristSet[Math.floor((Math.random() * 4))]]],[lootcall.lootA(client, sec, dubs(8))]]]];
+              dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] =[8,1,[[0,0,"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]+k], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
-            dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] = dungeonRoomGen(client,sec,gristSet);
+            dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] = dungeonRoomGen(client,sec);
           }
           }
 
@@ -178,9 +178,9 @@ let b = 0;
           b++;
           if(dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] [0] != 1 && dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] [0] != 8){
             if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] =[8,1,[[0,0,"DUNGEON ROOM",false,[[false,'imp',gristSet[Math.floor((Math.random() * 4))]]],[lootcall.lootA(client, sec, dubs(8))]]]];
+              dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] =[8,1,[[0,0,"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]-k], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
-            dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] = dungeonRoomGen(client,sec,gristSet);
+            dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] = dungeonRoomGen(client,sec);
           }
           }
 
@@ -193,13 +193,13 @@ let b = 0;
 } else if(sec==2){
   for(k=0;k<11;k++){
     if(dungeon[roomCoor[0][0]] [k] [0] != 1 && dungeon[roomCoor[0][0]] [k] [0] != 8){
-      dungeon[roomCoor[0][0]] [k] = dungeonRoomGen(client,sec,gristSet);
+      dungeon[roomCoor[0][0]] [k] = dungeonRoomGen(client,sec);
     }
   }
 
   for(k=0;k<11;k++){
     if(dungeon[k] [roomCoor[0][1]] [0] != 1 && dungeon[k] [roomCoor[0][1]] [0] != 8){
-      dungeon[k] [roomCoor[0][1]] = dungeonRoomGen(client,sec,gristSet);
+      dungeon[k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
     }
   }
   let bosscheck = false;
@@ -209,9 +209,9 @@ let b = 0;
       let random = Math.floor((Math.random() * 11))
       if(dungeon[roomCoor[0][0]][random][0]==0){
         dungeon[roomCoor[0][0]][random] = [8,1,[[0,0,"BOSS ROOM",false,[
-          [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
-          [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
-          [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
+          client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], 'basilisk', message),
+          client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], 'basilisk', message),
+          client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], 'basilisk', message),
         ],[lootcall.lootA(client, sec, dubs(8))]]]];
         bosscheck=true;
       }
@@ -222,9 +222,9 @@ let b = 0;
       let random = Math.floor((Math.random() * 11))
       if(dungeon[random][roomCoor[0][1]][0]==0){
         dungeon[random][roomCoor[0][1]] = [8,1,[[0,0,"BOSS ROOM",false,[
-          [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
-          [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
-          [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
+          client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], 'basilisk', message),
+          client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], 'basilisk', message),
+          client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], 'basilisk', message),
         ],[lootcall.lootA(client, sec, dubs(8))]]]];
         bosscheck=true;
       }
@@ -265,14 +265,14 @@ while(!hitWall){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][0] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
-            [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
+            client.strifecall.dungeonSpawn(client, sec, [curx,0], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
 
       } else {
         if(dungeon[curx][cury][0] == 7){
-        dungeon[curx][cury] = dungeonRoomGen(client,sec,gristSet);
+        dungeon[curx][cury] = dungeonRoomGen(client,sec);
         emptyTiles.push([curx,cury]);
       }
     }
@@ -287,13 +287,13 @@ while(!hitWall){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][10] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
-            [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
+            client.strifecall.dungeonSpawn(client, sec, [curx,10], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
         if(dungeon[curx][cury][0] == 7){
-        dungeon[curx][cury] = dungeonRoomGen(client,sec,gristSet);
+        dungeon[curx][cury] = dungeonRoomGen(client,sec);
         emptyTiles.push([curx,cury]);
       }
     }
@@ -308,13 +308,13 @@ deleted = genDirection.splice(0,1);
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[10][cury] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
-            [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
+            client.strifecall.dungeonSpawn(client, sec, [10,cury], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
         if(dungeon[curx][cury][0] == 7){
-        dungeon[curx][cury] = dungeonRoomGen(client,sec,gristSet);
+        dungeon[curx][cury] = dungeonRoomGen(client,sec);
         emptyTiles.push([curx,cury]);
       }
     }
@@ -329,13 +329,13 @@ deleted = genDirection.splice(0,1);
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[0][cury] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
-            [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],
+            client.strifecall.dungeonSpawn(client, sec, [0,cury], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
         if(dungeon[curx][cury][0] == 7){
-        dungeon[curx][cury] = dungeonRoomGen(client,sec,gristSet);
+        dungeon[curx][cury] = dungeonRoomGen(client,sec);
         emptyTiles.push([curx,cury]);
       }
     }
@@ -352,12 +352,12 @@ genDirection =["n","s","e","w"];
 if (denizen == false){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
-    [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],],[lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
 }
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[0,0,"DENIZEN MINION",false,[
-    [false,'basilisk',gristSet[Math.floor((Math.random() * 4))]],],[lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
 }
 
 }
@@ -366,7 +366,7 @@ for (d=0;d<4;d++){
 
 }
 
-function dungeonRoomGen(client,sec,gristSet) {
+function dungeonRoomGen(client,sec) {
   switch(Math.floor((Math.random() * 4))){
 
 case 3:

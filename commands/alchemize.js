@@ -60,18 +60,32 @@ exports.run = (client, message, args) => {
 
 if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")[1]){
 
-  if(args.length == 1){
+  if(args.length == 1 || args.length == 2){
     select1 = parseInt(args[0], 10) - 1;
     if(isNaN(select1)){
-      message.channel.send("Item 1 is not a valid argument!");
+      message.channel.send("That is is not a valid argument!");
       return;
+    }
+    let quantity = 1;
+    if (args[1]) {
+      quantity = parseInt(args[1], 10);
+      if(isNaN(quantity)){
+        message.channel.send("That is is not a valid argument!");
+        return;
+      }
+      if(quantity<=0 || quantity>8){
+        message.channel.send("The quantity must be more than 0 and less than 8.");
+        return;
+      }
     }
 
     if(select1 >= sdex.length || select1< 0){
       message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
       return;
     }
-    item1 = sdex[select1]
+    item1 = sdex[select1].slice();
+    item1[3] = quantity;
+    item1[4] = [];
 
 
     if(item1[1] == "////////"||item1[1]=="########"){
@@ -79,8 +93,14 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
       return;
     }
 
-    cost1=tierCost[item1[2]];
-    cost2=tierCost[item1[2]-1];
+    cost1=tierCost[item1[2]]*quantity;
+    cost2=tierCost[item1[2]-1]*quantity;
+
+    if (item1[1].charAt(1)=="!") {
+      cost1*=2;
+      cost2*=2;
+    }
+
     grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(item1[1].charAt(1))]];
 
     if(playerGrist[0]<cost1||playerGrist[client.grist[grist].pos]<cost2){
@@ -95,7 +115,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
 
-    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]}**`);
+    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]} x${quantity}**`);
 funcall.actionCheck(client,message,"alchemized");
     return;
 
@@ -174,7 +194,7 @@ funcall.actionCheck(client,message,"alchemized");
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
 
-    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]}**`);
+    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${newItem[0]}**`);
   funcall.actionCheck(client,message,"alchemized");
     return;
 
@@ -220,7 +240,7 @@ funcall.actionCheck(client,message,"alchemized");
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
 
-    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]}**`);
+    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${newItem[0]}**`);
     funcall.actionCheck(client,message,"alchemized");
     return;
 
@@ -246,14 +266,14 @@ funcall.actionCheck(client,message,"alchemized");
         if(client.traitcall.itemTrait(client,item,"SHITTY")){
 
           item[2]=1;
-          newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
+          item[1] = item[1][0] + "0" + item[1].substr(2);
 
         } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
           item[2]=16;
-          newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
+          item[1] = item[1][0] + "?" + item[1].substr(2);
         } else if(client.traitcall.itemTrait(client,item,"EXQUISITE")){
 
-          newItem[1] = newItem[1][0] + "!" + newItem[1].substr(2);
+          item[1] = item[1][0] + "!" + item[1].substr(2);
 
         }
 
@@ -296,16 +316,15 @@ funcall.actionCheck(client,message,"alchemized");
         if(client.traitcall.itemTrait(client,item,"SHITTY")){
 
           item[2]=1;
-          newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
+          item[1] = item[1][0] + "0" + item[1].substr(2);
 
         } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
           item[2]=16;
-          newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
+          item[1] = item[1][0] + "?" + item[1].substr(2);
         }
 
         playerGrist[0]-=cost1;
         playerGrist[client.grist[grist].pos]-=cost2;
-        item[3]=quantity;
         room[5].push([item[0],item[1],item[2],quantity,[]]);
         client.playerMap.set(charid,playerGrist,"grist");
         sec[local[1]][local[2]][2][local[3]] = room;

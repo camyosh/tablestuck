@@ -81,7 +81,7 @@ console.log(castlegen);
 
   const defBedroom = funcall.preItem("bedroom",7,[]);
 
-  const armorsets = [  ["CLOTHES","sQWWm9Kn",1,1,[]],["CLOTHES","sdH21UGt",1,1,[]],["CLOTHES","s4WW1jKQ",1,1,[]],["CLOTHES","s5WWMEF3",1,1,[]],["CLOTHES","sI2WllDd",1,1,[]],["CLOTHES","shHHjXDH",1,1,[]],["CLOTHES","sKW2dTnZ",1,1,[]],["CLOTHES","sjHWZVxB",1,1,[]],["CLOTHES","sYWHt9oW",1,1,[]],["CLOTHES","slH2RSD8",1,1,[]],["CLOTHES","sOH2jCtu",1,1,[]],["CLOTHES","sDWH2ydM",1,1,[]]  ];
+  const armorsets = [["CLOTHES", "sQ00m9Kn", 1, 1, []], ["CLOTHES", "sd1y1UGt", 1, 1, []], ["CLOTHES", "s4001jKQ", 1, 1, []], ["CLOTHES", "s500MEF3", 1, 1, []], ["CLOTHES", "sIy0llDd", 1, 1, []], ["CLOTHES", "sh11jXDH", 1, 1, []], ["CLOTHES", "sK0ydTnZ", 1, 1, []], ["CLOTHES", "sj10ZVxB", 1, 1, []], ["CLOTHES", "sY01t9oW", 1, 1, []], ["CLOTHES", "sl1yRSD8", 1, 1, []], ["CLOTHES", "sO1yjCtu", 1, 1, []], ["CLOTHES", "sD012ydM", 1, 1, []]];
 
   const def = [[[5,7,[
      [0,0,"BEDROOM",false,[occset],defBedroom],
@@ -270,11 +270,12 @@ client.hookcall.hookCheck(client,message);
 
 let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
+client.landMap.set(charid,{grist: gristSet});
 
-var s1 = landcall.landGen(client,0,gategen[0],gristSet);
-var s2 = landcall.landGen(client,1,gategen[0],gristSet);
-var s3 = landcall.landGen(client,2,gategen[0],gristSet);
-var s4 = landcall.landGen(client,3,gategen[0],gristSet);
+var s1 = landcall.landGen(client,0,gategen[0],message);
+var s2 = landcall.landGen(client,1,gategen[1],message);
+var s3 = landcall.landGen(client,2,gategen[2],message);
+var s4 = landcall.landGen(client,3,gategen[3],message);
 
 var land = {
     name: ["Stumps","Dismay"],
