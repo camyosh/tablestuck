@@ -37,9 +37,9 @@ client.landMap.set(charid,{
   h:client.landMap.get(charid,"h") });
 
 var s1 = landcall.landGen(client,0,gategen[0],message);
-var s2 = landcall.landGen(client,1,gategen[0],message);
-var s3 = landcall.landGen(client,2,gategen[0],message);
-var s4 = landcall.landGen(client,3,gategen[0],message);
+var s2 = landcall.landGen(client,1,gategen[1],message);
+var s3 = landcall.landGen(client,2,gategen[2],message);
+var s4 = landcall.landGen(client,3,gategen[3],message);
 
 var land = {
     name: client.landMap.get(charid,"name"),
