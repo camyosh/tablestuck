@@ -128,6 +128,7 @@ exports.run = (client, message, args) => {
 
       var spriteSheet = {
         name: `${client.playerMap.get(clientId,"name").toUpperCase()}'S SPRITE`,
+        possess:[],
         type: "sprite",
         faction: "player",
         vit:100,
@@ -136,8 +137,8 @@ exports.run = (client, message, args) => {
         grist:"diamond",
         pos:0,
         alive:true,
-        local:clientLocal,
-        sdex:["h",0,0,value[1],clientId],
+        local:["h",0,0,value[1],clientId],
+        sdex:[],
         equip:0,
         trinket:[],
         armor:[],
@@ -146,12 +147,17 @@ exports.run = (client, message, args) => {
         scards:1,
         kinds:[],
         port:1,
+        modus:"STACK",
+        cards:4,
         prototype:[],
         prospitRep:0,
         derseRep:0,
         underlingRep:-1,
         playerRep:0,
-        prefTarg:[]
+        prefTarg:[],
+        xp:0,
+        rung:0,
+        b:0
       }
       client.playerMap.set(spriteID,spriteSheet);
 

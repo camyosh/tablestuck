@@ -16,7 +16,7 @@ exports.run = (client, message, args) => {
       funcall.actionCheck(client,message);
     message.channel.send("Leaving Strife");
 
-    var charid = message.guild.id.concat(message.author.id);
+  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
     let local = client.playerMap.get(charid,"local");
     //retrieve strife id
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`
@@ -47,7 +47,7 @@ exports.run = (client, message, args) => {
 
   }
 
-  var charid = message.guild.id.concat(message.author.id);
+  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
 
   let armor = client.playerMap.get(charid,"armor");
   let vit = client.playerMap.get(charid,"vit");
@@ -55,11 +55,11 @@ exports.run = (client, message, args) => {
   let spec =client.playerMap.get(charid,"spec");
   let equip = client.playerMap.get(charid,"equip");
 
-  if(equip>=spec.length){
+/*  if(equip>=spec.length){
     message.channel.send("You must have a weapon equipped before entering strife!");
     return;
   }
-
+*/
   let grist;
 //determine grist type for effectiveness
   if(armor.length == 0){

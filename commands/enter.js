@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
 
 //determine player location
 
-  var charid = message.guild.id.concat(message.author.id);
+  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   var occset = [true,charid];
 
   let local = client.playerMap.get(charid,"local");

@@ -681,7 +681,7 @@ while(empty.length>0){
 
 exports.drawMap = async function(client,message,mini) {
 
-let charid = message.guild.id.concat(message.author.id);
+  let charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
 let local = client.playerMap.get(charid,`local`);
 let input = client.landMap.get(local[4],local[0]);
 let aspect;

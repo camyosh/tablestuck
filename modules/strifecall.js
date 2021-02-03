@@ -110,8 +110,7 @@ function passTurn(client, message, local) {
 
   for(i=0;i<active.length;i++){
     if(list[active[i]][0]==true){
-      let chan = client.playerMap.get(list[active[i]][1],"channel");
-      client.channels.cache.get(chan).send(msg);
+      client.funcall.chanMsg(client,list[active[i]][1],msg);
     }
   }
 
@@ -156,7 +155,7 @@ function kill(client,message,local,target,pos){
 
 //check if dead character is an underling or player
 
-  if(list[target][0]==true){
+  if(client.playerMap.get(list[target][1],"type")=="player"){
     client.playerMap.set(list[target][1],false,"alive");
 try{
   increase = client.playerMap.get(message.guild.id.concat(message.author.id),"playersDefeated");
@@ -173,11 +172,9 @@ try{
     //send death message to all participating player's terminals
 
     let k;
-    for(k=0;k<players;k++){
+    for(k=0;k<active;k++){
 
-      let chan = client.playerMap.get(list[playerpos[k]][1],"channel");
-
-      client.channels.cache.get(chan).send(`${name} died!`);
+      client.funcall.chanMsg(client,list[active[i]][1],`${name} died!`);
 
     }
 
@@ -264,6 +261,9 @@ try{
 
     for(i=0;i<players;i++){
       let charid = list[playerpos[i]][1];
+
+      if(client.playerMap.get(charid,"type")=="human"){
+
       let rung = client.playerMap.get(charid,"rung");
       let grist = client.playerMap.get(charid,"grist");
 
@@ -307,12 +307,13 @@ try{
 
       }
 //send message to all players currently in strife
-      let chan = client.playerMap.get(charid,"channel");
 
-      client.channels.cache.get(chan).send(`The **${primaryType} ${underling}** has been defeated! \nYou get **${client.emojis.cache.get(client.grist[repgrist].emoji)} ${amount*4}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${amount*2}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${amount}** and **${xp} XP**`);
+      client.funcall.chanMsg(client,charid,`The **${primaryType} ${underling}** has been defeated! \nYou get **${client.emojis.cache.get(client.grist[repgrist].emoji)} ${amount*4}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${amount*2}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${amount}** and **${xp} XP**`);
+
 //call function to give players XP
       giveXp(client,charid,xp);
       client.playerMap.set(charid,grist,"grist");
+    }
 }
 //call function to remove the dead target from strife
       client.playerMap.delete(list[target][1]);
@@ -329,6 +330,11 @@ try{
 }
 
 function giveXp(client,target,xp){
+
+if(client.playerMap.get(target,"type")!="player"){
+  return;
+}
+
   curXp = client.playerMap.get(target,"xp");
   curRung = client.playerMap.get(target,"rung");
 
@@ -363,9 +369,7 @@ function giveXp(client,target,xp){
     .addField(`**GEL VISCOSITY**`,`${client.emojis.cache.get('735664168400584715')} ${curGv} + ${rungGel[i] - curGv}`, true)
     .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${newBoon - curBoon}`,true);
 
-    let chan = client.playerMap.get(target,"channel");
-
-    client.channels.cache.get(chan).send(congrats);
+    client.funcall.chanMsg(client,target,congrats);
 
   }
 }
@@ -397,8 +401,6 @@ function leaveStrife(client,message,local,pos){
 
   let players = client.strifeMap.get(strifeLocal,"players");
 
-
-let chan = client.playerMap.get(charid,"channel");
 //if player leaving is the last in strife, delete strife database
   if(players <= 1){
     client.strifeMap.delete(strifeLocal);
@@ -429,7 +431,7 @@ let chan = client.playerMap.get(charid,"channel");
     }
 
   }
-client.channels.cache.get(chan).send("Leaving Strife!");
+client.funcall.chanMsg(client,charid,"Leaving Strife!");
 } else {
 
   let active = client.strifeMap.get(strifeLocal,"active");
@@ -570,7 +572,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CHARLATAN")[0]){
 
   client.playerMap.set(list[init[turn][0]][1],specibus,"spec");
 
-  } 
+  }
 }
 
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
@@ -687,16 +689,23 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
 
 //retrieve player channel information
 
-if(client.playerMap.has(list[init[turn][0]][1],"channel")){
-    let chan = client.playerMap.get(list[init[turn][0]][1],"channel");
-    let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
+let turnMsg = ``;
+
+if(client.playerMap.has(list[init[turn][0]][1],"ping")){
+
+  let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
 //send message to player's channel
-    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actionList you can take with >act, and >pass your turn once you're done!${alert}`);
+  turnMsg+=`${message.guild.members.cache.get(ping)} `;
 }
+
+  turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actions you can take with >act, and >pass your turn once you're done!${alert}`;
+
+//send message to player's channel
+    client.funcall.chanMsg(client,list[init[turn][0]][1],turnMsg);
+
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
-        let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
+        client.funcall.chanMsg(client,list[active[i]][1],`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
       }
     }
 
@@ -790,7 +799,11 @@ exports.start = function(client, message, local) {
 
 exports.strifeTest = function(client, message, target) {
 
-    if(client.playerMap.get(message.guild.id.concat(target.id),"strife")==false){
+  let charid = message.guild.id.concat(target.id);
+
+  let controlId = client.playerMap.get(charid,"control");
+
+    if(client.playerMap.get(controlId,"strife")==false){
 
       return false;
     }
@@ -1980,8 +1993,7 @@ if(list[target][3] < 1 && client.traitcall.traitCheck(client,list[target][1],"CA
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true){
-        let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(embed);
+        client.funcall.chanMsg(client,list[active[i]][1],embed);
       }
     }
 
@@ -2028,8 +2040,7 @@ if(list[target][3] < 1 && client.traitcall.traitCheck(client,list[target][1],"CA
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true){
-        let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(embed);
+        client.funcall.chanMsg(client,list[active[i]][1],embed);
       }
     }
 
@@ -2053,8 +2064,7 @@ if(list[target][3] < 1 && client.traitcall.traitCheck(client,list[target][1],"CA
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true){
-        let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(embed);
+        client.funcall.chanMsg(client,list[active[i]][1],embed);
       }
     }
 
@@ -2337,6 +2347,7 @@ if(list[active[ik]][3] < 1){
 
     let npcSet = {
       name: `${grist.toUpperCase()} ${undername}${underling.toUpperCase()}`,
+      possess:[],
       type: underling,
       faction: "underling",
       vit:client.underlings[underling].vit,
@@ -2355,12 +2366,17 @@ if(list[active[ik]][3] < 1){
       scards:1,
       kinds:[],
       port:1,
+      modus:"STACK",
+      cards:4,
       prototype:prototype,
       prospitRep:0,
       derseRep:0,
       underlingRep:0,
       playerRep:-1,
-      prefTarg:[]
+      prefTarg:[],
+      xp:0,
+      rung:0,
+      b:0
     }
     //rep [prospit,derse,underling,player]
 
@@ -2492,7 +2508,7 @@ function npcTurn(client, message, local){
 }
 }
 
-    if(actionSet.length>0){
+    if(actionSet.length>0&&targetList>0){
 
       let action = actionSet[Math.floor((Math.random() * actionSet.length))];
       list[init[turn][0]][5]-=client.actionList[action].cst;

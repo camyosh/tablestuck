@@ -10,7 +10,7 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = message.guild.id.concat(message.author.id);
+  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   let local = client.playerMap.get(charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);

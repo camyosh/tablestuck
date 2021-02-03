@@ -21,9 +21,13 @@ exports.run = (client, message, args) => {
 
 //Defining variables
 
-  var charid = message.guild.id.concat(message.author.id);
+  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+
+
+
   let local = client.playerMap.get(charid,"local");
   let pos = client.playerMap.get(charid,"pos");
+    let type = client.playerMap.get(charid,"type");
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
   let spec = client.playerMap.get(charid,"spec");
@@ -34,44 +38,52 @@ exports.run = (client, message, args) => {
   let init = client.strifeMap.get(strifeLocal,"init");
 
 //Check if EQUIP is an actual weapon in the specibus
+let action = [];
 
-  if(equip>=spec.length){
-    message.channel.send("You do not have a WEAPON equipped!");
-    return;
+
+  if(equip<spec.length){
+    let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
+    action =[client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(spec[equip][1].charAt(4))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(spec[equip][1].charAt(5))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(spec[equip][1].charAt(6))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(spec[equip][1].charAt(7))]]];
+    //message.channel.send("You do not have a WEAPON equipped!");
+    //return;
+  }
+
+  action=action.concat(client.underlings[type].act);
+
+  if(client.playerMap.has(charid,"prototype")){
+    let prototype = client.playerMap.get(charid,"prototype");
+
+    for(let j =0;j<prototype.length;j++){
+      let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(prototype[j][1].charAt(0))]];
+      for(let i=0;i<4;i++){
+        action.push(client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]]);
+
+  }
+  }
+
   }
 
 //retrieving the weaponkind and action list for a weapon
 
-  let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
-  let action = [client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(spec[equip][1].charAt(4))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(spec[equip][1].charAt(5))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(spec[equip][1].charAt(6))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(spec[equip][1].charAt(7))]],"aggrieve","abscond"];
+  //let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
+  //let action = [client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(spec[equip][1].charAt(4))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(spec[equip][1].charAt(5))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(spec[equip][1].charAt(6))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(spec[equip][1].charAt(7))]],"aggrieve","abscond"];
 
 //if no additional arguments, display list of actions
 
   if(!args[0]){
     let msg = ``;
-
-    msg = `**[1]** ${client.emojis.cache.get(client.actionList[action[0]].emoji[0])}${client.emojis.cache.get(client.actionList[action[0]].emoji[1])}${client.emojis.cache.get(client.actionList[action[0]].emoji[2])}${client.emojis.cache.get(client.actionList[action[0]].emoji[3])}${client.emojis.cache.get(client.actionList[action[0]].emoji[4])
-    } **CST - **${client.actionList[action[0]].cst} **DMG - **${client.actionList[action[0]].dmg}\n${client.actionList[action[0]].aa}\n\n**[2]** ${
-      client.emojis.cache.get(client.actionList[action[1]].emoji[0])}${client.emojis.cache.get(client.actionList[action[1]].emoji[1])}${client.emojis.cache.get(client.actionList[action[1]].emoji[2])}${client.emojis.cache.get(client.actionList[action[1]].emoji[3])}${client.emojis.cache.get(client.actionList[action[1]].emoji[4])
-      } **CST - **${client.actionList[action[1]].cst} **DMG - **${client.actionList[action[1]].dmg}\n${client.actionList[action[1]].aa
-    }\n\n**[3]** ${
-      client.emojis.cache.get(client.actionList[action[2]].emoji[0])}${client.emojis.cache.get(client.actionList[action[2]].emoji[1])}${client.emojis.cache.get(client.actionList[action[2]].emoji[2])}${client.emojis.cache.get(client.actionList[action[2]].emoji[3])}${client.emojis.cache.get(client.actionList[action[2]].emoji[4])
-      } **CST - **${client.actionList[action[2]].cst} **DMG - **${client.actionList[action[2]].dmg}\n${client.actionList[action[2]].aa
-    }\n\n**[4]** ${
-      client.emojis.cache.get(client.actionList[action[3]].emoji[0])}${client.emojis.cache.get(client.actionList[action[3]].emoji[1])}${client.emojis.cache.get(client.actionList[action[3]].emoji[2])}${client.emojis.cache.get(client.actionList[action[3]].emoji[3])}${client.emojis.cache.get(client.actionList[action[3]].emoji[4])
-      } **CST - **${client.actionList[action[3]].cst} **DMG - **${client.actionList[action[3]].dmg}\n${client.actionList[action[3]].aa
-    }`
-
-    msg1 = `**[5]** ${client.emojis.cache.get(client.actionList[action[4]].emoji[0])}${client.emojis.cache.get(client.actionList[action[4]].emoji[1])}${client.emojis.cache.get(client.actionList[action[4]].emoji[2])}${client.emojis.cache.get(client.actionList[action[4]].emoji[3])}${client.emojis.cache.get(client.actionList[action[4]].emoji[4])
-    } **CST - **${client.actionList[action[4]].cst} **DMG - **${client.actionList[action[4]].dmg}\n${client.actionList[action[4]].aa}\n
-    **[6]** ${client.emojis.cache.get(client.actionList[action[5]].emoji[0])}${client.emojis.cache.get(client.actionList[action[5]].emoji[1])}${client.emojis.cache.get(client.actionList[action[5]].emoji[2])}${client.emojis.cache.get(client.actionList[action[5]].emoji[3])}${client.emojis.cache.get(client.actionList[action[5]].emoji[4])
-    } **CST - **${client.actionList[action[5]].cst} **DMG - **${client.actionList[action[5]].dmg}\n${client.actionList[action[5]].aa}\n\n`
+      for(i=0;i<action.length;i++){
+        /*msg += `**[${i+1}]** ${client.emojis.cache.get(client.actionList[action[i]].emoji[0])}${client.emojis.cache.get(client.actionList[action[i]].emoji[1])}${client.emojis.cache.get(client.actionList[action[i]].emoji[2])}${client.emojis.cache.get(client.actionList[action[i]].emoji[3])}${client.emojis.cache.get(client.actionList[action[i]].emoji[4])}
+        **CST - **${client.actionList[action[i]].cst} **DMG - **${client.actionList[action[i]].dmg}\n${client.actionList[action[i]].aa}\n\n`;
+        */
+        msg += `**[${i+1}]** ***${action[i].toUpperCase()}***
+        **CST - **${client.actionList[action[i]].cst} **DMG - **${client.actionList[action[i]].dmg}\n${client.actionList[action[i]].aa}\n\n`;
+      }
 
     let embed = new client.Discord.MessageEmbed()
     .setTitle(`**SELECT AN ACTION**`)
     .addField(`**STAMINA**`,list[pos][5])
     .addField(`**WEAPON ACTIONS**`,msg)
-    .addField(`**STATIC ACTIONS**`,msg1)
     .setColor("#00e371")
 
     try{message.channel.send(embed);}catch(err){console.log(msg)};

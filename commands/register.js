@@ -200,6 +200,8 @@ regImport();
 
 
   var charSheet = {
+    control:charid,
+    possess:[],
     name: message.author.username,
     ping: message.author.id,
     channel: message.channel.id,

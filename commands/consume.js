@@ -2,7 +2,7 @@ const tierBD = [[1,2],[1,4],[1,6],[1,8],[1,10],[1,12],[2,16],[2,20],[2,24],[3,30
 
 exports.run = (client,message,args) =>{
 
-  var charid = message.guild.id.concat(message.author.id);
+  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
 
   let sdex = client.playerMap.get(charid,"sdex");
 

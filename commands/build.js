@@ -16,7 +16,7 @@ exports.run = (client, message, args) => {
 
   //retrieve player location
 
-  var charid = message.guild.id.concat(message.author.id);
+  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   var currentInv = client.playerMap.get(charid,"sdex");

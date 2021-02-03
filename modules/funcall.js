@@ -652,3 +652,18 @@ exports.gristCacheEmbed = function(client, charid) {
   .addField("**GRIST CACHE**",msg);
   return cachePrint;
 }
+
+exports.chanMsg = function(client, target, msg){
+
+  if(client.playerMap.has(target,"channel")){
+
+    client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg);
+  }
+
+  let possess = client.playerMap.get(target,"possess");
+
+  for(i=0;i<possess.length;i++){
+    client.channels.cache.get(client.playerMap.get(possess[i],"channel")).send(msg);
+  }
+
+}
