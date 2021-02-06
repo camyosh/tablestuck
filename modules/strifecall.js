@@ -190,9 +190,13 @@ try{
 
   } else {
 
-
-    let underling = client.playerMap.get(list[target][1],"type");
-
+    let underling;
+    try{
+      underling = client.playerMap.get(list[target][1],"type");
+    }catch(err){
+      console.log("Stopped a crash - underling not found!")
+      return;
+    }
 
     try{
       if(underling=="unicorn"||underling=="kraken"||underling=="hecatoncheires"||underling=="denizen"){
@@ -638,7 +642,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
       } else {
         list[init[turn][0]][3]+=heal;
       }
-      alert+=`**GARDEN OF EDEN** passivley regenerated ${heal} vitality!\n`;
+      alert+=`**GARDEN OF EDEN** passively regenerated ${heal} vitality!\n`;
     }
 
     if(carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
@@ -695,7 +699,11 @@ if(client.playerMap.has(list[init[turn][0]][1],"ping")){
 
   let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
 //send message to player's channel
+<<<<<<< HEAD
   turnMsg+=`${message.guild.members.cache.get(ping)} `;
+=======
+    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\nSee the list of actions you can take with >act, and >pass your turn once you're done!\n${alert}`);
+>>>>>>> d9f18d2e6c6276e4695b94f40a0a456992446262
 }
 
   turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actions you can take with >act, and >pass your turn once you're done!${alert}`;
@@ -705,7 +713,12 @@ if(client.playerMap.has(list[init[turn][0]][1],"ping")){
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
+<<<<<<< HEAD
         client.funcall.chanMsg(client,list[active[i]][1],`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
+=======
+        let chan = client.playerMap.get(list[active[i]][1],"channel");
+        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!\n${alert}`);
+>>>>>>> d9f18d2e6c6276e4695b94f40a0a456992446262
       }
     }
 
@@ -2393,6 +2406,19 @@ if(list[active[ik]][3] < 1){
     return(occset);
   }
 
+  exports.dungeonSpawn = function(client, section, coords, underling, message){
+    let sessionID = message.guild.id;
+    let charid = sessionID.concat(message.author.id);
+    let npcCount = client.landMap.get(sessionID+"medium","npcCount");
+    let local = ["s" + section + "d", coords[0], coords[1], 0, charid];
+
+    npcCount++;
+    let underlingSpawn = underSpawn(client, local, underling, sessionID, npcCount);
+
+    client.landMap.set(sessionID+"medium",npcCount,"npcCount");
+    return(underlingSpawn);
+  }
+
   function lichTurn(client,message,local,underling,target) {
 
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
@@ -2440,7 +2466,13 @@ function npcTurn(client, message, local){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
-  let playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+  let playerpos;
+  try{
+    playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+  } catch(err) {
+    console.log("Stopped a crash - player not found!")
+    return;
+  }
   let active = client.strifeMap.get(strifeLocal,"active")
 
   let list = client.strifeMap.get(strifeLocal,"list")
@@ -2474,24 +2506,12 @@ function npcTurn(client, message, local){
 
   let actionSet = [];
   let tempAct;
-  if(spec.length==0){
-
-    tempAct=client.underlings[type].act;
-
-    for(let i=0;i<tempAct.length;i++){
-      console.log(tempAct[0])
-      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("reuse")))&&tempAct!="no action"){
-        actionSet.push(tempAct[i]);
-        console.log(actionSet);
-      }
-    }
-
-  }else{
+  if(spec.length!=0){
     let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
     for(let i=0;i<4;i++){
       tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(spec[equip][1].charAt(i+4))]];
       console.log(tempAct);
-      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("reuse")))&&tempAct!="no action"){
+      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"){
         actionSet.push(tempAct);
       }
 
@@ -2502,16 +2522,29 @@ function npcTurn(client, message, local){
     for(let i=0;i<4;i++){
       tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]];
       console.log(tempAct);
-      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("reuse")))&&tempAct!="no action"){
+      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"){
         actionSet.push(tempAct);
+      }
+    }
   }
-}
-}
+
+  if (actionSet.length==0) {
+    tempAct=client.underlings[type].act;
+  
+    for(let i=0;i<tempAct.length;i++){
+      console.log(tempAct[0])
+      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("REUSE")))&&tempAct!="no action"){
+        actionSet.push(tempAct[i]);
+        console.log(actionSet);
+      }
+    }
+  }
 
     if(actionSet.length>0&&targetList>0){
 
       let action = actionSet[Math.floor((Math.random() * actionSet.length))];
       list[init[turn][0]][5]-=client.actionList[action].cst;
+      list[init[turn][0]][6]+=action;
       client.strifeMap.set(strifeLocal,list,"list");
 
       if(action=="arf"){

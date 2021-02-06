@@ -5,10 +5,14 @@ exports.run = (client, message, args) => {
     return;
   }
 
+<<<<<<< HEAD
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+=======
+  var charid = message.guild.id.concat(message.author.id);
+>>>>>>> d9f18d2e6c6276e4695b94f40a0a456992446262
 
   if(!client.traitcall.traitCheck(client,charid,"SPACE")[1]){
-    message.channel.send("bruh");
+    message.channel.send("You must have the SPACE set bonus to teleport!");
     return;
   }
 

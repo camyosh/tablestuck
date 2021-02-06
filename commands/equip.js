@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
   let sdex = client.playerMap.get(charid,"sdex");
   let cards = client.playerMap.get(charid,"cards");
 
-  let scards = client.playerMap.get(charid,"cards");
+  let scards = client.playerMap.get(charid,"scards");
   let spec = client.playerMap.get(charid,"spec");
 
   let kinds = client.playerMap.get(charid,"kinds");

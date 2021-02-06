@@ -28,6 +28,10 @@ exports.run = (client, message, args) => {
     message.channel.send("You close your eyes and believe as hard as you can in the idea that maybe with a little bit of magic and a little bit of pixie dust you might be able to fly... you open your eyes to find your feet still planeted firmly on the ground as you remember that magic most definitely is not real.");
     return;
   }
+  if(local[0]="h") {
+    message.channel.send("You cannot fly in someone's house!");
+    return;
+  }
   if((local[0].length>1&&local[0].charAt(local[0].length-1)=="d")||local[0].charAt(local[0].length-1)=="c"){
     message.channel.send("The hallways are too narrow for you to fly here!");
     return;
@@ -61,7 +65,7 @@ exports.run = (client, message, args) => {
 
   sec[local[1]][local[2]][2][local[3]][4].push(occset);
   if(local[0].charAt(0)!="p"&&local[0].charAt(0)!="d"&&local[0].charAt(0)!="b"){
-  sec =  strifecall.underSpawn(client,local,sec);
+  sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
   sec[local[1]][local[2]][2][local[3]][3]=true;
 }
   client.playerMap.set(charid,local,"local");
