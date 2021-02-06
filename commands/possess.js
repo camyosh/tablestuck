@@ -7,6 +7,11 @@ let local = client.playerMap.get(charid,"local");
 let sec = client.landMap.get(local[4],local[0]);
 let occList = sec[local[1]][local[2]][2][local[3]][4];
 
+if(strifecall.strifeTest(client, message, message.author) == true){
+  message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
+  return;
+}
+
 if(!args[0]){
   let msg = ``;
   let i;
@@ -24,7 +29,6 @@ if(!args[0]){
 
 if(args[0]=="cancel"){
 
-  let target = client.playerMap.get(charid,"control");
 
   if(target==charid){
     message.channel.send("You aren't possessing anyone!");
