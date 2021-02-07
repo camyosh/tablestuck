@@ -1,5 +1,6 @@
 const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
+const tierDmg = [1,5,7,10,14,19,25,32,40,49,59,70,82,95,109,124,140];
 
 //Used to take actions during STRIFE
 
@@ -71,6 +72,148 @@ let action = [];
 //if no additional arguments, display list of actions
 
   if(!args[0]){
+
+    function applyText(canvas, msg, width){
+    let fontsize = 20;
+    ctx.font = `bold ${fontsize}px FONTSTUCK`;
+       while (ctx.measureText(msg).width > width){
+    ctx.font = `bold ${fontsize -= 2}px FONTSTUCK`;
+    }
+      return ctx.font;
+    }
+    function applyText2(canvas, msg, width){
+    let fontsize = 28;
+    ctx.font = `bold ${fontsize}px Courier Standard Bold`;
+       while (ctx.measureText(msg).width > width){
+    ctx.font = `bold ${fontsize -= 2}px Courier Standard Bold`;
+    if(fontsize<=24){
+      return ctx.font;
+    }
+    }
+      return ctx.font;
+    }
+    function splitText(msg){
+      if(msg.length>28){
+      var middle = Math.floor(msg.length/2);
+      var split = msg.indexOf(' ',middle);
+      var msg1 = msg.substring(0,split);
+      var msg2 = msg.substring(split+1);
+      msg = msg1+'\n'+msg2;
+      return msg;
+    } else {
+      return msg;
+    }
+    }
+client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
+client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
+const canvas = client.Canvas.createCanvas(500,(Math.ceil(action.length)*130) +165);
+const ctx = canvas.getContext('2d');
+//-----BOXES-----
+
+//stamina box
+ctx.fillStyle = "#ffffff";
+ctx.strokeStyle = "#000000";
+ctx.lineWidth =5;
+ctx.fillRect(canvas.width/4,35,canvas.width/2,40);
+ctx.strokeRect(canvas.width/4,35,canvas.width/2,40);
+
+//top action referecne bar
+ctx.lineWidth =3;
+//action number
+ctx.fillRect(30,95,40,40);
+ctx.strokeRect(30,95,40,40);
+//action name
+ctx.fillRect(70,95,200,40);
+ctx.strokeRect(70,95,200,40);
+//action cost
+ctx.fillRect(270,95,80,40);
+ctx.strokeRect(270,95,80,40);
+//action damage
+ctx.fillRect(350,95,120,40);
+ctx.strokeRect(350,95,120,40);
+
+//----TEXT-----
+//Stamina Text
+ctx.font = `bold 20px FONTSTUCK`;
+ctx.fillStyle = "#000000";
+ctx.fillText("STAMINA:",(canvas.width/4)+10,65);
+ctx.textAlign = "center";
+ctx.fillText(list[pos][5],(canvas.width/4)+205,65);
+
+//top action reference text
+ctx.font = `bold 32px Courier Standard Bold`;
+ctx.fillText("#",50,125);
+ctx.fillText("ACTION",170,125);
+ctx.fillText("CST",310,125);
+ctx.fillText("DMG",410,125);
+
+
+
+for(i=0;i<action.length;i++){
+
+  ctx.fillStyle = "#ffffff";
+  ctx.strokeStyle = "#000000";
+  ctx.font = `bold 32px Courier Standard Bold`;
+  ctx.lineWidth =3;
+  //action number
+  ctx.fillRect(30,135+(130*i),40,40);
+  ctx.strokeRect(30,135+(130*i),40,40);
+  //action cost
+  ctx.fillRect(270,135+(130*i),80,40);
+  ctx.strokeRect(270,135+(130*i),80,40);
+  //action damage
+  ctx.fillRect(350,135+(130*i),120,40);
+  ctx.strokeRect(350,135+(130*i),120,40);
+  //action description message
+  ctx.fillRect(30,175+(130*i),440,80);
+  ctx.strokeRect(30,175+(130*i),440,80);
+
+  //text
+  ctx.fillStyle = "#000000";
+  ctx.fillText(i+1,50,165+(130*i));
+  ctx.fillText(client.actionList[action[i]].cst,310,165+(130*i));
+  ctx.fillText(client.actionList[action[i]].dmg*tierDmg[spec[equip][2]],410,165+(130*i));
+
+  //action name image
+  let tempcolor;
+    switch(action[i].substring(0,2)){
+      case `no`:
+      tempcolor= `#6D6D6D`;
+      break;
+      case `ac`:
+      tempcolor=  `#6688FE`;
+      break;
+      case `ar`:
+      tempcolor= `#9B38F4`;
+      break;
+      case `as`:
+      tempcolor=  `#ff4e31`;
+      break;
+      case `ab`:
+      tempcolor=  `#ffae00`;
+      break;
+      case 'ag':
+      tempcolor = "#3ef443";
+      break;
+      default:
+      tempcolor= `#6D6D6D`;
+  }
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(70,135+(130*i),200,40);
+  ctx.strokeStyle = tempcolor;
+  ctx.fillStyle = tempcolor;
+  ctx.lineWidth=6;
+  ctx.strokeRect(72,136+(130*i),198,38);
+  ctx.font = `bold 20px FONTSTUCK`;
+  ctx.font = applyText(canvas,action[i].toUpperCase(),200);
+  ctx.fillText(action[i].toUpperCase(),170,165+(130*i));
+    ctx.fillStyle = "#000000";
+  ctx.font = applyText2(canvas,client.actionList[action[i]].aa,440);
+  ctx.fillText(splitText(client.actionList[action[i]].aa),250,205+(130*i));
+}
+
+let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+message.channel.send(attachment);
     let msg = ``;
       for(i=0;i<action.length;i++){
         /*msg += `**[${i+1}]** ${client.emojis.cache.get(client.actionList[action[i]].emoji[0])}${client.emojis.cache.get(client.actionList[action[i]].emoji[1])}${client.emojis.cache.get(client.actionList[action[i]].emoji[2])}${client.emojis.cache.get(client.actionList[action[i]].emoji[3])}${client.emojis.cache.get(client.actionList[action[i]].emoji[4])}
@@ -142,7 +285,7 @@ let action = [];
   //Make sure second argument is a number
 
   target = parseInt(args[1], 10) - 1;
-  if(isNaN(target) || target >= active.length || target < 0){
+  if(isNaN(target) || target >= active.length-1 || target < 0){
     message.channel.send("That is not a valid argument!");
     return;
   }

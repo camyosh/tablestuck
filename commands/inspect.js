@@ -2,6 +2,9 @@ const funcall = require("../modules/funcall.js");
 //inspect current area or item
 const strifecall = require("../modules/strifecall.js");
 
+
+const typeList = ["EMPTY","DUNGEON","CONSTRUCT","RETURN NODE","VILLAGE","HOUSE","GATE"];
+
 exports.run = (client, message, args) => {
 
 
@@ -18,7 +21,6 @@ exports.run = (client, message, args) => {
   let room = area[2][local[3]];
   let occList = room[4];
   let dex = room[5];
-  const typeList = ["EMPTY","DUNGEON","CONSTRUCT","RETURN NODE","VILLAGE","HOUSE","GATE"];
   const tList = ["MELEE","RANGED","MAGIC","NA"];
 
 if(!args[0]){

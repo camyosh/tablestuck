@@ -28,7 +28,7 @@ exports.run = (client, message, args) => {
     message.channel.send("You close your eyes and believe as hard as you can in the idea that maybe with a little bit of magic and a little bit of pixie dust you might be able to fly... you open your eyes to find your feet still planeted firmly on the ground as you remember that magic most definitely is not real.");
     return;
   }
-  if(local[0]="h") {
+  if(local[0]=="h") {
     message.channel.send("You cannot fly in someone's house!");
     return;
   }

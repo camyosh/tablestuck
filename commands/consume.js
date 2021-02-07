@@ -24,7 +24,7 @@ exports.run = (client,message,args) =>{
   let local = client.playerMap.get(charid,"local");
   let pos;
   let strifeLocal;
-  let list;
+  let list; 
 
   if(client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")==false&&client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")==false&&client.traitcall.itemTrait(client,sdex[selectDex],"FOOD")==false&&dogCheck[0]==false){
     message.channel.send("That is not a consumable item!");

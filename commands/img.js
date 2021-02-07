@@ -34,10 +34,13 @@ let tempcolor;
     tempcolor= `#9B38F4`;
     break;
     case `as`:
-    tempcolor=  `#ffae00`;
+    tempcolor=  `#ff4e31`;
     break;
     case `ab`:
-    tempcolor=  `#ffe91f`;
+    tempcolor=  `#ffae00`;
+    break;
+    case 'ag':
+    tempcolor = "#3ef443";
     break;
     default:
     tempcolor= `#6D6D6D`;
@@ -46,8 +49,6 @@ ctx.fillStyle = "#ffffff";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 ctx.strokeStyle = tempcolor;
 ctx.strokeRect(0,0,canvas.width,canvas.height);
-
-
 ctx.fillStyle = tempcolor;
 ctx.fillText(msg.toUpperCase(),10,28);
 

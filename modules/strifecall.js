@@ -266,7 +266,7 @@ try{
     for(i=0;i<players;i++){
       let charid = list[playerpos[i]][1];
 
-      if(client.playerMap.get(charid,"type")=="human"){
+      if(client.playerMap.get(charid,"type")=="player"){
 
       let rung = client.playerMap.get(charid,"rung");
       let grist = client.playerMap.get(charid,"grist");
@@ -699,11 +699,7 @@ if(client.playerMap.has(list[init[turn][0]][1],"ping")){
 
   let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
 //send message to player's channel
-<<<<<<< HEAD
   turnMsg+=`${message.guild.members.cache.get(ping)} `;
-=======
-    client.channels.cache.get(chan).send(`${message.guild.members.cache.get(ping)} it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\nSee the list of actions you can take with >act, and >pass your turn once you're done!\n${alert}`);
->>>>>>> d9f18d2e6c6276e4695b94f40a0a456992446262
 }
 
   turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actions you can take with >act, and >pass your turn once you're done!${alert}`;
@@ -713,12 +709,7 @@ if(client.playerMap.has(list[init[turn][0]][1],"ping")){
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
-<<<<<<< HEAD
         client.funcall.chanMsg(client,list[active[i]][1],`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
-=======
-        let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!\n${alert}`);
->>>>>>> d9f18d2e6c6276e4695b94f40a0a456992446262
       }
     }
 
@@ -2530,7 +2521,7 @@ function npcTurn(client, message, local){
 
   if (actionSet.length==0) {
     tempAct=client.underlings[type].act;
-  
+
     for(let i=0;i<tempAct.length;i++){
       console.log(tempAct[0])
       if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("REUSE")))&&tempAct!="no action"){

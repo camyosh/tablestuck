@@ -38,7 +38,13 @@ console.log(castlegen);
     p:dreamMoon[0],
     pm:dreamMoon[2],
     d:dreamMoon[1],
-    dm:dreamMoon[3]
+    dm:dreamMoon[3],
+    pmd:dreamMoon[4],
+    pmd1:dreamMoon[5],
+    pmd2:dreamMoon[6],
+    dmd:dreamMoon[7],
+    dmd1:dreamMoon[8],
+    dmd2:dreamMoon[9]
   }
 
   client.landMap.set(message.guild.id+"medium", medium);

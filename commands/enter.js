@@ -298,7 +298,55 @@ exports.run = (client, message, args) => {
    client.landMap.set(local[4],sec,local[0]);
    message.channel.send("Crossing the Chain!");
 
- }
+ } else if(area[0]==46){
+
+   sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
+   let floor = parseInt(local[0].charAt(local[0].length-1),10);
+
+  if(isNaN(floor)){
+    local[0]+="1";
+    funcall.actionCheck(client,message);
+    landcall.drawMap(client,message,true);
+  }else{
+    local[0]=local[0].slice(0,-1)+`${(floor+1)}`;
+    funcall.actionCheck(client,message);
+    landcall.drawMap(client,message,true);
+  }
+  sec = client.landMap.get(land,local[0]);
+  sec[local[1]][local[2]][2][local[3]][4].push(occset);
+  sec[local[1]][local[2]][2][local[3]][3]=true;
+  client.playerMap.set(charid,local,"local");
+  client.landMap.set(local[4],sec,local[0]);
+  message.channel.send("Descending deeper into the dungeon!");
+
+}  else if(area[0]==47){
+  sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
+  let floor = parseInt(local[0].charAt(local[0].length-1),10);
+
+if(isNaN(floor)){
+  message.channel.send("Already on Top floor");
+  return;
+}
+
+if(floor<3){
+
+  local[0]=local[0].slice(0,-1);
+  funcall.actionCheck(client,message);
+  landcall.drawMap(client,message,true);
+
+}else{
+  local[0]=local[0].slice(0,-1)+`${(floor-1)}`;
+  funcall.actionCheck(client,message);
+  landcall.drawMap(client,message,true);
+}
+  sec = client.landMap.get(land,local[0]);
+  sec[local[1]][local[2]][2][local[3]][4].push(occset);
+  sec[local[1]][local[2]][2][local[3]][3]=true;
+  client.playerMap.set(charid,local,"local");
+  client.landMap.set(local[4],sec,local[0]);
+  message.channel.send("Ascending the staircase!");
+
+}
 
 
   else {
