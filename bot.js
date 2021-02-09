@@ -22,12 +22,14 @@ const hookcall =require("./modules/hookcall.js");
 const funcall =require("./modules/funcall.js");
 const strifecall =require("./modules/strifecall.js");
 const landcall =require("./modules/landcall.js");
+const imgcall =require("./modules/imgcall.js");
 
 client.traitcall = traitcall;
 client.strifecall = strifecall;
 client.funcall = funcall;
 client.hookcall = hookcall;
 client.landcall = landcall;
+client.imgcall = imgcall;
 //declare enmaps
 if (!fs.existsSync("../data")){
   console.log("Data directory missing, please create it!")

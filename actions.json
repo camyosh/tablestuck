@@ -29,7 +29,7 @@
     "name" : "ACCELERATE",
     "cst"  : 2,
     "dmg" : 0,
-    "aa": "ALL STAMINA COSTS DISCOUNTED THIS TURN (cannot be lower than 1)",
+    "aa": "ALL STAMINA COSTS DISCOUNTED THIS TURN (minimum 1)",
     "add":["DISCOUNT"],
     "col": "0x6688fe",
     "img" : "https://cdn.discordapp.com/attachments/701168146559533087/701636559455125564/ACCELERATE.png",

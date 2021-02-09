@@ -10,7 +10,8 @@
     "stats":[0,0,0,0,0,0],
 
   "xp":2,
-    "drop":1
+    "drop":1,
+    "img":"https://media.discordapp.net/attachments/408119077840617493/808234217234104330/imp_base.png"
   },
   "ogre":{
     "stm":4,
@@ -23,7 +24,8 @@
     "stats":[1,1,0,0,0,0],
 
   "xp":8,
-    "drop":5
+    "drop":5,
+    "img":"https://media.discordapp.net/attachments/408119077840617493/808234219503484928/ogre_base.png"
   },
   "basilisk":{
     "stm":4,
@@ -36,7 +38,8 @@
     "stats":[1,1,2,2,0,1],
 
     "xp":32,
-    "drop":25
+    "drop":25,
+    "img":"https://media.discordapp.net/attachments/408119077840617493/808234213932400654/basilisk_base.png"
   },
   "lich":{
     "stm":4,
@@ -49,7 +52,8 @@
     "stats":[0,0,0,3,3,3],
 
     "xp":128,
-    "drop":125
+    "drop":125,
+    "img":"https://media.discordapp.net/attachments/408119077840617493/808234218303127573/lich_base.png"
   },
   "giclopse":{
     "stm":6,
@@ -62,7 +66,8 @@
     "stats":[4,4,0,1,2,0],
 
     "xp":512,
-    "drop":625
+    "drop":625,
+    "img":"https://cdn.discordapp.com/attachments/408119077840617493/808234216285405224/giclops.png"
   },
   "titachnid":{
     "stm":6,
@@ -75,7 +80,8 @@
     "stats":[5,5,3,5,2,1],
 
     "xp":2048,
-    "drop":3125
+    "drop":3125,
+    "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
   },
   "player":{
     "stm":8,
@@ -83,7 +89,7 @@
 
     "d":1,
     "bd":[1,2],
-    "act":["aggrieve"],
+    "act":["aggrieve","abscond"],
     "stats":[0,0,0,0,0,0]
   },
   "sprite":{

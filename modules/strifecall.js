@@ -2380,7 +2380,9 @@ if(list[active[ik]][3] < 1){
       prefTarg:[],
       xp:0,
       rung:0,
-      b:0
+      b:0,
+      bio:`A ${grist} ${underling}`,
+      img:client.underlings[underling].img
     }
     //rep [prospit,derse,underling,player]
 
@@ -2492,6 +2494,7 @@ function npcTurn(client, message, local){
     }
   }
 }
+console.log(`targets - ${targetList}`);
 //randomly decide target from list
   let target = targetList[Math.floor((Math.random() * targetList.length))];
 
@@ -2519,7 +2522,7 @@ function npcTurn(client, message, local){
     }
   }
 
-  if (actionSet.length==0) {
+  //if (actionSet.length==0) {
     tempAct=client.underlings[type].act;
 
     for(let i=0;i<tempAct.length;i++){
@@ -2529,9 +2532,12 @@ function npcTurn(client, message, local){
         console.log(actionSet);
       }
     }
-  }
+  //}
+  console.log(`actions - ${actionSet}`);
 
-    if(actionSet.length>0&&targetList>0){
+    if(actionSet.length>0&&targetList.length>0){
+
+      console.log("taking action")
 
       let action = actionSet[Math.floor((Math.random() * actionSet.length))];
       list[init[turn][0]][5]-=client.actionList[action].cst;
@@ -2546,6 +2552,7 @@ function npcTurn(client, message, local){
           }
         }
         target = targetList[Math.floor((Math.random() * targetList.length))];
+
       }
 
       setTimeout(act,1500,client,message,local,action,target);

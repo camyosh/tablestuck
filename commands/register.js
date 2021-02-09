@@ -264,7 +264,9 @@ regImport();
     prospitRep:repDef[0],
     derseRep:repDef[1],
     underlingRep:-1,
-    playerRep:0
+    playerRep:0,
+    bio:"This player has not set their BIO!",
+    img:"https://media.discordapp.net/attachments/408119077840617493/808458446374436914/human_base.png"
   };
 
 client.playerMap.set(charid,charSheet);

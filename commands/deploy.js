@@ -126,7 +126,7 @@ exports.run = (client, message, args) => {
       let spriteID = `n${clientId}`;
 
       var spriteSheet = {
-        name: `${client.playerMap.get(clientId,"name").toUpperCase()}'S SPRITE`,
+        name: `KERNELSPRITE`,
         possess:[],
         type: "sprite",
         faction: "player",
@@ -156,7 +156,9 @@ exports.run = (client, message, args) => {
         prefTarg:[],
         xp:0,
         rung:0,
-        b:0
+        b:0,
+        bio:`${client.playerMap.get(clientId,"name").toUpperCase()}'S SPRITE`,
+        img:"https://media.discordapp.net/attachments/808210897008984087/808224784856514560/Kernelsprite-gray.gif"
       }
       client.playerMap.set(spriteID,spriteSheet);
 
