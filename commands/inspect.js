@@ -23,7 +23,30 @@ exports.run = (client, message, args) => {
   let dex = room[5];
   const tList = ["MELEE","RANGED","MAGIC","NA"];
 
-if(!args[0]){
+
+  if(!args[0] || args[0] == "page"){
+    let page = 0;
+    if (args[0]&&args[0] == "page") {
+      page = parseInt(args[1], 10) - 1;
+      if (isNaN(page)) {
+        message.channel.send("That is not a valid page number!");
+        return;
+      }
+    }
+
+    async function dexCheck(){
+
+    const attachment = await client.imgcall.sdexCheck(client,message,page,args,3,dex,dex.length);
+
+      message.channel.send(attachment);
+    }
+
+    dexCheck();
+    return;
+  }
+
+
+/*if(!args[0]){
 
   //if no argument, list information on room
   //Maybe put this within an >inspect room command? That way we can have multiple pages of inventory so messages aren't as long
@@ -59,7 +82,7 @@ if(!args[0]){
   message.channel.send(sylladexPrint);
   return;
 
-}
+}*/
 
   value = parseInt(args[0], 10) - 1;
   if(isNaN(value)){

@@ -37,7 +37,17 @@ exports.run = (client, message, args) => {
     }
   }
 
-  let item = dex[value];
+  async function dexCheck(){
+
+  const attachment = await client.imgcall.sdexCheck(client,message,page,args,2,dex[value][4],dex[value][2]+1);
+
+    message.channel.send(attachment);
+  }
+
+  dexCheck();
+  return;
+
+/*  let item = dex[value];
 
   if (page > item[4].length / 20) {
     message.channel.send("Cannot view that page, only " + Math.floor(item[4].length / 20 + 1) + " pages exist");
@@ -61,5 +71,5 @@ exports.run = (client, message, args) => {
     .setTitle(`**${item[0]} CONTENTS**`)
     .addField(`**ITEM INVENTORY**`, inventory)
 
-  message.channel.send(output);
+  message.channel.send(output);*/
 }

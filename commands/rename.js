@@ -46,7 +46,7 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  if(name.length > 32) {
+  if(name.length > 20) {
     message.channel.send("That name is too long!");
     return;
   }

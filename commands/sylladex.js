@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
   let msg = ``;
   if(!args[0] || args[0] == "page"){
     let page = 0;
-    if (args[0] == "page") {
+    if (args[0]&&args[0] == "page") {
       page = parseInt(args[1], 10) - 1;
       if (isNaN(page)) {
         message.channel.send("That is not a valid argument!");
@@ -28,6 +28,17 @@ exports.run = (client, message, args) => {
       }
     }
 
+    async function dexCheck(){
+
+    const attachment = await client.imgcall.sdexCheck(client,message,page,args,0,dex,cards);
+
+      message.channel.send(attachment);
+    }
+
+    dexCheck();
+    return;
+
+/*
   let i;
   for(i=0 + 20 * page;i<cards && i<20 + (20 * page);i++){
     if(i<dex.length){
@@ -47,7 +58,7 @@ exports.run = (client, message, args) => {
   .addField(`**FETCH MODUS**`,`**${modus}**`,true)
   .addField("**INVENTORY**",msg);
   message.channel.send(sylladexPrint);
-  return;
+  return;*/
 }
 
 value = parseInt(args[0], 10) - 1;

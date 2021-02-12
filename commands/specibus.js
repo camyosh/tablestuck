@@ -52,6 +52,9 @@ exports.run = (client, message, args) => {
   .addField(`**CURRENTLY EQUIPPED**`,eq)
   .addField("**SPECIBUS**",msg);
   message.channel.send(specibusPrint);
+
+  
+
   return;
 }
 

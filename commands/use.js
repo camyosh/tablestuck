@@ -232,29 +232,6 @@ exports.run = (client, message, args) => {
 
       if(sdex[selectDex][0]=="CRUXITE ARTIFACT"){
         let landName = client.landMap.get(charid,"name");
-      /*  if(client.landMap.get(charid,"enter")){
-          message.channel.send(`You've already entered the land of ${landName[0]} and ${landName[1]}`);
-          return;
-        }*/
-
-        /*let sec1 = client.landMap.get(charid,"s1");
-        let sec2 = client.landMap.get(charid,"s2");
-        let sec3 = client.landMap.get(charid,"s3");
-        let gates = client.landMap.get(charid,"gates");
-
-        // sec[local[1]][local[2]][2][local[3]][4]
-
-        sec1[gates[0][1]][gates[0][2]][0]=6;
-        sec1[gates[0][1]][gates[0][2]][1]=1;
-        sec1[gates[0][1]][gates[0][2]][2]=[[0,0,"GATE 2",false,[],[]]];
-
-        sec2[gates[1][1]][gates[1][2]][0]=6;
-        sec2[gates[1][1]][gates[1][2]][1]=1;
-        sec2[gates[1][1]][gates[1][2]][2]=[[0,0,"GATE 4",false,[],[]]];
-
-        sec3[gates[2][1]][gates[2][2]][0]=6;
-        sec3[gates[2][1]][gates[2][2]][1]=1;
-        sec3[gates[2][1]][gates[2][2]][2]=[[0,0,"GATE 6",false,[],[]]];*/
 
         let mediumPrototype = client.landMap.get(message.guild.id+"medium","prototype");
 
