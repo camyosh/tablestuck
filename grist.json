@@ -1,7 +1,9 @@
 {
   "build":{
     "pos":0,
-    "emoji":"715632438751002654"
+    "emoji":"715632438751002654",
+    "effective":["build","build","build","build"],
+    "ineffective":["build","build","build","build"]
   },
   "uranium":{
     "pos":1,

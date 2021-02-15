@@ -62,5 +62,7 @@
   "picturekind":{"t":3,"emoji":""},
   "bustkind":{"t":3,"emoji":""},
   "furniturekind":{"t":3,"emoji":""},
-  "vehiclekind":{"t":3,"emoji":""}
+  "vehiclekind":{"t":3,"emoji":""},
+  "constructkind":{"t":3,"emoji":""},
+  "totemkind":{"t":3,"emoji":""}
 }

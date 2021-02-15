@@ -5,10 +5,21 @@ exports.run = async function(client, message, args) {
       let sdex = client.playerMap.get(charid,"sdex");
       let cards = client.playerMap.get(charid,"cards");
 
-      let page =0;
+      value = parseInt(args[0], 10) - 1;
+      if(isNaN(value)){
+        message.channel.send("That is not a valid argument!");
+        return;
+    }
 
-const attachment = await client.imgcall.sdexCheck(client,message,page,args,0,sdex,cards);
+      if(value >= sdex.length || value < 0) {
+        message.channel.send("That is not a valid argument!")
+        return; 
+      };
 
-  message.channel.send(attachment)
+      //decypher captcha code and convert into weapon information
+
+const attachment = await client.imgcall.inspect(client,message,args,0,sdex[value]);
+
+  message.channel.send("Inspecting item",attachment);
 
 }

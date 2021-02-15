@@ -102,7 +102,7 @@ exports.compTest = function(client, message, charid, room) {
 
         let j;
         for(j=0;j<room[5][i][4].length; j++){
-          if(room[5][i][4][j][1]=="////////"&&room[5][i][4][j][0]=="SBURB SERVER"){
+          if(room[5][i][4][j][1].charAt(0) == "/"&&room[5][i][4][j][0]=="SBURB DISC"){
             comp[1]=true;
           }
         }
@@ -114,7 +114,7 @@ exports.compTest = function(client, message, charid, room) {
 
         let j;
         for(j=0;j<currentInv[i][4].length; j++){
-          if(currentInv[i][4][j][1]=="////////"&&currentInv[i][4][j][0]=="SBURB SERVER"){
+          if(currentInv[i][4][j][1].charAt(0) == "/"&&currentInv[i][4][j][0]=="SBURB DISC"){
             comp[1]=true;
           }
         }
@@ -126,7 +126,7 @@ exports.compTest = function(client, message, charid, room) {
 
         let j;
         for(j=0;j<specibus[i][4].length; j++){
-          if(specibus[i][4][j][1]=="////////"&&specibus[i][4][j][0]=="SBURB SERVER"){
+          if(specibus[i][4][j][1].charAt(0) == "/"&&specibus[i][4][j][0]=="SBURB DISC"){
             comp[1]=true;
           }
         }
@@ -137,7 +137,7 @@ exports.compTest = function(client, message, charid, room) {
 
       let j;
       for(j=0;j<armor[0][4].length; j++){
-        if(armor[0][4][j][1]=="////////"&&armor[0][4][j][0]=="SBURB SERVER"){
+        if(armor[0][4][j][1].charAt(0) == "/"&&armor[0][4][j][0]=="SBURB DISC"){
           comp[1]=true;
         }
       }

@@ -41,7 +41,7 @@ exports.run = (client, message, args) => {
 
   //check if item code is blacklisted
 
-  if(code == "11111111" || code == "////////" || code.includes("/")) {
+  if(code == "11111111" || code.charAt(0) == "/" || code.includes("/")) {
     message.channel.send("The name of that item cannot be changed!");
     return;
   }

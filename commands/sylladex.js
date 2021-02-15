@@ -30,7 +30,7 @@ exports.run = (client, message, args) => {
 
     async function dexCheck(){
 
-    const attachment = await client.imgcall.sdexCheck(client,message,page,args,0,dex,cards);
+    const attachment = await client.imgcall.sdexCheck(client,message,page,args,0,dex,cards,"sylladex");
 
       message.channel.send(attachment);
     }
@@ -71,7 +71,10 @@ if(value >= dex.length || value < 0) {
   message.channel.send("That is not a valid argument!")
   return;
 };
+async function itemInspect(){
+const attachment = await client.imgcall.inspect(client,message,args,0,dex[value]);
 
-  client.traitcall.inspectItem(client,dex[value],message);
-
+  message.channel.send("Inspecting item",attachment);
+}
+itemInspect()
 }

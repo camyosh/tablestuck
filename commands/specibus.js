@@ -53,7 +53,7 @@ exports.run = (client, message, args) => {
   .addField("**SPECIBUS**",msg);
   message.channel.send(specibusPrint);
 
-  
+
 
   return;
 }
@@ -113,7 +113,12 @@ if(value >= spec.length || value < 0) {
   return;
 };
 
-  client.traitcall.inspectItem(client,spec[value],message);
+async function itemInspect(){
+const attachment = await client.imgcall.inspect(client,message,args,1,spec[value]);
+
+  message.channel.send("Inspecting item",attachment);
+}
+itemInspect()
 
 }
 

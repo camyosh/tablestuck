@@ -66,7 +66,7 @@ exports.run = (client, message, args) => {
     //else if(client.traitList[client.captchaCode.indexOf(roomCode.charAt(2))] == "COMPUTER" || client.traitList[client.captchaCode.indexOf(roomCode.charAt(3))] == "COMPUTER"){
     else if(client.traitcall.itemTrait(client,room[5][selectRoom],"COMPUTER")){
 
-      if(selectCode == "////////" && (sdex[selectDex][0] == "SBURB SERVER" || sdex[selectDex][0] == "SBURB CLIENT")){
+      if(selectCode.charAt(0) == "/" && (sdex[selectDex][0] == "SBURB DISC")){
 
       message.channel.send(`Installed the ${sdex[selectDex][0]} onto the ${room[5][selectRoom][0]}`)
       let targetItem = sdex.splice(selectDex,1)[0];
@@ -80,7 +80,7 @@ exports.run = (client, message, args) => {
       return;
     }
     }
-    else if(room[5][selectRoom][1] == "////////"){
+    else if(room[5][selectRoom][1].charAt(0) == "/"){
       if(room[5][selectRoom][0] == "TOTEM LATHE"){
         if(selectCode == "11111111"){
           if(room[5][selectRoom][4].length<2){
@@ -107,18 +107,21 @@ exports.run = (client, message, args) => {
               if(room[5][selectRoom][4][0][4].length == 0){
                 //["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]
                 sdex[selectDex][0]="CARVED TOTEM";
+sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else if(room[5][selectRoom][4][0][4].length == 1){
                 sdex[selectDex][0]="CARVED TOTEM";
+sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(room[5][selectRoom][4][0][4][0]);
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
+sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
@@ -129,6 +132,8 @@ exports.run = (client, message, args) => {
             if(room[5][selectRoom][4][0][4].length == 0 || room[5][selectRoom][4][1][4].length == 0){
               //["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]
               sdex[selectDex][0]="CARVED TOTEM";
+sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
+              sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
               sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
               message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
               client.playerMap.set(charid,sdex,"sdex");
@@ -136,12 +141,14 @@ exports.run = (client, message, args) => {
             } else if(room[5][selectRoom][4][0][4].length == 1){
               if(room[5][selectRoom][4][1][4].length == 1){
                 sdex[selectDex][0]="CARVED TOTEM";
+sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0]));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
+sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
@@ -150,6 +157,7 @@ exports.run = (client, message, args) => {
             } else {
               if(room[5][selectRoom][4][1][4].length == 1){
                 sdex[selectDex][0]="CARVED TOTEM";
+sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 //meme
                 sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0]),room[5][selectRoom][4][1][4][0]));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
@@ -157,6 +165,7 @@ exports.run = (client, message, args) => {
                 return;
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
+sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]),funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
@@ -226,7 +235,7 @@ exports.run = (client, message, args) => {
       client.playerMap.set(charid,sdex,"sdex");
       client.playerMap.set(charid,cards,"cards");
       return;
-    } else if(sdex[selectDex][1]=="////////"){
+    } else if(sdex[selectDex][1].charAt(0) == "/"){
 
 
 

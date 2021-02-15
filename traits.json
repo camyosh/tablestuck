@@ -1,0 +1,300 @@
+{
+
+  "NONE":{
+  "trait":"/",
+
+  "set":"/"},
+
+  "COMPUTER":{
+  "trait":"Item can be used to play SBURB and use PESTERCHUM",
+
+  "set":"ALCHEMIZE ANY TIME."},
+
+  "STORAGE":{
+  "trait":"Items can be placed inside this item",
+
+  "set":"WEAPONS & ARMOR CAN BE SWITCHED OUT DURING COMBAT FOR FREE."},
+
+  "FOOD":{
+  "trait":"Item can be consumed for VITALITY (6% of GV * tier)",
+
+  "set":"Double healing from food"},
+
+  "CANDY":{
+  "trait":"Item can be consumed for STAMINA",
+
+  "set":"STAMINA +1"},
+
+  "MEAT":{
+  "trait":"Deal BD on next attack",
+
+  "set":"Add additional damage equal to BD whenever BD is delt"},
+
+  "HOT":{
+  "trait":"1d12 chance to inflict BURN condition",
+
+  "set":"Add additional damage equal to BD against burned creatures"},
+
+  "COLD":{
+  "trait":"1d12 chance to inflict FROSTBITE condition",
+
+  "set":"When a frostbite roll succeeds, target is also DAZED for one round."},
+
+  "ELECTRIC":{
+  "trait":"1d12 chance to inflict STUN condition",
+
+  "set":"Immunity to the STUN condition"},
+
+  "SHARP":{
+  "trait":"1d12 chance to inflict BLEED condition",
+
+  "set":"BONUS DAMAGE rolls are FAVORABLE."},
+
+  "BLUNT":{
+  "trait":"1d12 chance to inflict DAZE condition",
+
+  "set":"1d12 DAZE chance reduced to 1d6"},
+
+  "SHITTY":{
+  "trait":"Grist type is ARTIFACT, weapon is always tier 1",
+
+  "set":"1d12 to apply the CORRUPT condition"},
+
+  "CUTE":{
+  "trait":"When you roll BR, BR +1",
+
+  "set":"ATTACKS against you deal half BD"},
+
+  "SPOOKY":{
+  "trait":"1d12 chance to inflict haunt",
+
+  "set":"Haunted creatures deal half damage to you"},
+
+  "CAT":{
+  "trait":"Roll BR Whenever you're attacked",
+
+  "set":"Once per STRIFE encounter, if an attack would drop you to 0 or lower VITALITY, the attack automatically misses for a single attack."},
+
+  "DOG":{
+  "trait":"Consume any item as though it were food",
+
+  "set":"You can use an additional consumable item whenever you use one during STRIFE each round."},
+
+  "BROKEN":{
+  "trait":"Strike check is unfavorable",
+
+  "set":"Upon a successful 1d12 roll, ATTACK delt deals MAX BD."},
+
+  "CUSHIONED":{
+  "trait":"Can be used to heal while sleeping",
+
+  "set":"Double VITALITY RECOVERY value while sleeping"},
+
+  "BUSINESS":{
+  "trait":"Always carry STAMINA",
+
+  "set":"Get +1 extra STAMINA each turn"},
+
+  "BOUNCY":{
+  "trait":"1d12 chance to attack twice (lvl 1 damage)",
+
+  "set":"1d12 chance reduced to 1d6"},
+
+  "STICKY":{
+  "trait":"1d12 chance to inflict grapple",
+
+  "set":"Add additional damage equal to BD against grappled creatures"},
+
+  "MELEE (28)":{
+  "trait":"Changes a weapon type to MELEE",
+
+  "set":"STRIKE CHECK +2 on MELEE ACTIONS"},
+
+  "RANGED (11)":{
+  "trait":"Changes a weapon type to RANGED",
+
+  "set":"STRIKE CHECK +2 ON RANGED ACTIONS"},
+
+  "MAGIC (12)":{
+  "trait":"Changes a weapon type to MAGIC",
+
+  "set":"STRIKE CHECK +2 on MAGIC ACTIONS"},
+
+  "REFINED":{
+  "trait":"STRIKE +2 against creatures you are effective against",
+
+  "set":"ATTACKS against you deal half BD"},
+
+  "VAMPIRIC":{
+  "trait":"1d12 chance to inflict BLEED",
+
+  "set":"If TARGET is BLEEDING, heal all BD dealt"},
+
+  "FROG":{
+  "trait":"Add +1 to AV",
+
+  "set":"1d12 chance to turn a hit into a miss."},
+
+  "HARLEQUIN":{
+  "trait":"Use CHM for STRIKE CHECK",
+
+  "set":"CHR +2"},
+
+  "WIZARD":{
+  "trait":"Use IMG for STRIKE CHECK",
+
+  "set":"IMG +2"},
+
+  "PLUSH":{
+  "trait":"FOR +1",
+
+  "set":"FOR +2"},
+
+  "SCIENTIFIC":{
+  "trait":"Use INT for STRIKE CHECK",
+
+  "set":"INT +2"},
+
+  "HEAVY":{
+  "trait":"Use STR for STRIKE CHECK",
+
+  "set":"STR +2"},
+
+  "LIGHTWEIGHT":{
+  "trait":"Use AGL for STRIKE CHECK",
+
+  "set":"AGL +2"},
+
+  "PROSPIT":{
+  "trait":"Add +1 extra STAMINA while on PROSPIT",
+
+  "set":"+1 to all stats on PROSPIT"},
+
+  "DERSE":{
+  "trait":"Add +1 extra STAMINA while on DERSE",
+
+  "set":"+1 to all stats on DERSE"},
+
+  "ENDURING":{
+  "trait":"Roll 2d4 for STAMINA roll",
+
+  "set":"Roll 4d2 for STAMINA roll"},
+
+  "THORNS":{
+  "trait":"1d12 chance to inflict attacker with the BLEED condition",
+
+  "set":"Whenever someone attacks you, they take BR in damage"},
+
+  "ROCKET":{
+  "trait":"Always go first in initiative",
+
+  "set":"ABILITY TO FLY"},
+
+  "GAMBLING":{
+  "trait":"Roll 1d4 on boon pickup - 1. Half 2. Normal 3. Normal 4. Double",
+
+  "set":"Always get double boonbucks whenever boonbucks are earned"},
+
+  "IRRADIATED":{
+  "trait":"1d12 chance to inflict BURN condition",
+
+  "set":"Burn all enemies on a crit"},
+
+  "NOIR":{
+  "trait":"1d4 bonus to strike check",
+
+  "set":"Triple damage on crit"},
+
+  "CHARLATAN":{
+  "trait":"randomize actions at the beginning of your turn",
+
+  "set":"1d6 chance to inflict a random status effect"},
+
+  "EXQUISITE":{
+  "trait":"Grist type is DIAMOND",
+
+  "set":"AV +2"},
+
+  "GRIMDARK":{
+  "trait":"1d12 chance to inflict HAUNT condition",
+
+  "set":"Use AP as stamina"},
+
+  "META":{
+  "trait":"Reroll 1s, reroll 20s",
+
+  "set":"Double grist"},
+
+  "WELSH":{
+  "trait":"Add +1 extra STAMINA each turn",
+
+  "set":"Your 1's turn to 20's, Enemy 20's turn to 1's (targeting you)"},
+
+  "TRICKSTER":{
+  "trait":"Grist type is ZILLIUM, weapon is always tier 16",
+
+  "set":"All enemies drop Zillium Grist"},
+
+  "BREATH":{
+  "trait":"AV +2",
+
+  "set":"IMMUNE TO ALL STATUS CONDITIONS"},
+
+  "LIFE":{
+  "trait":"Unused STAMINA at the end of turn is converted to healing (4% Max HP per point)",
+
+  "set":"Heal for BR at the start of each turn"},
+
+  "LIGHT":{
+  "trait":"Turn 1s into 20's",
+
+  "set":"REROLL ANY DIE ROLL OF A 5 OR LOWER."},
+
+  "TIME":{
+  "trait":"Get +1 extra STAMINA each turn",
+
+  "set":"ADV ON STAMINA ROLLS"},
+
+  "HEART":{
+  "trait":"1d20 for damage to heal you instead",
+
+  "set":"AT THE START OF YOUR TURN, YOU PERFORM A RANDOM ACTION THAT COSTS 0 STAMINA."},
+
+  "RAGE":{
+  "trait":"1d6 chance to inflict STUN",
+
+  "set":"Crits deal 4x damage"},
+
+  "BLOOD":{
+  "trait":"1d12 chance to change target of attack targetting you",
+
+  "set":"WHENEVER AFFLICTED WITH A CONDITION, ALL HOSTILE COMBATANTS ARE AFFLICTED WITH THE SAME CONDITION."},
+
+  "VOID":{
+  "trait":"Enemies reroll TRUE SUCCESS",
+
+  "set":"STRIKE CHECKS are UNFAVORABLE agianst you, you are invisible"},
+
+  "SPACE":{
+  "trait":"Ability to fly",
+
+  "set":"TELEPORT"},
+
+  "MIND":{
+  "trait":"Switching weapons is free",
+
+  "set":"All actions cost 1 less stamina with a minimum of 1"},
+
+  "HOPE":{
+  "trait":"Stamina cost is 0 on a CRIT",
+
+  "set":"Get stamina equal to stamina cost on crit"},
+
+  "DOOM":{
+  "trait":"Convert HP to Stamina",
+
+  "set":"ALL ENEMIES TAKE FULL ATTACK DAMAGE ON CRIT"}
+
+
+
+}

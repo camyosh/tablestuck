@@ -36,7 +36,7 @@ exports.run = (client, message, args) => {
 
     async function dexCheck(){
 
-    const attachment = await client.imgcall.sdexCheck(client,message,page,args,3,dex,dex.length);
+    const attachment = await client.imgcall.sdexCheck(client,message,page,args,3,dex,dex.length,room[2]);
 
       message.channel.send(attachment);
     }
@@ -97,6 +97,11 @@ exports.run = (client, message, args) => {
 
   //decypher captcha code and convert into weapon information
 
-  client.traitcall.inspectItem(client,dex[value],message);
+  async function itemInspect(){
+  const attachment = await client.imgcall.inspect(client,message,args,3,dex[value]);
+
+    message.channel.send("Inspecting item",attachment);
+  }
+  itemInspect()
 
 }

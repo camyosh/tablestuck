@@ -92,10 +92,10 @@ console.log(castlegen);
   const def = [[[5,7,[
      [0,0,"BEDROOM",false,[occset],defBedroom],
      [0,0,"LIVING ROOM",false,[],funcall.preItem("living room",7,[])],
-     [0,0,"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]]])],
+     [0,0,"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[],"https://discord.com/channels/@me/408119077840617493/809703675471462400"],["DESK","yO3wlREq",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]]])],
      [0,0,"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]]]]])],
      [0,0,"BATHROOM",false,[],funcall.preItem("bathroom",4,[])],
-     [0,0,"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",1,1,[["SBURB CLIENT","////////",1,1,[]],["SBURB SERVER","////////",1,1,[]]]]])],
+     [0,0,"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",1,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"]]]])],
      [0,0,"SHED",false,[],funcall.preItem("shed",8,[])]
    ]]]];
 
@@ -266,7 +266,7 @@ regImport();
     underlingRep:-1,
     playerRep:0,
     bio:"This player has not set their BIO!",
-    img:"https://media.discordapp.net/attachments/408119077840617493/808458446374436914/human_base.png"
+    img:"https://media.discordapp.net/attachments/408119077840617493/808458446374436914/human_base.png",
   };
 
 client.playerMap.set(charid,charSheet);
