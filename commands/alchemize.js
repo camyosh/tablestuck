@@ -45,10 +45,10 @@ exports.run = (client, message, args) => {
 
 
   for(i=0;i<room[5].length;i++){
-    if(room[5][i][1]=="////////"&&room[5][i][0]=="INSTANT ALCHEMITER"){
+    if(room[5][i][1].charAt(0) == "/"&&room[5][i][0]=="INSTANT ALCHEMITER"){
       ialchemiter = true;
     }
-    if(room[5][i][1]=="////////"&&room[5][i][0]=="ALCHEMITER"){
+    if(room[5][i][1].charAt(0) == "/"&&room[5][i][0]=="ALCHEMITER"){
       alchemiter[0]=true;
       if(room[5][i][4].length==1){
         alchemiter[1]=true;
@@ -88,7 +88,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     item1[4] = [];
 
 
-    if(item1[1] == "////////"||item1[1]=="########"){
+    if(item1[1].charAt(0) == "/"||item1[1]=="########"){
       message.channel.send("You can't alchemize that!");
       return;
     }
@@ -257,7 +257,7 @@ funcall.actionCheck(client,message,"alchemized");
 
 //check if alchemized item is a cruxite artifact
 
-      if(item[1]=="////////" && item[0]=="CRUXITE ARTIFACT"){
+      if(item[1].charAt(0) == "/" && item[0]=="CRUXITE ARTIFACT"){
         cost1=0;
         cost2=0;
         grist="artifact";
