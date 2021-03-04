@@ -1,6 +1,7 @@
 {
   "build":{
     "pos":0,
+    "spos":15,
     "emoji":"715632438751002654",
     "effective":["build","build","build","build"],
     "ineffective":["build","build","build","build"],
@@ -8,6 +9,7 @@
   },
   "uranium":{
     "pos":1,
+    "spos":1,
     "effective":["amethyst","iron","cobalt","amber","artifact"],
     "ineffective":["garnet","chalk","shale","tar","zillium"],
     "emoji":"715632438822567966",
@@ -15,6 +17,7 @@
   },
   "amethyst":{
     "pos":2,
+    "spos":2,
     "effective":["garnet","marble","ruby","tar","artifact"],
     "ineffective":["uranium","iron","cobalt","caulk","zillium"],
     "emoji":"715632438507864076",
@@ -22,6 +25,7 @@
   },
   "garnet":{
     "pos":3,
+    "spos":3,
     "effective":["uranium","chalk","shale","caulk","artifact"],
     "ineffective":["amethyst","marble","ruby","amber","zillium"],
     "emoji":"715632438864248872",
@@ -29,6 +33,7 @@
   },
   "iron":{
     "pos":4,
+    "spos":4,
     "effective":["amethyst","marble","cobalt","amber","artifact"],
     "ineffective":["uranium","chalk","ruby","tar","zillium"],
     "emoji":"715632438742745188",
@@ -36,6 +41,7 @@
   },
   "marble":{
     "pos":5,
+    "spos":5,
     "effective":["garnet","chalk","shale","caulk","artifact"],
     "ineffective":["amethyst","iron","cobalt","amber","zillium"],
     "emoji":"715632438717579395",
@@ -43,6 +49,7 @@
   },
   "chalk":{
     "pos":6,
+    "spos":6,
     "effective":["uranium","iron","ruby","tar","artifact"],
     "ineffective":["garnet","marble","shale","caulk","zillium"],
     "emoji":"715632438717448242",
@@ -50,6 +57,7 @@
   },
   "shale":{
     "pos":7,
+    "spos":7,
     "effective":["uranium","chalk","cobalt","caulk","artifact"],
     "ineffective":["garnet","marble","ruby","amber","zillium"],
     "emoji":"715632438822305822",
@@ -57,6 +65,7 @@
   },
   "cobalt":{
     "pos":8,
+    "spos":8,
     "effective":["amethyst","marble","ruby","tar","artifact"],
     "ineffective":["uranium","iron","shale","caulk","zillium"],
     "emoji":"715632438776430602",
@@ -64,6 +73,7 @@
   },
   "ruby":{
     "pos":9,
+    "spos":9,
     "effective":["garnet","iron","shale","amber","artifact"],
     "ineffective":["amethyst","chalk","cobalt","tar","zillium"],
     "emoji":"715632438742745198",
@@ -71,6 +81,7 @@
   },
   "caulk":{
     "pos":10,
+    "spos":10,
     "effective":["amethyst","chalk","cobalt","amber","artifact"],
     "ineffective":["garnet","marble","shale","tar","zillium"],
     "emoji":"715632438713253928",
@@ -78,6 +89,7 @@
   },
   "tar":{
     "pos":11,
+    "spos":11,
     "effective":["uranium","iron","ruby","caulk","artifact"],
     "ineffective":["amethyst","chalk","cobalt","amber","zillium"],
     "emoji":"715632438759653376",
@@ -85,6 +97,7 @@
   },
   "amber":{
     "pos":12,
+    "spos":12,
     "effective":["garnet","marble","shale","tar","artifact"],
     "ineffective":["uranium","iron","ruby","caulk","zillium"],
     "emoji":"715632438637887531",
@@ -92,6 +105,7 @@
   },
   "artifact":{
     "pos":13,
+    "spos":0,
     "effective":["zillium","zillium","zillium","zillium"],
     "ineffective":["rainbow","rainbow","rainbow","rainbow","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"],
     "emoji":"715632438377971734",
@@ -106,12 +120,14 @@
   },
   "diamond":{
     "pos":15,
+    "spos":13,
     "effective":["build","build","build","build"],
     "ineffective":["build","build","build","build"],
     "emoji":"715632438725836880",
     "rgb":[[99,149,241],[192,209,248],[50,101,232],[250,250,250],[0,0,0]]
   },
   "rainbow":{
-    "emoji":"715632522662379631"
+    "emoji":"715632522662379631",
+    "spos":16
   }
 }

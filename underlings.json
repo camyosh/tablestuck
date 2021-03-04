@@ -90,7 +90,8 @@
     "d":1,
     "bd":[1,2],
     "act":["aggrieve","abscond"],
-    "stats":[0,0,0,0,0,0]
+    "stats":[0,0,0,0,0,0],
+    "xp":0
   },
   "sprite":{
     "stm":8,
@@ -99,6 +100,79 @@
     "d":5,
     "bd":[1,4],
     "act":["aggrieve"],
-    "stats":[0,0,0,0,0,0]
+    "stats":[0,0,0,0,0,0],
+    "xp":0
+  },
+  "stout carapacian":{
+    "stm":4,
+    "vit":100,
+    "av":6,
+
+    "d":5,
+    "bd":[1,4],
+    "act":["aggrieve"],
+    "stats":[0,0,0,0,0,0],
+
+  "xp":2
+  },
+  "medium carapacian":{
+    "stm":6,
+    "vit":150,
+    "av":8,
+
+    "d":10,
+    "bd":[2,8],
+    "act":["aggrieve"],
+    "stats":[0,0,0,0,0,0],
+
+  "xp":2
+  },
+  "tall carapacian":{
+    "stm":8,
+    "vit":200,
+    "av":12,
+
+    "d":15,
+    "bd":[3,12],
+    "act":["aggrieve"],
+    "stats":[0,0,0,0,0,0],
+
+  "xp":2
+  },
+  "large carapacian":{
+    "stm":8,
+    "vit":250,
+    "av":10,
+
+    "d":20,
+    "bd":[4,16],
+    "act":["aggrieve"],
+    "stats":[0,0,0,0,0,0],
+
+  "xp":2
+  },
+  "arhagent":{
+    "stm":10,
+    "vit":300,
+    "av":14,
+
+    "d":25,
+    "bd":[5,20],
+    "act":["aggrieve"],
+    "stats":[0,0,0,0,0,0],
+
+  "xp":2
+  },
+  "shopkeep":{
+    "stm":8,
+    "vit":200,
+    "av":14,
+
+    "d":20,
+    "bd":[4,16],
+    "act":["aggrieve"],
+    "stats":[0,0,0,0,0,0],
+
+  "xp":2
   }
 }

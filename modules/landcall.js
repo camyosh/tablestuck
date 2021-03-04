@@ -6,8 +6,8 @@ const stifecall = require("./strifecall.js");
 //var output = [AREA TYPE,NUMBER OF ROOMS,[[roomType,roomLoot,roomName,roomVisite,occ,roomInv],[room2]]];
 //default empty = [0,1,[0,random number,"Clearing",false,[underlings],[items]]]
 
-var defaultEmpty = [0,1,[[0,0,"CLEARING",false,[],[]]]];
-var defaultGate = [6,1,[[0,0,"GATE",false,[],[]]]];
+var defaultEmpty = [0,1,[[[],[],"CLEARING",false,[],[]]]];
+var defaultGate = [6,1,[[[],[],"GATE",false,[],[]]]];
 
 function dubs(x){
   return Math.floor(Math.random() * x) + Math.floor(Math.random() * x);
@@ -17,19 +17,22 @@ function dubs(x){
 
 //10
 
-//let defaultDungeon =[1,2,[0,0,"ROOM 1",false,[],[]],[0,0,"ROOM 2",false,[],[]]];
-var defaultConstruct =[2,1,[[0,0,"LAND CONSTRUCT",false,[],[]]]];
-var defaultNode =[3,1,[[0,0,"RETURN NODE",false,[],[]]]];
-var defaultVillage =[4,2,[[0,0,"ROOM 1",false,[],[]],[0,0,"ROOM 2",false,[],[]]]];
+//let defaultDungeon =[1,2,[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]];
+var defaultConstruct =[2,1,[[[],[],"LAND CONSTRUCT",false,[],[]]]];
+var defaultNode =[3,1,[[[],[],"RETURN NODE",false,[],[]]]];
+var defaultVillage =[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
 
 exports.landGen = function(client,sec,gateCoor,message) {
+
+  let outpostCheck = false;
+  let outpostChance = 3;
   let section = [];
   for(i=0;i<11;i++){
-    section.push([[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]],[0,1,[[0,0,"CLEARING",false,[],[]]]]]);
+    section.push([[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]]]);
   }
   let dungeon = [];
   for(i=0;i<11;i++){
-    dungeon.push([[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]]);
+    dungeon.push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
   }
 empty =[];
   for(i=0;i<11;i++){
@@ -44,11 +47,11 @@ empty =[];
   let pos = (gateCoor[0]*11)+(gateCoor[1]);
   if (sec!=3){
   let gate = empty.splice(pos,1);
-  section[gate[0][0]][gate[0][1]]=[6,1,[[0,0,"GATE",false,[],[]]]];
+  section[gate[0][0]][gate[0][1]]=[6,1,[[[],[],"GATE",false,[],[]]]];
   } else {
     denizenCheck = true;
     let temp=empty.splice(60,1);
-    section[temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DENIZEN LAIR ENTRANCE",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DENIZEN LAIR ENTRANCE",false,[],[]]]];
     dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
   }
   if(sec>1){
@@ -63,7 +66,7 @@ empty =[];
     if(!denizenCheck){
   let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
   length--;
-  section[temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DUNGEON ENTRANCE",false,[],[]]]];
+  section[temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DUNGEON ENTRANCE",false,[],[]]]];
   //section[temp[0][0]][temp[0][1]]=[1,6,[funcall.roomGenCall(client,1,sec,1),funcall.roomGenCall(client,1,sec,2),funcall.roomGenCall(client,1,sec,3),funcall.roomGenCall(client,1,sec,4)]];
   dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
   }
@@ -72,26 +75,83 @@ empty =[];
   for(i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[4,2,[[0,0,"ROOM 1",false,[],[]],[0,0,"ROOM 2",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
   }
   //Creates the Land Constructs
   for(i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[2,1,[[0,0,"LAND CONSTRUCT",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[2,1,[[[],[],"LAND CONSTRUCT",false,[],[]]]];
   }
   //Creates the return nodes
   for(i=0;i<4;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[3,1,[[0,0,"RETURN NODE",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[3,1,[[[],[],"RETURN NODE",false,[],[]]]];
   }
   //Creates free loot
   for(i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[0,1,[[0,0,"CLEARING",false,[],[lootcall.lootA(client, sec, dubs(8))]]]];
+    section[temp[0][0]][temp[0][1]]=[0,1,[[[],[],"CLEARING",false,[],[lootcall.lootA(client, sec, dubs(8))]]]];
   }
+  }
+  if(sec==0){
+    for(i=0;i<2;i++){
+      let moon=[["PROSPIT","DERSE"],["pc","dc"]];
+      let temp=empty.splice(Math.floor(Math.random()*empty.length));
+      let transCount = client.landMap.get(message.guild.id+"medium","transCount");
+
+      let transList = client.landMap.get(message.guild.id+"medium","transList");
+      let transCode = "0000";
+      let transCode1 = "0000";
+
+      let moonCode = "0000";
+
+      while(transList.includes(transCode)||transCode=="0000"){
+        transCode = "";
+        for(k=0;k<4;k++){
+          transCode+= client.captchaCode[Math.floor(Math.random()*38)]
+        }
+      }
+
+      transList.push(transCode);
+      transCount++;
+
+      while(transList.includes(transCode1)||transCode1=="0000"){
+        transCode1 = "";
+        for(k=0;k<4;k++){
+          transCode1+= client.captchaCode[Math.floor(Math.random()*38)]
+        }
+      }
+
+      transList.push(transCode1);
+      transCount++;
+
+      let transLocal = client.landMap.get(message.guild.id+"medium","transLocal");
+
+      var transSet = {
+        local:["s1",temp[0][0],temp[0][1],0,message.guild.id.concat(message.author.id)],
+        target:`${message.guild.id}${transCode1}`
+      }
+
+      var transSet1 = {
+        local:[moon[1][i],transLocal[0],transLocal[1],0,message.guild.id+"medium"],
+        target:`${message.guild.id}${transCode}`
+      }
+
+      let castle = client.landMap.get(message.guild.id+"medium",moon[1][i]);
+
+      castle[transLocal[0]][transLocal[1]][2][0][5].push(["TRANSPORTALIZER",`//jG${transCode1}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"])
+
+      section[temp[0][0]][temp[0][1]]=[11,1,[[[],[],`${moon[0][i]} OUTPOST`,false,[],[["TRANSPORTALIZER",`//jG${transCode}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"]]]]];
+      client.transMap.set(`${message.guild.id}${transCode}`,transSet);
+      client.transMap.set(`${message.guild.id}${transCode1}`,transSet1);
+      client.landMap.set(message.guild.id+"medium",transList,"transList");
+      client.landMap.set(message.guild.id+"medium",transCount,"transCount");
+      client.landMap.set(message.guild.id+"medium",castle,moon[1][i]);
+
+    }
   }
 return [section,dungeon];
 
@@ -99,7 +159,7 @@ return [section,dungeon];
 }
 
 function dungeonGen(client,roomCoor,sec,dungeon,message) {
-  dungeon[roomCoor[0][0]][roomCoor[0][1]]=[1,1,[[0,0,"DUNGEON EXIT",false,[],[]]]];
+  dungeon[roomCoor[0][0]][roomCoor[0][1]]=[1,1,[[[],[],"DUNGEON EXIT",false,[],[]]]];
   let s = 0;
   let lv2 = [];
   let lv3 = [];
@@ -128,7 +188,7 @@ let b = 0;
 
           if(dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] [0] != 1 && dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] [0] != 8){
             if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] =[8,1,[[0,0,"BOSS ROOM",false,[
+              dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] =[8,1,[[[],[],"BOSS ROOM",false,[
                 client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], 'basilisk', message),
                 client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], 'basilisk', message),
                 client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], 'basilisk', message),
@@ -147,7 +207,7 @@ let b = 0;
             b++;
           if(dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] [0] != 1 && dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] [0] != 8){
               if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] =[8,1,[[0,0,"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]-k,roomCoor[0][1]], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
+              dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]-k,roomCoor[0][1]], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
             dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
             }
@@ -162,7 +222,7 @@ let b = 0;
           b++;
           if(dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] [0] != 1 && dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] [0] != 8 /*&& roomCoor[0][1]+k <= 10*/){
               if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] =[8,1,[[0,0,"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]+k], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
+              dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]+k], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
             dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] = dungeonRoomGen(client,sec);
           }
@@ -178,7 +238,7 @@ let b = 0;
           b++;
           if(dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] [0] != 1 && dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] [0] != 8){
             if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] =[8,1,[[0,0,"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]-k], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
+              dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]-k], 'imp', message)],[lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
             dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] = dungeonRoomGen(client,sec);
           }
@@ -208,7 +268,7 @@ let b = 0;
     while(!bosscheck){
       let random = Math.floor((Math.random() * 11))
       if(dungeon[roomCoor[0][0]][random][0]==0||dungeon[roomCoor[0][0]][random][0]==10){
-        dungeon[roomCoor[0][0]][random] = [8,1,[[0,0,"BOSS ROOM",false,[
+        dungeon[roomCoor[0][0]][random] = [8,1,[[[],[],"BOSS ROOM",false,[
           client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], 'basilisk', message),
           client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], 'basilisk', message),
           client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], 'basilisk', message),
@@ -221,7 +281,7 @@ let b = 0;
       while(!bosscheck){
       let random = Math.floor((Math.random() * 11))
       if(dungeon[random][roomCoor[0][1]][0]==0||dungeon[roomCoor[0][0]][random][0]==10){
-        dungeon[random][roomCoor[0][1]] = [8,1,[[0,0,"BOSS ROOM",false,[
+        dungeon[random][roomCoor[0][1]] = [8,1,[[[],[],"BOSS ROOM",false,[
           client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], 'basilisk', message),
           client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], 'basilisk', message),
           client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], 'basilisk', message),
@@ -264,7 +324,7 @@ while(!hitWall){
       if((--cury)<0){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
-          dungeon[curx][0] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+          dungeon[curx][0] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,0], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
@@ -286,7 +346,7 @@ while(!hitWall){
       if((++cury)>10){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
-          dungeon[curx][10] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+          dungeon[curx][10] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,10], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
@@ -307,7 +367,7 @@ deleted = genDirection.splice(0,1);
       if((++curx)>10){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
-          dungeon[10][cury] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+          dungeon[10][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [10,cury], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
@@ -328,7 +388,7 @@ deleted = genDirection.splice(0,1);
       if((--curx)<0){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
-          dungeon[0][cury] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+          dungeon[0][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [0,cury], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
@@ -351,12 +411,12 @@ genDirection =["n","s","e","w"];
 }
 if (denizen == false){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
-  dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+  dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
     client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
 }
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
-  dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[0,0,"DENIZEN MINION",false,[
+  dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[[],[],"DENIZEN MINION",false,[
     client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
 }
 
@@ -388,7 +448,7 @@ while(!hitWall){
       if((--cury)<0){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
-          dungeon[curx][0] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+          dungeon[curx][0] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,0], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
@@ -410,7 +470,7 @@ while(!hitWall){
       if((++cury)>10){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
-          dungeon[curx][10] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+          dungeon[curx][10] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,10], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
@@ -431,7 +491,7 @@ deleted = genDirection.splice(0,1);
       if((++curx)>10){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
-          dungeon[10][cury] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+          dungeon[10][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [10,cury], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
@@ -452,7 +512,7 @@ deleted = genDirection.splice(0,1);
       if((--curx)<0){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
-          dungeon[0][cury] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+          dungeon[0][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [0,cury], 'basilisk', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
@@ -475,12 +535,12 @@ genDirection =["n","s","e","w"];
 }
 if (denizen == false){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
-  dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[0,0,"DENIZEN CHAMBER",false,[
+  dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
     client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
 }
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
-  dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[0,0,"DENIZEN MINION",false,[
+  dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[[],[],"DENIZEN MINION",false,[
     client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
 }
 
@@ -494,10 +554,10 @@ function dungeonRoomGen(client,sec) {
   switch(Math.floor((Math.random() * 4))){
 
 case 3:
-return [10,1,[[0,0,"DUNGEON ROOM",false,[],[lootcall.lootB(client, sec, dubs(8))]]]];
+return [10,1,[[[],[],"DUNGEON ROOM",false,[],[lootcall.lootB(client, sec, dubs(8))]]]];
 break;
   default:
-  return [10,1,[[0,0,"DUNGEON ROOM",false,[],[]]]];
+  return [10,1,[[[],[],"DUNGEON ROOM",false,[],[]]]];
   }
 
 }
@@ -508,41 +568,64 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
   let section = [[],[],[],[],[],[],[],[],[],[]];
   for(i=0;i<11;i++){
 //   prospit,derse,prospitmoon,dersemoon,pdungeon1,2,3,ddungeon1,2,3
-    section[0].push([[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]]]);
-    section[1].push([[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]]]);
-    section[2].push([[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]],[10,1,[[0,0,"STREET",false,[],[]]]]]);
-    section[3].push([[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]],[10,1,[[0,0,"ALLEYWAY",false,[],[]]]]]);
+    section[0].push([[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]]]);
+    section[1].push([[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]]]);
+    section[2].push([[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]]]);
+    section[3].push([[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]]]);
 
-    section[4].push([[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]]]);
-    section[5].push([[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]]]);
-    section[6].push([[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]]]);
+    section[4].push([[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]]]);
+    section[5].push([[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]]]);
+    section[6].push([[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]]]);
 
-    section[7].push([[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]]]);
-    section[8].push([[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]]]);
-    section[9].push([[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]],[10,1,[[0,0,"CORRIDOR",false,[],[]]]]]);
+    section[7].push([[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]]]);
+    section[8].push([[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]]]);
+    section[9].push([[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]],[10,1,[[[],[],"CORRIDOR",false,[],[]]]]]);
 
 
   }
 
   let dungeon = [[],[],[],[]];
   for(i=0;i<11;i++){
-    dungeon[0].push([[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]]);
-    dungeon[1].push([[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]]);
-    dungeon[2].push([[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]]);
-    dungeon[3].push([[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]],[7,1,[[0,0,"OUT OF BOUNDS",false,[],[]]]]]);
 
+    for(j=0;j<dungeon.length;j++){
+      dungeon[j].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]])
+    }
+    /*
+    dungeon[0].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
+    dungeon[1].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
+    dungeon[2].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
+    dungeon[3].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);*/
   }
+
+  let castle = [[],[]];
+  for(i=0;i<11;i++){
+
+    for(j=0;j<castle.length;j++){
+      castle[j].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]])
+    }
+}
+
+
 
   //dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
 
   let select = [0,1,3,4,6,7,9,10]
   let empty = [];
+  let empty2 = [];
+  let empty3 = [];
+  let empty4 = [];
+  let empty5 = [];
+
   for(i=0;i<8;i++){
     for(j=0;j<8;j++){
       empty.push([select[i],select[j]]);
+      empty2.push([select[i],select[j]]);
+      empty3.push([select[i],select[j]]);
+      empty4.push([select[i],select[j]]);
+      empty5.push([select[i],select[j]]);
     }
   }
-
+/*
   let empty2 = [];
   for(i=0;i<8;i++){
     for(j=0;j<8;j++){
@@ -570,126 +653,142 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
       empty5.push([select[i],select[j]]);
     }
   }
+*/
 
+  section[0][5][5]=[13,1,[[[],[],"CHAIN",false,[],[]]]];
+  section[1][5][5]=[13,1,[[[],[],"CHAIN",false,[],[]]]];
+  section[2][5][5]=[13,1,[[[],[],"CHAIN",false,[],[]]]];
+  section[3][5][5]=[13,1,[[[],[],"CHAIN",false,[],[]]]];
 
-  section[0][5][5]=[13,1,[[0,0,"CHAIN",false,[],[]]]];
-  section[1][5][5]=[13,1,[[0,0,"CHAIN",false,[],[]]]];
-  section[2][5][5]=[13,1,[[0,0,"CHAIN",false,[],[]]]];
-  section[3][5][5]=[13,1,[[0,0,"CHAIN",false,[],[]]]];
-
-  section[2][towerLocal[0]][towerLocal[1]]=[11,1,[[0,0,"PROSPIT TOWER BASE",true,[],[]]]];
-  section[3][towerLocal[0]][towerLocal[1]]=[11,1,[[0,0,"DERSE TOWER BASE",true,[],[]]]];
+  section[2][towerLocal[0]][towerLocal[1]]=[11,1,[[[],[],"PROSPIT TOWER BASE",true,[],[]]]];
+  section[3][towerLocal[0]][towerLocal[1]]=[11,1,[[[],[],"DERSE TOWER BASE",true,[],[]]]];
   empty.splice(select.indexOf(towerLocal[0])*8+select.indexOf(towerLocal[1]),1);
 
-  section[0][castleLocal[0]][castleLocal[1]]=[12,1,[[0,0,"PROSPIT CASTLE",true,[],[]]]];
-  section[1][castleLocal[0]][castleLocal[1]]=[12,1,[[0,0,"DERSE CASTLE",true,[],[]]]];
+  section[0][castleLocal[0]][castleLocal[1]]=[12,1,[[[],[],"PROSPIT CASTLE",true,[],[]]]];
+  section[1][castleLocal[0]][castleLocal[1]]=[12,1,[[[],[],"DERSE CASTLE",true,[],[]]]];
   empty2.splice(select.indexOf(castleLocal[0])*8+select.indexOf(castleLocal[1]),1);
+  let transLocal=[0,0];
+  //castle generation
+  castle[0][5][5]=[12,1,[[[],[],"CASTLE ENTRANCE",true,[],[]]]];
+  castle[1][5][5]=[12,1,[[[],[],"CASTLE ENTRANCE",true,[],[]]]];
 
+  castle[0][4][5]=[10,1,[[[],[],"HALL",true,[],[]]]];
+  castle[0][3][5]=[8,1,[[[],[],"THRONE ROOM",true,[],[]]]];
+  castle[0][5][4]=[19,1,[[[],[],"TRANSPORTALIZER HUB",true,[],[]]]];
 
+  castle[1][4][5]=[10,1,[[[],[],"HALL",true,[],[]]]];
+  castle[1][3][5]=[8,1,[[[],[],"THRONE ROOM",true,[],[]]]];
+  castle[1][5][4]=[19,1,[[[],[],"TRANSPORTALIZER HUB",true,[],[]]]];
 
+  transLocal=[5,4];
+  //end castle generation
+
+  section.push(castle[0]);
+  section.push(castle[1]);
+  section.push(transLocal);
 //Prospit / Derse Main
 
 for(i=0;i<2;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"POLICE STATION",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"POLICE STATION",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[14,1,[[[],[],"POLICE STATION",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[14,1,[[[],[],"POLICE STATION",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[15,1,[[[],[],"PRISON",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[15,1,[[[],[],"PRISON",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"COURT",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[16,1,[[0,0,"COURT",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[16,1,[[[],[],"COURT",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[16,1,[[[],[],"COURT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"HOSPITAL",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"HOSPITAL",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[17,1,[[[],[],"HOSPITAL",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[17,1,[[[],[],"HOSPITAL",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"BANK",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[18,1,[[0,0,"BANK",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[18,1,[[[],[],"BANK",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[18,1,[[[],[],"BANK",false,[],[]]]];
 }
 for(i=0;i<2;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POST OFFICE",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POST OFFICE",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[19,1,[[[],[],"POST OFFICE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[19,1,[[[],[],"POST OFFICE",false,[],[]]]];
 }
 for(i=0;i<4;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"MILITARY OUTPOST",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[20,1,[[0,0,"MILITARY OUTPOST",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[20,1,[[[],[],"MILITARY OUTPOST",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[20,1,[[[],[],"MILITARY OUTPOST",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"GUILD HALL",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[21,1,[[0,0,"GUILD HALL",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[21,1,[[[],[],"GUILD HALL",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[21,1,[[[],[],"GUILD HALL",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"THEATRE",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[22,1,[[0,0,"THEATRE",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[22,1,[[[],[],"THEATRE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[22,1,[[[],[],"THEATRE",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"BINGO HALL",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[23,1,[[0,0,"CASINO",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[23,1,[[[],[],"BINGO HALL",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[23,1,[[[],[],"CASINO",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[24,1,[[0,0,"MUSEUM",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[24,1,[[0,0,"MUSEUM",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[24,1,[[[],[],"MUSEUM",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[24,1,[[[],[],"MUSEUM",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[25,1,[[0,0,"LIBRARY",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[25,1,[[0,0,"LIBRARY",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[25,1,[[[],[],"LIBRARY",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[25,1,[[[],[],"LIBRARY",false,[],[]]]];
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"RESTAURANT",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"RESTAURANT",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[26,1,[[[],[],"RESTAURANT",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[26,1,[[[],[],"RESTAURANT",false,[],[]]]];
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"GENERAL STORE",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[27,1,[[[],[["CAPTCHALOGUE CARD","11111111",1,4,[]]],"GENERAL STORE",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[27,1,[[[],[["CAPTCHALOGUE CARD","11111111",1,4,[]]],"GENERAL STORE",false,[],[]]]];
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[28,1,[[0,0,"CANDY SHOP",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[29,1,[[0,0,"BUTCHER",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[28,1,[[[],[],"CANDY SHOP",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[29,1,[[[],[],"BUTCHER",false,[],[]]]];
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[31,1,[[0,0,"TAILOR",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[30,1,[[0,0,"ARMORY",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[31,1,[[[],[],"TAILOR",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[30,1,[[[],[],"ARMORY",false,[],[]]]];
 }
 for(i=0;i<5;i++){
   let temp=empty2.splice(Math.floor(Math.random()*empty2.length)-1,1);
 
-  section[0][temp[0][0]][temp[0][1]]=[32,1,[[0,0,"JEWELER",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[32,1,[[0,0,"JEWELER",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[32,1,[[[],[],"JEWELER",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[32,1,[[[],[],"JEWELER",false,[],[]]]];
 }
 
 
@@ -702,11 +801,11 @@ while(empty2.length>0){
   let ran = Math.floor(Math.random()*6);
 
   if(ran == 0){
-    section[0][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"PUBLIC PARK",false,[],[]]]];
-    section[1][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"ABANDONED BUILDING",false,[],[]]]];
+    section[0][temp[0][0]][temp[0][1]]=[0,1,[[[],[],"PUBLIC PARK",false,[],[]]]];
+    section[1][temp[0][0]][temp[0][1]]=[0,1,[[[],[],"ABANDONED BUILDING",false,[],[]]]];
   } else {
-  section[0][temp[0][0]][temp[0][1]]=[45,1,[[0,0,"APPARTMENT",false,[],[]]]];
-  section[1][temp[0][0]][temp[0][1]]=[45,1,[[0,0,"SLUMS",false,[],[]]]];
+  section[0][temp[0][0]][temp[0][1]]=[45,1,[[[],[],"APPARTMENT",false,[],[]]]];
+  section[1][temp[0][0]][temp[0][1]]=[45,1,[[[],[],"SLUMS",false,[],[]]]];
 }
 }
 
@@ -714,122 +813,122 @@ while(empty2.length>0){
 for(i=0;i<2;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"POLICE STATION",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[14,1,[[0,0,"POLICE STATION",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[14,1,[[[],[],"POLICE STATION",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[14,1,[[[],[],"POLICE STATION",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"HOSPITAL",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[17,1,[[0,0,"HOSPITAL",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[17,1,[[[],[],"HOSPITAL",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[17,1,[[[],[],"HOSPITAL",false,[],[]]]];
 }
 for(i=0;i<2;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POST OFFICE",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[19,1,[[0,0,"POST OFFICE",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[19,1,[[[],[],"POST OFFICE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[19,1,[[[],[],"POST OFFICE",false,[],[]]]];
 }
 for(i=0;i<4;i++){
   let tempRan = Math.floor(Math.random()*empty.length)-1;
   let temp=empty.splice(tempRan,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DUNGEON ENTRANCE",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DUNGEON ENTRANCE",false,[],[]]]];
-  section[4][temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DUNGEON EXIT",false,[],[]]]];
-  section[7][temp[0][0]][temp[0][1]]=[1,1,[[0,0,"DUNGEON EXIT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DUNGEON ENTRANCE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DUNGEON ENTRANCE",false,[],[]]]];
+  section[4][temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DUNGEON EXIT",false,[],[]]]];
+  section[7][temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DUNGEON EXIT",false,[],[]]]];
 
   empty3.splice(empty3.findIndex(tile => tile[0] == temp[0][0] && tile[1] == temp[0][1]),1)
 }
 for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"RESTAURANT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[26,1,[[0,0,"RESTAURANT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[26,1,[[[],[],"RESTAURANT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[26,1,[[[],[],"RESTAURANT",false,[],[]]]];
 }
 for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"GENERAL STORE",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[27,1,[[0,0,"GENERAL STORE",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[27,1,[[[],[],"GENERAL STORE",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[27,1,[[[],[],"GENERAL STORE",false,[],[]]]];
 }
 for(i=0;i<5;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[32,1,[[0,0,"JEWELER",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[32,1,[[0,0,"JEWELER",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[32,1,[[[],[],"JEWELER",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[32,1,[[[],[],"JEWELER",false,[],[]]]];
 }
 
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[33,1,[[0,0,"TIME MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[33,1,[[0,0,"TIME MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[33,1,[[[],[],"TIME MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[33,1,[[[],[],"TIME MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[34,1,[[0,0,"SPACE MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[34,1,[[0,0,"SPACE MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[34,1,[[[],[],"SPACE MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[34,1,[[[],[],"SPACE MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[35,1,[[0,0,"LIGHT MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[35,1,[[0,0,"LIGHT MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[35,1,[[[],[],"LIGHT MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[35,1,[[[],[],"LIGHT MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[36,1,[[0,0,"VOID MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[36,1,[[0,0,"VOID MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[36,1,[[[],[],"VOID MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[36,1,[[[],[],"VOID MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[37,1,[[0,0,"LIFE MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[37,1,[[0,0,"LIFE MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[37,1,[[[],[],"LIFE MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[37,1,[[[],[],"LIFE MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[38,1,[[0,0,"DOOM MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[38,1,[[0,0,"DOOM MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[38,1,[[[],[],"DOOM MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[38,1,[[[],[],"DOOM MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[39,1,[[0,0,"BREATH MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[39,1,[[0,0,"BREATH MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[39,1,[[[],[],"BREATH MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[39,1,[[[],[],"BREATH MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[40,1,[[0,0,"BLOOD MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[40,1,[[0,0,"BLOOD MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[40,1,[[[],[],"BLOOD MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[40,1,[[[],[],"BLOOD MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[41,1,[[0,0,"HOPE MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[41,1,[[0,0,"HOPE MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[41,1,[[[],[],"HOPE MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[41,1,[[[],[],"HOPE MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[42,1,[[0,0,"RAGE MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[42,1,[[0,0,"RAGE MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[42,1,[[[],[],"RAGE MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[42,1,[[[],[],"RAGE MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[43,1,[[0,0,"MIND MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[43,1,[[0,0,"MIND MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[43,1,[[[],[],"MIND MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[43,1,[[[],[],"MIND MONUMENT",false,[],[]]]];
 }
 for(i=0;i<1;i++){
   let temp=empty.splice(Math.floor(Math.random()*empty.length)-1,1);
 
-  section[2][temp[0][0]][temp[0][1]]=[44,1,[[0,0,"HEART MONUMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[44,1,[[0,0,"HEART MONUMENT",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[44,1,[[[],[],"HEART MONUMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[44,1,[[[],[],"HEART MONUMENT",false,[],[]]]];
 }
 
 while(empty.length>0){
@@ -838,11 +937,11 @@ while(empty.length>0){
   let ran = Math.floor(Math.random()*6);
 
   if(ran == 0){
-    section[2][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"PUBLIC PARK",false,[],[]]]];
-    section[3][temp[0][0]][temp[0][1]]=[0,1,[[0,0,"ABANDONED BUILDING",false,[],[]]]];
+    section[2][temp[0][0]][temp[0][1]]=[0,1,[[[],[],"PUBLIC PARK",false,[],[]]]];
+    section[3][temp[0][0]][temp[0][1]]=[0,1,[[[],[],"ABANDONED BUILDING",false,[],[]]]];
   } else {
-  section[2][temp[0][0]][temp[0][1]]=[45,1,[[0,0,"APPARTMENT",false,[],[]]]];
-  section[3][temp[0][0]][temp[0][1]]=[45,1,[[0,0,"SLUMS",false,[],[]]]];
+  section[2][temp[0][0]][temp[0][1]]=[45,1,[[[],[],"APPARTMENT",false,[],[]]]];
+  section[3][temp[0][0]][temp[0][1]]=[45,1,[[[],[],"SLUMS",false,[],[]]]];
 }
 }
 
@@ -850,10 +949,10 @@ while(empty.length>0){
     let tempRan = Math.floor(Math.random()*empty3.length)-1;
     let temp=empty3.splice(tempRan,1);
 
-    section[4][temp[0][0]][temp[0][1]]=[46,1,[[0,0,"DESCENDING STAIRS",false,[],[]]]];
-    section[7][temp[0][0]][temp[0][1]]=[46,1,[[0,0,"DESCENDING STAIRS",false,[],[]]]];
-    section[5][temp[0][0]][temp[0][1]]=[47,1,[[0,0,"ASCENDING STAIRS",false,[],[]]]];
-    section[8][temp[0][0]][temp[0][1]]=[47,1,[[0,0,"ASCENDING STAIRS",false,[],[]]]];
+    section[4][temp[0][0]][temp[0][1]]=[46,1,[[[],[],"DESCENDING STAIRS",false,[],[]]]];
+    section[7][temp[0][0]][temp[0][1]]=[46,1,[[[],[],"DESCENDING STAIRS",false,[],[]]]];
+    section[5][temp[0][0]][temp[0][1]]=[47,1,[[[],[],"ASCENDING STAIRS",false,[],[]]]];
+    section[8][temp[0][0]][temp[0][1]]=[47,1,[[[],[],"ASCENDING STAIRS",false,[],[]]]];
 
     empty4.splice(empty4.findIndex(tile => tile[0] == temp[0][0] && tile[1] == temp[0][1]),1)
   }
@@ -862,28 +961,28 @@ while(empty.length>0){
     let tempRan = Math.floor(Math.random()*empty4.length)-1;
     let temp=empty4.splice(tempRan,1);
 
-    section[5][temp[0][0]][temp[0][1]]=[46,1,[[0,0,"DOWNSTAIRS ENTRANCE",false,[],[]]]];
-    section[8][temp[0][0]][temp[0][1]]=[46,1,[[0,0,"DOWNSTAIRS ENTRANCE",false,[],[]]]];
-    section[6][temp[0][0]][temp[0][1]]=[47,1,[[0,0,"ASCENDING STAIRS",false,[],[]]]];
-    section[9][temp[0][0]][temp[0][1]]=[47,1,[[0,0,"ASCENDING STAIRS",false,[],[]]]];
+    section[5][temp[0][0]][temp[0][1]]=[46,1,[[[],[],"DOWNSTAIRS ENTRANCE",false,[],[]]]];
+    section[8][temp[0][0]][temp[0][1]]=[46,1,[[[],[],"DOWNSTAIRS ENTRANCE",false,[],[]]]];
+    section[6][temp[0][0]][temp[0][1]]=[47,1,[[[],[],"ASCENDING STAIRS",false,[],[]]]];
+    section[9][temp[0][0]][temp[0][1]]=[47,1,[[[],[],"ASCENDING STAIRS",false,[],[]]]];
 
     empty5.splice(empty5.findIndex(tile => tile[0] == temp[0][0] && tile[1] == temp[0][1]),1)
   }
 
   while(empty3.length>0){
     let temp=empty3.splice(Math.floor(Math.random()*empty3.length)-1,1);
-    section[4][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON CELL",false,[],[]]]];
-    section[7][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON CELL",false,[],[]]]];
+    section[4][temp[0][0]][temp[0][1]]=[15,1,[[[],[],"PRISON CELL",false,[],[]]]];
+    section[7][temp[0][0]][temp[0][1]]=[15,1,[[[],[],"PRISON CELL",false,[],[]]]];
   }
   while(empty4.length>0){
     let temp=empty4.splice(Math.floor(Math.random()*empty4.length)-1,1);
-    section[5][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON CELL",false,[],[]]]];
-    section[8][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON CELL",false,[],[]]]];
+    section[5][temp[0][0]][temp[0][1]]=[15,1,[[[],[],"PRISON CELL",false,[],[]]]];
+    section[8][temp[0][0]][temp[0][1]]=[15,1,[[[],[],"PRISON CELL",false,[],[]]]];
   }
   while(empty5.length>0){
     let temp=empty5.splice(Math.floor(Math.random()*empty5.length)-1,1);
-    section[6][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON CELL",false,[],[]]]];
-    section[9][temp[0][0]][temp[0][1]]=[15,1,[[0,0,"PRISON CELL",false,[],[]]]];
+    section[6][temp[0][0]][temp[0][1]]=[15,1,[[[],[],"PRISON CELL",false,[],[]]]];
+    section[9][temp[0][0]][temp[0][1]]=[15,1,[[[],[],"PRISON CELL",false,[],[]]]];
   }
 
   return section;
@@ -1087,7 +1186,7 @@ for(i=0;i<11;i++){
   ctx.drawImage(legend[i+1],5,5+(32*(i+2)),32.8,31);
     for(j=0;j<11;j++){
             //comment out this if check to turn off fog of war on the main map
-      if(!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"){
+      if(!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
           ctx.drawImage(fog,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
 
       } else {
@@ -1457,4 +1556,72 @@ exports.underlingCheck = function(occList) {
   }
 
   return check;
+}
+
+exports.carSpawn = function(client,local,lunar,sessionID){
+
+  let picList = [["https://media.discordapp.net/attachments/808757312520585227/814739963824439296/dersite_short.png","https://media.discordapp.net/attachments/808757312520585227/814739982748221480/dersite_normal.png","https://media.discordapp.net/attachments/808757312520585227/814740004618240050/dersite_tall.png","https://media.discordapp.net/attachments/808757312520585227/814740019902021652/dersite_beefy.png"],["https://media.discordapp.net/attachments/808757312520585227/814740073681518612/prospitian_short.png","https://media.discordapp.net/attachments/808757312520585227/814740091306115112/prospitian_normal.png","https://media.discordapp.net/attachments/808757312520585227/814740144933830666/prospitian_tall.png","https://media.discordapp.net/attachments/808757312520585227/814740171705548861/prospitian_beefy.png"]];
+  let typeList = ["stout carapacian","medium carapacian","tall carapacian","large carapacian"];
+  let lunarList = [["derse","prospit"],["dersite","prospitian"]];
+  let repList = [[1000000,-1000000],[-1000000,1000000]]
+
+  let num = Math.floor(Math.random()*4);
+
+  let npcCount = client.landMap.get(sessionID+"medium","npcCount");
+
+  let occ = []
+
+  for(i=0;i<num;i++){
+
+    npcCount++;
+
+  let type = Math.floor(Math.random()*4);
+
+  let npcSet = {
+    name: `${lunarList[1][lunar]}`,
+    possess:[],
+    type: typeList[type],
+    faction: lunarList[0][lunar],
+    vit:client.underlings[typeList[type]].vit,
+    gel:client.underlings[typeList[type]].vit,
+    grist: "diamond",
+    strife:false,
+    pos:0,
+    alive:true,
+    local:local,
+    sdex:[],
+    equip:0,
+    trinket:[],
+    armor:[],
+    spec:[],
+    equip:0,
+    scards:1,
+    kinds:[],
+    port:1,
+    modus:"STACK",
+    cards:4,
+    prototype:[],
+    prospitRep:repList[lunar][1],
+    derseRep:repList[lunar][0],
+    underlingRep:0,
+    playerRep:0,
+    consortRep:0,
+    prefTarg:[],
+    xp:0,
+    rung:0,
+    b:0,
+    bio:`A ${lunarList[1][lunar]} ${typeList[type]}`,
+    img:picList[lunar][type]
+  }
+
+  let id = `n${sessionID}/${npcCount}`;
+
+  client.playerMap.set(id,npcSet);
+
+  let occSet = [false,id];
+
+  occ.push(occSet)
+}
+client.landMap.set(sessionID+"medium",npcCount,"npcCount");
+return occ;
 }

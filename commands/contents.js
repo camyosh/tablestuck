@@ -31,7 +31,7 @@ exports.run = (client, message, args) => {
   let page = 0;
   if (args[1]) {
     page = parseInt(args[1], 10) - 1;
-    if (isNaN(page)) {
+    if (isNaN(page)||page<0) {
       message.channel.send("That is not a valid argument!");
       return;
     }
@@ -39,7 +39,7 @@ exports.run = (client, message, args) => {
 
   async function dexCheck(){
 
-  const attachment = await client.imgcall.sdexCheck(client,message,page,args,2,dex[value][4],dex[value][2]*2,dex[value][0]);
+  const attachment = await client.imgcall.sdexCheck(client,message,page,args,2,dex[value][4],dex[value][4].length,dex[value][0]);
 
     message.channel.send(attachment);
   }

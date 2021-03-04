@@ -68,4 +68,5 @@ exports.run = (client, message, args) => {
   client.playerMap.set(charid,sdex,"sdex");
   message.channel.send(`Ejected the ${dropItem[0]}!`);
   funcall.actionCheck(client,message);
+  client.funcall.sleepHeal(client,charid);
 }

@@ -93,6 +93,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
+        client.funcall.sleepHeal(client,charid);
       break;
       case 2:
       //if second gate is selected, check if server player is connected and entered
@@ -117,6 +118,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
+        client.funcall.sleepHeal(client,charid);
       break;
 
       case 3:
@@ -129,6 +131,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
+        client.funcall.sleepHeal(client,charid);
       break;
       case 4:
         sburbClient = client.playerMap.get(local[4],"client");
@@ -151,6 +154,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
+        client.funcall.sleepHeal(client,charid);
       break;
 
       case 5:
@@ -163,6 +167,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
+        client.funcall.sleepHeal(client,charid);
       break;
       case 6:
         sburbClient = client.playerMap.get(local[4],"client");
@@ -185,6 +190,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
+        client.funcall.sleepHeal(client,charid);
       break;
 
       case 7:
@@ -197,6 +203,7 @@ exports.run = (client, message, args) => {
         sec[local[1]][local[2]][2][local[3]][3]=true;
         client.landMap.set(local[4],sec,local[0]);
         client.playerMap.set(charid,local,"local");
+        client.funcall.sleepHeal(client,charid);
       break;
 
     }
@@ -256,6 +263,7 @@ exports.run = (client, message, args) => {
     sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
     client.landMap.set(local[4],sec,local[0]);
+    client.funcall.sleepHeal(client,charid);
 
   } else if(area[0]==1){
 
@@ -279,6 +287,7 @@ exports.run = (client, message, args) => {
    sec[local[1]][local[2]][2][local[3]][3]=true;
    client.playerMap.set(charid,local,"local");
    client.landMap.set(local[4],sec,local[0]);
+   client.funcall.sleepHeal(client,charid);
  } else if(area[0]==13){
 
    sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
@@ -297,6 +306,7 @@ exports.run = (client, message, args) => {
    client.playerMap.set(charid,local,"local");
    client.landMap.set(local[4],sec,local[0]);
    message.channel.send("Crossing the Chain!");
+   client.funcall.sleepHeal(client,charid);
 
  } else if(area[0]==46){
 
@@ -318,6 +328,7 @@ exports.run = (client, message, args) => {
   client.playerMap.set(charid,local,"local");
   client.landMap.set(local[4],sec,local[0]);
   message.channel.send("Descending deeper into the dungeon!");
+  client.funcall.sleepHeal(client,charid);
 
 }  else if(area[0]==47){
   sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
@@ -345,6 +356,38 @@ if(floor<3){
   client.playerMap.set(charid,local,"local");
   client.landMap.set(local[4],sec,local[0]);
   message.channel.send("Ascending the staircase!");
+  client.funcall.sleepHeal(client,charid);
+
+} else if(area[0]==12){
+
+  sec[local[1]][local[2]][2][local[3]][4].splice(room[4].findIndex(occpos => occpos[1] === occset[1]),1);
+ if(local[0].charAt(local[0].length-1)!="c"){
+
+   local[0]+="c";
+   local[1]=5;
+   local[2]=5;
+  message.channel.send("Entering the castle!");
+  funcall.actionCheck(client,message);
+  landcall.drawMap(client,message,true);
+
+ } else {
+   if(client.landMap.has(local[4],"castleLocal")){
+     castleLocal =client.landMap.get(local[4],"castleLocal");
+     local[1]=castleLocal[0];
+     local[2]=castleLocal[1];
+   }
+   local[0]=local[0].slice(0,-1);
+  message.channel.send("Leaving the castle");
+  funcall.actionCheck(client,message);
+  landcall.drawMap(client,message,true);
+ }
+ sec = client.landMap.get(land,local[0]);
+ console.log(local[0]);
+ sec[local[1]][local[2]][2][local[3]][4].push(occset);
+ sec[local[1]][local[2]][2][local[3]][3]=true;
+ client.playerMap.set(charid,local,"local");
+ client.landMap.set(local[4],sec,local[0]);
+ client.funcall.sleepHeal(client,charid);
 
 }
 

@@ -35,7 +35,7 @@ exports.run = (client,message,args) =>{
   let msg = ``;
 
   for(i=0+(pagenumber*10);i<((pagenumber+1)*10)&&i<occList.length;i++){
-    msg+=`**[${i}] ${client.playerMap.get(occList[i][1],"name").toUpperCase()}** \n *${client.playerMap.get(occList[i][1],"type")}*\n\n`
+    msg+=`**[${i+1}] ${client.playerMap.get(occList[i][1],"name").toUpperCase()}** \n *${client.playerMap.get(occList[i][1],"type")}*\n\n`
   }
 
   listPrint = new client.Discord.MessageEmbed()

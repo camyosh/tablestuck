@@ -46,12 +46,15 @@ exports.traitCheck = function(client,target,traitName){
   }
 
   //Check Equipment
-
+console.log(trinket);
+console.log(trinket.length)
   if(trinket.length!=0){
-    if(client.traitList[client.captchaCode.indexOf(trinket[1].charAt(2))]==traitName){
+    console.log(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))]);
+    console.log("Testing");
+    if(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))]==traitName){
       traitCount++;
     }
-    if(client.traitList2[client.captchaCode.indexOf(trinket[1].charAt(3))]==traitName){
+    if(client.traitList2[client.captchaCode.indexOf(trinket[0][1].charAt(3))]==traitName){
       traitCount++;
     }
   }
@@ -60,7 +63,7 @@ exports.traitCheck = function(client,target,traitName){
 
     check[0]=true;
 
-    if(traitCount >=4){
+    if(traitCount >=3){
       check[1]=true;
     }
 
@@ -89,6 +92,7 @@ exports.compTest = function(client, message, charid, room) {
   let currentInv = client.playerMap.get(charid,"sdex");
   let specibus = client.playerMap.get(charid,"spec");
   let armor = client.playerMap.get(charid,"armor");
+  let trinket = client.playerMap.get(charid,"trinket")
 
     let i;
     //if first value in array is true, it means there is a computer, if both are true, it means the computer has sburbed installed
@@ -132,12 +136,22 @@ exports.compTest = function(client, message, charid, room) {
         }
       }
     }
-    if(armor[0] && client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))] == "COMPUTER" || client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))] == "COMPUTER"){
+    if(armor.length>0 && (client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))] == "COMPUTER" || client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))] == "COMPUTER")){
       comp[0]=true;
 
       let j;
       for(j=0;j<armor[0][4].length; j++){
         if(armor[0][4][j][1].charAt(0) == "/"&&armor[0][4][j][0]=="SBURB DISC"){
+          comp[1]=true;
+        }
+      }
+    }
+    if(trinket.length>0 && (client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))] == "COMPUTER" || client.traitList2[client.captchaCode.indexOf(trinket[0][1].charAt(3))] == "COMPUTER")){
+      comp[0]=true;
+
+      let j;
+      for(j=0;j<trinket[0][4].length; j++){
+        if(trinket[0][4][j][1].charAt(0) == "/"&&trinket[0][4][j][0]=="SBURB DISC"){
           comp[1]=true;
         }
       }

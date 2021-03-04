@@ -104,6 +104,7 @@ exports.run = (client, message, args) => {
               return;
               break;
             case 1:
+              sdex[selectDex][4]=[];
               if(room[5][selectRoom][4][0][4].length == 0){
                 //["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]
                 sdex[selectDex][0]="CARVED TOTEM";
@@ -129,6 +130,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
               }
               break;
             case 2:
+            sdex[selectDex][4]=[];
             if(room[5][selectRoom][4][0][4].length == 0 || room[5][selectRoom][4][1][4].length == 0){
               //["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]
               sdex[selectDex][0]="CARVED TOTEM";
@@ -179,22 +181,49 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
           return;
         }
       } else if(room[5][selectRoom][0] == "ALCHEMITER") {
-        if(room[5][selectRoom][4].length==0){
           if(selectCode == "########"){
+
+            let registry = client.playerMap.get(charid,"registry");
+
+            let item = sdex[selectDex][4][0];
+
+            if(client.traitcall.itemTrait(client,item,"SHITTY")){
+              item[2]=1;
+              item[1] = item[1][0] + "0" + item[1].substr(2);
+            } else if(client.traitcall.itemTrait(client,item,"TRICKSTER")){
+              item[2]=16;
+              item[1] = item[1][0] + "?" + item[1].substr(2);
+            } else if(client.traitcall.itemTrait(client,item,"EXQUISITE")){
+              item[1] = item[1][0] + "!" + item[1].substr(2);
+            }
+
+            function checkCode(checkItem){
+              return checkItem[1] == item[1];
+            }
+
+            if(registry.findIndex(checkCode)!= -1){
+              message.channel.send("You've already registered an item with that code!");
+              return;
+            }
+
+            registry.unshift(item);
+
+            client.playerMap.set(charid,registry,"registry");
+
+            message.channel.send("Registered totem to the alchemy athenaeum!")
+
+            /*
             message.channel.send(`Placed the CARVED TOTEM onto the pedestal on the ALCHEMITER`)
             let targetItem = sdex.splice(selectDex,1)[0];
             room[5][selectRoom][4].push(targetItem);
             sec[local[1]][local[2]][2][local[3]] = room;
             client.landMap.set(land,sec,local[0]);
             client.playerMap.set(charid,sdex,"sdex");
-            return;
+            return;*/
           } else {
             message.channel.send("You can only place CARVED TOTEMS on the ALCHEMITER");
           }
-        } else {
-          message.channel.send("The ALCHEMITER already has a TOTEM in it!")
-          return;
-        }
+
       } else if(room[5][selectRoom][0] == "PUNCH DESIGNIX"){
         if(room[5][selectRoom][4].length==0){
           if(selectCode == "11111111"){

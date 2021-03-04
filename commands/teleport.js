@@ -43,6 +43,7 @@ exports.run = (client, message, args) => {
   client.playerMap.set(charid,targetLocal,"local");
 
   message.channel.send("Teleporting to target!");
+  client.funcall.sleepHeal(client,charid);
 
 
 }

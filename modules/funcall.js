@@ -624,8 +624,29 @@ exports.chanMsg = function(client, target, msg){
 
   let possess = client.playerMap.get(target,"possess");
 
-  for(i=0;i<possess.length;i++){
+  for(let i=0;i<possess.length;i++){
     client.channels.cache.get(client.playerMap.get(possess[i],"channel")).send(msg);
   }
 
+}
+
+exports.sleepHeal = function(client,charid){
+  if(client.playerMap.has(charid,"dreamvit")){
+
+    let vit = client.playerMap.get(charid,"dreamvit");
+    let gel = client.playerMap.get(charid,"gel");
+    if(vit<gel){
+      let heal = 5;
+      if(client.traitcall.traitCheck(client,charid,"CUSHIONED")[1]){
+        heal*=4;
+      }else if(client.traitcall.traitCheck(client,charid,"CUSHIONED")[0]){
+        heal*=2;
+      }
+      if(vit+heal>gel){
+        client.playerMap.set(charid,gel,"dreamvit");
+      }else{
+        client.playerMap.set(charid,vit+heal,"dreamvit")
+      }
+    }
+  }
 }

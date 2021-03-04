@@ -90,15 +90,35 @@ exports.run = (client, message, args) => {
       /*if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
       sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
     }*/
-      if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
-        sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
-        funcall.actionCheck(client,message,"tile");
-      } else {
-        funcall.actionCheck(client,message);
+    if(local[4]==message.guild.id+"medium"&&sec[local[1]][local[2]][2][local[3]][4].length==1){
+      console.log(local[0]);
+      switch(local[0]){
+        case "dm":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+        break;
+        case "d":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+        break;
+        case "pm":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+        break;
+        case "p":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+        break;
+        case "bf":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id),client.landcall.carSpawn(client,local,1,message.guild.id));
+        break;
       }
+    }else if(local[4]!=message.guild.id+"medium") {
+      if(sec[local[1]][local[2]][2][local[3]][3]==false){
+    sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
+  }
+  }
+  funcall.actionCheck(client,message);
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
+      client.funcall.sleepHeal(client,charid);
 
       msg+=`You move North and find a ${typeList[sec[local[1]][local[2]][0]]}`;
 
@@ -128,15 +148,36 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
+        if(local[4]==message.guild.id+"medium"&&sec[local[1]][local[2]][2][local[3]][4].length==1){
+          switch(local[0]){
+            case "dm":
+              sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+            break;
+            case "d":
+              sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+            break;
+            case "pm":
+              sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+            break;
+            case "p":
+              sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+            break;
+            case "bf":
+              sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id),client.landcall.carSpawn(client,local,1,message.guild.id));
+            break;
+          }
+        }else if(local[4]!=message.guild.id+"medium"){
+          if(sec[local[1]][local[2]][2][local[3]][3]==false){
         sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
-        funcall.actionCheck(client,message,"tile");
-      } else {
-        funcall.actionCheck(client,message);
       }
+      }
+      funcall.actionCheck(client,message);
+
+
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
+      client.funcall.sleepHeal(client,charid);
       msg+=`You move South and find a ${typeList[sec[local[1]][local[2]][0]]}`
       break;
 
@@ -164,15 +205,34 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
-        sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
-        funcall.actionCheck(client,message,"tile");
-      } else {
-        funcall.actionCheck(client,message);
-      }
+      if(local[4]==message.guild.id+"medium"&&sec[local[1]][local[2]][2][local[3]][4].length==1){
+        switch(local[0]){
+          case "dm":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+          break;
+          case "d":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+          break;
+          case "pm":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+          break;
+          case "p":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+          break;
+          case "bf":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id),client.landcall.carSpawn(client,local,1,message.guild.id));
+          break;
+        }
+      }else if(local[4]!=message.guild.id+"medium"){
+        if(sec[local[1]][local[2]][2][local[3]][3]==false){
+      sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
+    }
+    }
+    funcall.actionCheck(client,message);
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
+      client.funcall.sleepHeal(client,charid);
       msg+=`You move East and find a ${typeList[sec[local[1]][local[2]][0]]}`
       break;
 
@@ -202,15 +262,34 @@ exports.run = (client, message, args) => {
 
       sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
-      if(sec[local[1]][local[2]][2][local[3]][3]==false&&local[4]!=message.guild.id+"medium"){
-        sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
-        funcall.actionCheck(client,message,"tile");
-      } else {
-        funcall.actionCheck(client,message);
-      }
+      if(local[4]==message.guild.id+"medium"&&sec[local[1]][local[2]][2][local[3]][4].length==1){
+        switch(local[0]){
+          case "dm":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+          break;
+          case "d":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+          break;
+          case "pm":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+          break;
+          case "p":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+          break;
+          case "bf":
+            sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id),client.landcall.carSpawn(client,local,1,message.guild.id));
+          break;
+        }
+      }else if(local[4]!=message.guild.id+"medium"){
+        if(sec[local[1]][local[2]][2][local[3]][3]==false){
+      sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
+    }
+    }
+    funcall.actionCheck(client,message);
       sec[local[1]][local[2]][2][local[3]][3]=true;
       client.playerMap.set(charid,local,"local");
       client.landMap.set(land,sec,local[0]);
+      client.funcall.sleepHeal(client,charid);
       msg+=`You move West and find a ${typeList[sec[local[1]][local[2]][0]]}`;
       break;
     }
@@ -227,13 +306,14 @@ exports.run = (client, message, args) => {
         }
       }
       if(occCheck[0]&&occCheck[1]){
-        msg+="\nThere are players and Underlings in this area!";
+        msg+="\nThere are players and NPC's in this area!";
       } else if(occCheck[0]){
-        msg+="\nThere are Underlings in this area!";
+        msg+="\nThere are NPC's in this area!";
       } else {
         msg+="\nThere are Players in this area!";
       }
     }
+    client.funcall.sleepHeal(client,charid);
     message.channel.send(msg);
     landcall.drawMap(client,message,true);
 
@@ -269,14 +349,34 @@ exports.run = (client, message, args) => {
     sec[local[1]][local[2]][2][local[3]][4].push(occset);
 
     message.channel.send(`Moving to the ${area[2][value][2]}!`);
-    funcall.actionCheck(client,message);
-    if(sec[local[1]][local[2]][2][local[3]][4].length <= 1&&local[4]!=message.guild.id+"medium"){
-
+    if(local[4]==message.guild.id+"medium"&&sec[local[1]][local[2]][2][local[3]][4].length==1){
+      switch(local[0]){
+        case "dm":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+        break;
+        case "d":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id))
+        break;
+        case "pm":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+        break;
+        case "p":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,1,message.guild.id))
+        break;
+        case "bf":
+          sec[local[1]][local[2]][2][local[3]][4]=sec[local[1]][local[2]][2][local[3]][4].concat(client.landcall.carSpawn(client,local,0,message.guild.id),client.landcall.carSpawn(client,local,1,message.guild.id));
+        break;
+      }
+    }else if(local[4]!=message.guild.id+"medium"){
+      if(sec[local[1]][local[2]][2][local[3]][3]==false&&sec[local[1]][local[2]][2][local[3]][4].length<=1){
     sec =  strifecall.underSpawn(client,local,sec,message.guild.id);
-    }
+  }
+  }
+  funcall.actionCheck(client,message);
 
     client.playerMap.set(charid,local,"local");
     client.landMap.set(land,sec,local[0]);
+    client.funcall.sleepHeal(client,charid);
 
 
   }

@@ -73,3 +73,21 @@ message.channel.fetchWebhooks()
   .catch(console.error);
 
 }
+
+exports.say = async function(client,message,target,msg,name,pic){
+
+  const channel = client.channels.cache.get(client.playerMap.get(target,"pesterchannel"));
+
+  try {
+		const webhooks = await channel.fetchWebhooks();
+		const webhook = webhooks.first();
+
+		await webhook.send(msg, {
+			username: name,
+			avatarURL: pic
+		});
+	} catch (error) {
+		console.error('Error trying to send: ', error);
+	}
+
+}

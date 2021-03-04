@@ -16,6 +16,7 @@ exports.run = (client, message, args) => {
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   let sdex = client.playerMap.get(charid,"sdex");
   let cards = client.playerMap.get(charid,"cards");
+  let registry = client.playerMap.get(charid,"registry");
 
   selectDex = parseInt(args[0], 10) - 1;
   if(isNaN(selectDex)){
@@ -54,6 +55,17 @@ exports.run = (client, message, args) => {
   sdex[selectDex][0]=name;
 
   client.playerMap.set(charid,sdex,"sdex");
+
+  function checkCode(checkItem){
+    return checkItem[1] == selectItem[1];
+  }
+
+  let regPos = registry.findIndex(checkCode);
+
+  if(regPos>-1){
+    registry[regPos][0]=name;
+    client.playerMap.set(charid,registry,"registry");
+  }
 
   message.channel.send(`Successfully changed the name of ${oldName} to ${name}`);
 }

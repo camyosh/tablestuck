@@ -1,4 +1,6 @@
 
+  const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
+
 const trait1Search = ["NONE","COMPUTER","STORAGE","FOOD","CANDY","MEAT","HOT","COLD","ELECTRIC","SHARP","BLUNT","SHITTY","CUTE","SPOOKY","CAT","DOG","BROKEN","CUSHIONED","BUSINESS","BOUNCY","STICKY","MELEE","RANGED","MAGIC","REFINED","VAMPIRIC","FROG","HARLEQUIN","WIZARD,","PLUSH","SCIENTIFIC","HEAVY","LIGHTWEIGHT","PROSPIT","DERSE","ENDURING","THORNS","ROCKET","GAMBLING","IRRADIATED","NOIR","CHARLATAN","EXQUISITE","GRIMDARK","META","WELSH", "TRICKSTER","BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM"]
 
 
@@ -226,13 +228,11 @@ exports.inspect = async function (client,message,args,type,item){
   const backSheet = await client.Canvas.loadImage(`./miscsprites/BACKSHEET.png`)
 
   //drawing card templates
-  console.log("starting card");
   let x=194;
   let y=0;
 
   ctx.drawImage(cardSheet,194*(type+1),232,194,232,0,116,194,232);
   ctx.drawImage(backSheet,388*(type+1),0,388,464,194,0,388,464);
-console.log("drawing grists")
   //drawing front of card
   await drawCard(client,canvas,ctx,item,0,116,gristSheet,traitSheet,kindSheet);
 
@@ -242,7 +242,6 @@ console.log("drawing grists")
   let gristType = client.codeCypher[1][client.captchaCode.indexOf(item[1].charAt(1))];
 
   ctx.drawImage(gristSheet,(gristType%8)*32,Math.floor(gristType/8)*32,32,32,x+62,y+88,44,44);
-console.log("drawing effective")
   //draw effective grist
 
   for(i=0;i<4;i++){
@@ -252,7 +251,6 @@ console.log("drawing effective")
     ctx.drawImage(gristSheet,(tempGrist%8)*32,Math.floor(tempGrist/8)*32,32,32,x+116+(52*i),y+38,44,44);
 
   }
-console.log("drawing ineffective")
   for(i=0;i<4;i++){
 
     tempGrist=client.grist[client.grist[client.gristTypes[gristType]].ineffective[i]].pos;
@@ -260,20 +258,18 @@ console.log("drawing ineffective")
     ctx.drawImage(gristSheet,(tempGrist%8)*32,Math.floor(tempGrist/8)*32,32,32,x+116+(52*i),y+88,44,44);
 
   }
-  console.log("drawing trait symbols")
   //draw trait symbols
   ctx.drawImage(traitSheet,(trait1Search.indexOf(trait1)%8)*32,Math.floor(trait1Search.indexOf(trait1)/8)*32,32,32,x+16,140,32,32);
-  console.log("drawing symbol 2");
   ctx.drawImage(traitSheet,(trait1Search.indexOf(trait2)%8)*32,Math.floor(trait1Search.indexOf(trait2)/8)*32,32,32,x+170,140,32,32);
   //draw trait names
-  console.log("drawing trait names")
   ctx.fillStyle = "#000000";
   middleText(canvas,ctx,trait1,x+50,142,x+159,169,16,8,"FONTSTUCK");
-  console.log("drawing trait name 2")
   ctx.fillStyle = "#000000";
   middleText(canvas,ctx,trait2,x+204,142,x+313,169,16,8,"FONTSTUCK");
 
   //draw trait descriptions
+  console.log(trait1);
+  console.log(trait2);
   middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait1].trait,20),x+16,y+180,x+161,y+227,18,12,"Courier Standard Bold");
 
   middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait2].trait,20),x+170,y+180,x+315,y+227,18,12,"Courier Standard Bold");
@@ -374,7 +370,6 @@ function middleText(canvas,ctx,msg,x1,y1,x2,y2,fontsize,minsize,font){
 
   ctx.font = `bold ${fontsize}px ${font}`;
 
-  console.log(`pre fontsize for ${msg} is ${fontsize}`)
 
   while((((ctx.measureText(msg).emHeightAscent)+(Math.floor(ctx.measureText(msg).emHeightAscent)/3))*lineCount)>y2-y1&&!sizeCheck){
 
@@ -388,7 +383,6 @@ function middleText(canvas,ctx,msg,x1,y1,x2,y2,fontsize,minsize,font){
 
   applyText(canvas,ctx,msg,fontsize,minsize,font,x2-x1);
 
-  console.log(`pre fontsize for ${msg} is ${fontsize}`)
 
   yr = y2-y1-((ctx.measureText(msg).emHeightAscent*lineCount)+((Math.floor(ctx.measureText(msg).emHeightAscent)/3)*(lineCount-1))) ;
   y3 = y1+Math.floor(yr/2)+ctx.measureText(msg).emHeightAscent;
@@ -398,7 +392,163 @@ function middleText(canvas,ctx,msg,x1,y1,x2,y2,fontsize,minsize,font){
   //console.log(`y2 ${y2} - ( y2 ${y2} - y1 ${y1} (text height ${ctx.measureText(msg).emHeightAscent} * linecount ${lineCount})/2) = y3 ${y3}`)
 
   x3=x1+(Math.floor(x2-x1-ctx.measureText(msg).width)/2);
-  console.log(`fontsize for ${msg} is ${fontsize}`);
   ctx.fillText(msg,x3,y3);
+
+}
+
+exports.alchCheck = async function (client, message, page, args, sdex, priceSet ,banner){
+
+  client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
+  client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
+  const canvas = client.Canvas.createCanvas(1056,600);
+  const ctx = canvas.getContext('2d');
+
+
+  //list light, list dark, card fg, card bg, card shade
+  let cards = sdex.length;
+  let scheme = ["#992445","#0c6137","#992ae1","#484848","#245cb2"];
+  let typeList = ["sylladex","strife specibus","container","room inventory"];
+  let cardList = ["captchalogue cards","strife cards","storage space","room space"]
+  let maxPage = Math.floor(cards/10);
+  let type = 3;
+
+//set background
+  ctx.linewidth = 5;
+
+//set top text line
+
+  ctx.fillStyle = scheme[type];
+  ctx.fillRect(0,0,canvas.width,32);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = `bold 32px Courier Standard Bold`;
+  ctx.fillText(`${banner.toLowerCase()}::page ${page+1}/${maxPage+1}`,16,24);
+
+  if(type<3){
+
+    let msg = `${cardList[type]}::${sdex.length}/${cards}`
+
+    ctx.fillText(msg,canvas.width-16-ctx.measureText(msg).width,24);
+
+  }
+
+  const cardSheet = await client.Canvas.loadImage(`./miscsprites/CAPTCHACARD.png`);
+  const gristSheet = await client.Canvas.loadImage(`./miscsprites/GRISTSPRITES.png`);
+  const traitSheet = await client.Canvas.loadImage(`./miscsprites/TRAITSPRITES.png`);
+  const kindSheet = await client.Canvas.loadImage(`./miscsprites/WEAPONKINDSLARGE.png`);
+  const priceCard = await client.Canvas.loadImage(`./miscsprites/PRICECARD.png`);
+  const priceBlank = await client.Canvas.loadImage(`./miscsprites/PRICECARDBLANK.png`);
+
+  //ctx.drawImage(cardSheet,0,0,192,232,16,48,192,232);
+
+  let j = page*10;
+
+  for(i=0;i<10;i++){
+
+    let x = 16+((i%5)*208);
+
+    let y = 48+(274*Math.floor(i/5))
+
+    if(j<cards){
+
+//draw card
+
+      if(j>=priceSet.length){
+        type=4;
+      }
+
+      ctx.drawImage(cardSheet,194*(type+1),0,194,232,x,y,194,232);
+
+      if(j<sdex.length)
+      await drawCard(client,canvas,ctx,sdex[j],x,y,gristSheet,traitSheet,kindSheet);
+
+      ctx.drawImage(priceCard,0,0,194,36,x,y+236,194,36);
+
+      ctx.fillStyle = "#000000";
+
+      if(j<priceSet.length){
+        //first grist cost image always build
+        ctx.drawImage(gristSheet,(client.grist.build.spos%8)*32,Math.floor(client.grist.build.spos/8)*32,32,32,x,y+236,32,32);
+        //second grist cost image
+        ctx.drawImage(gristSheet,(client.grist[priceSet[j][0]].spos%8)*32,Math.floor(client.grist[priceSet[j][0]].spos/8)*32,32,32,x+98,y+236,32,32);
+
+        //first grist cost
+        middleText(canvas,ctx,"0",x+34,y+236,x+91,y+267,18,8,"FONTSTUCK");
+        //second grist cost
+        middleText(canvas,ctx,priceSet[j][1].toString(),x+132,y+236,x+189,y+267,18,8,"FONTSTUCK");
+      }else{
+
+        let gristType = client.codeCypher[1][client.captchaCode.indexOf(sdex[j][1].charAt(1))];
+        let tier = sdex[j][2];
+
+        if(client.traitcall.itemTrait(client,sdex[j],"SHITTY")){
+
+          tier=1;
+          gristType = 0;
+
+        } else if(client.traitcall.itemTrait(client,sdex[j],"TRICKSTER")){
+          tier=16;
+          gristType = 14;
+        }
+
+        let cost = tierCost[tier];
+        let cost2 = tierCost[tier-1];
+
+        if(tier-1<0){
+          cost2=0;
+        }
+
+        if(client.traitcall.itemTrait(client,sdex[j],"EXQUISITE")){
+
+          gristType = 14;
+
+        }
+
+        if(gristType ==14){
+
+          cost*=2;
+          cost2*=2
+        }
+
+        ctx.drawImage(gristSheet,(15%8)*32,Math.floor(15/8)*32,32,32,x,y+236,32,32);
+        //second grist cost image
+        ctx.drawImage(gristSheet,(gristType%8)*32,Math.floor(gristType/8)*32,32,32,x+98,y+236,32,32);
+
+        //first grist cost
+        middleText(canvas,ctx,cost.toString(),x+34,y+236,x+91,y+267,18,8,"FONTSTUCK");
+        //second grist cost
+        middleText(canvas,ctx,cost2.toString(),x+132,y+236,x+189,y+267,18,8,"FONTSTUCK");
+
+      }
+
+//number selection
+
+      ctx.fillStyle = "#000000";
+      ctx.font = `bold 20px FONTSTUCK`;
+      ctx.font = applyText(canvas,ctx, j+1,20,12,"FONTSTUCK",26)
+      ctx.fillText(j+1,x+152+26-ctx.measureText(j+1).width-Math.floor((26-ctx.measureText(j+1).width)/2),y+20+Math.floor(ctx.measureText(j+1).emHeightAscent/2));
+
+      //16 28
+
+
+    } else {
+
+    ctx.drawImage(cardSheet,0,0,194,232,x,y,194,232);
+    ctx.drawImage(priceBlank,0,0,194,36,x,y+236,194,36);
+
+  }
+
+  j++
+
+  }
+
+
+//send message
+
+  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+
+return attachment;
+
+
 
 }

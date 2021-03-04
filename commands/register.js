@@ -35,6 +35,7 @@ console.log(castlegen);
     handleList:[],
     castleLocal: castlegen[0],
     towerLocal: castlegen[1],
+    transLocal:dreamMoon[dreamMoon.length-1],
     p:dreamMoon[0],
     pm:dreamMoon[2],
     d:dreamMoon[1],
@@ -44,7 +45,11 @@ console.log(castlegen);
     pmd2:dreamMoon[6],
     dmd:dreamMoon[7],
     dmd1:dreamMoon[8],
-    dmd2:dreamMoon[9]
+    dmd2:dreamMoon[9],
+    pc:dreamMoon[10],
+    dc:dreamMoon[11],
+    transList:[],
+    transCount:0
   }
 
   client.landMap.set(message.guild.id+"medium", medium);
@@ -85,18 +90,18 @@ console.log(castlegen);
 
   let randnum = Math.floor((Math.random() * 12));
 
-  const defBedroom = funcall.preItem("bedroom",7,[]);
+  const defBedroom = funcall.preItem("bedroom",7,[["GLASSES","vh0zQaFS",1,1,[]]]);
 
   const armorsets = [["CLOTHES", "sQ00m9Kn", 1, 1, []], ["CLOTHES", "sd1y1UGt", 1, 1, []], ["CLOTHES", "s4001jKQ", 1, 1, []], ["CLOTHES", "s500MEF3", 1, 1, []], ["CLOTHES", "sIy0llDd", 1, 1, []], ["CLOTHES", "sh11jXDH", 1, 1, []], ["CLOTHES", "sK0ydTnZ", 1, 1, []], ["CLOTHES", "sj10ZVxB", 1, 1, []], ["CLOTHES", "sY01t9oW", 1, 1, []], ["CLOTHES", "sl1yRSD8", 1, 1, []], ["CLOTHES", "sO1yjCtu", 1, 1, []], ["CLOTHES", "sD012ydM", 1, 1, []]];
 
   const def = [[[5,7,[
-     [0,0,"BEDROOM",false,[occset],defBedroom],
-     [0,0,"LIVING ROOM",false,[],funcall.preItem("living room",7,[])],
-     [0,0,"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[],"https://discord.com/channels/@me/408119077840617493/809703675471462400"],["DESK","yO3wlREq",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]]])],
-     [0,0,"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]]]]])],
-     [0,0,"BATHROOM",false,[],funcall.preItem("bathroom",4,[])],
-     [0,0,"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",1,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"]]]])],
-     [0,0,"SHED",false,[],funcall.preItem("shed",8,[])]
+     [[],[],"BEDROOM",false,[occset],defBedroom],
+     [[],[],"LIVING ROOM",false,[],funcall.preItem("living room",7,[["HAT","uy0zJ7aY",1,1,[]],["SHOES","tx0z33bi",1,1,[]]])],
+     [[],[],"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]]])],
+     [[],[],"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]]]]])],
+     [[],[],"BATHROOM",false,[],funcall.preItem("bathroom",4,[])],
+     [[],[],"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",1,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"]]]])],
+     [[],[],"SHED",false,[],funcall.preItem("shed",8,[])]
    ]]]];
 
 
@@ -196,7 +201,7 @@ regImport();
 
   let towerRoom = moonMap[towerLocal[0]][towerLocal[1]][2].length;
 
-  moonMap[towerLocal[0]][towerLocal[1]][2].push([0,0,`${message.author.username.toUpperCase()}'S DREAM TOWER`,false,[
+  moonMap[towerLocal[0]][towerLocal[1]][2].push([[],[],`${message.author.username.toUpperCase()}'S DREAM TOWER`,false,[
     [true,charid]],defBedroom]);
 
   client.landMap.set(message.guild.id+"medium",moonMap,lunarSway);
@@ -222,7 +227,7 @@ regImport();
     alive:true,
     local:["h",0,0,0,charid],
     dreamlocal:[lunarSway,towerLocal[0],towerLocal[1],towerRoom,message.guild.id+"medium"],
-    deploy:[false,false,false,false,false],
+    deploy:[false,false,false,false,false,false,false,false,false,false],
     xp: 0,
     rung: 0,
     b: 0,
@@ -265,8 +270,10 @@ regImport();
     derseRep:repDef[1],
     underlingRep:-1,
     playerRep:0,
+    consortRep:10,
     bio:"This player has not set their BIO!",
     img:"https://media.discordapp.net/attachments/408119077840617493/808458446374436914/human_base.png",
+    registry:[]
   };
 
 client.playerMap.set(charid,charSheet);

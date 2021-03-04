@@ -18,5 +18,6 @@ message.channel.send(`${client.emojis.cache.get("761001131035066378")} this is 7
 client.hookcall.pogChamp(client,message,chan);
 
 message.channel.send("pog");
+console.log(0000);
 
 }

@@ -28,7 +28,7 @@ exports.run = (client, message, args) => {
     let page = 0;
     if (args[0]&&args[0] == "page") {
       page = parseInt(args[1], 10) - 1;
-      if (isNaN(page)) {
+      if (isNaN(page)||page<0) {
         message.channel.send("That is not a valid page number!");
         return;
       }

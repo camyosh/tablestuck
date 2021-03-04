@@ -153,6 +153,7 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
     strifecall.underRally(client,local);
     funcall.actionCheck(client,message);
     message.channel.send("Entering Strife!");
+    client.funcall.sleepHeal(client,charid);
 
     strifecall.start(client,message,local);
 
