@@ -152,7 +152,7 @@ function passTurn(client, message, local) {
 //function used to kill characters when their vitality reaches 0
 
 function kill(client,message,local,target,pos){
-
+try{
   if(log){
     console.log(`killing target`);
   }
@@ -382,7 +382,7 @@ switch(client.playerMap.get(list[target][1],"faction")){
     break;
 }
 //call function to remove the dead target from strife
-      client.playerMap.delete(list[target][1]);
+      //client.playerMap.delete(list[target][1]);
       leaveStrife(client,message,local,target);
       if(active.length<=1){
         message.channel.send(`Last opponent defeated!`);
@@ -392,6 +392,9 @@ switch(client.playerMap.get(list[target][1],"faction")){
 
 
   }
+}catch(err){
+  message.channel.send("Tried to delete an underling twice! Tell cam you saw this!");
+}
 
 }
 
@@ -496,7 +499,7 @@ function leaveStrife(client,message,local,pos){
     client.playerMap.set(charid,false,"strife");
     client.playerMap.set(charid,list[pos][3],"vit");
 
-    if(turn == pos){
+    if(init[turn][0] == pos){
       passTurn(client,message,local);
     }
 
@@ -761,17 +764,24 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
 
 let turnMsg = ``;
 
+console.log(`Retrieving ping ${client.playerMap.has(list[init[turn][0]][1],"ping")}`)
+
 if(client.playerMap.has(list[init[turn][0]][1],"ping")){
 
+  console.log("retrieved ping")
+
   let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
+
+  console.log(ping)
 //send message to player's channel
   turnMsg+=`${message.guild.members.cache.get(ping)} `;
 }
 
   turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actions you can take with >act, and >pass your turn once you're done!${alert}`;
-
+//strifelist
 //send message to player's channel
-    client.funcall.chanMsg(client,list[init[turn][0]][1],turnMsg);
+  let embed = strifeList(client,local,active,list,turn,init,list[init[turn][0]][1],0,`STRIFE LIST (>list)`);
+    client.funcall.chanMsg(client,list[init[turn][0]][1],turnMsg,embed);
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
@@ -2678,5 +2688,39 @@ console.log(`targets - ${targetList}`);
       setTimeout(passTurn,1500,client,message,local);
     }
 
+
+}
+
+function strifeList(client,local,active,list,turn,init,charid,page,title){
+  let msg = ``;
+  let i;
+  let pageMax = Math.ceil(active.length/10);
+
+  if(page > pageMax-1 || page < 0) {
+    page=0;
+    return;
+  }
+
+  for(i=0+(page*10);i<((page+1)*10)&&i<active.length;i++){
+    if(active[i]==init[turn][0]){
+      msg += `**[${i+1}]** **${client.playerMap.get(list[active[i]][1],"name").toUpperCase()}** [VIT - ${list[active[i]][3]}] [**TURN**]\n\n`
+    } else {
+      msg += `**[${i+1}]** **${client.playerMap.get(list[active[i]][1],"name").toUpperCase()}** [VIT - ${list[active[i]][3]}]\n\n`
+    }
+  }
+
+  let embed = new client.Discord.MessageEmbed()
+  .setTitle(`**${title}**`)
+  .addField(`PAGE`,`${page+1}/${pageMax}`)
+  .addField(`**CHARACTERS IN STRIFE**`,msg)
+  .setColor("#00e371")
+
+  //try{message.channel.send(embed);}catch(err){message.channel.send(msg)};
+  return embed
+}
+exports.strifeList = function(client,local,active,list,turn,init,charid,page,title){
+
+let embed =strifeList(client,local,active,list,turn,init,charid,page,title);
+client.funcall.chanMsg(client,charid,embed);
 
 }

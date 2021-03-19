@@ -1359,7 +1359,8 @@ for(i=0;i<11;i++){
 }
 
 let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'landmap.png');
-message.channel.send(attachment);
+//message.channel.send(attachment);
+return attachment;
 } else {
 
 const canvas = client.Canvas.createCanvas(192,192);
@@ -1540,8 +1541,8 @@ for(i=-1;i<2;i++){
   }
   }
   attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'landmap.png');
-  message.channel.send(attachment);
-return;
+  //message.channel.send(attachment);
+return attachment;
 }
 }
 

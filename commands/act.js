@@ -1,7 +1,7 @@
 const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 const tierDmg = [1,5,7,10,14,19,25,32,40,49,59,70,82,95,109,124,140];
-
+const log =true;
 //Used to take actions during STRIFE
 
 exports.run = (client, message, args) => {
@@ -300,7 +300,7 @@ return;
 //Turn first argument into a number and check if NAN
 
   select = parseInt(args[0], 10) - 1;
-  if(isNaN(select) || select > 5 || select < 0){
+  if(isNaN(select) || select > action.length-1 || select < 0){
     message.channel.send("That is not a valid argument!");
     return;
   }
@@ -313,7 +313,9 @@ return;
   }
 
 //If action has FIRST, makes sure its the first action taken this turn
-
+if(log){
+  console.log(`${action[select]} is position ${select} from ${action}`);
+}
   if(client.actionList[action[select]].add.includes("FIRST")){
     if(list[pos][6].length > 0){
       message.channel.send("That ACTION can only be used if it is the first ACTION taken on a turn!");
@@ -331,6 +333,7 @@ return;
 //If there is no second argument, list all participants in strife and their VITALITY
 
   if(!args[1]){
+    /*
     let msg = ``;
     let i;
     for(i=0;i<active.length;i++){
@@ -343,6 +346,10 @@ return;
     .setColor("#00e371")
 
     try{message.channel.send(embed);}catch(err){message.channel.send(msg)};
+    return;
+    */
+
+    client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,"SELECT A TARGET (>list)")
     return;
   }
 

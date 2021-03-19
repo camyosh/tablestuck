@@ -29,8 +29,8 @@ exports.pesterProf = async function(client,message,charid){
 		const webhook = webhooks.first();
 
 		await webhook.send('Updated Pesterchum profile!', {
-			username: client.playerMap.get(charid,"chumhandle"),
-			avatarURL: client.playerMap.get(charid,"chumpic"),
+			username: `[${client.playerMap.get(charid,"chumtag")}] ${client.playerMap.get(charid,"chumhandle")}`,
+			avatarURL: client.playerMap.get(charid,"chumpic")
 		});
 	} catch (error) {
 		console.error('Error trying to send: ', error);
@@ -45,7 +45,7 @@ exports.pester = async function(client,message,charid,target,msg){
 		const webhook = webhooks.first();
 
 		await webhook.send(msg, {
-			username: client.playerMap.get(charid,"chumhandle"),
+			username: `[${client.playerMap.get(charid,"chumtag")}] ${client.playerMap.get(charid,"chumhandle")}`,
 			avatarURL: client.playerMap.get(charid,"chumpic"),
 		});
     message.react(`✅`);

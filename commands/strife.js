@@ -4,16 +4,17 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
+    var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+    let local = client.playerMap.get(charid,"local");
 // if player is in strife, leave strife
     if(strifecall.strifeTest(client, message, message.author) == true){
 
+      client.strifecall.leaveStrife(client,message,local,client.playerMap.get(charid,"pos"));
+      return;
+
     //  message.channel.send("You are already in STRIFE! You can leave by ABSCONDING, which is >act 6 1");
       //return;
-      funcall.actionCheck(client,message);
+/*      funcall.actionCheck(client,message);
     message.channel.send("Leaving Strife");
 
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
@@ -44,10 +45,8 @@ exports.run = (client, message, args) => {
     }
     client.playerMap.set(charid,false,"strife");
     return;
-
+*/
   }
-
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
 
   let armor = client.playerMap.get(charid,"armor");
   let vit = client.playerMap.get(charid,"vit");
@@ -68,8 +67,6 @@ exports.run = (client, message, args) => {
     grist = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(armor[0][1].charAt(1))]];
   };
 
-
-  let local = client.playerMap.get(charid,"local");
 
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
@@ -109,7 +106,17 @@ exports.run = (client, message, args) => {
 
     client.playerMap.set(charid,true,"strife");
     funcall.actionCheck(client,message);
-    message.channel.send("Entering Strife!");
+    let turn = client.strifeMap.get(strifeLocal,"turn");
+    client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,"ENTERING STRIFE!");
+
+    let name = client.playerMap.get(charid,"name");
+
+    for(let i =0;i<active.length;i++){
+
+      if(list[active[i]][1]!=charid){
+      client.funcall.chanMsg(client,list[active[i]][1],`**${name.toUpperCase()}** has joined the STRIFE at position ${active.indexOf(pos)+1}!`);
+    }
+    }
 
 
 
@@ -158,5 +165,10 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
     strifecall.start(client,message,local);
 
   }
+
+  let strifeEmbed = new client.Discord.MessageEmbed()
+  .setTitle()
+
+
 
 }

@@ -20,7 +20,18 @@ function dubs(x){
   return Math.floor(Math.random() * x) + Math.floor(Math.random() * x);
 }
 
+exports.dmcheck = function(client,message){
+try{
 
+  if(message.member.roles.cache.some(role => role.name === 'DM')||message.member.roles.cache.some(role => role.name === 'dm')||message.member.roles.cache.some(role => role.name === 'Dm')){
+    return true;
+  }else{
+    return false;
+  }
+}catch(err){
+  return false;
+}
+}
 
 
 exports.actionCheck = function(client, message, score){
@@ -330,6 +341,77 @@ exports.regImport = async function(client, charSheet) {
 //  1<A<a<1
 //  0-11  12-37  38-63
 
+//|| false
+//&& true
+
+exports.alchemize = function(client, item1, item2, type){
+
+  let code1 = [item1[1].charAt(0),item1[1].charAt(1),item1[1].charAt(2),item1[1].charAt(3),item1[1].charAt(4),item1[1].charAt(5),item1[1].charAt(6),item1[1].charAt(7)];
+  let code2 = [item2[1].charAt(0),item2[1].charAt(1),item2[1].charAt(2),item2[1].charAt(3),item2[1].charAt(4),item2[1].charAt(5),item2[1].charAt(6),item2[1].charAt(7),];
+
+  let tier;
+  let i;
+  let char1;
+  let char2;
+  if(code1 == code2){
+    return item1;
+  }
+  let coderes = ["/","/","/","/","/","/","/","/"]
+  for(i=0;i<8;i++){
+
+    if(code1[i]=="/"||code1[i]=="#"||code1[i]=="0"){
+      coderes[i]=code2[i];
+    } else if(code2[i]=="/"||code2[i]=="#"||code1[i]=="0"){
+      coderes[i]=code1[i];
+    } else{
+      char1 = client.captchaCode.indexOf(code1[i]);
+      char2 = client.captchaCode.indexOf(code2[i]);
+
+      switch(type){
+        case "||":
+          if(char1<char2){
+            coderes[i]=code1[i];
+          }else{
+            coderes[i]=code2[i];
+          }
+        break;
+        case "&&":
+        if(char1>char2){
+          coderes[i]=code1[i];
+        }else{
+          coderes[i]=code2[i];
+        }
+        break;
+      }
+
+    }
+
+    console.log(coderes);
+
+  }
+  if(code1[0]==code2[0]){
+    if(item1[2]>item2[2]){
+      tier = item1[2] + 1;
+    }else{
+      tier = item2[2] + 1;
+    }
+  }else if(coderes[0]==code1[0]){
+    tier = item1[2] + 1;
+  } else {
+    tier = item2[2] + 1;
+  }
+  if(tier > 16){
+    var resItem = ["ALCHEMIZED ITEM",`${coderes[0]}${coderes[1]}${coderes[2]}${coderes[3]}${coderes[4]}${coderes[5]}${coderes[6]}${coderes[7]}`,16,1,[]];
+
+    return resItem;
+  } else {
+    var resItem = ["ALCHEMIZED ITEM",`${coderes[0]}${coderes[1]}${coderes[2]}${coderes[3]}${coderes[4]}${coderes[5]}${coderes[6]}${coderes[7]}`,tier,1,[]];
+
+  return resItem;
+}
+
+}
+
 exports.oror = function(client, item1, item2){
 
   let code1 = [item1[1].charAt(0),item1[1].charAt(1),item1[1].charAt(2),item1[1].charAt(3),item1[1].charAt(4),item1[1].charAt(5),item1[1].charAt(6),item1[1].charAt(7)];
@@ -615,17 +697,24 @@ exports.gristCacheEmbed = function(client, charid) {
   return cachePrint;
 }
 
-exports.chanMsg = function(client, target, msg){
+exports.chanMsg = function(client, target, msg, embed){
 
   if(client.playerMap.has(target,"channel")){
-
+    if(embed!=undefined){
+    client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg,embed);
+    }else{
     client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg);
+  }
   }
 
   let possess = client.playerMap.get(target,"possess");
 
   for(let i=0;i<possess.length;i++){
+    if(embed!=undefined){
+    client.channels.cache.get(client.playerMap.get(possess[i],"channel")).send(msg,embed);
+  }else{
     client.channels.cache.get(client.playerMap.get(possess[i],"channel")).send(msg);
+  }
   }
 
 }
@@ -649,4 +738,137 @@ exports.sleepHeal = function(client,charid){
       }
     }
   }
+}
+
+exports.move = function(client,message,charid,local,target,mapCheck,msg){
+
+  let targSec = client.landMap.get(target[4],target[0]);
+
+  let occset = [true,charid];
+
+  if(local[0]==target[0]&&local[4]==target[4]){
+
+    targSec[local[1]][local[2]][2][local[3]][4].splice(targSec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
+
+  } else {
+
+    let sec = client.landMap.get(local[4],local[0]);
+
+    sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
+
+    client.playerMap.set(local[4],sec,local[0]);
+
+  }
+
+    targSec[target[1]][target[2]][2][target[3]][4].push(occset);
+
+    if(target[4]==message.guild.id+"medium"&&targSec[target[1]][target[2]][2][target[3]][4].length==1){
+      switch(target[0]){
+        case "dm":
+          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
+        break;
+        case "d":
+          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
+        break;
+        case "pm":
+          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id))
+        break;
+        case "p":
+          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id))
+        break;
+        case "bf":
+          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id),client.landcall.carSpawn(client,target,1,message.guild.id));
+        break;
+      }
+    }else if(target[4]!=message.guild.id+"medium"){
+      if(targSec[target[1]][target[2]][2][target[3]][3]==false){
+    targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
+  }
+  }
+
+  targSec[target[1]][target[2]][2][target[3]][3]=true;
+  client.playerMap.set(charid,target,"local");
+  client.landMap.set(target[4],targSec,target[0]);
+
+  let occNew = targSec[target[1]][target[2]][2][target[3]][4];
+  let location = targSec[target[1]][target[2]][2][target[3]][2];
+  msg +=`**${location}**`
+
+  if(occNew.length > 1){
+    let occCheck = [false,false];
+    console.log("Occnew");
+    for(let i=0;i<occNew.length;i++){
+      console.log(i);
+      if(occNew[i][0]==false){
+        occCheck[0]=true;
+      } else if(!occNew[i][1]==charid){
+        occCheck[1]=true;
+      }
+    }
+
+    if(occCheck[0]&&occCheck[1]){
+      msg+="\nThere are players and Underlings in this room!";
+    } else if(occCheck[0]){
+      msg+="\nThere are Underlings in this room!";
+    } else {
+      msg+="\nThere are Players in this room!";
+    }
+  }
+
+  if(targSec[target[1]][target[2]][2].length>1){
+    msg+=`\nThere are multiple rooms in this area!`;
+  }
+
+  async function moveEmbed(){
+
+    dex = targSec[target[1]][target[2]][2][target[3]][5];
+    var attachment = await client.imgcall.sdexCheck(client,message,0,false,3,dex,dex.length,`${targSec[target[1]][target[2]][2][target[3]][2]} (>inspect)`);
+    let occList = targSec[target[1]][target[2]][2][target[3]][4];
+
+    let i;
+    let list = ``;
+    for(let i=0;i<10&&i<occList.length;i++){
+      list+=`**[${i+1}] ${client.playerMap.get(occList[i][1],"name").toUpperCase()}** \n *${client.playerMap.get(occList[i][1],"type")}*\n\n`
+    }
+
+    var listEmbed;
+
+    if(mapCheck){
+      var miniMap = await client.landcall.drawMap(client,message,true);
+      listEmbed = new client.Discord.MessageEmbed()
+      .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
+      .addField(`**ALERTS**`,msg)
+      .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
+      .addField(`**PAGE**`,`**1**`,true)
+      .addField(`**CURRENT OCCUPANTS** (>list)`,list)
+      .attachFiles(attachment)
+      .setImage(`attachment://actionlist.png`)
+      .attachFiles(miniMap)
+      .setThumbnail(`attachment://landmap.png`)
+      //message.channel.send({files:[miniMap],embed: listEmbed});
+    } else {
+      listEmbed = new client.Discord.MessageEmbed()
+      .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
+      .addField(`**ALERTS**`,msg)
+      .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
+      .addField(`**PAGE**`,`**1**`,true)
+      .addField(`**CURRENT OCCUPANTS** (>list)`,list)
+      .attachFiles(attachment)
+      .setImage(`attachment://actionlist.png`)
+    }
+
+    if(client.playerMap.has(charid,"channel")){
+      client.channels.cache.get(client.playerMap.get(charid,"channel")).send(listEmbed)
+    }
+
+  }
+
+  let name = client.playerMap.get(charid,"name");
+
+  for(let i=0;i<occNew.length;i++){
+      if(occNew[i][1]!=charid&&client.playerMap.has(occNew[i][1],"channel")){
+        client.channels.cache.get(client.playerMap.get(occNew[i][1],"channel")).send(`**${name.toUpperCase()}** has entered the room!`);
+      }
+  }
+  moveEmbed();
 }

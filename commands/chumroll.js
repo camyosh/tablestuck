@@ -13,6 +13,12 @@ exports.run = async function(client, message, args) {
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   let chumroll = client.playerMap.get(charid,"chumroll");
+  let blockroll = [];
+
+  if(client.playerMap.has(charid,"block")){
+    blockroll = client.playerMap.get(charid,"block");
+    return;
+  }
 //registers the custom homestuck font
 client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`fontstuck`});
 client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
@@ -114,7 +120,7 @@ ctx.fillText(`PAGE ${pagenumber+1}/${pageMax}`,300,170);
 ctx.fillStyle =`#ffffff`;
 ctx.font = `bold 24px Courier Standard Bold`;
 
-ctx.fillText(client.playerMap.get(charid,"chumhandle"),60,628);
+ctx.fillText(`[${client.playerMap.get(charid,"chumtag")}]${client.playerMap.get(charid,"chumhandle")}`,60,628);
 let plonline = client.traitcall.compTest(client,message,charid,room);
 if(plonline[0]){
 ctx.drawImage(online,15,605,32,32);
@@ -124,10 +130,13 @@ ctx.drawImage(online,15,605,32,32);
 
 let targonline = [false,false];
 for(let i=pagenumber*10;i<chumroll.length&&i<(pagenumber+1)*10;i++){
+  let tag = i;
+if(client.playerMap.has(chumroll[i],"chumtag")){
+  tag = client.playerMap.get(chumroll[i],"chumtag");
+}
+ctx.font = applyText(canvas,`[${tag}]${client.playerMap.get(chumroll[i],"chumhandle")}`);
 
-ctx.font = applyText(canvas,`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`);
-
-ctx.fillText(`[${i+1}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,203+((i-(pagenumber*10))*40));
+ctx.fillText(`[${tag}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,203+((i-(pagenumber*10))*40));
 
   targlocal = client.playerMap.get(chumroll[i],"local");
   targroom = client.landMap.get(targlocal[4],targlocal[0])[targlocal[1]][targlocal[2]][2][targlocal[3]];
@@ -149,16 +158,38 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
 
   if(args[0]=="add"){
 
-    if(!args[1]){
-      message.channel.send("Add a pesterchum ID to add someone to your chumroll!");
+    let handleList = client.landMap.get(message.guild.id+"medium","handleList");
+
+    if(!args[1]||args[1]=="page"){
+
+      let page = 0;
+      if(args[1]&&args[1]=="page"){
+          page = parseInt(args[2], 10) - 1;
+          if (isNaN(page)||page<0||page>Math.ceil(handleList.length/10)) {
+            message.channel.send("That is not a valid argument!");
+            return;
+          }
+
+      }
+
+      let msg;
+
+      for(let i=page*10;i<handleList.length&&i<(page+1)*10;i++){
+        msg+=`**[${handleList[i][2]}] ${handleList[i][1]}**\n*${client.playerMap.get(handleList[i][0])}*\n\n`;
+      }
+
+      chumPrint = new client.Discord.MessageEmbed()
+      .setTitle(`**SESSION CHUMHANDLES**`)
+      .addField(`**PAGE**`,`**${page+1} / ${Math.ceil(handleList.length/10)}**`)
+      .addField(`**CHUMHANDLE**`,msg)
+      message.channel.send(chumPrint);
       return;
     }
 
     let h;
     let hcheck =false;
-    let handleList = client.landMap.get(message.guild.id+"medium","handleList");
     for(h=0;h<handleList.length&&hcheck==false;h++){
-      if(handleList[h][1]==args[1]){
+      if(handleList[h][2].toLowerCase()==args[1].toLowerCase()||handleList[h][1].toLowerCase()==args[1].toLowerCase()){
         if(handleList[h][0]==charid){
           message.channel.send("You can't add yourself as a chum, dummy!");
           return;
@@ -170,6 +201,11 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
         chumroll.push(handleList[h][0]);
         message.channel.send(`Added ${handleList[h][1]} to your chumroll!`);
         hcheck =true;
+        let targetChums = client.playerMap.get(handleList[h][0],"chumroll");
+        if(!targetChums.includes(charid)){
+          targetChums.push(charid);
+          client.playerMap.set(handleList[h][0],targetChums,"chumroll");
+        }
       }
     }
     if(!hcheck){
@@ -178,6 +214,40 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
     }
     client.playerMap.set(charid,chumroll,"chumroll");
 
+
+  }
+
+  if(args[0]=="block"){
+
+    if(!args[1]){
+      message.channel.send("Please enter the tag of the chum you would like to block. >chumroll block EB");
+      return;
+    }
+
+    let tagList = [];
+    for(let i=0;i<chumroll.length;i++){
+      tagList.push(client.playermap.get(chumroll[i],"tag").toLowerCase());
+    }
+
+    if(tagList.includes(args[1].toLowerCase())){
+
+      let targId = chumroll[tagList.indexOf(args[1].toLowerCase())]
+
+      if(blockroll.includes(targId)){
+
+        message.channel.send("Unblocking chum!");
+        blockroll.splice(blockroll.indexOf(targId),1);
+      }else{
+        message.channell.send("Blocking chum!");
+        blockroll.push(targId);
+      }
+
+      client.playerMap.set(charid,blockroll,"block");
+
+    }else{
+      message.channel.send("There is no player on your chumroll with that tag!");
+      return;
+    }
 
   }
 

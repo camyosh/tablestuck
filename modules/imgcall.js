@@ -337,7 +337,7 @@ for(j=0;j<4;j++){
 
 }
 
-  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'inspect.png');
 
 return attachment;
 

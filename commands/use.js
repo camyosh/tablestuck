@@ -123,7 +123,8 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
 sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                sdex[selectDex][4].push(funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]));
+                //sdex[selectDex][4].push(funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]));
+                sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
@@ -144,14 +145,16 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
               if(room[5][selectRoom][4][1][4].length == 1){
                 sdex[selectDex][0]="CARVED TOTEM";
 sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0]));
+                //sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0]));
+                sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0],"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
 sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
+                //sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
+                sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"))
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
@@ -161,14 +164,17 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][0]="CARVED TOTEM";
 sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 //meme
-                sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0]),room[5][selectRoom][4][1][4][0]));
+                //sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0]),room[5][selectRoom][4][1][4][0]));
+                sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0],"||"),room[5][selectRoom][4][1][4][0],"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
 sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]),funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
+                //sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]),funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
+
+                sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"),funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.playerMap.set(charid,sdex,"sdex");
                 return;

@@ -25,7 +25,10 @@ if(local[0]==`h`){
 }
 
 
+async function sendMap(){
+var attachment = await landcall.drawMap(client,message,false);
 
-landcall.drawMap(client,message,false);
-
+message.channel.send(attachment);
+}
+sendMap();
 }

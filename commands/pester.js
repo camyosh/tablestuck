@@ -7,22 +7,29 @@ exports.run = async function(client, message, args){
 
   var charid = message.guild.id.concat(message.author.id);
   let chumroll = client.playerMap.get(charid,"chumroll");
+  let tagList = [];
+
+  for(let i=0;i<chumroll.length;i++){
+    if(client.playerMap.has(chumroll[i],"chumtag")){
+      tagList.push(client.playerMap.get(chumroll[i],"chumtag"));
+    }else{
+      tagList.push(i);
+    }
+  }
 
   if(!args[0]){
-    message.channel.send("check your chumroll and use a chum's number to message them!");
+    message.channel.send("check your chumroll and use a chum's tag to message them! For example, >pester gt Fuck you!");
     return;
   }
 
-  let value = parseInt(args[0], 10) - 1;
-  if(isNaN(value)){
-    message.channel.send("That is not a valid chum number!");
+  let value;
+
+  if(tagList.includes(args[0])){
+    value=tagList.indexOf(args[0]);
+  }else{
+    message.channel.send("That isn't a valid tag! Check your >chumroll and use a chum's tag to message them!");
     return;
   }
-
-  if(value >= chumroll.length || value < 0) {
-    message.channel.send("That is not a valid chum number!")
-    return;
-  };
 
   if(!args[1]){
     message.channel.send("You need to type a message to send to your chum!");

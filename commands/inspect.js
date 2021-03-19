@@ -22,7 +22,7 @@ exports.run = (client, message, args) => {
   let occList = room[4];
   let dex = room[5];
   const tList = ["MELEE","RANGED","MAGIC","NA"];
-
+//sec[local[1]][local[2]][2][local[3]][5] DEX
 
   if(!args[0] || args[0] == "page"){
     let page = 0;

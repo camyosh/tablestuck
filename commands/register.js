@@ -68,7 +68,7 @@ console.log(castlegen);
 
   let playerList = client.landMap.get(message.guild.id+"medium","playerList");
   let handleList = client.landMap.get(message.guild.id+"medium","handleList");
-
+/*
   let chumhandle = message.author.username;
 
   if(!playerList.includes(charid)){
@@ -87,6 +87,50 @@ console.log(castlegen);
       }
     }
   }
+*/
+
+  let chumhandle = message.author.username.split(" ").join("");
+
+  let ab = chumhandle.substring(0,2).toUpperCase();
+
+  let abCount = 0;
+  let handleCount = 0;
+  let index="NA";
+
+  for(i=0;i<handleList.length;i++){
+    if(handleList[i][1].substring(0,chumhandle.length).toLowerCase()==chumhandle.toLowerCase()&&handleList[i][0]!=charid){
+      handleCount++;
+    }
+    if(handleList[i].length<3){
+      handleList[i].push(`${i}`);
+    }
+    if(handleList[i][2].substring(0,ab.length).toUpperCase()==ab&&handleList[i][0]!=charid){
+    abCount++;
+    }
+    if(handleList[i][0]==charid){
+      index = i;
+    }
+  }
+
+  if(handleCount>0){
+    chumhandle+=handleCount;
+  }
+  if(abCount>0){
+    ab+=abCount;
+  }
+
+  if(index=="NA"){
+    handleList.push([charid,chumhandle,ab]);
+  }else{
+    handleList[index]=[charid,chumhandle,ab];
+  }
+
+  if(!playerList.includes(charid)){
+    playerList.push(charid);
+  }
+
+  client.landMap.set(message.guild.id+"medium",playerList,"playerList");
+  client.landMap.set(message.guild.id+"medium",handleList,"handleList");
 
   let randnum = Math.floor((Math.random() * 12));
 
@@ -207,9 +251,6 @@ regImport();
   client.landMap.set(message.guild.id+"medium",moonMap,lunarSway);
 
 
-
-
-
   var charSheet = {
     control:charid,
     possess:[],
@@ -263,6 +304,7 @@ regImport();
     bossesDefeated:0,
     itemsCaptchalogued:0,
     chumhandle:chumhandle,
+    chumtag:ab,
     chumpic:message.author.avatarURL(),
     chumroll:[],
     pesterchannel:message.channel.id,

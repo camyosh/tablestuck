@@ -7,6 +7,30 @@ exports.run = (client,message,args) =>{
 
   let local = client.playerMap.get(charid,"local");
 
+  if(client.strifecall.strifeTest(client, message, message.author) == true){
+
+    let page = 0;
+
+    if(args[0]){
+      let value = parseInt(args[0], 10) - 1;
+      if(isNaN(value)){
+        message.channel.send("That is not a valid page number!");
+        return;
+      }
+      page = value;
+    }
+
+    let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
+    let list = client.strifeMap.get(strifeLocal,"list");
+    let turn = client.strifeMap.get(strifeLocal,"turn");
+    let init = client.strifeMap.get(strifeLocal,"init");
+    let active = client.strifeMap.get(strifeLocal,"active");
+
+    client.strifecall.strifeList(client,local,active,list,turn,init,charid,page,"STRIFE LIST");
+    return;
+
+  }
+
   let sec = client.landMap.get(local[4],local[0]);
   let occList = sec[local[1]][local[2]][2][local[3]][4];
   let area = sec[local[1]][local[2]];
@@ -24,7 +48,7 @@ exports.run = (client,message,args) =>{
   }
 
   if(value > pageMax-1 || value < 0) {
-    message.channel.send("That isn't a page on your chumroll!");
+    message.channel.send("That is not a valid page number!");
     return;
   }
   pagenumber=value;

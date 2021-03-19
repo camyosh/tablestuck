@@ -42,7 +42,7 @@ exports.run = (client, message, args) => {
 //check if selected client code is a registered player
 
   if(funcall.clientTest(client, message, args[0]) == false){
-    message.channel.send("You're not a registered player!");
+    message.channel.send("That player is not registered!");
     return;
   }
 
