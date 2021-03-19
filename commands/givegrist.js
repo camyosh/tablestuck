@@ -4,6 +4,11 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
+  if(!client.funcall.dmcheck(client,message)){
+    message.channel.send("Only a DM can use this command");
+    return;
+  }
+
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
 
   if(true == false) {

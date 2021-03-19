@@ -12,6 +12,11 @@ if(client.strifecall.strifeTest(client, message, message.author) == true){
   return;
 }
 
+if(!client.funcall.dmcheck(client,message)){
+  message.channel.send("Only a DM can use this command");
+  return;
+}
+
 if(!args[0]){
   let msg = ``;
   let i;

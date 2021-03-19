@@ -30,15 +30,15 @@
     "costT":"N/A"
   },
   "instant alchemiter":{
-    "cost":1000,
+    "cost":100,
     "item":["INSTANT ALCHEMITER","//jG0000",0,1,[],"https://media.discordapp.net/attachments/617958864008249355/810310990079721472/QUICKALCHEMITER.png"],
     "grist":"build",
-    "costT":1000
+    "costT":100
   },
   "transportalizer":{
-    "cost":10000,
+    "cost":1000,
     "item":["TRANSPORTALIZER","//jG////",0,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"],
     "grist":"build",
-    "costT":10000
+    "costT":1000
   }
 }

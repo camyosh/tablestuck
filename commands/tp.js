@@ -7,10 +7,10 @@ exports.run = (client, message, args) => {
 
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
 
-  /*if(!client.traitcall.traitCheck(client,charid,"SPACE")[1]){
-    message.channel.send("You must have the SPACE set bonus to teleport!");
+  if(!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"SPACE")[1]){
+    message.channel.send("You must have the SPACE set bonus or be a DM to teleport!");
     return;
-  }*/
+  }
 
   if(!message.mentions.members.first()){
     message.channel.send("You must @ a player to teleport to them!");

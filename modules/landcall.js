@@ -1006,193 +1006,92 @@ try {
 } catch(err){
   aspect = "BREATH";
 }
-//loading all of the images I need. This might be stupid inefficent, but I need to at least see what it looks like at it's worst.
-const ax = await client.Canvas.loadImage(`./MAP/x.png`);
-const ax0 = await client.Canvas.loadImage(`./MAP/0.png`);
-const ax1 = await client.Canvas.loadImage(`./MAP/1.png`);
-const ax2 = await client.Canvas.loadImage(`./MAP/2.png`);
-const ax3 = await client.Canvas.loadImage(`./MAP/3.png`);
-const ax4 = await client.Canvas.loadImage(`./MAP/4.png`);
-const ax5 = await client.Canvas.loadImage(`./MAP/5.png`);
-const ax6 = await client.Canvas.loadImage(`./MAP/6.png`);
-const ax7 = await client.Canvas.loadImage(`./MAP/7.png`);
-const ax8 = await client.Canvas.loadImage(`./MAP/8.png`);
-const ax9 = await client.Canvas.loadImage(`./MAP/9.png`);
-const ax10 = await client.Canvas.loadImage(`./MAP/10.png`);
-const blank = await client.Canvas.loadImage(`./MAP/BLANK.png`);
-const plblank = await client.Canvas.loadImage(`./MAP/PLBLANK.png`);
-const fog = await client.Canvas.loadImage(`./MAP/FOGBLANK.png`);
-const player = await client.Canvas.loadImage(`./MAP/PLAYER.png`);
-const plplayer = await client.Canvas.loadImage(`./MAP/PLPLAYER.png`);
-const playerf = await client.Canvas.loadImage(`./MAP/PLAYERF.png`);
-const dungeon = await client.Canvas.loadImage(`./MAP/DUNGEON.png`);
-const pldungeon = await client.Canvas.loadImage(`./MAP/PLDUNGEON.png`);
-const dungeonf = await client.Canvas.loadImage(`./MAP/DUNGEONF.png`);
-const village = await client.Canvas.loadImage(`./MAP/VILLAGE.png`);
-const plvillage = await client.Canvas.loadImage(`./MAP/PLVILLAGE.png`);
-const villagef = await client.Canvas.loadImage(`./MAP/VILLAGEF.png`);
-const maspect = await client.Canvas.loadImage(`./MAP/${aspect}.png`);
-const plaspect = await client.Canvas.loadImage(`./MAP/PL${aspect}.png`);
-const aspectf = await client.Canvas.loadImage(`./MAP/${aspect}F.png`);
-const node = await client.Canvas.loadImage(`./MAP/NODE.png`);
-const plnode = await client.Canvas.loadImage(`./MAP/PLNODE.png`);
-const nodef = await client.Canvas.loadImage(`./MAP/NODEF.png`);
-const gate = await client.Canvas.loadImage(`./MAP/GATE.gif`);
-const plgate = await client.Canvas.loadImage(`./MAP/PLGATE.gif`);
-const drgate = await client.Canvas.loadImage(`./MAP/DRGATE.gif`);
-const boss = await client.Canvas.loadImage(`./MAP/BOSS.png`);
-const plboss = await client.Canvas.loadImage(`./MAP/BOSSPL.png`);
-const bossf = await client.Canvas.loadImage(`./MAP/BOSSFOG.png`);
-const denizen = await client.Canvas.loadImage(`./MAP/DENIZEN.png`);
-const pldenizen = await client.Canvas.loadImage(`./MAP/DENIZENPL.png`);
-const denizenf = await client.Canvas.loadImage(`./MAP/DENIZENFOG.png`);
-const darkblank = await client.Canvas.loadImage(`./MAP/DARKBLANK.png`);
+let aspectindex = ["TIME","SPACE","LIGHT","VOID","LIFE","DOOM","BREATH","BLOOD","HOPE","RAGE","MIND","HEART"];
 
-const plprison = await client.Canvas.loadImage(`./MAP/PLPRISON.png`);
-const prison = await client.Canvas.loadImage(`./MAP/PRISON.png`);
-const plbank = await client.Canvas.loadImage(`./MAP/PLBANK.png`);
-const bank = await client.Canvas.loadImage(`./MAP/BANK.png`);
-const pllibrary = await client.Canvas.loadImage(`./MAP/PLLIBRARY.png`);
-const library = await client.Canvas.loadImage(`./MAP/LIBRARY.png`);
-const plpolice = await client.Canvas.loadImage(`./MAP/PLPOLICE.png`);
-const police = await client.Canvas.loadImage(`./MAP/POLICE.png`);
-const plpostal = await client.Canvas.loadImage(`./MAP/PLPOSTAL.png`);
-const postal = await client.Canvas.loadImage(`./MAP/POSTAL.png`);
-const plcasino = await client.Canvas.loadImage(`./MAP/PLCASINO.png`);
-const casino = await client.Canvas.loadImage(`./MAP/CASINO.png`);
-const plstore = await client.Canvas.loadImage(`./MAP/PLSTORE.png`);
-const store = await client.Canvas.loadImage(`./MAP/STORE.png`);
-const plrestaurant = await client.Canvas.loadImage(`./MAP/PLRESTAURANT.png`);
-const restaurant = await client.Canvas.loadImage(`./MAP/RESTAURANT.png`);
-const pltheatre = await client.Canvas.loadImage(`./MAP/PLTHEATRE.png`);
-const theatre = await client.Canvas.loadImage(`./MAP/THEATRE.png`);
-const plarmory = await client.Canvas.loadImage(`./MAP/PLARMORY.png`);
-const armory = await client.Canvas.loadImage(`./MAP/ARMORY.png`);
-const plhaberdashery = await client.Canvas.loadImage(`./MAP/PLHABERDASHERY.png`);
-const haberdashery = await client.Canvas.loadImage(`./MAP/HABERDASHERY.png`);
-const plcandyshop = await client.Canvas.loadImage(`./MAP/PLCANDYSHOP.png`);
-const candyshop = await client.Canvas.loadImage(`./MAP/CANDYSHOP.png`);
-const plbutcher = await client.Canvas.loadImage(`./MAP/PLBUTCHER.png`);
-const butcher = await client.Canvas.loadImage(`./MAP/BUTCHER.png`);
-const plcourt = await client.Canvas.loadImage(`./MAP/PLCOURT.png`);
-const court = await client.Canvas.loadImage(`./MAP/COURT.png`);
-const plappartment = await client.Canvas.loadImage(`./MAP/PLAPPARTMENT.png`);
-const appartment = await client.Canvas.loadImage(`./MAP/APPARTMENT.png`);
-const plroad = await client.Canvas.loadImage(`./MAP/PLROAD.png`);
-const road = await client.Canvas.loadImage(`./MAP/ROAD.png`);
-const chain = await client.Canvas.loadImage(`./MAP/CHAIN.png`);
-const plchain = await client.Canvas.loadImage(`./MAP/PLCHAIN.png`);
-const tower = await client.Canvas.loadImage(`./MAP/TOWERS.png`);
-const pltower = await client.Canvas.loadImage(`./MAP/PLTOWERS.png`);
-const castle = await client.Canvas.loadImage(`./MAP/CASTLE.png`);
-const plcastle = await client.Canvas.loadImage(`./MAP/PLCASTLE.png`);
 
-const time = await client.Canvas.loadImage(`./MAP/TIME.png`);
-const pltime = await client.Canvas.loadImage(`./MAP/PLTIME.png`);
-const space = await client.Canvas.loadImage(`./MAP/SPACE.png`);
-const plspace = await client.Canvas.loadImage(`./MAP/PLSPACE.png`);
-const light = await client.Canvas.loadImage(`./MAP/LIGHT.png`);
-const pllight = await client.Canvas.loadImage(`./MAP/PLLIGHT.png`);
-const mvoid = await client.Canvas.loadImage(`./MAP/VOID.png`);
-const plvoid = await client.Canvas.loadImage(`./MAP/PLVOID.png`);
-const life = await client.Canvas.loadImage(`./MAP/LIFE.png`);
-const pllife = await client.Canvas.loadImage(`./MAP/PLLIFE.png`);
-const doom = await client.Canvas.loadImage(`./MAP/DOOM.png`);
-const pldoom = await client.Canvas.loadImage(`./MAP/PLDOOM.png`);
-const breath = await client.Canvas.loadImage(`./MAP/BREATH.png`);
-const plbreath = await client.Canvas.loadImage(`./MAP/PLBREATH.png`);
-const blood = await client.Canvas.loadImage(`./MAP/BLOOD.png`);
-const plblood = await client.Canvas.loadImage(`./MAP/PLBLOOD.png`);
-const hope = await client.Canvas.loadImage(`./MAP/HOPE.png`);
-const plhope = await client.Canvas.loadImage(`./MAP/PLHOPE.png`);
-const rage = await client.Canvas.loadImage(`./MAP/RAGE.png`);
-const plrage = await client.Canvas.loadImage(`./MAP/PLRAGE.png`);
-const mind = await client.Canvas.loadImage(`./MAP/MIND.png`);
-const plmind = await client.Canvas.loadImage(`./MAP/PLMIND.png`);
-const heart = await client.Canvas.loadImage(`./MAP/HEART.png`);
-const plheart = await client.Canvas.loadImage(`./MAP/PLHEART.png`);
-const museum = await client.Canvas.loadImage(`./MAP/MUSEUM.png`);
-const plmuseum = await client.Canvas.loadImage(`./MAP/PLMUSEUM.png`);
-const hospital = await client.Canvas.loadImage(`./MAP/HOSPITAL.png`);
-const plhospital = await client.Canvas.loadImage(`./MAP/PLHOSPITAL.png`);
-const guild = await client.Canvas.loadImage(`./MAP/GUILD.png`);
-const plguild = await client.Canvas.loadImage(`./MAP/PLGUILD.png`);
-const jeweler = await client.Canvas.loadImage(`./MAP/JEWELER.png`);
-const pljeweler = await client.Canvas.loadImage(`./MAP/PLJEWELER.png`);
-const military = await client.Canvas.loadImage(`./MAP/MILITARY.png`);
-const plmilitary = await client.Canvas.loadImage(`./MAP/PLMILITARY.png`);
-const ascend = await client.Canvas.loadImage(`./MAP/ASCEND.png`);
-const plascend = await client.Canvas.loadImage(`./MAP/PLASCEND.png`);
-const fascend = await client.Canvas.loadImage(`./MAP/FASCEND.png`);
-const descend = await client.Canvas.loadImage(`./MAP/DESCEND.png`);
-const pldescend = await client.Canvas.loadImage(`./MAP/PLDESCEND.png`);
-const fdescend = await client.Canvas.loadImage(`./MAP/FDESCEND.png`);
-const froad = await client.Canvas.loadImage(`./MAP/FOGROAD.png`);
-const fprison = await client.Canvas.loadImage(`./MAP/FOGPRISON.png`);
-let legend = [ax,ax0,ax1,ax2,ax3,ax4,ax5,ax6,ax7,ax8,ax9,ax10,blank,plblank,fog,player,plplayer,playerf,dungeon,pldungeon,dungeonf,village,plvillage,villagef,maspect,plaspect,aspectf,node,plnode,nodef,gate,plgate,drgate,boss,plboss,bossf,denizen,pldenizen,denizenf,prison,plprison,fprison,bank,plbank,library,pllibrary,police,plpolice,postal,plpostal,casino,plcasino,store,plstore,restaurant,plrestaurant,theatre,pltheatre,armory,plarmory,haberdashery,plhaberdashery,candyshop,plcandyshop,butcher,plbutcher,court,plcourt,appartment,plappartment,road,plroad,froad,chain,plchain,tower,pltower,castle,plcastle,time,pltime,space,plspace,light,pllight,mvoid,plvoid,life,pllife,doom,pldoom,breath,plbreath,blood,plblood,hope,plhope,rage,plrage,mind,plmind,heart,plheart,museum,plmuseum,hospital,plhospital,guild,plguild,jeweler,pljeweler,military,plmilitary,ascend,plascend,fascend,descend,pldescend,fdescend];
+const titlebar = await client.Canvas.loadImage("./miscsprites/TITLE.png");
+const numbers = await client.Canvas.loadImage("./miscsprites/NUMBERS.png");
+const tiles = await client.Canvas.loadImage("./miscsprites/MAPSHEET.png");
+const gate = await client.Canvas.loadImage("./miscsprites/DRGATE.gif");
+const plgate = await client.Canvas.loadImage("./miscsprites/PLGATE.gif");
+
+
+client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`fontstuck`});
+client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
 if(!mini){
 const canvas = client.Canvas.createCanvas(404,424);
 const ctx = canvas.getContext('2d');
-const background = await client.Canvas.loadImage('./background.jpg');
-ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-ctx.strokeStyle = '#3e3e3e';
-ctx.lineWidth = 10;
-ctx.strokeRect(0, 0, canvas.width, canvas.height);
- //landcall.landGen(client,0,[5,5]);
-/*
-section[gate[0][0]][gate[0][1]]=defaultGate;
-*/
-
-let sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 1.png`);
-  switch(local[0]){
-    case "s2":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 2.png`);
-    break;
-    case "s3":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 3.png`);
-    break;
-    case "s4":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/SECTION 4.png`);
-    break;
-    case "s1d":
-    case "s2d":
-    case "s3d":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/DUNGEONTITLE.png`);
-    break;
-    case "s4d":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/DENIZENLAIRTITLE.png`);
-    break;
+function applyText(canvas, msg, width){
+let fontsize = 30
+   while (ctx.measureText(msg).width > width){
+ctx.font = `bold ${fontsize -= 2}px Courier Standard Bold`;
+}
+  return ctx.font;
+}
+let titlebarindex=0;
+let landname;
+ switch(local[0].slice(0,2)){
+   case "pm":
+   landname="PROSPIT MOON";
+   break;
     case "p":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/PR.png`);
+    landname="PROSPIT";
     break;
-    case "pm":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/PROSPIT_MOON.png`);
+    case "pd":
+    landname = `PROSPIT DUNGEON F${local[0].charAt(2)}`;
     break;
-    case "d":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/DERSE.png`);
+    case "pc":
+    landname = `PROSPIT CASTLE`;
     break;
     case "dm":
-    sectionTitleImg = await client.Canvas.loadImage(`./MAP/DERSE_MOON.png`);
+    landname="DERSE MOON";
     break;
+     case "d":
+     landname="DERSE";
+     break;
+     case "dd":
+     landname = `DERSE DUNGEON F${local[0].charAt(2)}`;
+     break;
+     case "dc":
+     landname = `DERSE CASTLE`;
+     break;
+    default:
+    let name = client.landMap.get(local[4],"name");
+    landname = `Land of ${name[0]} and ${name[1]} [${local[0]}]`.toUpperCase();
   }
+if(local[0].slice(0,1)=="p"){
+  titlebarindex=1;
+} else if(local[0].slice(0,1)=="d"){
+  titlebarindex=2;
+}
+  ctx.drawImage(titlebar,0,32*titlebarindex,394,32,5,5,404,32);
 
-ctx.drawImage(sectionTitleImg,5,5,394,32);
-
+  ctx.textBaseline = "middle";
+  ctx.textAlign = "center";
+  ctx.font = `bold 30px Courier Standard Bold`;
+  ctx.font = applyText(canvas,landname,380);
+  ctx.lineWidth = 10;
+  ctx.fillStyle = '#969696';
+  if(titlebarindex) {
+    ctx.fillStyle = `#3e3e3e`;
+  }
+  ctx.fillText(landname,200,23);
 
  for(k=0;k<12;k++){
-   ctx.drawImage(legend[k],5+(32.8*k),37,32.8,32.8);
+   ctx.drawImage(numbers,32*k,0,32,32,5+(32.8*k),37,32.8,32.8);
 }
 for(i=0;i<11;i++){
-  ctx.drawImage(legend[i+1],5,5+(32*(i+2)),32.8,31);
+  ctx.drawImage(numbers,32*(i+1),0,32,32,5,5+(32*(i+2)),32.8,31);
     for(j=0;j<11;j++){
             //comment out this if check to turn off fog of war on the main map
       if(!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
-          ctx.drawImage(fog,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+      //if(false){
+         ctx.drawImage(tiles,0,32,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
 
       } else {
         let tile = 0;
         if(i==local[1]&& j==local[2]){
-          tile = 1;
+          tile = 2;
         }
        //str=`${client.emojis.cache.get("760188336245309512")}`;
        switch(input[i][j][0]){
@@ -1204,155 +1103,25 @@ for(i=0;i<11;i++){
              player=true;
            }
          }}
+         ctx.drawImage(tiles,0,32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
          if(player){
-
-           ctx.drawImage(legend[15+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-         } else {
-
-           ctx.drawImage(legend[12+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+           ctx.drawImage(tiles,32,32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
          }
          break;
-         case 1:
-           ctx.drawImage(legend[18+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-         break;
          case 2:
-          ctx.drawImage(legend[24+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-         break;
-         case 3:
-           ctx.drawImage(legend[27+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-         break;
-         case 4:
-           ctx.drawImage(legend[21+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         ctx.drawImage(tiles,0,32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(tiles,32+32*(33+aspectindex.indexOf(aspect)),32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);//aspect
          break;
          case 6:
-           ctx.drawImage(legend[30+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(tiles,0,32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         if(tile==2){
+           ctx.drawImage(plgate,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+         }
+           ctx.drawImage(gate,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);//gate
          break;
-         case 7:
-          ctx.drawImage(darkblank,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 8:
-            ctx.drawImage(legend[33+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 9:
-            ctx.drawImage(legend[36+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 10:
-          ctx.drawImage(legend[legend.indexOf(road)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 11:
-          ctx.drawImage(legend[legend.indexOf(tower)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 12:
-          ctx.drawImage(legend[legend.indexOf(castle)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 13:
-          ctx.drawImage(legend[legend.indexOf(chain)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 14:
-          ctx.drawImage(legend[legend.indexOf(police)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 15:
-          ctx.drawImage(legend[legend.indexOf(prison)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 16:
-          ctx.drawImage(legend[legend.indexOf(court)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 17:
-          ctx.drawImage(legend[legend.indexOf(hospital)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 18:
-          ctx.drawImage(legend[legend.indexOf(bank)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 19:
-          ctx.drawImage(legend[legend.indexOf(postal)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 20:
-          ctx.drawImage(legend[legend.indexOf(military)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 21:
-          ctx.drawImage(legend[legend.indexOf(guild)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 22:
-          ctx.drawImage(legend[legend.indexOf(theatre)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 23:
-          ctx.drawImage(legend[legend.indexOf(casino)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 24:
-          ctx.drawImage(legend[legend.indexOf(museum)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 25:
-          ctx.drawImage(legend[legend.indexOf(library)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 26:
-          ctx.drawImage(legend[legend.indexOf(restaurant)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 27:
-          ctx.drawImage(legend[legend.indexOf(store)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 28:
-          ctx.drawImage(legend[legend.indexOf(candyshop)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 29:
-          ctx.drawImage(legend[legend.indexOf(butcher)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 30:
-          ctx.drawImage(legend[legend.indexOf(armory)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 31:
-          ctx.drawImage(legend[legend.indexOf(haberdashery)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 32:
-          ctx.drawImage(legend[legend.indexOf(jeweler)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 33:
-          ctx.drawImage(legend[legend.indexOf(time)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 34:
-          ctx.drawImage(legend[legend.indexOf(space)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 35:
-          ctx.drawImage(legend[legend.indexOf(light)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 36:
-          ctx.drawImage(legend[legend.indexOf(mvoid)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 37:
-          ctx.drawImage(legend[legend.indexOf(life)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 38:
-          ctx.drawImage(legend[legend.indexOf(doom)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 39:
-          ctx.drawImage(legend[legend.indexOf(breath)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 40:
-          ctx.drawImage(legend[legend.indexOf(blood)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 41:
-          ctx.drawImage(legend[legend.indexOf(hope)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 42:
-          ctx.drawImage(legend[legend.indexOf(rage)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 43:
-          ctx.drawImage(legend[legend.indexOf(mind)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 44:
-          ctx.drawImage(legend[legend.indexOf(heart)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 45:
-          ctx.drawImage(legend[legend.indexOf(appartment)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 46:
-          ctx.drawImage(legend[legend.indexOf(descend)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-          case 47:
-          ctx.drawImage(legend[legend.indexOf(ascend)+tile],5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-          break;
-
-         default:
-           ctx.drawImage(ax,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+        default:
+          ctx.drawImage(tiles,0,32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
+          ctx.drawImage(tiles,32+32*input[i][j][0],32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
        }
     }
   }
@@ -1370,12 +1139,12 @@ for(i=-1;i<2;i++){
   for (j=-1;j<2;j++){
     let tile = 0;
      if(j + local[2] > 10 || j + local[2] < 0 || i +local[1] > 10 || i + local[1] <0){
-    ctx.drawImage(darkblank,(64*(j+1)),(64*(i+1)),64,64);
+    ctx.drawImage(tiles,32*8,32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
     } else {
       if(i==0 && j==0){
-        tile = 1;
-      } else if(!input[i+local[1]][j+local[2]][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"){
         tile = 2;
+      } else if(!input[i+local[1]][j+local[2]][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"){
+        tile = 1;
       //} else if(i==local[1]&& j==local[2]){
       }
       switch(input[i+local[1]][j+local[2]][0]){
@@ -1388,160 +1157,31 @@ for(i=-1;i<2;i++){
             player=true;
           }
         }}
+        ctx.drawImage(tiles,0,32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
         if(player){
-
-          ctx.drawImage(legend[15+tile],(64*(j+1)),(64*(i+1)),64,64);
-        } else {
-
-          ctx.drawImage(legend[12+tile],(64*(j+1)),(64*(i+1)),64,64);
+          ctx.drawImage(tiles,32,32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
         }
+
         break;
-        case 1:
-          ctx.drawImage(legend[18+tile],(64*(j+1)),(64*(i+1)),64,64);
-        break;
-        case 2:
-         ctx.drawImage(legend[24+tile],(64*(j+1)),(64*(i+1)),64,64);
-        break;
-        case 3:
-          ctx.drawImage(legend[27+tile],(64*(j+1)),(64*(i+1)),64,64);
-        break;
-        case 4:
-          ctx.drawImage(legend[21+tile],(64*(j+1)),(64*(i+1)),64,64);
-        break;
+         case 2:
+         ctx.drawImage(tiles,0,32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
+          ctx.drawImage(tiles,32+32*(33+aspectindex.indexOf(aspect)),32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);//aspect
+         break;
         case 6:
-          ctx.drawImage(legend[30+tile],(64*(j+1)),(64*(i+1)),64,64);
+         ctx.drawImage(tiles,0,32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
+        if(tile==2){
+          ctx.drawImage(plgate,(64*(j+1)),(64*(i+1)),64,64);
+        }
+          ctx.drawImage(gate,(64*(j+1)),(64*(i+1)),64,64);//gate
         break;
-        case 7:
-         ctx.drawImage(darkblank,(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 8:
-           ctx.drawImage(legend[33+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 9:
-           ctx.drawImage(legend[36+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 10:
-         ctx.drawImage(legend[legend.indexOf(road)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 11:
-         ctx.drawImage(legend[legend.indexOf(tower)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 12:
-         ctx.drawImage(legend[legend.indexOf(castle)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 13:
-         ctx.drawImage(legend[legend.indexOf(chain)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 14:
-         ctx.drawImage(legend[legend.indexOf(police)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 15:
-         ctx.drawImage(legend[legend.indexOf(prison)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 16:
-         ctx.drawImage(legend[legend.indexOf(court)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 17:
-         ctx.drawImage(legend[legend.indexOf(hospital)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 18:
-         ctx.drawImage(legend[legend.indexOf(bank)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 19:
-         ctx.drawImage(legend[legend.indexOf(postal)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 20:
-         ctx.drawImage(legend[legend.indexOf(military)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 21:
-         ctx.drawImage(legend[legend.indexOf(guild)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 22:
-         ctx.drawImage(legend[legend.indexOf(theatre)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 23:
-         ctx.drawImage(legend[legend.indexOf(casino)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 24:
-         ctx.drawImage(legend[legend.indexOf(museum)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 25:
-         ctx.drawImage(legend[legend.indexOf(library)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 26:
-         ctx.drawImage(legend[legend.indexOf(restaurant)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 27:
-         ctx.drawImage(legend[legend.indexOf(store)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 28:
-         ctx.drawImage(legend[legend.indexOf(candyshop)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 29:
-         ctx.drawImage(legend[legend.indexOf(butcher)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 30:
-         ctx.drawImage(legend[legend.indexOf(armory)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 31:
-         ctx.drawImage(legend[legend.indexOf(haberdashery)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 32:
-         ctx.drawImage(legend[legend.indexOf(jeweler)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 33:
-         ctx.drawImage(legend[legend.indexOf(time)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 34:
-         ctx.drawImage(legend[legend.indexOf(space)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 35:
-         ctx.drawImage(legend[legend.indexOf(light)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 36:
-         ctx.drawImage(legend[legend.indexOf(mvoid)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 37:
-         ctx.drawImage(legend[legend.indexOf(life)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 38:
-         ctx.drawImage(legend[legend.indexOf(doom)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 39:
-         ctx.drawImage(legend[legend.indexOf(breath)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 40:
-         ctx.drawImage(legend[legend.indexOf(blood)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 41:
-         ctx.drawImage(legend[legend.indexOf(hope)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 42:
-         ctx.drawImage(legend[legend.indexOf(rage)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 43:
-         ctx.drawImage(legend[legend.indexOf(mind)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 44:
-         ctx.drawImage(legend[legend.indexOf(heart)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 45:
-         ctx.drawImage(legend[legend.indexOf(appartment)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 46:
-         ctx.drawImage(legend[legend.indexOf(descend)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
-         case 47:
-         ctx.drawImage(legend[legend.indexOf(ascend)+tile],(64*(j+1)),(64*(i+1)),64,64);
-         break;
          default:
-           ctx.drawImage(ax,(64*(j+1)),(64*(i+1)),64,64);
+          ctx.drawImage(tiles,0,32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
+          ctx.drawImage(tiles,32+32*input[i+local[1]][j+local[2]][0],32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
       }
     }
   }
   }
   attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'landmap.png');
-  //message.channel.send(attachment);
 return attachment;
 }
 }

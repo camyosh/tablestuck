@@ -4,6 +4,11 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
+  if(!client.funcall.dmcheck(client,message)){
+    message.channel.send("Only a DM can use this command");
+    return;
+  }
+
   if(!message.mentions.members.first()){
     message.channel.send("You must @ a user to target them!");
     return;
@@ -48,7 +53,7 @@ exports.run = (client, message, args) => {
   if (quantity < 1 || quantity > 8) {
     message.channel.send("The quantity must be more than 0 and less than 8.");
     return;
-  } 
+  }
   if(args[4]){
     args.splice(0,3);
     itemName = funcall.combineArgs(args);
