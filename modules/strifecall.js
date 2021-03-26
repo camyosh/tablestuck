@@ -393,7 +393,8 @@ switch(client.playerMap.get(list[target][1],"faction")){
 
   }
 }catch(err){
-  message.channel.send("Tried to delete an underling twice! Tell cam you saw this!");
+  message.channel.send("Tell cam you saw this");
+  message.channel.send(err);
 }
 
 }
@@ -714,7 +715,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
       alert+=`**GARDEN OF EDEN** passively regenerated ${heal} vitality!\n`;
     }
 
-    if(carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
+    if(true==true||carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
       let carrystam = list[init[turn][0]][5];
 
       stamsg +=` + ${carrystam}`;
@@ -2450,8 +2451,14 @@ if(list[active[ik]][3] < 1){
 
   function underSpawn(client,local,underling,sessionID,npcCount){
 
-    let landGrist = client.landMap.get(local[4],"grist");
-    let grist = landGrist[Math.floor((Math.random() * 4))];
+    let landGrist;
+
+    try{
+      landGrist = client.landMap.get(local[4],"grist");
+    }catch(err){
+      landGrist = ["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"];
+    }
+    let grist = landGrist[Math.floor((Math.random() * landGrist.length))];
 
     let sessionProto = client.landMap.get(sessionID+"medium",`prototype`);
     let protoCheck = [];
@@ -2473,7 +2480,8 @@ if(list[active[ik]][3] < 1){
     for(i=0;i<prototype.length;i++){
       undername += prototype[i][0]+` `;
     }
-
+    console.log(landGrist);
+    console.log(`Underling grist is ${grist}`);
     let npcSet = {
       name: `${grist.toUpperCase()} ${undername}${underling.toUpperCase()}`,
       possess:[],

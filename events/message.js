@@ -20,7 +20,7 @@ module.exports = (client, message) => {
   if (!cmd) return;
   try{
     let charid = message.guild.id.concat(message.author.id);
-    if(!client.playerMap.has(charid)&&command!="register"&&command!="help"){
+    if(!client.playerMap.has(charid)&&command!="register"&&command!="help"&&command!="initialize"){
       message.channel.send("You are not registered! Register using the >register command!");
       return;
     }

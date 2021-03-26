@@ -174,9 +174,6 @@ exports.run = (client, message, args) => {
       return;
     }
 
-    gristCheck[client.grist[gristType].pos]-=cost2;
-    gristCheck[0]-=cost1;
-
 
     if(value[0]<defCost.length){
       if(deployCheck[value[0]]==false){
@@ -229,11 +226,11 @@ exports.run = (client, message, args) => {
 
         deployCheck[value[0]]=true;
         client.playerMap.set(clientId,deployCheck,"deploy");
-      }else if(value[0]==3){
-          message.channe.send("You can only deploy that once!");
-          return;
       }
     }
+
+    gristCheck[client.grist[gristType].pos]-=cost2;
+    gristCheck[0]-=cost1;
 
     if(registry[value[0]][1].charAt(0)=="/"&&registry[value[0]][0]=="TRANSPORTALIZER"){
 

@@ -24,23 +24,33 @@ var defaultVillage =[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],
 
 exports.landGen = function(client,sec,gateCoor,message) {
 
+  let startTime = Date.now();
+    //console.log(`Start time is ${startTime}`);
+
   let outpostCheck = false;
   let outpostChance = 3;
   let section = [];
-  for(i=0;i<11;i++){
+
+  //console.log(`Generating empty land and dungeon - ${Date.now() - startTime}`);
+
+  for(let i=0;i<11;i++){
     section.push([[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]]]);
   }
   let dungeon = [];
-  for(i=0;i<11;i++){
+  for(let i=0;i<11;i++){
     dungeon.push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
   }
+
+  //console.log(`Finished generating empty land and dungeon - ${Date.now() - startTime}`);
+
 empty =[];
-  for(i=0;i<11;i++){
+  for(let i=0;i<11;i++){
     for(j=0;j<11;j++){
       empty.push([i,j]);
     }
   }
 
+  //console.log(`Finished setting up the empty array - ${Date.now() - startTime}`);
   let dunCount;
   let denizenCheck = false;
   //Creates the Gate on the Land
@@ -52,60 +62,75 @@ empty =[];
     denizenCheck = true;
     let temp=empty.splice(60,1);
     section[temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DENIZEN LAIR ENTRANCE",false,[],[]]]];
+    //console.log(`Calling DungeonGen for Denizen lair - ${Date.now() - startTime}`);
     dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
+    //console.log(`Resolved DungeonGen - ${Date.now() - startTime}`);
   }
   if(sec>1){
     dunCount = 1;
   } else {
     dunCount =2;
   }
+
+  //console.log(`Generating each third of the land with a for() loop - ${Date.now() - startTime}`);
+
   for(j=3;j>0;j--){
     let length = 40;
   //Creates Dungeons
-  for(i=0;i<dunCount;i++){
+
+  //console.log(`Generating ${dunCount+1} dungeons - ${Date.now() - startTime}`);
+
+  for(let i=0;i<dunCount;i++){
     if(!denizenCheck){
   let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
   length--;
   section[temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DUNGEON ENTRANCE",false,[],[]]]];
   //section[temp[0][0]][temp[0][1]]=[1,6,[funcall.roomGenCall(client,1,sec,1),funcall.roomGenCall(client,1,sec,2),funcall.roomGenCall(client,1,sec,3),funcall.roomGenCall(client,1,sec,4)]];
+
+  //console.log(`Calling DungeonGen for normal dungeon - ${Date.now() - startTime}`);
   dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
+  //console.log(`Resolved DungeonGen - ${Date.now() - startTime}`);
   }
   }
+
+  //console.log(`Generating villages, constructs, nodes - ${Date.now() - startTime}`);
   //Creates a Village
-  for(i=0;i<3;i++){
+  for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     section[temp[0][0]][temp[0][1]]=[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
   }
   //Creates the Land Constructs
-  for(i=0;i<3;i++){
+  for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     section[temp[0][0]][temp[0][1]]=[2,1,[[[],[],"LAND CONSTRUCT",false,[],[]]]];
   }
   //Creates the return nodes
-  for(i=0;i<4;i++){
+  for(let i=0;i<4;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     section[temp[0][0]][temp[0][1]]=[3,1,[[[],[],"RETURN NODE",false,[],[]]]];
   }
   //Creates free loot
-  for(i=0;i<3;i++){
+  for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     section[temp[0][0]][temp[0][1]]=[0,1,[[[],[],"CLEARING",false,[],[lootcall.lootA(client, sec, dubs(8))]]]];
   }
+
+  //console.log(`Finished generating those things - ${Date.now() - startTime}`);
   }
   if(sec==0){
-    for(i=0;i<2;i++){
+
+    //console.log(`Generating moon outposts - ${Date.now() - startTime}`);
+    for(let i=0;i<2;i++){
       let moon=[["PROSPIT","DERSE"],["pc","dc"]];
       let temp=empty.splice(Math.floor(Math.random()*empty.length));
       let transCount = client.landMap.get(message.guild.id+"medium","transCount");
-
       let transList = client.landMap.get(message.guild.id+"medium","transList");
       let transCode = "0000";
       let transCode1 = "0000";
-
       let moonCode = "0000";
 
       while(transList.includes(transCode)||transCode=="0000"){
@@ -152,13 +177,18 @@ empty =[];
       client.landMap.set(message.guild.id+"medium",castle,moon[1][i]);
 
     }
+
+    //console.log(`Finished generating moon outposts - ${Date.now() - startTime}`);
   }
+
+  //console.log(`Finished generation - ${Date.now() - startTime}`);
 return [section,dungeon];
 
 
 }
 
 function dungeonGen(client,roomCoor,sec,dungeon,message) {
+
   dungeon[roomCoor[0][0]][roomCoor[0][1]]=[1,1,[[[],[],"DUNGEON EXIT",false,[],[]]]];
   let s = 0;
   let lv2 = [];
@@ -179,6 +209,7 @@ function dungeonGen(client,roomCoor,sec,dungeon,message) {
 
 s = sec+1;
 let b = 0;
+
   for(o=0;o<s;o++) {
     switch (direction[Math.floor((Math.random() * direction.length))]) {
       case "x+":
@@ -304,7 +335,6 @@ let pathStart = [[roomCoor[0][0],roomCoor[0][1]],[roomCoor[0][0],roomCoor[0][1]]
 let g = 0;
 let denizen = false;
 while(pathStart.length != 0){
-console.log(pathStart);
 let curx = pathStart[0][0];
 let cury = pathStart[0][1];
 let deleted = pathStart.splice(0,1);
@@ -428,7 +458,6 @@ let pathStart = [[roomCoor[0][0],roomCoor[0][1]],[roomCoor[0][0],roomCoor[0][1]]
 let g = 0;
 let denizen = false;
 while(pathStart.length != 0){
-console.log(pathStart);
 let curx = pathStart[0][0];
 let cury = pathStart[0][1];
 let deleted = pathStart.splice(0,1);
@@ -561,7 +590,26 @@ break;
   }
 
 }
-
+//==========================================================================================
+exports.battlefieldGen = function(client,message){
+let battleMap = [];
+let battleLine = [];
+let lastBlack = true;
+for(let u=0;u<11;u++){
+  for (let m=0;m<11;m++){
+    if (lastBlack){
+      battleLine.push([0,1,[[[],[],"CLEARING",false,[],[]]]])
+      lastBlack = false;
+    } else {
+      battleLine.push([7,1,[[[],[],"CLEARING",false,[],[]]]])
+      lastBlack = true;
+    }
+    battleMap.push(battleLine);
+    battleLine = [];
+  }
+}
+return battleMap;
+}
 
 exports.moonGen = function(client,castleLocal,towerLocal,message){
 
@@ -1000,7 +1048,7 @@ let aspect;
 
 try {
   aspect = client.landMap.get(local[4],"aspect");
-  if(aspect = `undefined`){
+  if(aspect == undefined){
     aspect = "BREATH";
   }
 } catch(err){

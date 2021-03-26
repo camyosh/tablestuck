@@ -359,9 +359,9 @@ exports.alchemize = function(client, item1, item2, type){
   let coderes = ["/","/","/","/","/","/","/","/"]
   for(i=0;i<8;i++){
 
-    if(code1[i]=="/"||code1[i]=="#"||code1[i]=="0"){
+    if(code1[i]=="/"||code1[i]=="#"||code1[i]=="@"){
       coderes[i]=code2[i];
-    } else if(code2[i]=="/"||code2[i]=="#"||code1[i]=="0"){
+    } else if(code2[i]=="/"||code2[i]=="#"||code1[i]=="@"){
       coderes[i]=code1[i];
     } else{
       char1 = client.captchaCode.indexOf(code1[i]);
@@ -756,7 +756,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
 
     sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
 
-    client.playerMap.set(local[4],sec,local[0]);
+    client.landMap.set(local[4],sec,local[0]);
 
   }
 
@@ -781,7 +781,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
         break;
       }
     }else if(target[4]!=message.guild.id+"medium"){
-      if(targSec[target[1]][target[2]][2][target[3]][3]==false){
+      if(targSec[target[1]][target[2]][2][target[3]][3]==false||true==true){
     targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
   }
   }
@@ -806,13 +806,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
       }
     }
 
-    if(occCheck[0]&&occCheck[1]){
-      msg+="\nThere are players and Underlings in this room!";
-    } else if(occCheck[0]){
-      msg+="\nThere are Underlings in this room!";
-    } else {
-      msg+="\nThere are Players in this room!";
-    }
+
   }
 
   if(targSec[target[1]][target[2]][2].length>1){

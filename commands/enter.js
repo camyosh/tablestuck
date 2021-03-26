@@ -33,6 +33,12 @@ exports.run = (client, message, args) => {
 
     let gristSpent = client.landMap.get(local[4],"spent");
     let gate = client.landMap.get(local[4],"gate");
+    let enter = client.landMap.get(local[4],"enter");
+
+    if(!enter){
+      message.channel.send("Enter? Enter what? You have no idea what you could possibly be trying to 'enter', it's not like there's any floating spirographs above your house or anything, that would be absurd.");
+      return;
+    }
 
     if(!args[0]){
 
@@ -59,7 +65,7 @@ exports.run = (client, message, args) => {
     }
 
     if(value>gate){
-      if (client.traitcall.traitCheck(client,charid,"ROCKET")[1]||client.traitcall.traitCheck(client,charid,"SPACE")) {
+      if (client.traitcall.traitCheck(client,charid,"ROCKET")[1]||client.traitcall.traitCheck(client,charid,"SPACE")[0]) {
         msg+= `House hasn't been built high enough to reach that gate, but you don't care, you can fly!\n`
       } else {
         message.channel.send("House hasn't been built high enough to reach that gate! Have your client player build up your house with >build");

@@ -49,7 +49,7 @@ exports.sdexCheck = async function (client, message,page, args, type, sdex, card
 
   let j = page*10;
 
-  for(i=0;i<10;i++){
+  for(let i=0;i<10;i++){
 
     let x = 16+((i%5)*208);
 
@@ -161,11 +161,11 @@ if(fontsize<=minsize){
 
 function splitText(canvas,ctx,msg,max){
 
-  for(k=0;k<Math.floor(msg.length/max);k++){
+  for(let k=0;k<Math.floor(msg.length/max);k++){
 
     let i = max*(k+1);
     let check = false
-    for(i = max*(k+1);i>max*k&&!check;i--){
+    for(let i = max*(k+1);i>max*k&&!check;i--){
       if(msg.charAt(i)==" "){
         check=true;
         var msg1 = msg.substring(0,i);
@@ -244,14 +244,14 @@ exports.inspect = async function (client,message,args,type,item){
   ctx.drawImage(gristSheet,(gristType%8)*32,Math.floor(gristType/8)*32,32,32,x+62,y+88,44,44);
   //draw effective grist
 
-  for(i=0;i<4;i++){
+  for(let i=0;i<4;i++){
 
     tempGrist=client.grist[client.grist[client.gristTypes[gristType]].effective[i]].pos;
 
     ctx.drawImage(gristSheet,(tempGrist%8)*32,Math.floor(tempGrist/8)*32,32,32,x+116+(52*i),y+38,44,44);
 
   }
-  for(i=0;i<4;i++){
+  for(let i=0;i<4;i++){
 
     tempGrist=client.grist[client.grist[client.gristTypes[gristType]].ineffective[i]].pos;
 
@@ -278,7 +278,7 @@ exports.inspect = async function (client,message,args,type,item){
 
   let actionBox=[[x+16,236,276],[x+170,236,276],[x+16,332,372],[x+170,332,372]];
 //drawing actions
-for(j=0;j<4;j++){
+for(let j=0;j<4;j++){
   let tempcolor;
   let tempbg;
     switch(action[j].substring(0,2)){
@@ -348,7 +348,7 @@ function middleText(canvas,ctx,msg,x1,y1,x2,y2,fontsize,minsize,font){
 
   let lineCount = 1;
 /*
-  for(i=0;i<msg.length;i++){
+  for(let i=0;i<msg.length;i++){
     if(msg.charAt(i)==`\n`){
       lineCount++;
     }
@@ -443,7 +443,7 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
   let j = page*10;
 
-  for(i=0;i<10;i++){
+  for(let i=0;i<10;i++){
 
     let x = 16+((i%5)*208);
 

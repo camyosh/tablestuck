@@ -24,7 +24,7 @@ exports.run = (client,message,args) =>{
   let local = client.playerMap.get(charid,"local");
   let pos;
   let strifeLocal;
-  let list; 
+  let list;
 
   if(client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")==false&&client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")==false&&client.traitcall.itemTrait(client,sdex[selectDex],"FOOD")==false&&dogCheck[0]==false){
     message.channel.send("That is not a consumable item!");
@@ -78,7 +78,14 @@ return;
 
   if(client.traitcall.itemTrait(client,sdex[selectDex],"FOOD")||client.traitcall.traitCheck(client,charid,"DOG")[0]){
 
-    let vit = client.playerMap.get(charid,"vit");
+    let vit;
+
+    if(strifeCheck==true){
+      vit = list[pos][3]
+    } else {
+      vit = client.playerMap.get(charid,"vit");
+    }
+
     let gel = client.playerMap.get(charid,"gel");
     let heal = tier*.06;
 
@@ -91,7 +98,15 @@ return;
       vit=gel;
     }
 
-    client.playerMap.set(charid,vit,"vit");
+    if(strifeCheck==true){
+
+      list[pos][3]=vit;
+
+    } else{
+
+      client.playerMap.set(charid,vit,"vit");
+
+    }
 
     msg+=`\n You heal ${Math.ceil(gel*heal)} VITALITY, you now have ${vit} / ${gel} VITALITY!`;
 if(strifeCheck){

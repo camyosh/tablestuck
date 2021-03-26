@@ -275,16 +275,27 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
 
       if(sdex[selectDex][0]=="CRUXITE ARTIFACT"){
+        let enterCheck = client.landMap.get(charid,"enter");
+
+        if(enterCheck){
+          message.channel.send("You've already entered the medium!");
+          return;
+        }
+
         let landName = client.landMap.get(charid,"name");
 
         let mediumPrototype = client.landMap.get(message.guild.id+"medium","prototype");
 
         let spriteProto = client.playerMap.get(`n${charid}`,"prototype");
 
+        console.log(`Spriteproto = ${spriteProto}\nMedium Porto = ${mediumPrototype}`);
+
         client.landMap.set(message.guild.id+"medium",mediumPrototype.concat(spriteProto),"prototype");
 
         client.landMap.set(charid,true,"enter");
         message.channel.send(`Entered the Land of ${landName[0]} and ${landName[1]}`);
+        let targetItem = sdex.splice(selectDex,1);
+        client.playerMap.set(charid,sdex,"sdex");
 
         return;
 
@@ -337,7 +348,34 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
         boonMsg+=`\nAdded ${newBoon} BOONDOLLARS to PORKHOLLOW! You now have ${b} BOONDOLLARS!`
         message.channel.send(boonMsg);
 
-      } else {
+      } else if(sdex[selectDex][0]=="PRIMARY GRIST"){
+
+        let grist = client.playerMap.get(charid,"grist");
+
+        for(let i=0;i<12;i++){
+          grist[i+1]+=sdex[selectDex][3];
+        }
+
+        message.channel.send(`Added ${sdex[selectDex][3]} grist of all PRIMARY grist types!`);
+        client.playerMap.set(charid,grist,"grist");
+        let targetItem = sdex.splice(selectDex,1);
+        client.playerMap.set(charid,sdex,"sdex");
+
+      } else if(sdex[selectDex][0]=="STRIFE SPECIBUS"){
+
+        let port = client.playerMap.get(charid,"port");
+
+        port+=sdex[selectDex][3];
+
+        client.playerMap.set(charid,port,"port");
+        let targetItem = sdex.splice(selectDex,1);
+        client.playerMap.set(charid,sdex,"sdex");
+        message.channel.send(`Added ${sdex[selectDex][3]} STRIFE PORTFOLIO`);
+
+      }
+
+
+       else {
         message.channel.send("You can't use that item!")
         return;
       }

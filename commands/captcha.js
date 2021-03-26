@@ -47,16 +47,15 @@ exports.run = (client, message, args) => {
 
   if(!args[1]){
 
-    if(room[5][value][1].charAt(0)=="/"&&(room[5][value][0]=="CRUXTRUDER"||room[5][value][0]=="TOTEM LATHE"||room[5][value][0]=="PUNCH DESIGNIX"||room[5][value][0]=="ALCHEMITER"||room[5][value][0]=="TRANSPORTALIZER")){
+    if((room[5][value][1].charAt(0)=="/"&&(room[5][value][0]=="CRUXTRUDER"||room[5][value][0]=="TOTEM LATHE"||room[5][value][0]=="PUNCH DESIGNIX"||room[5][value][0]=="ALCHEMITER"))||room[5][value][1].charAt(0)=="@"){
       message.channel.send("You can't pick that up!");
       return;
     }
 
-    if(room[5][value][4].length>room[5][value][2]*2&&room[5][value][2]>0){
-      message.channel.send("That container is holding too many items to pick up! A container can't be picked up if it holds more items than double it's tier.");
+    if(room[5][value][4].length>room[5][value][2]*2){
+      message.channel.send("That container is holding too many items to pick up! A container can't be picked up if it holds more items than double it's tier.\nIf you're trying to take an item outside of it, you can do >captcha [target item in room] [target item's contents]");
       return;
     }
-
 
   targetItem = room[5].splice(value,1)[0];
 } else {

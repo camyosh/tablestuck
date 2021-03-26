@@ -1,7 +1,7 @@
 {
   "cruxtruder":{
     "cost":0,
-    "item":["CRUXTRUDER","//jG0000",0,1,[["CRUXITE DOWEL","########",0,1,[["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]],"https://cdn.discordapp.com/attachments/808757312520585227/810008754560827412/TOTEM.png"]],"https://media.discordapp.net/attachments/808757312520585227/809953709819166730/CRUXTRUDER.png"],
+    "item":["CRUXTRUDER","//jG0000",0,1,[["CRUXITE DOWEL","########",1,1,[["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]],"https://cdn.discordapp.com/attachments/808757312520585227/810008754560827412/TOTEM.png"]],"https://media.discordapp.net/attachments/808757312520585227/809953709819166730/CRUXTRUDER.png"],
     "grist":"build",
     "costT":100
   },
@@ -25,9 +25,9 @@
   },
   "pre-punched card":{
     "cost":0,
-    "item":["PRE-PUNCHED CARD","11111111",0,1,[["CRUXITE ARTIFACT","//jG0000",0,1,[],"https://media.discordapp.net/attachments/808757312520585227/810329587150094356/ARTIFACT.png"]],"https://media.discordapp.net/attachments/808757312520585227/810331069236510741/ARTIFACTPUNCHED.png"],
+    "item":["PRE-PUNCHED CARD","11111111",1,1,[["CRUXITE ARTIFACT","//jG0000",0,1,[],"https://media.discordapp.net/attachments/808757312520585227/810329587150094356/ARTIFACT.png"]],"https://media.discordapp.net/attachments/808757312520585227/810331069236510741/ARTIFACTPUNCHED.png"],
     "grist":"build",
-    "costT":"N/A"
+    "costT":10
   },
   "instant alchemiter":{
     "cost":100,

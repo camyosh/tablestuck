@@ -106,6 +106,10 @@ exports.run = (client, message, args) => {
   cost1 = tierCost[tier];
   cost2 = tierCost[tier-1];
 
+  if(cost2 == undefined){
+    cost2=0;
+  }
+
   if(gristType == "diamond"){
     cost1*=2;
     cost2*=2;
@@ -115,6 +119,9 @@ exports.run = (client, message, args) => {
     message.channel.send("Client cannot afford to deploy that!");
     return;
   }
+
+  console.log(`This is the build cost 1 ${cost1}`);
+  console.log(`This is build cost 2 ${cost2}`);
 
   gristCheck[client.grist[gristType].pos]-=cost2;
   gristCheck[0]-=cost1;

@@ -30,6 +30,7 @@ exports.run = (client, message, args) => {
   let room = area[2][local[3]];
   var playerGrist = client.playerMap.get(charid,"grist");
   let sdex = client.playerMap.get(charid,"sdex");
+  let registry = client.playerMap.get(charid,"registry");
 
 //define variables for the FOR loop
 
@@ -53,23 +54,11 @@ exports.run = (client, message, args) => {
 
 if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")[1]){
 
-  if(args.length == 1 || args.length == 2){
+  if(args.length == 1){
     select1 = parseInt(args[0], 10) - 1;
     if(isNaN(select1)){
       message.channel.send("That is is not a valid argument!");
       return;
-    }
-    let quantity = 1;
-    if (args[1]) {
-      quantity = parseInt(args[1], 10);
-      if(isNaN(quantity)){
-        message.channel.send("That is is not a valid argument!");
-        return;
-      }
-      if(quantity<=0 || quantity>8){
-        message.channel.send("The quantity must be more than 0 and less than 8.");
-        return;
-      }
     }
 
     if(select1 >= sdex.length || select1< 0){
@@ -77,7 +66,6 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
       return;
     }
     item1 = sdex[select1].slice();
-    item1[3] = quantity;
     item1[4] = [];
 
 
@@ -86,30 +74,9 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
       return;
     }
 
-    cost1=tierCost[item1[2]]*quantity;
-    cost2=tierCost[item1[2]-1]*quantity;
-
-    if (item1[1].charAt(1)=="!") {
-      cost1*=2;
-      cost2*=2;
-    }
-
-    grist=client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(item1[1].charAt(1))]];
-
-    if(playerGrist[0]<cost1||playerGrist[client.grist[grist].pos]<cost2){
-      message.channel.send("You can't afford to alchemize that!");
-      return;
-    }
-
-    playerGrist[0]-=cost1;
-    playerGrist[client.grist[grist].pos]-=cost2;
-    room[5].push(item1);
-    client.playerMap.set(charid,playerGrist,"grist");
-    sec[local[1]][local[2]][2][local[3]] = room;
-    client.landMap.set(land,sec,local[0]);
-
-    message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${item1[0]} x${quantity}**`);
-funcall.actionCheck(client,message,"alchemized");
+    registry.unshift(item1);
+    client.playerMap.set(charid,registry,"registry");
+    message.channel.send(`Registered the ${item1[0]} to the alchemy athenaeum! Alchemize it using the >alchemize command`);
     return;
 
   }
@@ -147,9 +114,9 @@ funcall.actionCheck(client,message,"alchemized");
   item1 = sdex[select1];
   item2 = sdex[select2];
 
-  if(args[1]=="||"){
+  if(args[1]=="||"||args[1].toLowerCase()=="oror"||args[1].toLowerCase()=="or"){
 
-    newItem = funcall.oror(client,item1,item2);
+    newItem = funcall.alchemize(client,item1,item2,"||");
 
     if(client.traitcall.itemTrait(client,newItem,"SHITTY")){
 
@@ -165,7 +132,12 @@ funcall.actionCheck(client,message,"alchemized");
 
     }
 
-    cost1=tierCost[newItem[2]];
+    registry.unshift(newItem);
+    client.playerMap.set(charid,registry,"registry");
+    message.channel.send("Registered the resulting item to the alchemy athenaeum! Alchemize it using the >alchemize command");
+    return;
+
+    /*cost1=tierCost[newItem[2]];
     cost2=tierCost[newItem[2]-1];
 
     if(newItem[1].charAt(1)=="!"){
@@ -188,13 +160,13 @@ funcall.actionCheck(client,message,"alchemized");
     client.landMap.set(land,sec,local[0]);
 
     message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${newItem[0]}**`);
-  funcall.actionCheck(client,message,"alchemized");
+  funcall.actionCheck(client,message,"alchemized");*/
     return;
 
 
-  } else if(args[1]=="&&"){
+  } else if(args[1]=="&&"||args[1].toLowerCase()=="andand"||args[1].toLowerCase()=="and"){
 
-    newItem = funcall.andand(client,item1,item2);
+    newItem = funcall.alchemize(client,item1,item2,"&&");
 
     if(client.traitcall.itemTrait(client,newItem,"SHITTY")){
 
@@ -210,6 +182,11 @@ funcall.actionCheck(client,message,"alchemized");
 
     }
 
+    registry.unshift(newItem);
+    client.playerMap.set(charid,registry,"registry");
+    message.channel.send("Registered the resulting item to the alchemy athenaeum! Alchemize it using the >alchemize command");
+    return;
+/*
     cost1=tierCost[newItem[2]];
     cost2=tierCost[newItem[2]-1];
 
@@ -236,6 +213,8 @@ funcall.actionCheck(client,message,"alchemized");
     message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${newItem[0]}**`);
     funcall.actionCheck(client,message,"alchemized");
     return;
+
+*/
 
   } else {
     message.channel.send("That is not a valid alchemy type!");

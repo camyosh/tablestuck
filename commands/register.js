@@ -13,6 +13,8 @@ exports.run = (client, message, args) => {
   let charid = message.guild.id.concat(message.author.id);
 
 if(!client.landMap.has(message.guild.id+"medium")){
+
+  /*
 let castlegen = [[0,0],[0,0]];
 
 for(i=0;i<2;i++){
@@ -20,7 +22,6 @@ for(i=0;i<2;i++){
   castlegen[i][j]=Math.floor(Math.random()*2)+(Math.floor(Math.random()*4)*3);
 }
 }
-console.log(castlegen);
   let dreamMoon = client.landcall.moonGen(client,castlegen[0],castlegen[1]);
 
 //chumhandle [charid,chumhandle]
@@ -54,7 +55,23 @@ console.log(castlegen);
 
   client.landMap.set(message.guild.id+"medium", medium);
 
+  */
+
+  message.channel.send("A session for this server has not been initialized! Do >initialize to fix this.");
+  return;
 }
+
+  if(client.playerMap.has(charid)){
+    if(client.playerMap.get(charid,"timeOfReg") + 300000 > Date.now()){
+      message.channel.send("You have to wait at least 5 minutes before registering again!");
+      return;
+    }
+  }
+
+
+
+let startTime = Date.now();
+  console.log(`Start time is ${startTime}`);
 
 //checks to see if the command user mentioned a target
 
@@ -65,9 +82,12 @@ console.log(castlegen);
   let target = message.author;
   var occset = [true,charid];
 
+  //console.log(`Retrieving player and handle list - ${Date.now() - startTime}`);
 
   let playerList = client.landMap.get(message.guild.id+"medium","playerList");
   let handleList = client.landMap.get(message.guild.id+"medium","handleList");
+
+  //console.log(`Retrieved player and handle list - ${Date.now() - startTime}`);
 /*
   let chumhandle = message.author.username;
 
@@ -97,6 +117,8 @@ console.log(castlegen);
   let handleCount = 0;
   let index="NA";
 
+  //console.log(`Checking every chumhandle to see if there are duplicates of the default chumhandle using a for() loop - ${Date.now() - startTime}`);
+
   for(i=0;i<handleList.length;i++){
     if(handleList[i][1].substring(0,chumhandle.length).toLowerCase()==chumhandle.toLowerCase()&&handleList[i][0]!=charid){
       handleCount++;
@@ -111,6 +133,8 @@ console.log(castlegen);
       index = i;
     }
   }
+
+  //console.log(`Finished for() loop - ${Date.now() - startTime}`);
 
   if(handleCount>0){
     chumhandle+=handleCount;
@@ -129,6 +153,8 @@ console.log(castlegen);
     playerList.push(charid);
   }
 
+  //console.log(`Setting playerList and handleList - ${Date.now() - startTime}`);
+
   client.landMap.set(message.guild.id+"medium",playerList,"playerList");
   client.landMap.set(message.guild.id+"medium",handleList,"handleList");
 
@@ -138,16 +164,19 @@ console.log(castlegen);
 
   const armorsets = [["CLOTHES", "sQ00m9Kn", 1, 1, []], ["CLOTHES", "sd1y1UGt", 1, 1, []], ["CLOTHES", "s4001jKQ", 1, 1, []], ["CLOTHES", "s500MEF3", 1, 1, []], ["CLOTHES", "sIy0llDd", 1, 1, []], ["CLOTHES", "sh11jXDH", 1, 1, []], ["CLOTHES", "sK0ydTnZ", 1, 1, []], ["CLOTHES", "sj10ZVxB", 1, 1, []], ["CLOTHES", "sY01t9oW", 1, 1, []], ["CLOTHES", "sl1yRSD8", 1, 1, []], ["CLOTHES", "sO1yjCtu", 1, 1, []], ["CLOTHES", "sD012ydM", 1, 1, []]];
 
+  //console.log(`Generating player bedroom - ${Date.now() - startTime}`);
+
   const def = [[[5,7,[
      [[],[],"BEDROOM",false,[occset],defBedroom],
      [[],[],"LIVING ROOM",false,[],funcall.preItem("living room",7,[["HAT","uy0zJ7aY",1,1,[]],["SHOES","tx0z33bi",1,1,[]]])],
      [[],[],"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]]])],
      [[],[],"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]]]]])],
      [[],[],"BATHROOM",false,[],funcall.preItem("bathroom",4,[])],
-     [[],[],"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",1,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"]]]])],
+     [[],[],"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"]]]])],
      [[],[],"SHED",false,[],funcall.preItem("shed",8,[])]
    ]]]];
 
+   //console.log(`Finished generating player bedroom - ${Date.now() - startTime}`);
 
 /*
   async function regImport() {
@@ -162,7 +191,6 @@ console.log(castlegen);
     importsheet = [sheet.getCellByA1(list[0]).value,sheet.getCellByA1(list[1]).value,sheet.getCellByA1(list[2]).value,sheet.getCellByA1(list[3]).value,sheet.getCellByA1(list[4]).value,sheet.getCellByA1(list[5]).value,sheet.getCellByA1(list[6]).value,sheet.getCellByA1(list[7]).value,sheet.getCellByA1(list[8]).value,sheet.getCellByA1(list[9]).value,sheet.getCellByA1(list[10]).value]
 
 
-  console.log(importsheet);
     //declaring the basic character sheet
 
   var charSheet = {
@@ -208,8 +236,12 @@ regImport();
 */
   //random item - funcall.preItem()
 
+  //console.log(`Retrieving prospitList and derseList - ${Date.now() - startTime}`);
+
   let prospitList = client.landMap.get(message.guild.id+"medium","prospitList");
   let derseList = client.landMap.get(message.guild.id+"medium","derseList");
+
+  //console.log(`Finsished retrieving prospitList and Derselist - ${Date.now() - startTime}`);
 
   let lunarSway;
   let repDef=[0,0];
@@ -235,21 +267,31 @@ regImport();
     prospitList.push(charid);
   }
 
+  //console.log(`Setting prospitList and derseList - ${Date.now() - startTime}`);
+
   client.landMap.set(message.guild.id+"medium",prospitList,"prospitList");
   client.landMap.set(message.guild.id+"medium",derseList,"derseList");
+
+  //console.log(`Finished setting prospitList and derseList, retrieving moonMap and towerLocal - ${Date.now() - startTime}`);
 
   let moonMap = client.landMap.get(message.guild.id+"medium",lunarSway);
   let towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
 
-  console.log(moonMap[towerLocal[0]])
+  //console.log(`Retrieved moonMap and towerLocal - ${Date.now() - startTime}`);
 
   let towerRoom = moonMap[towerLocal[0]][towerLocal[1]][2].length;
 
   moonMap[towerLocal[0]][towerLocal[1]][2].push([[],[],`${message.author.username.toUpperCase()}'S DREAM TOWER`,false,[
     [true,charid]],defBedroom]);
 
+    //console.log(`Setting moonMap - ${Date.now() - startTime}`);
+
   client.landMap.set(message.guild.id+"medium",moonMap,lunarSway);
 
+  //console.log(`Set moonMap - ${Date.now() - startTime}`);
+
+
+  //console.log(`Creating character sheet - ${Date.now() - startTime}`);
 
   var charSheet = {
     control:charid,
@@ -315,35 +357,53 @@ regImport();
     consortRep:10,
     bio:"This player has not set their BIO!",
     img:"https://media.discordapp.net/attachments/408119077840617493/808458446374436914/human_base.png",
-    registry:[]
+    registry:[],
+    timeOfReg:Date.now()
   };
 
 client.playerMap.set(charid,charSheet);
 
+//console.log(`Finished setting character sheet - ${Date.now() - startTime}`);
+
 
 //create pesterchum webhook
 
+//console.log(`Calling Hookcheck - ${Date.now() - startTime}`);
+
 client.hookcall.hookCheck(client,message);
 
+//console.log(`hookCheck has resolved - ${Date.now() - startTime}`);
 
 
 let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
-var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
-client.landMap.set(charid,{grist: gristSet});
 
+var gristSet = [];
+var sessionGrist = client.landMap.get(message.guild.id+"medium","gristCounter");
+for(let i=0;i<4;i++){
+  gristSet.push(sessionGrist.splice(Math.floor(Math.random()*sessionGrist.length),1)[0]);
+  if(sessionGrist.length<1){
+    sessionGrist = ["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"];
+  }
+}
+client.landMap.set(message.guild.id+"medium",sessionGrist,"gristCounter");
+//var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
+
+//console.log(`Generating all of the lands - ${Date.now() - startTime}`);
 var s1 = landcall.landGen(client,0,gategen[0],message);
 var s2 = landcall.landGen(client,1,gategen[1],message);
 var s3 = landcall.landGen(client,2,gategen[2],message);
 var s4 = landcall.landGen(client,3,gategen[3],message);
 
+//console.log(`Lands have been generated - ${Date.now() - startTime}`);
+
 var land = {
     name: ["Stumps","Dismay"],
     aspect: aspects[Math.floor((Math.random() * 11))],
     grist: gristSet,
-    enter:true,
-    spent: 1000000,
-    floors: 100000,
-    gate: 7,
+    enter:false,
+    spent: 0,
+    floors: 0,
+    gate: 0,
     gates:gategen,
     h:def,
     s1:s1[0],
@@ -358,10 +418,11 @@ var land = {
 
 //adds the charaacter sheet and land sheet to the database
 
-
 client.landMap.set(charid,land)
 
 message.channel.send(`${target} has been registered!`);
 message.channel.send(`${message.author.username} stands in their bedroom. It just so happens that today, the 25th of July is the day of SAHCON! \n\nThank you for playing Tablestuck! For this game, you have been given completely randomized items throughout your house. If you are ever confused about how the bot functions or any of the commnands, use the >help command!\nIf at any point you die during this test, just use >register again to come back to life! This will reset your character, house and land entirely so only do this if you die or get softlocked!\n\nIf you're ever confused, feel free to use >help`);
+
+  console.log(`End time is ${Date.now() - startTime}`);
 
 }

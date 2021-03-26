@@ -30,8 +30,8 @@ console.log(castlegen);
     towerLocal: castlegen[1],
     transLocal:dreamMoon[dreamMoon.length-1],
     p:dreamMoon[0],
-    pm:dreamMoon[2],
     d:dreamMoon[1],
+    pm:dreamMoon[2],
     dm:dreamMoon[3],
     pmd:dreamMoon[4],
     pmd1:dreamMoon[5],
@@ -42,7 +42,10 @@ console.log(castlegen);
     pc:dreamMoon[10],
     dc:dreamMoon[11],
     transList:[],
-    transCount:0
+    transCount:0,
+    gristCounter:["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"],
+    aspectCounter:[0,0,0,0,0,0,0,0,0,0,0,0],
+    bf:client.landcall.battlefieldGen(client,message)
   }
 
   client.landMap.set(message.guild.id+"medium", medium);
