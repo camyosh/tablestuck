@@ -29,6 +29,7 @@ exports.run = (client, message, args) => {
     let cost1;
     let cost2;
     let grist;
+    let quick = false;
 
   //Check every item in the room to find alchemiter, if there is check for any cruxite artifact
 
@@ -36,6 +37,9 @@ exports.run = (client, message, args) => {
     for(i=0;i<room[5].length;i++){
       if(room[5][i][1].charAt(0) == "/"&&(room[5][i][0]=="ALCHEMITER"||room[5][i][0]=="INSTANT ALCHEMITER")){
         alchemiter=true;
+        if(room[5][i][0]=="INSTANT ALCHEMITER"){
+          quick=true;
+        }
       }
     }
 
@@ -84,7 +88,7 @@ exports.run = (client, message, args) => {
 
      let value = parseInt(args[1], 10) - 1;
 
-     if(value<0||value>=registry.length){
+     if(isNaN(value)||value<0||value>=registry.length){
        message.channe.send("That is not a valid selection!");
      }
 
@@ -102,8 +106,9 @@ exports.run = (client, message, args) => {
 
      let value = parseInt(args[1], 10) - 1;
 
-     if(value<0||value>=registry.length){
+     if(isNaN(value)||value<0||value>=registry.length){
        message.channe.send("That is not a valid selection!");
+       return;
      }
 
      let temp = registry.splice(value,1);
@@ -112,6 +117,41 @@ exports.run = (client, message, args) => {
 
      message.channel.send(`moved the ${temp[0][0]} to the first position in the athenaeum!`);
      client.playerMap.set(charid,registry,"registry");
+
+   } else if(args[0]=="tier"){
+     if(!quick){
+       message.channel.send("You need an INSTANT ALCHEMITER for that!");
+       return;
+     }
+
+     if(!args[1]){
+       message.channel.send("Select an item in the ATHENAEUM to change the TIER of using the INSTANT ALCHEMITER'S ENLARGER. \n>athenaeum tier [item] [tier]");
+       return;
+     }
+
+     if(!args[2]){
+       message.channel.send("Select a desired TIER between 1 and 16");
+       return;
+     }
+
+     let value = parseInt(args[1], 10) - 1;
+
+     if(isNaN(value)||value<0||value>=registry.length){
+       message.channe.send("That is not a valid selection!");
+       return;
+     }
+
+     let tier = parseInt(args[2], 10);
+
+     if(isNaN(tier)||tier<1||tier>16){
+       message.channel.send("That is not a valid TIER");
+       return;
+     }
+
+     registry[value][2]=tier;
+     client.playerMap.set(charid,registry,"registry");
+     message.channel.send(`Scaled the ${registry[value][0]} to TIER ${tier}!`);
+     return;
 
    }
  }else{
