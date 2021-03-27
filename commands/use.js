@@ -288,9 +288,13 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
         let spriteProto = client.playerMap.get(`n${charid}`,"prototype");
 
+        for(let i=0;i<spriteProto.length;i++){
+          mediumPrototype.push(spriteProto[i]);
+        }
+
         console.log(`Spriteproto = ${spriteProto}\nMedium Porto = ${mediumPrototype}`);
 
-        client.landMap.set(message.guild.id+"medium",mediumPrototype.concat(spriteProto),"prototype");
+        client.landMap.set(message.guild.id+"medium",mediumPrototype,"prototype");
 
         client.landMap.set(charid,true,"enter");
         message.channel.send(`Entered the Land of ${landName[0]} and ${landName[1]}`);
