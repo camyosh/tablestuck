@@ -23,5 +23,7 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  strifecall.pass(client,message,local);
+  message.channel.send("Passing turn...");
+  client.strifecall.pass(client,message,local);
+  //setTimeout(client.strifecall.pass,3000,client,message,local);
 }

@@ -270,9 +270,9 @@ exports.inspect = async function (client,message,args,type,item){
   //draw trait descriptions
   console.log(trait1);
   console.log(trait2);
-  middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait1].trait,20),x+16,y+180,x+161,y+227,18,12,"Courier Standard Bold");
+  middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait1].trait,18),x+16,y+180,x+161,y+227,18,12,"Courier Standard Bold");
 
-  middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait2].trait,20),x+170,y+180,x+315,y+227,18,12,"Courier Standard Bold");
+  middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait2].trait,18),x+170,y+180,x+315,y+227,18,12,"Courier Standard Bold");
 
   //draw action names
 
@@ -298,7 +298,6 @@ for(let j=0;j<4;j++){
       tempcolor=  `#ff4e31`;
       tempbg = `#ffbdb3`;
       break;
-
       case `ab`:
       tempcolor=  `#ffae00`;
       tempbg = `#ffe7b3`;

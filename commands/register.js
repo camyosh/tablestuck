@@ -169,10 +169,10 @@ let startTime = Date.now();
   const def = [[[5,7,[
      [[],[],"BEDROOM",false,[occset],defBedroom],
      [[],[],"LIVING ROOM",false,[],funcall.preItem("living room",7,[["HAT","uy0zJ7aY",1,1,[]],["SHOES","tx0z33bi",1,1,[]]])],
-     [[],[],"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[["CAPTCHALOGUE CARD","11111111",1,4,[]]]]])],
-     [[],[],"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]]]]])],
+     [[],[],"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]])],
+     [[],[],"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]])],
      [[],[],"BATHROOM",false,[],funcall.preItem("bathroom",4,[])],
-     [[],[],"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"]]]])],
+     [[],[],"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]])],
      [[],[],"SHED",false,[],funcall.preItem("shed",8,[])]
    ]]]];
 
@@ -257,7 +257,7 @@ regImport();
       repDef=[10,-10]
       prospitList.push(charid);
     }
-  }else if(prospitList>derseList){
+  }else if(prospitList.length>derseList.length){
     lunarSway="dm";
     repDef=[-10,10]
     derseList.push(charid);

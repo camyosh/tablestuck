@@ -33,7 +33,7 @@ exports.run = (client, message, args) => {
   .addField(`**Rung**`,rung,true)
   .addField(`**Experience**`,xp,true)
   .addField(`**XP to next Rung**`,(rungReq[rung+1])-xp,true)
-  .addField(`**ACTIONS LEFT**`,client.limit - client.playerMap.get(target,"act"),true)
+  //.addField(`**ACTIONS LEFT**`,client.limit - client.playerMap.get(target,"act"),true)
   .addField(`**TILES DISCOVERED**`,client.playerMap.get(target,"tilesDiscovered"),true)
   .addField(`**ITEMS ALCHEMIZED**`,client.playerMap.get(target,"itemsAlchemized"),true)
   .addField(`**ITEMS CAPTCHALOGUED**`,client.playerMap.get(target,"itemsCaptchalogued"),true)

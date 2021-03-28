@@ -63,6 +63,12 @@ exports.run = (client, message, args) => {
     //if first argument is eject, eject trinket
 
   } else if(args[0]=="eject"){
+
+    if(strifecall.strifeTest(client, message, message.author) == true){
+      message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
+      return;
+    }
+    
     if(trinket.length==0){
       message.channel.send("You don't have any EQUIPPED TRINKET to EJECT!");
       return;
@@ -92,6 +98,11 @@ exports.run = (client, message, args) => {
 //if first argument is equip, equip selected trinket
 
   } else if(args[0]=="equip"){
+
+    if(strifecall.strifeTest(client, message, message.author) == true){
+      message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
+      return;
+    }
 
     let sdex = client.playerMap.get(charid,"sdex");
 

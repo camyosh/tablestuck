@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
 
-if(args[0]=="reset"){
+if(args[0]=="reset"&&client.funcall.dmcheck(client,message)){
   var leaderboard = {
     experienceGained: ["NONE",0],
     boondollarsGained: ["NONE",0],

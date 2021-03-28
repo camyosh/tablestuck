@@ -9,11 +9,6 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
 
   let spec = client.playerMap.get(charid,"spec");
@@ -61,6 +56,11 @@ exports.run = (client, message, args) => {
 //eject selected item from specibus
 
 if(args[0]=="eject") {
+
+  if(strifecall.strifeTest(client, message, message.author) == true){
+    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
+    return;
+  }
 
   let local = client.playerMap.get(charid,"local");
   let land = local[4];

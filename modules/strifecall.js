@@ -108,11 +108,15 @@ function passTurn(client, message, local) {
 
   //determine if character passing turn is a player or underling
 
+  console.log("adding pass turn to message");
+
 
    msg = `${client.playerMap.get(list[init[turn][0]][1],"name")} passes their turn!`;
 
 
  //send passing turn message to every participating player's terminal channel
+
+ console.log(`Sending pass turn message to all players`);
 
   for(i=0;i<active.length;i++){
     if(list[active[i]][0]==true){
@@ -120,14 +124,24 @@ function passTurn(client, message, local) {
     }
   }
 
+  console.log(`finished sending message`);
+
 //keep passing turn until turn is passed to a player who is still alive
 
   let check = false;
   var newturn;
+  let emCheck = false;
+
+  console.log(`Passing turn until finds living player`);
 
   for(turn++;check==false;turn++){
+    console.log(`Turn is ${turn}`);
     if(turn>=init.length){
       turn = 0;
+    }
+    if(active==0){
+      check = true;
+      emCheck = true;
     }
     if(active.includes(init[turn][0])){
       newturn = turn;
@@ -137,11 +151,20 @@ function passTurn(client, message, local) {
 
   //write changes and finish passing turn
 
+  if(!emCheck){
+
   client.strifeMap.set(strifeLocal,newturn,"turn");
 
   //call the command to start the next character's turn
-
   startTurn(client,message,local);
+} else {
+
+  let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
+  for(let i=0;i<playerpos.length;i++){
+    leaveStrife(client,message,local,playerpos[i]);
+  }
+
+}
 
 } else {
   console.log("Stopped a crash!");
@@ -541,6 +564,8 @@ function startTurn(client, message, local) {
 //retrieve strife id
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
+  client.playerMap.set(strifeLocal,Date.now(),"time");
+
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let list = client.strifeMap.get(strifeLocal,"list");
   let init = client.strifeMap.get(strifeLocal,"init");
@@ -871,7 +896,7 @@ let underling = client.playerMap.get(list[init[turn][0]][1],"type");
 }
 
 exports.pass = function(client, message, local) {
-  passTurn(client,message,local);
+  setTimeout(passTurn,3000,client,message,local);
 }
 
 exports.start = function(client, message, local) {
@@ -1050,6 +1075,10 @@ exports.underRally = function(client, local) {
       console.log("Stopped another crash!");
       return;
     }
+
+    let bounceCheck = false;
+
+    client.strifeMap.set(strifeLocal,Date.now(),"time");
 
     if(action=="arbitrate"){
       action = actionList[Math.floor(Math.random()*actionList.length)];
@@ -2071,6 +2100,18 @@ if(list[target][3] < 1 && client.traitcall.traitCheck(client,list[target][1],"CA
 
 }
 
+let bounceChance=12;
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[1]){
+  bounceChance=6;
+}
+
+
+
+if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math.floor((Math.random() * bounceChance))){
+  bounceCheck=true;
+  alert+=`BOUNCY!!! IF TARGET IS STILL ALIVE, ATTACKING AGAIN!`;
+}
+
 
 
 
@@ -2198,11 +2239,6 @@ if(list[target][3] < 1 && client.traitcall.traitCheck(client,list[target][1],"CA
 
   }
 
-  let bounceChance=12;
-  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[1]){
-    bounceChance=6;
-  }
-
   client.strifeMap.set(strifeLocal,list,"list");
 
   if(list[target][7].includes("DOUBLEGRIST")&&list[target][3]>0){
@@ -2212,17 +2248,19 @@ try{
   if(log){
     console.log(`Checking if anyone in strife is dead`);
   }
-for(ik=0;ik<active.length;ik++){
+for(let ik=0;ik<active.length;ik++){
 if(list[active[ik]][3] < 1){
+  console.log("Trying to kill the dead ")
   setTimeout(kill,1000,client,message,local,active[ik],init[turn][0]);
 }else{
-  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0] && !Math.floor((Math.random() * bounceChance))){
+  if(bounceCheck && active[ik]==target){
     setTimeout(act,3000,client,message,local,"aggrieve",active[ik]);
-}
-}
+    }
+  }
 }
 }catch(err){
   console.log("Tried to kill someone in a database that did not exist");
+  console.log(err);
 }
   }
 
@@ -2606,10 +2644,13 @@ function npcTurn(client, message, local){
   let turn = client.strifeMap.get(strifeLocal,"turn")
   let init = client.strifeMap.get(strifeLocal,"init")
 
+  if(!list[init[turn][0]][0] && list[init[turn][0]][3]<1){
+
   let faction = client.playerMap.get(list[init[turn][0]][1],"faction");
   let spec = client.playerMap.get(list[init[turn][0]][1],"spec");
   let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
   let type = client.playerMap.get(list[init[turn][0]][1],"type");
+
   let prototype = client.playerMap.get(list[init[turn][0]][1],"prototype");
 
   let prefTarg = client.playerMap.get(list[init[turn][0]][1],"prefTarg");
@@ -2695,7 +2736,10 @@ console.log(`targets - ${targetList}`);
     }else{
       setTimeout(passTurn,1500,client,message,local);
     }
-
+}else{
+  setTimeout(passTurn,1500,client,message,local);
+  console.log("The robot revolution is beginning, AI attempted to take a player's turn for them")
+}
 
 }
 

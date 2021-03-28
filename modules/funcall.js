@@ -781,12 +781,16 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
         break;
       }
     }else if(target[4]!=message.guild.id+"medium"){
-      if(targSec[target[1]][target[2]][2][target[3]][3]==false||true==true){
+      if(targSec[target[1]][target[2]][2][target[3]][4].length==1){
     targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
   }
   }
 
-  targSec[target[1]][target[2]][2][target[3]][3]=true;
+  if(targSec[target[1]][target[2]][2][target[3]][3]==false){
+    client.funcall.actionCheck(client,message,"tile")
+    targSec[target[1]][target[2]][2][target[3]][3]=true;
+  }
+
   client.playerMap.set(charid,target,"local");
   client.landMap.set(target[4],targSec,target[0]);
 

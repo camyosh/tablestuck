@@ -1,296 +1,355 @@
 {
 
   "NONE":{
+  "img":"",
   "trait":"/",
 
   "set":"/"},
 
   "COMPUTER":{
+  "img":"https://media.discordapp.net/attachments/808757312520585227/808757550190166036/COMPUTER.png",
   "trait":"Item can be used to play SBURB and use PESTERCHUM",
 
   "set":"ALCHEMIZE ANY TIME."},
 
   "STORAGE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757750979887114/STORAGE.png",
   "trait":"Items can be placed inside this item",
 
   "set":"WEAPONS & ARMOR CAN BE SWITCHED OUT DURING COMBAT FOR FREE."},
 
   "FOOD":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757577689071616/FOOD.png",
   "trait":"Item can be consumed for VITALITY (6% of GV * tier)",
 
   "set":"Double healing from food"},
 
   "CANDY":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757540217028628/CANDY.png",
   "trait":"Item can be consumed for STAMINA",
 
   "set":"STAMINA +1"},
 
   "MEAT":{
-  "trait":"Deal BD on next attack",
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757603965730870/MEAT.png",
+  "trait":"Item can be consumed to deal BD on next attack",
 
   "set":"Add additional damage equal to BD whenever BD is delt"},
 
   "HOT":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757595413282816/HOT.png",
   "trait":"1d12 chance to inflict BURN condition",
 
   "set":"Add additional damage equal to BD against burned creatures"},
 
   "COLD":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757546441506836/COLD.png",
   "trait":"1d12 chance to inflict FROSTBITE condition",
 
   "set":"When a frostbite roll succeeds, target is also DAZED for one round."},
 
   "ELECTRIC":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757571825565696/ELECTRIC.png",
   "trait":"1d12 chance to inflict STUN condition",
 
   "set":"Immunity to the STUN condition"},
 
   "SHARP":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757632147521556/SHARP.png",
   "trait":"1d12 chance to inflict BLEED condition",
 
   "set":"BONUS DAMAGE rolls are FAVORABLE."},
 
   "BLUNT":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757527902683206/BLUNT.png",
   "trait":"1d12 chance to inflict DAZE condition",
 
   "set":"1d12 DAZE chance reduced to 1d6"},
 
   "SHITTY":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757635855024188/SHITTY.png",
   "trait":"Grist type is ARTIFACT, weapon is always tier 1",
 
   "set":"1d12 to apply the CORRUPT condition"},
 
   "CUTE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757556888600606/CUTE.png",
   "trait":"When you roll BR, BR +1",
 
   "set":"ATTACKS against you deal half BD"},
 
   "SPOOKY":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757639285702666/SPOOKY.png",
   "trait":"1d12 chance to inflict haunt",
 
   "set":"Haunted creatures deal half damage to you"},
 
   "CAT":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757543358824478/CAT.png",
   "trait":"Roll BR Whenever you're attacked",
 
   "set":"Once per STRIFE encounter, if an attack would drop you to 0 or lower VITALITY, the attack automatically misses for a single attack."},
 
   "DOG":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757702180339712/DOG.png",
   "trait":"Consume any item as though it were food",
 
   "set":"You can use an additional consumable item whenever you use one during STRIFE each round."},
 
   "BROKEN":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757533669982208/BROKEN.png",
   "trait":"Strike check is unfavorable",
 
   "set":"Upon a successful 1d12 roll, ATTACK delt deals MAX BD."},
 
   "CUSHIONED":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757553911038002/CUSHIONED.png",
   "trait":"Can be used to heal while sleeping",
 
   "set":"Double VITALITY RECOVERY value while sleeping"},
 
   "BUSINESS":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757536891207730/BUSINESS.png",
   "trait":"Always carry STAMINA",
 
   "set":"Get +1 extra STAMINA each turn"},
 
   "BOUNCY":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757530686652486/BOUNCY.png",
   "trait":"1d12 chance to attack twice (lvl 1 damage)",
 
   "set":"1d12 chance reduced to 1d6"},
 
   "STICKY":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757727639109652/STICKY.png",
   "trait":"1d12 chance to inflict grapple",
 
   "set":"Add additional damage equal to BD against grappled creatures"},
 
-  "MELEE (28)":{
+  "MELEE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757612534562896/MELEE.png",
   "trait":"Changes a weapon type to MELEE",
 
   "set":"STRIKE CHECK +2 on MELEE ACTIONS"},
 
-  "RANGED (11)":{
+  "RANGED":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757619798835280/RANGED.png",
   "trait":"Changes a weapon type to RANGED",
 
   "set":"STRIKE CHECK +2 ON RANGED ACTIONS"},
 
-  "MAGIC (12)":{
+  "MAGIC":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757600488914994/MAGIC.png",
   "trait":"Changes a weapon type to MAGIC",
 
   "set":"STRIKE CHECK +2 on MAGIC ACTIONS"},
 
   "REFINED":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757623561781318/REFINED.png",
   "trait":"STRIKE +2 against creatures you are effective against",
 
   "set":"ATTACKS against you deal half BD"},
 
   "VAMPIRIC":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757762263482399/VAMPIRIC.png",
   "trait":"1d12 chance to inflict BLEED",
 
   "set":"If TARGET is BLEEDING, heal all BD dealt"},
 
   "FROG":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757581815218176/FROG.png",
   "trait":"Add +1 to AV",
 
   "set":"1d12 chance to turn a hit into a miss."},
 
   "HARLEQUIN":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757585271980053/HARLEQUIN.png",
   "trait":"Use CHM for STRIKE CHECK",
 
   "set":"CHR +2"},
 
   "WIZARD":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757774989000744/WIZARD.png",
   "trait":"Use IMG for STRIKE CHECK",
 
   "set":"IMG +2"},
 
   "PLUSH":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757616155164692/PLUSH.png",
   "trait":"FOR +1",
 
   "set":"FOR +2"},
 
   "SCIENTIFIC":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757628629024828/SCIENTIFIC.png",
   "trait":"Use INT for STRIKE CHECK",
 
   "set":"INT +2"},
 
   "HEAVY":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757591852449802/HEAVY.png",
   "trait":"Use STR for STRIKE CHECK",
 
   "set":"STR +2"},
 
   "LIGHTWEIGHT":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808762958191525908/LIGHTWEIGHT.png",
   "trait":"Use AGL for STRIKE CHECK",
 
   "set":"AGL +2"},
 
   "PROSPIT":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808768036706320454/PROSPIT.png",
   "trait":"Add +1 extra STAMINA while on PROSPIT",
 
   "set":"+1 to all stats on PROSPIT"},
 
   "DERSE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808770174168989786/DERSE.png",
   "trait":"Add +1 extra STAMINA while on DERSE",
 
   "set":"+1 to all stats on DERSE"},
 
   "ENDURING":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808778241250426930/ENDURING.png",
   "trait":"Roll 2d4 for STAMINA roll",
 
   "set":"Roll 4d2 for STAMINA roll"},
 
   "THORNS":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808782820075634698/THORNS.png",
   "trait":"1d12 chance to inflict attacker with the BLEED condition",
 
   "set":"Whenever someone attacks you, they take BR in damage"},
 
   "ROCKET":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808800073437282404/ROCKET.png",
   "trait":"Always go first in initiative",
 
   "set":"ABILITY TO FLY"},
 
   "GAMBLING":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808804392882536448/GAMBLING.png",
   "trait":"Roll 1d4 on boon pickup - 1. Half 2. Normal 3. Normal 4. Double",
 
   "set":"Always get double boonbucks whenever boonbucks are earned"},
 
   "IRRADIATED":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808840185940803665/IRRADIATED.png",
   "trait":"1d12 chance to inflict BURN condition",
 
   "set":"Burn all enemies on a crit"},
 
   "NOIR":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808819423624036412/NOIR.png",
   "trait":"1d4 bonus to strike check",
 
   "set":"Triple damage on crit"},
 
   "CHARLATAN":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808839515745550376/CHARLATAN.png",
   "trait":"randomize actions at the beginning of your turn",
 
   "set":"1d6 chance to inflict a random status effect"},
 
   "EXQUISITE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808846233346506792/EXQUISIT.png",
   "trait":"Grist type is DIAMOND",
 
   "set":"AV +2"},
 
   "GRIMDARK":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808848869289885716/GRIMDARK.png",
   "trait":"1d12 chance to inflict HAUNT condition",
 
   "set":"Use AP as stamina"},
 
   "META":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/825486712284119050/TRAITSPRITES.png",
   "trait":"Reroll 1s, reroll 20s",
 
   "set":"Double grist"},
 
   "WELSH":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808856769358856272/WELSH.png",
   "trait":"Add +1 extra STAMINA each turn",
 
   "set":"Your 1's turn to 20's, Enemy 20's turn to 1's (targeting you)"},
 
   "TRICKSTER":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808858060683608124/TRICKSTER.png",
   "trait":"Grist type is ZILLIUM, weapon is always tier 16",
 
   "set":"All enemies drop Zillium Grist"},
 
   "BREATH":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808869796069900348/BREATH.png",
   "trait":"AV +2",
 
   "set":"IMMUNE TO ALL STATUS CONDITIONS"},
 
   "LIFE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808870350762541056/LIFE.png",
   "trait":"Unused STAMINA at the end of turn is converted to healing (4% Max HP per point)",
 
   "set":"Heal for BR at the start of each turn"},
 
   "LIGHT":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808870744217223178/LIGHT.png",
   "trait":"Turn 1s into 20's",
 
   "set":"REROLL ANY DIE ROLL OF A 5 OR LOWER."},
 
   "TIME":{
+    "img":"https://cdn.discordapp.com/attachments/808757312520585227/808884041326526484/TIME.png",
   "trait":"Get +1 extra STAMINA each turn",
 
   "set":"ADV ON STAMINA ROLLS"},
 
   "HEART":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808873732654497792/HEART.png",
   "trait":"1d20 for damage to heal you instead",
 
   "set":"AT THE START OF YOUR TURN, YOU PERFORM A RANDOM ACTION THAT COSTS 0 STAMINA."},
 
   "RAGE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808873397390934036/RAGE.png",
   "trait":"1d6 chance to inflict STUN",
 
   "set":"Crits deal 4x damage"},
 
   "BLOOD":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808874562346680360/BLOOD.png",
   "trait":"1d12 chance to change target of attack targetting you",
 
   "set":"WHENEVER AFFLICTED WITH A CONDITION, ALL HOSTILE COMBATANTS ARE AFFLICTED WITH THE SAME CONDITION."},
 
   "VOID":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808877694481596416/VOID.png",
   "trait":"Enemies reroll TRUE SUCCESS",
 
   "set":"STRIKE CHECKS are UNFAVORABLE agianst you, you are invisible"},
 
   "SPACE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808880509475880980/SPACE.png",
   "trait":"Ability to fly",
 
   "set":"TELEPORT"},
 
   "MIND":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808882087142752256/MIND.png",
   "trait":"Switching weapons is free",
 
   "set":"All actions cost 1 less stamina with a minimum of 1"},
 
   "HOPE":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808883236209950730/HOPE.png",
   "trait":"Stamina cost is 0 on a CRIT",
 
   "set":"Get stamina equal to stamina cost on crit"},
 
   "DOOM":{
+  "img":"https://cdn.discordapp.com/attachments/808757312520585227/808884859270332416/DOOM.png",
   "trait":"Convert HP to Stamina",
 
   "set":"ALL ENEMIES TAKE FULL ATTACK DAMAGE ON CRIT"}

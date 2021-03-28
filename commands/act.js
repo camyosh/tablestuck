@@ -231,6 +231,11 @@ for(i=0;i<action.length;i++){
     tempbg=`#ffb3cc`;
   }
 
+  if(!client.actionList[action[i]].add.includes("REUSE") && list[pos][6].includes(""+i+equip)){
+    tempcolor= `#6D6D6D`;
+    tempbg = `#cccccc`;
+  }
+
   //action number
   //ctx.fillRect(30,145+(130*j),40,40);
   //ctx.strokeRect(30,146+(130*j),40,40);

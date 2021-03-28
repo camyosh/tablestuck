@@ -137,7 +137,8 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
       players:1,
       playerpos:[0],
       round:0,
-      last:[]
+      last:[],
+      time:Date.now()
     }
 
     /*if(occ.length > 1){

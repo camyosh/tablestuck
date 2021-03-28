@@ -50,6 +50,18 @@ console.log(castlegen);
 
   client.landMap.set(message.guild.id+"medium", medium);
 
+  var leaderboard = {
+    experienceGained: ["NONE",0],
+    boondollarsGained: ["NONE",0],
+    tilesDiscovered: ["NONE",0],
+    itemsAlchemized: ["NONE",0],
+    underlingsDefeated:["NONE",0],
+    playersDefeated:["NONE",0],
+    bossesDefeated:["NONE",0],
+    itemsCaptchalogued:["NONE",0]
+}
+client.playerMap.set("leaderboard",leaderboard);
+
   message.channel.send("Session initialized!");
 
 }

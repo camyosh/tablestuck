@@ -80,6 +80,19 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  let quantity = 1;
+
+  if(args[1]){
+    value1 = parseInt(args[1], 10);
+
+    if(isNaN(value1)||value1<1||value1>16){
+      message.channel.send("That is not a valid quantity!");
+      return;
+    }
+
+    quantity = value1;
+  }
+
   let tier = registry[value][2];
 
   let gristType = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(registry[value][1].charAt(1))]];
@@ -115,23 +128,34 @@ exports.run = (client, message, args) => {
     cost2*=2;
   }
 
+  cost1*=quantity;
+  cost2*=quantity;
+
   if(gristCheck[client.grist[gristType].pos]<cost2||gristCheck[0]<cost1){
     message.channel.send("Client cannot afford to deploy that!");
     return;
   }
 
-  console.log(`This is the build cost 1 ${cost1}`);
-  console.log(`This is build cost 2 ${cost2}`);
-
   gristCheck[client.grist[gristType].pos]-=cost2;
   gristCheck[0]-=cost1;
 
-  sec[local[1]][local[2]][2][local[3]][5].push(registry[value])
+  let newItem = [];
+
+  for(let i=0;i<registry[value].length;i++){
+    if(i==3){
+      newItem.push(quantity);
+    }else{
+      newItem.push(registry[value][i]);
+    }
+  }
+
+  sec[local[1]][local[2]][2][local[3]][5].push(newItem)
   client.landMap.set(charid,sec,local[0]);
   client.playerMap.set(charid,gristCheck,"grist");
 
-  message.channel.send(`Alchemized the ${registry[value][0].toUpperCase()}`)
+  message.channel.send(`Expended ${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1} ${client.emojis.cache.get(client.grist[gristType].emoji)} ${cost2} to ALCHEMIZE **${newItem[0].toUpperCase()} x${quantity}!**`)
   client.funcall.sleepHeal(client,charid);
+  client.funcall.actionCheck(client,message,"alchemized");
 
   }else{
     message.channel.send("To ALCHEMIZE, you must be in a room with an ALCHEMITER");
