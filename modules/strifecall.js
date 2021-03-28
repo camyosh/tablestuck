@@ -2644,7 +2644,7 @@ function npcTurn(client, message, local){
   let turn = client.strifeMap.get(strifeLocal,"turn")
   let init = client.strifeMap.get(strifeLocal,"init")
 
-  if(!list[init[turn][0]][0] && list[init[turn][0]][3]<1){
+  if(!list[init[turn][0]][0] && !list[init[turn][0]][3]<1){
 
   let faction = client.playerMap.get(list[init[turn][0]][1],"faction");
   let spec = client.playerMap.get(list[init[turn][0]][1],"spec");
