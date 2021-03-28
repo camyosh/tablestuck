@@ -371,10 +371,11 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
         port+=sdex[selectDex][3];
 
+        message.channel.send(`Added ${sdex[selectDex][3]} STRIFE PORTFOLIO`);
         client.playerMap.set(charid,port,"port");
         let targetItem = sdex.splice(selectDex,1);
         client.playerMap.set(charid,sdex,"sdex");
-        message.channel.send(`Added ${sdex[selectDex][3]} STRIFE PORTFOLIO`);
+
 
       }
 
