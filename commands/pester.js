@@ -24,7 +24,7 @@ exports.run = async function(client, message, args){
 
   let value;
 
-  if(tagList.includes(args[0])){
+  if(tagList.includes(args[0].toUpperCase())){
     value=tagList.indexOf(args[0].toUpperCase());
   }else{
     message.channel.send("That isn't a valid tag! Check your >chumroll and use a chum's tag to message them!");

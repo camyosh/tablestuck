@@ -698,7 +698,7 @@ exports.gristCacheEmbed = function(client, charid) {
 }
 
 exports.chanMsg = function(client, target, msg, embed){
-
+try{
   if(client.playerMap.has(target,"channel")){
     if(embed!=undefined){
     client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg,embed);
@@ -706,6 +706,9 @@ exports.chanMsg = function(client, target, msg, embed){
     client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg);
   }
   }
+}catch(err){
+  console.log(err);
+}
 
   let possess = client.playerMap.get(target,"possess");
 

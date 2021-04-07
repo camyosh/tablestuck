@@ -3,7 +3,7 @@
 //const strifecall = require("../modules/strifecall.js");
 //const landcall = require("../modules/landcall.js");
 
-const gateReq = [0,200,400,800,1600,3200,6400,12800];
+const gateReq = [0,100,200,400,800,1600,3200,6400];
 const gateName = ["FIRST","SECOND","THIRD","FOURTH","FIFTH","SIXTH","SEVENTH"];
 
 exports.run = (client, message, args) => {

@@ -369,6 +369,8 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
         let port = client.playerMap.get(charid,"port");
 
+        console.log(`Portfolio count is currently ${port}, adding ${sdex[selectDex][3]}`);
+
         port+=sdex[selectDex][3];
 
         message.channel.send(`Added ${sdex[selectDex][3]} STRIFE PORTFOLIO`);

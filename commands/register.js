@@ -5,7 +5,12 @@ const landcall = require("../modules/landcall.js");
 //This command creates a character sheet in the player database as well as a new land in the location database
 const strifecall = require("../modules/strifecall.js");
 
-exports.run = (client, message, args) => {
+exports.run = async function(client, message, args){
+
+  let channel = ``;
+  let pesterchannel = ``;
+
+  let channelCheck = false;
 
   var gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"]
 
@@ -66,6 +71,19 @@ for(i=0;i<2;i++){
       message.channel.send("You have to wait at least 5 minutes before registering again!");
       return;
     }
+
+    channel = client.playerMap.get(charid,"channel");
+    pesterchannel = client.playerMap.get(charid,"pesterchannel");
+
+    channelCheck = true;
+
+    try{
+      client.channels.cache.get(channel).send(`Re-registering`);
+    }catch(err){
+      channelCheck=false;
+    }
+
+
   }
 
 
@@ -298,7 +316,7 @@ regImport();
     possess:[],
     name: message.author.username,
     ping: message.author.id,
-    channel: message.channel.id,
+    channel: channel,
     faction:"player",
     type:"player",
     act:0,
@@ -349,7 +367,7 @@ regImport();
     chumtag:ab,
     chumpic:message.author.avatarURL(),
     chumroll:[],
-    pesterchannel:message.channel.id,
+    pesterchannel:pesterchannel,
     prospitRep:repDef[0],
     derseRep:repDef[1],
     underlingRep:-1,
@@ -363,6 +381,67 @@ regImport();
 
 client.playerMap.set(charid,charSheet);
 
+if(!channelCheck){
+
+  async function generateChannels(){
+
+    var categoryList = [["827298639994421248","827298674547097657"],["827335332789878814","827335362124316712"]]
+
+    let category = [];
+    let catCheck=false;
+
+    for(let i=0;i<categoryList.length&&!catCheck;i++){
+
+      //message.channel.send(client.channels.cache.get(categoryList[i][0]).children.size);
+
+    }
+
+    var chan = await message.guild.channels.create(`${message.author.username}`, {
+        type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+        permissionOverwrites: [
+           {
+             id: message.author.id,
+             allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+       },{
+         id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
+         deny: ['VIEW_CHANNEL'], //Deny permissions
+       }
+     ]//,
+     //parent:"827335332789878814"
+      })
+      var pesterchan = await message.guild.channels.create(`${message.author.username}`, {
+          type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+          permissionOverwrites: [
+             {
+               id: message.author.id,
+               allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+         },{
+           id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
+           deny: ['VIEW_CHANNEL'], //Deny permissions
+         }
+       ]//,
+       //parent:"827335362124316712"
+        })
+
+        channel = chan.id;
+        pesterchannel = pesterchan.id;
+
+        client.hookcall.hookGen(client,pesterchannel);
+
+        client.playerMap.set(charid,channel,"channel");
+        client.playerMap.set(charid,pesterchannel,"pesterchannel");
+
+        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nIf you are confused, feel free to check #tutorial \nA list of all available commands can be found in #commands \nIf you have questions, feel free to send them in #help`);
+  }
+
+  generateChannels();
+
+}else{
+  client.playerMap.set(charid,channel,"channel");
+  client.playerMap.set(charid,pesterchannel,"pesterchannel");
+    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nIf you are confused, feel free to check #tutorial \nA list of all available commands can be found in #commands \nIf you have questions, feel free to send them in #help`);
+}
+
 //console.log(`Finished setting character sheet - ${Date.now() - startTime}`);
 
 
@@ -370,7 +449,7 @@ client.playerMap.set(charid,charSheet);
 
 //console.log(`Calling Hookcheck - ${Date.now() - startTime}`);
 
-client.hookcall.hookCheck(client,message);
+//client.hookcall.hookCheck(client,message);
 
 //console.log(`hookCheck has resolved - ${Date.now() - startTime}`);
 
@@ -389,10 +468,10 @@ client.landMap.set(message.guild.id+"medium",sessionGrist,"gristCounter");
 //var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
 
 //console.log(`Generating all of the lands - ${Date.now() - startTime}`);
-var s1 = landcall.landGen(client,0,gategen[0],message);
-var s2 = landcall.landGen(client,1,gategen[1],message);
-var s3 = landcall.landGen(client,2,gategen[2],message);
-var s4 = landcall.landGen(client,3,gategen[3],message);
+var s1 = await landcall.landGen(client,0,gategen[0],message);
+var s2 = await landcall.landGen(client,1,gategen[1],message);
+var s3 = await landcall.landGen(client,2,gategen[2],message);
+var s4 = await landcall.landGen(client,3,gategen[3],message);
 
 //console.log(`Lands have been generated - ${Date.now() - startTime}`);
 
@@ -419,9 +498,6 @@ var land = {
 //adds the charaacter sheet and land sheet to the database
 
 client.landMap.set(charid,land)
-
-message.channel.send(`${target} has been registered!`);
-message.channel.send(`${message.author.username} stands in their bedroom. It just so happens that today, the 25th of July is the day of SAHCON! \n\nThank you for playing Tablestuck! For this game, you have been given completely randomized items throughout your house. If you are ever confused about how the bot functions or any of the commnands, use the >help command!\nIf at any point you die during this test, just use >register again to come back to life! This will reset your character, house and land entirely so only do this if you die or get softlocked!\n\nIf you're ever confused, feel free to use >help`);
 
   console.log(`End time is ${Date.now() - startTime}`);
 

@@ -335,7 +335,7 @@ switch(client.playerMap.get(list[target][1],"faction")){
         grist[client.grist[primaryType].pos]+=(amount*2);
       }
       //if rainbow grist, add to all grist types
-      if(primaryType=="rainbow"){
+      if(secondType=="rainbow"){
         if(log){
           console.log(`Adding all grist types`);
         }
@@ -1122,6 +1122,12 @@ exports.underRally = function(client, local) {
     let bdroll;
     let absorb = false;
     let tarGrist;
+
+console.log(message.author.username);
+
+console.log(list[target]);
+console.log(list);
+console.log(target);
 
     if(client.traitcall.traitCheck(client,list[target][1],"BLOOD")[0]){
       if(!Math.floor(Math.random()*12)&&active.length>2){
@@ -2644,7 +2650,7 @@ function npcTurn(client, message, local){
   let turn = client.strifeMap.get(strifeLocal,"turn")
   let init = client.strifeMap.get(strifeLocal,"init")
 
-  if(!list[init[turn][0]][0] && !list[init[turn][0]][3]<1){
+  if(!list[init[turn][0]][0]&&list[init[turn][0]][3]>0){
 
   let faction = client.playerMap.get(list[init[turn][0]][1],"faction");
   let spec = client.playerMap.get(list[init[turn][0]][1],"spec");
@@ -2722,14 +2728,15 @@ console.log(`targets - ${targetList}`);
       if(action=="arf"){
         targetList=[];
         for(let i=0;i<active.length;i++){
-          if(client.playerMap.get(list[active[i]][1],`${faction}Rep`)>0){
+          if(client.playerMap.get(list[active[i]][1],`${faction}Rep`)>=0){
             targetList.push(active[i]);
           }
         }
+        targetList.push(init[turn][0]);
         target = targetList[Math.floor((Math.random() * targetList.length))];
 
       }
-
+      console.log(`TAKING NPC ACTION, TARGET IS ${target}, ACTION IS ${action}`);
       setTimeout(act,1500,client,message,local,action,target);
       setTimeout(npcTurn,3000,client,message,local,action,target);
 

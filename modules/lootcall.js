@@ -10,6 +10,10 @@ const alcTraitName = ["ALCHEMY TRAIT- ROCKET","ALCHEMY TRAIT- HEAVY","ALCHEMY TR
 const alcActionCode = [["////X///","////U///","////z///","////f///","////j///","////R///","////Y///","////w///","////a///","////s///","////M///","////Z///","////c///","////Q///","////6///","////x///","////N///","////o///","////3///","////S///"],["/////a//","/////k//","/////w//","/////c//","/////j//","/////F//","/////o//","/////n//","/////q//","/////Y//","/////x//","/////B//","/////t//","/////J//","/////p//","/////8//","/////m//","/////Q//","/////g//","/////X//"],["//////u/","//////o/","//////2/","//////y/","//////C/","//////9/","//////t/","//////T/","//////6/","//////A/","//////c/","//////U/","//////P/","//////W/","//////G/","//////s/","//////Q/","//////S/","//////R/","//////e/"],["///////2","///////U","///////o","///////X","///////G","///////r","///////u","///////H","///////D","///////R","///////p","///////J","///////q","///////n","///////7","///////t","///////6","///////h","///////z","///////v"]]
 const alcActionName = ["ALCHEMY ACTION- ASSEMBLE/ARISE/ACCOUNT","ALCHEMY ACTION- ASSAULT/ARGUFY/ACCOMPLISH","ALCHEMY ACTION- ASSASSINATE/ARF/ACCLIMATE","ALCHEMY ACTION- ASSAIL/ARDOR/ACCLAIM","ALCHEMY ACTION- ASS/ARCHIVE/ACCESSORIZE","ALCHEMY ACTION- ASPIRE/ARBORIZE/ACCELERATE","ALCHEMY ACTION- ASPHIXIATE/ARBITRATE/ACCEDE","ALCHEMY ACTION- AGGRAVATE","ALCHEMY ACTION- AGGRESS","ALCHEMY ACTION- AGGREGATE","ALCHEMY ACTION- ASSERT/ARITHMATIZE/ACCUMULATE","ALCHEMY ACTION- ASSES/ARMAMENTIFY/ACCUSE","ALCHEMY ACTION- ASSEVERATE/ARRAIGN/ACERBATE","ALCHEMY ACTION- ASSIGN/ARRANGE/ACKNOWLEDGE","ALCHEMY ACTION- ASSIMILATE/ARREST/ACQUAINT","ALCHEMY ACTION- ASSIST/ARRIVE/ACQUIRE","ALCHEMY ACTION- ASSURE/ARROGATE/ACTUALIZE","ALCHEMY ACTION- ASTONISH/ARSENALIZE/ACTUATE","ALCHEMY ACTION- ASTOUND/ARTICULATE/ACUERE","ALCHEMY ACTION- ASTRICT/ARTILLERATE/ACCUPRESSURE"]
 
+const codeList = []
+
+
+
 exports.lootA = function(client, section, loot) {
   let lootTable;
   let ranKind = client.captchaCode[Math.floor(Math.random()*52)+4]

@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
 
   //define variables to determine required grist to reach each gate
 
-  const gateReq = [200,400,800,1600,3200,6400,12800,25600];
+  const gateReq = [100,200,400,800,1600,3200,6400,12800];
 
   //retrieve player location
 
