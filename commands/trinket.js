@@ -68,7 +68,7 @@ exports.run = (client, message, args) => {
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }
-    
+
     if(trinket.length==0){
       message.channel.send("You don't have any EQUIPPED TRINKET to EJECT!");
       return;
@@ -109,7 +109,7 @@ exports.run = (client, message, args) => {
     //if no second argument, cancel
 
     if(!args[1]){
-      message.channel.send("You must select TRINKET from your SYLLADEX to equip! See the items in your sylladex with >sylladex")
+      message.channel.send(`You must select TRINKET from your SYLLADEX to equip! See the items in your sylladex with ${client.auth.prefix}sylladex`)
       return;
     }
 
@@ -122,14 +122,14 @@ exports.run = (client, message, args) => {
       return;
     }
     if(selectDex >= sdex.length || selectDex< 0){
-      message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+      message.channel.send(`That is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
       return;
     }
 
     //if trinket is already equipped, cancel
 
     if(trinket.length>0){
-      message.channel.send("You already have trinket equipped! Unequip your currently equipped trinket using >trinket eject");
+      message.channel.send(`You already have trinket equipped! Unequip your currently equipped trinket using ${client.auth.prefix}trinket eject`);
       return;
     }
 
@@ -153,7 +153,7 @@ exports.run = (client, message, args) => {
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
 
   } else {
-    message.channel.send("That is not a valid argument! Valid arguments for >trinket are eject and equip!")
+    message.channel.send(`That is not a valid argument! Valid arguments for ${client.auth.prefix}trinket are eject and equip!`)
   }
 
 

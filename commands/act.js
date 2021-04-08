@@ -354,7 +354,7 @@ if(log){
     return;
     */
 
-    client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,"SELECT A TARGET (>list)")
+    client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,`SELECT A TARGET (${client.auth.prefix}list)`)
     return;
   }
 

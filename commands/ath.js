@@ -125,7 +125,7 @@ exports.run = (client, message, args) => {
      }
 
      if(!args[1]){
-       message.channel.send("Select an item in the ATHENAEUM to change the TIER of using the INSTANT ALCHEMITER'S ENLARGER. \n>athenaeum tier [item] [tier]");
+       message.channel.send(`Select an item in the ATHENAEUM to change the TIER of using the INSTANT ALCHEMITER'S ENLARGER. \n${client.auth.prefix}athenaeum tier [item] [tier]`);
        return;
      }
 

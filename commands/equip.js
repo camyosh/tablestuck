@@ -27,12 +27,12 @@ exports.run = (client, message, args) => {
 //make sure strife specibus is allocated
 
   if(kinds.length == 0){
-    message.channel.send(`Your STRIFE SPECIBUS is not currently allocated to a weaponkind, you must >allocate it before you can >equip a weapon!`);
+    message.channel.send(`Your STRIFE SPECIBUS is not currently allocated to a weaponkind, you must ${client.auth.prefix}allocate it before you can ${client.auth.prefix}equip a weapon!`);
     return;
   };
 
   if(!args[0]){
-    message.channel.send("You need to select an item from your sylladex to add to your STRIFE SPECIBUS! You can see a full list of items in your sylladex with >sylladex. Allocate an item using the position number in the sylladex, for example: >equip 3");
+    message.channel.send(`You need to select an item from your sylladex to add to your STRIFE SPECIBUS! You can see a full list of items in your sylladex with ${client.auth.prefix}sylladex. Allocate an item using the position number in the sylladex, for example: ${client.auth.prefix}equip 3`);
     return;
   }
 
@@ -43,7 +43,7 @@ exports.run = (client, message, args) => {
     return;
   }
   if(selectDex >= sdex.length || selectDex< 0){
-    message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+    message.channel.send(`That is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
     return;
   }
 
@@ -52,14 +52,14 @@ exports.run = (client, message, args) => {
   let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(sdex[selectDex][1].charAt(0)) /*-1*/  ]];
 
   if(kinds[0] !== weaponkind) {
-    message.channel.send(`Your STRIFE SPECIBUS is allocated to ${kinds[0]}, you can only >equip ${kinds[0]} weapons!`);
+    message.channel.send(`Your STRIFE SPECIBUS is allocated to ${kinds[0]}, you can only ${client.auth.prefix}equip ${kinds[0]} weapons!`);
     return;
   }
 
 //check if strife specibus is full
 
   if(spec.length >= scards) {
-    message.channel.send("Your STRIFE SPECIBUS is full! You can >specibus eject a weapon to make room.");
+    message.channel.send(`Your STRIFE SPECIBUS is full! You can ${client.auth.prefix}specibus eject a weapon to make room.`);
     return;
   }
 

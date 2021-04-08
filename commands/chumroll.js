@@ -220,7 +220,7 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
   if(args[0]=="block"){
 
     if(!args[1]){
-      message.channel.send("Please enter the tag of the chum you would like to block. >chumroll block EB");
+      message.channel.send(`Please enter the tag of the chum you would like to block. ${client.auth.prefix}chumroll block EB`);
       return;
     }
 

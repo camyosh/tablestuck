@@ -30,7 +30,7 @@ exports.run = (client, message, args) => {
     return;
   }
   if(selectDex >= sdex.length || selectDex< 0){
-    message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+    message.channel.send(`That is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
     return;
   }
   var selectCode
@@ -48,7 +48,7 @@ exports.run = (client, message, args) => {
       return;
     }
     if(selectRoom >= room[5].length || selectRoom < 0){
-      message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+      message.channel.send(`That is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
       return;
     }
     //var roomCode = room[5][selectRoom][1]
@@ -94,7 +94,7 @@ exports.run = (client, message, args) => {
             return;
 
           } else {
-            message.channel.send("Both CARD SLOTS on the TOTEM LATHE are full! Take them out using the >captcha command");
+            message.channel.send(`Both CARD SLOTS on the TOTEM LATHE are full! Take them out using the ${client.auth.prefix}captcha command`);
             return;
           }
         } else if(selectCode == "########" && sdex[selectDex][0] == "CRUXITE DOWEL"){

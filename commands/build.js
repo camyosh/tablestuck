@@ -37,24 +37,26 @@ exports.run = (client, message, args) => {
 
   if(client.playerMap.get(charid,"client") == "NA") {
     message.channel.send("You aren't connected to a client!");
+    return;
   }
-
   //retrieve clients charid
-
   let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
-
+  //checks if amount spent is greater than amount of grist player has
+  let buildSpent = client.landMap.get(clientId,"spent");
+  let grist = client.playerMap.get(clientId,"grist");
+  let gate = 0;
+  let curGate = client.landMap.get(clientId,"gate");
   //convert grist amount to number
-
+  if(!args[0]){
+    message.channel.send(`Your client ${(curGate>0?`has access to gate number ${curGate}`:`hasn't reached a gate yet`)}. \nYou have expended ${buildSpent} grist on the house so far, and need to expend ${gateReq[curGate]-buildSpent} more to reach the next gate!`);
+    return;
+  }
   value = parseInt(args[0], 10);
   if(isNaN(value) || value<1){
-    message.channel.send("That is not a valid argument!");
+    message.channel.send("That is not a valid amount of grist to spend!");
     return;
   }
 
-  //checks if amount spent is greater than amount of grist player has
-
-  let buildSpent = client.landMap.get(clientId,"spent");
-  let grist = client.playerMap.get(clientId,"grist");
 
   if(value > grist[0]) {
     message.channel.send("The Client doesn't have enough Build Grist!");
@@ -69,10 +71,8 @@ exports.run = (client, message, args) => {
 
   //check if player has enough grist to reach next gate
 
-  let i;
-  let gate = 0;
-  let curGate = client.landMap.get(clientId,"gate");
-  for(i=0;i<gateReq.length;i++){
+
+  for(let i=0;i<gateReq.length;i++){
     if(buildSpent>=gateReq[i]){
       gate++;
     }

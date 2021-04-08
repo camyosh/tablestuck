@@ -39,7 +39,7 @@ exports.run = (client, message, args) => {
     return;
   }
   if(value >= room[5].length || value < 0){
-    message.channel.send("That is not a valid item! Check the list of items in the room with >inspect");
+    message.channel.send(`That is not a valid item! Check the list of items in the room with ${client.auth.prefix}inspect`);
     return;
   }
 
@@ -53,7 +53,7 @@ exports.run = (client, message, args) => {
     }
 
     if(room[5][value][4].length>room[5][value][2]*2){
-      message.channel.send("That container is holding too many items to pick up! A container can't be picked up if it holds more items than double it's tier.\nIf you're trying to take an item outside of it, you can do >captcha [target item in room] [target item's contents]");
+      message.channel.send(`That container is holding too many items to pick up! A container can't be picked up if it holds more items than double it's tier.\nIf you're trying to take an item outside of it, you can do ${client.auth.prefix}captcha [target item in room] [target item's contents]`);
       return;
     }
 
@@ -71,7 +71,7 @@ exports.run = (client, message, args) => {
     return;
   }
   if(value1 >= room[5][value][4].length || value1 < 0){
-    message.channel.send("That is not a valid item! Check the list of items in the room with >inspect");
+    message.channel.send(`That is not a valid item! Check the list of items in the room with ${client.auth.prefix}inspect`);
     return;
   }
   if(room[5][value][1]=="11111111"){

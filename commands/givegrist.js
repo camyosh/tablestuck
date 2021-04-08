@@ -11,11 +11,10 @@ exports.run = (client, message, args) => {
 
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
 
-  if(true == false) {
-    message.channel.send("You don't have permission to do that!");
+  if(!args[0]){
+    message.channel.send(`to use this command, the format is: \n${client.auth.prefix}givegrist [# of grist given] [type of grist] [ping of target player]`);
     return;
   }
-
   select = parseInt(args[0], 10);
   if(isNaN(select)){
     if(gristTypes.includes(args[0])){
@@ -41,8 +40,6 @@ exports.run = (client, message, args) => {
 
 
   grist[select]+=value;
-
-
 
     client.playerMap.set(charid,grist,"grist");
 

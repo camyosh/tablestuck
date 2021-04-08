@@ -132,7 +132,7 @@ exports.run = (client, message, args) => {
   cost2*=quantity;
 
   if(gristCheck[client.grist[gristType].pos]<cost2||gristCheck[0]<cost1){
-    message.channel.send("Client cannot afford to deploy that!");
+    message.channel.send("You cannot afford to deploy that!");
     return;
   }
 

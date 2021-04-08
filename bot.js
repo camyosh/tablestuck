@@ -105,6 +105,7 @@ client.strifeMap = strifeMap;
 client.map = require("./map.json");
 client.limit = 0;
 client.Canvas = Canvas;
+client.resources = require("./resources.json");
 //client.GoogleSpreadsheet = GoogleSpreadsheet;
 
 

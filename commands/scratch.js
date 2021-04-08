@@ -56,7 +56,7 @@ if(args[0]=="confirm"){
   message.channel.send("Session and all players PERMANENTLY deleted");
 
 } else {
-  message.channel.send("Are you absolutely 100% sure you want to scratch this session? All data and characters that are still within the session will be PERMANENTLY lost! If you're sure, do >scratch confirm");
+  message.channel.send(`Are you absolutely 100% sure you want to scratch this session? All data and characters that are still within the session will be PERMANENTLY lost! If you're sure, do ${client.auth.prefix}scratch confirm`);
   return;
 }
 

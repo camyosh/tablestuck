@@ -35,7 +35,7 @@ exports.run = (client, message, args) => {
   //check for second argument
 
   if(!args[0]){
-    message.channel.send("You need to select an item from your sylladex to allocate! You can see a full list of items in your sylladex with >sylladex. Allocate an item using the position number in the sylladex, for example: >allocate 3");
+    message.channel.send(`You need to select an item from your sylladex to allocate! You can see a full list of items in your sylladex with ${client.auth.prefix}sylladex. Allocate an item using the position number in the sylladex, for example: ${client.auth.prefix}allocate 3`);
     return;
   }
 
@@ -52,7 +52,7 @@ exports.run = (client, message, args) => {
 //check if argument is an item in sylladex
 
   if(selectDex >= cards || selectDex< 0 || selectDex >= sdex.length){
-    message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+    message.channel.send(`That is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
     return;
   }
 

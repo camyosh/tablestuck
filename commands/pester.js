@@ -18,7 +18,7 @@ exports.run = async function(client, message, args){
   }
 
   if(!args[0]){
-    message.channel.send("check your chumroll and use a chum's tag to message them! For example, >pester gt Fuck you!");
+    message.channel.send(`check your chumroll and use a chum's tag to message them! For example, ${client.auth.prefix}pester gt Fuck you!`);
     return;
   }
 
@@ -27,7 +27,7 @@ exports.run = async function(client, message, args){
   if(tagList.includes(args[0].toUpperCase())){
     value=tagList.indexOf(args[0].toUpperCase());
   }else{
-    message.channel.send("That isn't a valid tag! Check your >chumroll and use a chum's tag to message them!");
+    message.channel.send(`That isn't a valid tag! Check your ${client.auth.prefix}chumroll and use a chum's tag to message them!`);
     return;
   }
 

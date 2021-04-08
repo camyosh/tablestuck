@@ -14,7 +14,7 @@ exports.run = (client, message, args) => {
   }
 
   if(!args[1]||args[1].length<2){
-    message.channel.send("Please enter a 2 letter chumtag after your chumhandle, for example >chumhandle ghostlyTrickster GT");
+    message.channel.send(`Please enter a 2 letter chumtag after your chumhandle, for example ${client.auth.prefix}chumhandle ghostlyTrickster GT`);
     return;
   }
 

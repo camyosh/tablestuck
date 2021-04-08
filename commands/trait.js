@@ -80,7 +80,7 @@ exports.run = (client, message, args) => {
 
     var embed = new client.Discord.MessageEmbed()
     .setTitle(`ACTIVE TRAITS`)
-    .addField(`HELP`,`These are all your active traits and the bonuses they give you! These traits are determined by your equipped WEAPON, ARMOR, and TRINKET.\n\nIf you have at least 3 of the same trait equipped, you also get the SET BONUS listed alongside the trait.\n\n If you'd like to see details on traits you don't have, do >trait [trait name]`)
+    .addField(`HELP`,`These are all your active traits and the bonuses they give you! These traits are determined by your equipped WEAPON, ARMOR, and TRINKET.\n\nIf you have at least 3 of the same trait equipped, you also get the SET BONUS listed alongside the trait.\n\n If you'd like to see details on traits you don't have, do ${client.auth.prefix}trait [trait name]`)
     .addField(`TRAITS`,msg);
 
     message.channel.send(embed);

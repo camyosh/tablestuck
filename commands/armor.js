@@ -121,7 +121,7 @@ exports.run = (client, message, args) => {
     //if no second argument, cancel
 
     if(!args[1]){
-      message.channel.send("You must select ARMOR from your SYLLADEX to equip! See the items in your sylladex with >sylladex")
+      message.channel.send(`You must select ARMOR from your SYLLADEX to equip! See the items in your sylladex with ${client.auth.prefix}sylladex`)
       return;
     }
 
@@ -134,14 +134,14 @@ exports.run = (client, message, args) => {
       return;
     }
     if(selectDex >= sdex.length || selectDex< 0){
-      message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+      message.channel.send(`That is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
       return;
     }
 
     //if armor is already equipped, cancel
 
     if(armor.length>0){
-      message.channel.send("You already have ARMOR equipped! Unequip your currently equipped armor using >armor eject");
+      message.channel.send(`You already have ARMOR equipped! Unequip your currently equipped armor using ${client.auth.prefix}armor eject`);
       return;
     }
 
@@ -165,7 +165,7 @@ exports.run = (client, message, args) => {
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
 
   } else {
-    message.channel.send("That is not a valid argument! Valid arguments for >armor are eject and equip!")
+    message.channel.send(`That is not a valid argument! Valid arguments for ${client.auth.prefix}armor are eject and equip!`)
   }
 
 

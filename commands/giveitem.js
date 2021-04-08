@@ -8,7 +8,10 @@ exports.run = (client, message, args) => {
     message.channel.send("Only a DM can use this command");
     return;
   }
-
+  if(!args[0]){
+    message.channel.send(`to use this command, the format is: \n${client.auth.prefix}giveitem [code of item being given] [tier of item] [number of items being given] [ping of target player] [item name(optional)]`);
+    return;
+  }
   if(!message.mentions.members.first()){
     message.channel.send("You must @ a user to target them!");
     return;

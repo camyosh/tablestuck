@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
     return;
   }
   if(selectDex >= sdex.length || selectDex< 0){
-    message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+    message.channel.send(`That is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
     return;
   }
 

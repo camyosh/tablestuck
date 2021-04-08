@@ -26,7 +26,7 @@ if(!args[0]){
   possessList = new client.Discord.MessageEmbed()
   .setTitle("**POSSESS LIST**")
   .addField(`**CURRENT OCCUPANTS:**`,msg)
-  .addField(`**CURRENTLY POSSESSING:**`,`**${client.playerMap.get(client.playerMap.get(charid,"control"),"name")}**\nTo stop possessing, do >possess cancel`);
+  .addField(`**CURRENTLY POSSESSING:**`,`**${client.playerMap.get(client.playerMap.get(charid,"control"),"name")}**\nTo stop possessing, do ${client.auth.prefix}possess cancel`);
   message.channel.send(possessList);
 
   return;

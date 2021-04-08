@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
   let spec = client.playerMap.get(charid,"spec");
 
   if(!args[0]){
-    message.channel.send("Please select a weapon you would like to switch to. You can see all currently equipped weapons with >SPECIBUS");
+    message.channel.send(`Please select a weapon you would like to switch to. You can see all currently equipped weapons with ${client.auth.prefix}SPECIBUS`);
     return;
   }
 
@@ -27,9 +27,12 @@ exports.run = (client, message, args) => {
     message.channel.send("That is not a valid argument!");
     return;
   };
-
+  let curWeapon = client.playerMap.get(charid,"equip");
+  if(curWeapon==value){
+    message.channel.send("You already have that weapon equipped!");
+    return;
+  }
   if(client.strifecall.strifeTest(client,message,message.author)){
-
     let local = client.playerMap.get(charid,"local");
     let pos = client.playerMap.get(charid,"pos");
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;

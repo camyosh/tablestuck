@@ -19,14 +19,14 @@ exports.run = (client, message, args) => {
 
 
 if(!args[0]){
-  message.channel.send("Select a transportalizer in the room. To see a list of transportalizers in the room, do the >inspect command");
+  message.channel.send(`Select a transportalizer in the room. To see a list of transportalizers in the room, do the ${client.auth.prefix}inspect command`);
   return;
 }
 
 if(args[0]=="set"){
 
   if(!args[1]){
-    message.channel.send("Select a transportalizer in the room followed by the code of the target transportalizer you would like to set it's target as!\n\nFor example: >transportalize set 1 AAAA");
+    message.channel.send(`Select a transportalizer in the room followed by the code of the target transportalizer you would like to set it's target as!\n\nFor example: ${client.auth.prefix}transportalize set 1 AAAA`);
     return;
   }
 
@@ -89,7 +89,7 @@ if(args[0]=="set"){
   let target = client.transMap.get(message.guild.id+dex[value][1].substring(4),"target");
 
   if(target.length==0){
-    message.channel.send(`This transportalizer does not have a target set! To set the transportalizer to a target, do >transportalizer ${value+1} set [target code]\n\n This transportalizer's code is ${dex[value][1].substring(4)}`)
+    message.channel.send(`This transportalizer does not have a target set! To set the transportalizer to a target, do ${client.auth.prefix}transportalizer ${value+1} set [target code]\n\n This transportalizer's code is ${dex[value][1].substring(4)}`)
     return;
   }
 

@@ -15,12 +15,12 @@ if(args[0]){
 
   let value = parseInt(args[0], 10) - 1;
   if(isNaN(value)){
-    message.channel.send("That is not a valid selection! See a list of entities in the room with >list");
+    message.channel.send(`That is not a valid selection! See a list of entities in the room with ${client.auth.prefix}list`);
     return;
   }
 
   if(value > occList.length-1 || value < 0) {
-    message.channel.send("That is not a valid selection! See a list of entities in the room with >list");
+    message.channel.send(`That is not a valid selection! See a list of entities in the room with ${client.auth.prefix}list`);
     return;
   }
 targId = occList[value][1];

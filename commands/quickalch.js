@@ -62,7 +62,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
 
     if(select1 >= sdex.length || select1< 0){
-      message.channel.send("That is not a valid item! Check the list of items in your Sylladex with >sylladex");
+      message.channel.send(`That is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
       return;
     }
     item1 = sdex[select1].slice();
@@ -76,13 +76,13 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
     registry.unshift(item1);
     client.playerMap.set(charid,registry,"registry");
-    message.channel.send(`Registered the ${item1[0]} to the alchemy athenaeum! Alchemize it using the >alchemize command`);
+    message.channel.send(`Registered the ${item1[0]} to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     return;
 
   }
 
   if(!args[0]||!args[1]||!args[2]){
-    message.channel.send("To use the Instant Alchemiter, you need to select an item from your sylladex, select an alchemy type (&& or ||), and select a second item from your sylladex. For example, >alchemize 1 && 2. If you want to just reproduce a single item, just select the first item.");
+    message.channel.send(`To use the Instant Alchemiter, you need to select an item from your sylladex, select an alchemy type (&& or ||), and select a second item from your sylladex. For example, ${client.auth.prefix}alchemize 1 && 2. If you want to just reproduce a single item, just select the first item.`);
     return;
   }
 
@@ -93,7 +93,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     return;
   }
   if(select1 >= sdex.length || select1< 0){
-    message.channel.send("The first selection is not a valid item! Check the list of items in your Sylladex with >sylladex");
+    message.channel.send(`The first selection is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
     return;
   }
   select2 = parseInt(args[2], 10) - 1;
@@ -103,7 +103,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     return;
   }
   if(select2 >= sdex.length || select2< 0){
-    message.channel.send("The second selection is not a valid item! Check the list of items in your Sylladex with >sylladex");
+    message.channel.send(`The second selection is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
     return;
   }
 
@@ -134,7 +134,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
     registry.unshift(newItem);
     client.playerMap.set(charid,registry,"registry");
-    message.channel.send("Registered the resulting item to the alchemy athenaeum! Alchemize it using the >alchemize command");
+    message.channel.send(`Registered the resulting item to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     return;
 
     /*cost1=tierCost[newItem[2]];
@@ -184,7 +184,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
     registry.unshift(newItem);
     client.playerMap.set(charid,registry,"registry");
-    message.channel.send("Registered the resulting item to the alchemy athenaeum! Alchemize it using the >alchemize command");
+    message.channel.send(`Registered the resulting item to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     return;
 /*
     cost1=tierCost[newItem[2]];

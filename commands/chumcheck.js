@@ -7,17 +7,17 @@ exports.run = (client, message, args) => {
   let targId = charid;
 
 if(!args[0]){
-  message.channel.send("Select a chum from your >chumroll");
+  message.channel.send(`Select a chum from your ${client.auth.prefix}chumroll`);
 }
 
   let value = parseInt(args[0], 10) - 1;
   if(isNaN(value)){
-    message.channel.send("That is not a valid selection! See a list of chums with >chumroll");
+    message.channel.send(`That is not a valid selection! See a list of chums with ${client.auth.prefix}chumroll`);
     return;
   }
 
   if(value > chumroll.length-1 || value < 0) {
-    message.channel.send("That is not a valid selection! See a list of chums with >chumroll");
+    message.channel.send(`That is not a valid selection! See a list of chums with ${client.auth.prefix}chumroll`);
     return;
   }
 targId = chumroll[value];

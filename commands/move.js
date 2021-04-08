@@ -63,7 +63,7 @@ exports.run = (client, message, args) => {
   } else {
     console.log(local);
     if(value >= sec[local[1]][local[2]][2].length || value < 0){
-      message.channel.send("That is not a valid room! Check the list of room's with >move");
+      message.channel.send(`That is not a valid room! Check the list of room's with ${client.auth.prefix}move`);
       return;
     }
 

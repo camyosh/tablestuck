@@ -803,7 +803,7 @@ if(client.playerMap.has(list[init[turn][0]][1],"ping")){
   turnMsg+=`${message.guild.members.cache.get(ping)} `;
 }
 
-  turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actions you can take with >act, and >pass your turn once you're done!${alert}`;
+  turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actions you can take with ${client.auth.prefix}act, and ${client.auth.prefix}pass your turn once you're done!${alert}`;
 //strifelist
 //send message to player's channel
   let embed = strifeList(client,local,active,list,turn,init,list[init[turn][0]][1],0,`STRIFE LIST (>list)`);
@@ -1377,14 +1377,14 @@ attName = client.playerMap.get(list[init[turn][0]][1],"name");
 
     if(list[init[turn][0]][7].includes("DISCOUNT")){
       if(client.actionList[action].cst>1){
-      alert += `ACTIONS DISCOUNTED THIS TURN`;
+      alert += `ACTIONS DISCOUNTED THIS TURN\n`;
       costMsg +=` - 1`;
        }
      }
    //closing here
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MIND")[1]){
       if(client.actionList[action].cst > 1){
-        alert += `**BUTTERFLY EFFECT** - ACTIONS DISCOUNTED`;
+        alert += `**BUTTERFLY EFFECT** - ACTIONS DISCOUNTED\n`;
         costMsg += ` - 1`;
       }
     }
@@ -1847,7 +1847,7 @@ if(aa.includes("RANDSTATUS")){
 
   let damagemsg = `${dmg * dmgLvl}`;
   let equals = false;
-
+  let paren = false;
     if(bd>0){
       equals=true;
       if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MEAT")[1]){
@@ -1906,6 +1906,8 @@ if(aa.includes("RANDSTATUS")){
     if(client.traitcall.traitCheck(client,list[target][1],"SPOOKY")[1]&&(list[init[turn][0]][7].includes("HAUNT2")||list[init[turn][0]][7].includes("HAUNT")||list[init[turn][0]][7].includes("HAUNT3"))){
       equals=true;
       damage=Math.floor(damage/2);
+      damagemsg = `(`+damagemsg+`)`;
+      paren = true;
       damagemsg +=` / 2`;
     }
 
@@ -1938,16 +1940,27 @@ if(aa.includes("RANDSTATUS")){
       }
 
       equals=true;
-      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[1]){
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[1]||client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[1]){
+        if(!paren){
+          damagemsg = `(`+damagemsg+`)`;
+          paren = true;
+        }
+        if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[1]){
         damage *= 4;
         damagemsg += ` * 4`;
-        alert +=`**BLASPHEMOUS WORD** - QUADRUPLE DAMAGE!`;
-      } else if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[1]){
+        alert +=`**BLASPHEMOUS WORD** - QUADRUPLE DAMAGE!\n`;
+      }
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[1]) {
         damage *= 3;
         damagemsg += ` * 3`;
-        alert +=`1000/1000 CLOCKS DESTROYED! TRIPPLE DAMAGE!`;
+        alert +=`1000/1000 CLOCKS DESTROYED! TRIPLE DAMAGE!\n`;
+        }
       } else {
       damage *= 2;
+      if(!paren){
+        damagemsg = `(`+damagemsg+`)`;
+        paren = true;
+      }
       damagemsg += ` * 2`
     }
     };
@@ -2094,7 +2107,7 @@ if(aa.includes("RANDSTATUS")){
 if(client.traitcall.traitCheck(client,list[target][1],"THORNS")[1]){
   let thornDmg = Math.floor((Math.random() * (brroll[1] - 1)) + brroll[0]);
   list[init[turn][0]][3]-= thornDmg;
-  alert += `TOOK ${thornDmg} DAMAGE FROM TARGET THORNS!`;
+  alert += `TOOK ${thornDmg} DAMAGE FROM TARGET THORNS!\n`;
 
 }
 
@@ -2115,7 +2128,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[1]){
 
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math.floor((Math.random() * bounceChance))){
   bounceCheck=true;
-  alert+=`BOUNCY!!! IF TARGET IS STILL ALIVE, ATTACKING AGAIN!`;
+  alert+=`BOUNCY!!! IF TARGET IS STILL ALIVE, ATTACKING AGAIN!\n`;
 }
 
 
@@ -2721,6 +2734,15 @@ console.log(`targets - ${targetList}`);
       console.log("taking action")
 
       let action = actionSet[Math.floor((Math.random() * actionSet.length))];
+      if(actionSet.includes("arrive")){
+        if(list[init[turn][0]][6].length==0){
+          action = "arrive";
+        } else {
+          while(action=="arrive"){
+            action = actionSet[Math.floor((Math.random() * actionSet.length))];
+          }
+        }
+      }
       list[init[turn][0]][5]-=client.actionList[action].cst;
       list[init[turn][0]][6]+=action;
       client.strifeMap.set(strifeLocal,list,"list");

@@ -62,7 +62,7 @@ for(i=0;i<2;i++){
 
   */
 
-  message.channel.send("A session for this server has not been initialized! Do >initialize to fix this.");
+  message.channel.send(`A session for this server has not been initialized! Do ${client.auth.prefix}initialize to fix this.`);
   return;
 }
 
@@ -476,7 +476,7 @@ var s4 = await landcall.landGen(client,3,gategen[3],message);
 //console.log(`Lands have been generated - ${Date.now() - startTime}`);
 
 var land = {
-    name: ["Stumps","Dismay"],
+    name: [client.resources.landFirst[Math.floor(Math.random()*client.resources.landFirst.length)],client.resources.landSecond[Math.floor(Math.random()*client.resources.landSecond.length)]],
     aspect: aspects[Math.floor((Math.random() * 11))],
     grist: gristSet,
     enter:false,
@@ -494,7 +494,7 @@ var land = {
     s4:s4[0],
     s4d:s4[1]
 }
-
+console.log(`The Land of ${land.name[0]} and ${land.name[1]} -- LO${land.name[0].substring(0,1).toUpperCase()}A${land.name[1].substring(0,1).toUpperCase()}`);
 //adds the charaacter sheet and land sheet to the database
 
 client.landMap.set(charid,land)
