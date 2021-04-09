@@ -431,7 +431,7 @@ if(!channelCheck){
         client.playerMap.set(charid,channel,"channel");
         client.playerMap.set(charid,pesterchannel,"pesterchannel");
 
-        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nIf you are confused, feel free to check ${client.auth.prefix}tutorial \nA list of all available commands can be found in ${client.auth.prefix}commands \nIf you have questions, feel free to send them in ${client.auth.prefix}help`);
+        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nThe ${client.auth.prefix}help command is out of date.\nContent is changing all the time.\n\nThere is no salvation.`);
   }
 
   generateChannels();
@@ -439,7 +439,7 @@ if(!channelCheck){
 }else{
   client.playerMap.set(charid,channel,"channel");
   client.playerMap.set(charid,pesterchannel,"pesterchannel");
-    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nIf you are confused, feel free to check ${client.auth.prefix}tutorial \nA list of all available commands can be found in ${client.auth.prefix}commands \nIf you have questions, feel free to send them in ${client.auth.prefix}help`);
+    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nThe ${client.auth.prefix}help command is out of date.\nContent is changing all the time.\n\nThere is no salvation.`);
 }
 
 //console.log(`Finished setting character sheet - ${Date.now() - startTime}`);
