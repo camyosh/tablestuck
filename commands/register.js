@@ -67,10 +67,10 @@ for(i=0;i<2;i++){
 }
 
   if(client.playerMap.has(charid)){
-    if(client.playerMap.get(charid,"timeOfReg") + 300000 > Date.now()){
+    /*if(client.playerMap.get(charid,"timeOfReg") + 300000 > Date.now()){
       message.channel.send("You have to wait at least 5 minutes before registering again!");
       return;
-    }
+    }*/
 
     channel = client.playerMap.get(charid,"channel");
     pesterchannel = client.playerMap.get(charid,"pesterchannel");
@@ -178,7 +178,7 @@ let startTime = Date.now();
 
   let randnum = Math.floor((Math.random() * 12));
 
-  const defBedroom = funcall.preItem("bedroom",7,[["GLASSES","vh0zQaFS",1,1,[]]]);
+  const defBedroom = funcall.preItem("bedroom",7,[["GLASSES","vh0zQaFS",1,1,[]],client.lootcall.lootGen(client,0)]);
 
   const armorsets = [["CLOTHES", "sQ00m9Kn", 1, 1, []], ["CLOTHES", "sd1y1UGt", 1, 1, []], ["CLOTHES", "s4001jKQ", 1, 1, []], ["CLOTHES", "s500MEF3", 1, 1, []], ["CLOTHES", "sIy0llDd", 1, 1, []], ["CLOTHES", "sh11jXDH", 1, 1, []], ["CLOTHES", "sK0ydTnZ", 1, 1, []], ["CLOTHES", "sj10ZVxB", 1, 1, []], ["CLOTHES", "sY01t9oW", 1, 1, []], ["CLOTHES", "sl1yRSD8", 1, 1, []], ["CLOTHES", "sO1yjCtu", 1, 1, []], ["CLOTHES", "sD012ydM", 1, 1, []]];
 
@@ -186,7 +186,7 @@ let startTime = Date.now();
 
   const def = [[[5,7,[
      [[],[],"BEDROOM",false,[occset],defBedroom],
-     [[],[],"LIVING ROOM",false,[],funcall.preItem("living room",7,[["HAT","uy0zJ7aY",1,1,[]],["SHOES","tx0z33bi",1,1,[]]])],
+     [[],[],"LIVING ROOM",false,[],funcall.preItem("living",7,[])],
      [[],[],"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]])],
      [[],[],"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]])],
      [[],[],"BATHROOM",false,[],funcall.preItem("bathroom",4,[])],
@@ -396,7 +396,7 @@ if(!channelCheck){
 
     }
 
-    var chan = await message.guild.channels.create(`${message.author.username}`, {
+    var chan = await message.guild.channels.create(`${message.author.username}-terminal`, {
         type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
         permissionOverwrites: [
            {
@@ -409,7 +409,7 @@ if(!channelCheck){
      ]//,
      //parent:"827335332789878814"
       })
-      var pesterchan = await message.guild.channels.create(`${message.author.username}`, {
+      var pesterchan = await message.guild.channels.create(`${message.author.username}-pester`, {
           type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
           permissionOverwrites: [
              {
@@ -431,7 +431,7 @@ if(!channelCheck){
         client.playerMap.set(charid,channel,"channel");
         client.playerMap.set(charid,pesterchannel,"pesterchannel");
 
-        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nIf you are confused, feel free to check #tutorial \nA list of all available commands can be found in #commands \nIf you have questions, feel free to send them in #help`);
+        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nIf you are confused, feel free to check ${client.auth.prefix}tutorial \nA list of all available commands can be found in ${client.auth.prefix}commands \nIf you have questions, feel free to send them in ${client.auth.prefix}help`);
   }
 
   generateChannels();
@@ -439,7 +439,7 @@ if(!channelCheck){
 }else{
   client.playerMap.set(charid,channel,"channel");
   client.playerMap.set(charid,pesterchannel,"pesterchannel");
-    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nIf you are confused, feel free to check #tutorial \nA list of all available commands can be found in #commands \nIf you have questions, feel free to send them in #help`);
+    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nIf you are confused, feel free to check ${client.auth.prefix}tutorial \nA list of all available commands can be found in ${client.auth.prefix}commands \nIf you have questions, feel free to send them in ${client.auth.prefix}help`);
 }
 
 //console.log(`Finished setting character sheet - ${Date.now() - startTime}`);
@@ -466,18 +466,18 @@ for(let i=0;i<4;i++){
 }
 client.landMap.set(message.guild.id+"medium",sessionGrist,"gristCounter");
 //var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
-
+aspect = aspects[Math.floor((Math.random() * 11))];
 //console.log(`Generating all of the lands - ${Date.now() - startTime}`);
-var s1 = await landcall.landGen(client,0,gategen[0],message);
-var s2 = await landcall.landGen(client,1,gategen[1],message);
-var s3 = await landcall.landGen(client,2,gategen[2],message);
-var s4 = await landcall.landGen(client,3,gategen[3],message);
+var s1 = await landcall.landGen(client,0,gategen[0],message,aspect);
+var s2 = await landcall.landGen(client,1,gategen[1],message,aspect);
+var s3 = await landcall.landGen(client,2,gategen[2],message,aspect);
+var s4 = await landcall.landGen(client,3,gategen[3],message,aspect);
 
 //console.log(`Lands have been generated - ${Date.now() - startTime}`);
 
 var land = {
     name: [client.resources.landFirst[Math.floor(Math.random()*client.resources.landFirst.length)],client.resources.landSecond[Math.floor(Math.random()*client.resources.landSecond.length)]],
-    aspect: aspects[Math.floor((Math.random() * 11))],
+    aspect: aspect,
     grist: gristSet,
     enter:false,
     spent: 0,

@@ -352,7 +352,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
         boonMsg+=`\nAdded ${newBoon} BOONDOLLARS to PORKHOLLOW! You now have ${b} BOONDOLLARS!`
         message.channel.send(boonMsg);
 
-      } else if(sdex[selectDex][0]=="PRIMARY GRIST"){
+      } else if(sdex[selectDex][0]=="RAINBOW GRIST"){
 
         let grist = client.playerMap.get(charid,"grist");
 

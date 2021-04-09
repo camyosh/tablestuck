@@ -8,6 +8,7 @@
     "bd":[1,4],
     "act":["aggrieve","astrict","asphixiate"],
     "stats":[0,0,0,0,0,0],
+    "prefMove":"none",
 
   "xp":2,
     "drop":1,
@@ -17,6 +18,7 @@
     "stm":4,
     "vit":50,
     "av":5,
+    "prefMove":"none",
 
     "d":10,
     "bd":[1,10],
@@ -31,6 +33,7 @@
     "stm":4,
     "vit":100,
     "av":7,
+    "prefMove":"none",
 
     "d":20,
     "bd":[2,20],
@@ -45,6 +48,7 @@
     "stm":4,
     "vit":200,
     "av":9,
+    "prefMove":"none",
 
     "d":40,
     "bd":[4,40],
@@ -55,14 +59,45 @@
     "drop":125,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234218303127573/lich_base.png"
   },
+  "unicorn":{
+    "stm":6,
+    "vit":400,
+    "av":9,
+    "prefMove":"arf",
+
+    "d":40,
+    "bd":[4,40],
+    "act":["abstain","abjure","abate","arsonate","arf","acerbate","argufy"],
+    "stats":[0,0,0,3,3,3],
+
+    "xp":128,
+    "drop":125,
+    "img":"https://media.discordapp.net/attachments/408119077840617493/808234218303127573/lich_base.png"
+  },
   "giclopse":{
     "stm":6,
     "vit":400,
     "av":11,
+    "prefMove":"none",
 
     "d":80,
     "bd":[8,80],
     "act":["assail","assault","assure","abolish"],
+    "stats":[4,4,0,1,2,0],
+
+    "xp":512,
+    "drop":625,
+    "img":"https://cdn.discordapp.com/attachments/408119077840617493/808234216285405224/giclops.png"
+  },
+  "kraken":{
+    "stm":8,
+    "vit":800,
+    "av":11,
+    "prefMove":"assassinate",
+
+    "d":80,
+    "bd":[8,80],
+    "act":["astrict","asphixiate","acknowledge","arrest","assassinate"],
     "stats":[4,4,0,1,2,0],
 
     "xp":512,
@@ -78,6 +113,22 @@
     "bd":[16,160],
     "act":["abuse","absorb","arsonate","actualize"],
     "stats":[5,5,3,5,2,1],
+    "prefMove":"none",
+
+    "xp":2048,
+    "drop":3125,
+    "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
+  },
+  "hecatoncheires":{
+    "stm":10,
+    "vit":1600,
+    "av":11,
+    "prefMove":"none",
+
+    "d":160,
+    "bd":[16,160],
+    "act":["abuse"],
+    "stats":[5,5,3,5,2,1],
 
     "xp":2048,
     "drop":3125,
@@ -86,6 +137,7 @@
   "player":{
     "stm":8,
     "av":1,
+    "prefMove":"none",
 
     "d":1,
     "bd":[1,2],
@@ -96,6 +148,7 @@
   "sprite":{
     "stm":8,
     "av":3,
+    "prefMove":"none",
 
     "d":5,
     "bd":[1,4],
@@ -107,6 +160,7 @@
     "stm":4,
     "vit":100,
     "av":6,
+    "prefMove":"none",
 
     "d":5,
     "bd":[1,4],
@@ -119,6 +173,7 @@
     "stm":6,
     "vit":150,
     "av":8,
+    "prefMove":"none",
 
     "d":10,
     "bd":[2,8],
@@ -131,6 +186,7 @@
     "stm":8,
     "vit":200,
     "av":12,
+    "prefMove":"none",
 
     "d":15,
     "bd":[3,12],
@@ -143,6 +199,7 @@
     "stm":8,
     "vit":250,
     "av":10,
+    "prefMove":"none",
 
     "d":20,
     "bd":[4,16],
@@ -155,6 +212,7 @@
     "stm":10,
     "vit":300,
     "av":14,
+    "prefMove":"none",
 
     "d":25,
     "bd":[5,20],
@@ -167,6 +225,7 @@
     "stm":8,
     "vit":200,
     "av":14,
+    "prefMove":"none",
 
     "d":20,
     "bd":[4,16],

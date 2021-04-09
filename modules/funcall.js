@@ -94,10 +94,10 @@ switch(score){
 let b = client.playerMap.get(charid,"b");
 let xp = client.playerMap.get(charid,"xp");
 if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
-  client.playerMap.set("leaderboard",[message.author.username,b],"bossesDefeated");
+  client.playerMap.set("leaderboard",[message.author.username,b],"boondollarsGained");
 }
 if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
-  client.playerMap.set("leaderboard",[message.author.username,xp],"bossesDefeated");
+  client.playerMap.set("leaderboard",[message.author.username,xp],"boondollarsGained");
 }
 
 if(curCount>=client.limit&&client.limit!=0){
@@ -228,15 +228,15 @@ function areaGen(client, section) {
 
 exports.preItem = function(room,quantity,list) {
 //declares random number
-let roomTables = [["LAPTOP","CANDLE","BATTERY","SQUIDDLE","BOW","OUIJA BOARD","VAMPIRE TEETH","CAT","DOG","HARLEQUIN STATUE","CRYSTAL BALL","SMUPPET","MICROSCOPE","WEIGHT","FEATHER","PILLOW","WHOOPIE CUSHION","KNITTING NEEDLES","KATANA","GLOVES","PUPPET","THROWING STAR","CANE","DICE","WAND","STUFFED RABBIT","FANCY SANTA","BOOK","YOYO","PENCIL","PAINTBRUSH","SCISSORS","PLAYING CARDS"],["CANDLE","BATTERY","OUIJA BOARD","CAT","DOG","HARLEQUIN STATUE","CRYSTAL BALL","SMUPPET","MICROSCOPE","WEIGHT","FEATHER","PILLOW","WHOOPIE CUSHION","KNITTING NEEDLES","KATANA","GLOVES","PUPPET","CANE","DICE","STUFFED RABBIT","FANCY SANTA","BOOK","PENCIL","SCISSORS","PLAYING CARDS","BRIEFCASE","SHATTERED GLASS","ROSE","YOGA MAT","NEWSPAPER","UMBRELLA","FLASHLIGHT","DART","PAPER FAN"],["CANDLE","OUIJA BOARD","CAT","DOG","HARLEQUIN STATUE","CRYSTAL BALL","SMUPPET","MICROSCOPE","WEIGHT","FEATHER","WHOOPIE CUSHION","KNITTING NEEDLES","KATANA","PUPPET","CANE","DICE","FANCY SANTA","BOOK","PENCIL","SCISSORS","PLAYING CARDS","BRIEFCASE","NEWSPAPER","FLASHLIGHT","DART","LAPTOP","BOW","VAMPIRE TEETH","PAINTBRUSH","URANIUM ROD","PIPE","TIE","POKER CHIP","HUNTING RIFLE","HANDGUN","STAPLER"],["CAT","DOG","WHOOPIE CUSHION","PUPPET","CANE","FANCY SANTA","PENCIL","SCISSORS","PLAYING CARDS","NEWSPAPER","FLASHLIGHT","PIPE","STAPLER","BATTERY","GLOVES","SHATTERED GLASS","ROSE","UMBRELLA","PAPER FAN","BREAD","GUSHERS","STEAK","GLUE","ICE","HAMMER","FORK","BROOM","KNIFE"],["PUPPET","FANCY SANTA","NEWSPAPER","FLASHLIGHT","ROSE","PAPER FAN","HAMMER","SPRING","PIN","RAZOR"],["PUPPET","FANCY SANTA","ROSE","CAT","DOG","YOYO","FROG","BRICK","LANCE","SICKLE","BOW","BASEBALL BAT","SHOVEL","ROPE","AXE","CHAIN","BASKETBALL","ROCK","HOCKEY STICK"],["PUPPET","FANCY SANTA","BRICK","LANCE","SICKLE","BOW","BASEBALL BAT","ROPE","AXE","CHAIN","HOCKEY STICK","FLASHLIGHT","HAMMER","SPRING","WHOOPIE CUSHION","BATTERY","SHATTERED GLASS","GLUE","BROOM","DART","URANIUM ROD","POKER CHIP","HUNTING RIFLE","HANDGUN","YOGA MAT","FIREWORK","CLAWS","CHAINSAW","SPEAR","SAW","MONKEY WRENCH","SCREWDRIVER","PLIERS","NAIL","CROWBAR","SHOTGUN","SCYTHE","TRIDENT"]]
-
-let roomList = ["bedroom","living room","study","kitchen","bathroom","yard","shed"];
-
-let roomSet = roomTables[roomList.indexOf(room)];
-let i;
+let itemList = [];
+let item;
 for(j=0;j<quantity;j++){
-  i = premadeNames.indexOf(roomSet.splice(Math.floor(Math.random() * roomSet.length),1)[0]);
-  list.push([premadeNames[i],premadeCodes[i],1,1,[]])
+  do{
+    item = lootcall.itemGen(room);
+  } while(itemList.includes(item[0]));
+    list.push(item);
+    itemList.push(item[0]);
+
 }
   return list;
 }

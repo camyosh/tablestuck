@@ -149,11 +149,20 @@ exports.run = (client, message, args) => {
     }
   }
 
-  sec[local[1]][local[2]][2][local[3]][5].push(newItem)
+  msg = `Expended ${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1} ${client.emojis.cache.get(client.grist[gristType].emoji)} ${cost2} to ALCHEMIZE **${newItem[0].toUpperCase()} x${quantity}!**`
+
+sdex.unshift(newItem);
+if(sdex.length > client.playerMap.get(charid,"cards")){
+  let dropItem = sdex.pop();
+  sec[local[1]][local[2]][2][local[3]][5].push(dropItem);
+  msg += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
+}
+
   client.landMap.set(charid,sec,local[0]);
+  client.playerMap.set(charid,sdex,"sdex");
   client.playerMap.set(charid,gristCheck,"grist");
 
-  message.channel.send(`Expended ${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1} ${client.emojis.cache.get(client.grist[gristType].emoji)} ${cost2} to ALCHEMIZE **${newItem[0].toUpperCase()} x${quantity}!**`)
+  message.channel.send(msg)
   client.funcall.sleepHeal(client,charid);
   client.funcall.actionCheck(client,message,"alchemized");
 

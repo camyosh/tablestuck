@@ -238,19 +238,9 @@ try{
 
     try{
       if(underling=="unicorn"||underling=="kraken"||underling=="hecatoncheires"||underling=="denizen"){
-        increase = client.playerMap.get(message.guild.id.concat(message.author.id),"bossesDefeated");
-        increase++;
-        client.playerMap.set(message.guild.id.concat(message.author.id),increase,"bossesDefeated");
-        if(increase>client.playerMap.get("leaderboard","bossesDefeated")[1]){
-          client.playerMap.set("leaderboard",[message.author.username,increase],"bossesDefeated");
-        }
+        client.funcall.actionCheck(client,message,"boss");
       } else {
-      increase = client.playerMap.get(message.guild.id.concat(message.author.id),"underlingsDefeated");
-      increase++;
-      client.playerMap.set(message.guild.id.concat(message.author.id),increase,"underlingsDefeated");
-      if(increase>client.playerMap.get("leaderboard","underlingsDefeated")[1]){
-        client.playerMap.set("leaderboard",[message.author.username,increase],"underlingsDefeated");
-      }
+        client.funcall.actionCheck(client,message,"underling");
     }
     }catch(err){
     }
@@ -2565,7 +2555,7 @@ if(list[active[ik]][3] < 1){
       prototype:prototype,
       prospitRep:0,
       derseRep:0,
-      underlingRep:0,
+      underlingRep:100,
       playerRep:-1,
       consortRep:-1,
       prefTarg:[],
@@ -2674,6 +2664,8 @@ function npcTurn(client, message, local){
 
   let prefTarg = client.playerMap.get(list[init[turn][0]][1],"prefTarg");
 
+  let prefMove = client.underlings[type].prefMove;
+
   let targetList = [];
 
   //create a list of targets based on faction reputation.
@@ -2734,6 +2726,10 @@ console.log(`targets - ${targetList}`);
       console.log("taking action")
 
       let action = actionSet[Math.floor((Math.random() * actionSet.length))];
+      if(actionSet.includes(prefMove)){
+        action=prefMove;
+      }
+
       if(actionSet.includes("arrive")){
         if(list[init[turn][0]][6].length==0){
           action = "arrive";
@@ -2753,8 +2749,12 @@ console.log(`targets - ${targetList}`);
           if(client.playerMap.get(list[active[i]][1],`${faction}Rep`)>=0){
             targetList.push(active[i]);
           }
+
         }
-        targetList.push(init[turn][0]);
+        console.log(`ARF TARGETS ARE THIS ${targetList}`);
+        if(targetList.length<1){
+          targetList.push(init[turn][0]);
+        }
         target = targetList[Math.floor((Math.random() * targetList.length))];
 
       }

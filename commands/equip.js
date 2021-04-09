@@ -51,8 +51,8 @@ exports.run = (client, message, args) => {
 
   let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(sdex[selectDex][1].charAt(0)) /*-1*/  ]];
 
-  if(kinds[0] !== weaponkind) {
-    message.channel.send(`Your STRIFE SPECIBUS is allocated to ${kinds[0]}, you can only ${client.auth.prefix}equip ${kinds[0]} weapons!`);
+  if(!kinds.includes(weaponkind)) {
+    message.channel.send(`Your STRIFE SPECIBUS is allocated to ${kinds}, you can only ${client.auth.prefix}equip ${kinds} weapons!`);
     return;
   }
 

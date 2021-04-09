@@ -12,7 +12,7 @@ exports.run = (client, message, args) => {
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
 
   if(!args[0]){
-    message.channel.send(`to use this command, the format is: \n${client.auth.prefix}givegrist [# of grist given] [type of grist] [ping of target player]`);
+    message.channel.send(`to use this command, the format is: \n${client.auth.prefix}givegrist [type of grist] [# of grist given] [ping of target player]`);
     return;
   }
   select = parseInt(args[0], 10);

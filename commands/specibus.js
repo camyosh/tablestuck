@@ -43,7 +43,7 @@ exports.run = (client, message, args) => {
   .setTitle(`**${name.toUpperCase()}'S STRIFE SPECIBUS**`)
   .setColor("#00e371")
   .addField(`**STRIFE CARDS**`,`**x${scards}**`,true)
-  .addField(`**KIND ABSTRATUS**`,`**${kinds[0]}**`,true)
+  .addField(`**KIND ABSTRATUS**`,`**${kinds}**`,true)
   .addField(`**CURRENTLY EQUIPPED**`,eq)
   .addField("**SPECIBUS**",msg);
   message.channel.send(specibusPrint);

@@ -60,7 +60,7 @@
   "hatkind":{"t":3,"emoji":""},
   "glasseskind":{"t":3,"emoji":""},
   "picturekind":{"t":3,"emoji":""},
-  "bustkind":{"t":3,"emoji":""},
+  "bustkind":{"t":0,"emoji":""},
   "furniturekind":{"t":3,"emoji":""},
   "vehiclekind":{"t":3,"emoji":""},
   "constructkind":{"t":3,"emoji":""},
