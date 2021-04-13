@@ -83,14 +83,10 @@ function passTurn(client, message, local) {
   for(i=(list[init[turn][0]][7].length - 1);i>=0;i--){
     switch(list[init[turn][0]][7][i]){
       case "TARGFAV":
-        removed = list[init[turn][0]][7].splice(i,1);
-        break;
       case "GRAPPLE":
-        removed = list[init[turn][0]][7].splice(i,1);
-        break;
       case "PROTECT":
+      case "NEXTBD":
         removed = list[init[turn][0]][7].splice(i,1);
-        break;
     }
   }
 
