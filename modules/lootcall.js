@@ -83,6 +83,10 @@ exports.itemGen = function(table) {
           code+=`${randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)]}`;
         break;
       }
+    }else if(i==1&&code.charAt(0)!="0"&&code.charAt(0)!="/"){
+
+      code += `${randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)]}`
+
     }else{
       code+=`${defCode.charAt(i)}`
     }

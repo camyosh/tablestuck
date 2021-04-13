@@ -236,7 +236,7 @@ try{
       return;
     }
 
-    try{
+try{
       if(underling=="unicorn"||underling=="kraken"||underling=="hecatoncheires"||underling=="denizen"){
         client.funcall.actionCheck(client,message,"boss");
       } else {
@@ -332,9 +332,9 @@ switch(client.playerMap.get(list[target][1],"faction")){
         let j;
         for(j=1;j<13;j++){
           if(grist[j]+amount>rungGrist[rung]){
-            grist[j]+=amount;
-          } else {
             grist[j]=rungGrist[rung];
+          } else {
+            grist[j]+=amount;
           }
         }
 
