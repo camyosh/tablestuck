@@ -226,13 +226,13 @@ function areaGen(client, section) {
 
 //function creates a list of random items to populate player house
 
-exports.preItem = function(room,quantity,list) {
+exports.preItem = function(room,quantity,list,gristList) {
 //declares random number
 let itemList = [];
 let item;
 for(j=0;j<quantity;j++){
   do{
-    item = lootcall.itemGen(room);
+    item = lootcall.itemGen(room,gristList);
   } while(itemList.includes(item[0]));
     list.push(item);
     itemList.push(item[0]);

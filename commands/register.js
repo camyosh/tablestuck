@@ -176,22 +176,34 @@ let startTime = Date.now();
   client.landMap.set(message.guild.id+"medium",playerList,"playerList");
   client.landMap.set(message.guild.id+"medium",handleList,"handleList");
 
+
+  var gristSet = [];
+  var sessionGrist = client.landMap.get(message.guild.id+"medium","gristCounter");
+  for(let i=0;i<4;i++){
+    gristSet.push(sessionGrist.splice(Math.floor(Math.random()*sessionGrist.length),1)[0]);
+    if(sessionGrist.length<1){
+      sessionGrist = ["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"];
+    }
+  }
+  client.landMap.set(message.guild.id+"medium",sessionGrist,"gristCounter");
+
+
   let randnum = Math.floor((Math.random() * 12));
 
-  const defBedroom = funcall.preItem("bedroom",7,[["GLASSES","vh0zQaFS",1,1,[]],client.lootcall.lootGen(client,0)]);
+  const defBedroom = funcall.preItem("bedroom",7,[["GLASSES","vh//QaFS",1,1,[]],client.lootcall.lootGen(client,0)],gristSet);
 
-  const armorsets = [["CLOTHES", "sQ00m9Kn", 1, 1, []], ["CLOTHES", "sd1y1UGt", 1, 1, []], ["CLOTHES", "s4001jKQ", 1, 1, []], ["CLOTHES", "s500MEF3", 1, 1, []], ["CLOTHES", "sIy0llDd", 1, 1, []], ["CLOTHES", "sh11jXDH", 1, 1, []], ["CLOTHES", "sK0ydTnZ", 1, 1, []], ["CLOTHES", "sj10ZVxB", 1, 1, []], ["CLOTHES", "sY01t9oW", 1, 1, []], ["CLOTHES", "sl1yRSD8", 1, 1, []], ["CLOTHES", "sO1yjCtu", 1, 1, []], ["CLOTHES", "sD012ydM", 1, 1, []]];
+  const armorsets = [["CLOTHES", "sQ//m9Kn", 1, 1, []], ["CLOTHES", "sd//1UGt", 1, 1, []], ["CLOTHES", "s4//1jKQ", 1, 1, []], ["CLOTHES", "s5//MEF3", 1, 1, []], ["CLOTHES", "sI//llDd", 1, 1, []], ["CLOTHES", "sh//jXDH", 1, 1, []], ["CLOTHES", "sK//dTnZ", 1, 1, []], ["CLOTHES", "sj//ZVxB", 1, 1, []], ["CLOTHES", "sY//t9oW", 1, 1, []], ["CLOTHES", "sl//RSD8", 1, 1, []], ["CLOTHES", "sO//jCtu", 1, 1, []], ["CLOTHES", "sD//2ydM", 1, 1, []]];
 
   //console.log(`Generating player bedroom - ${Date.now() - startTime}`);
 
   const def = [[[5,7,[
      [[],[],"BEDROOM",false,[occset],defBedroom],
-     [[],[],"LIVING ROOM",false,[],funcall.preItem("living",7,[])],
-     [[],[],"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]])],
-     [[],[],"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]])],
-     [[],[],"BATHROOM",false,[],funcall.preItem("bathroom",4,[])],
-     [[],[],"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]])],
-     [[],[],"SHED",false,[],funcall.preItem("shed",8,[])]
+     [[],[],"LIVING ROOM",false,[],funcall.preItem("living",7,[],gristSet)],
+     [[],[],"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]],gristSet)],
+     [[],[],"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
+     [[],[],"BATHROOM",false,[],funcall.preItem("bathroom",4,[],gristSet)],
+     [[],[],"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
+     [[],[],"SHED",false,[],funcall.preItem("shed",8,[],gristSet)]
    ]]]];
 
    //console.log(`Finished generating player bedroom - ${Date.now() - startTime}`);
@@ -456,15 +468,7 @@ if(!channelCheck){
 
 let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 
-var gristSet = [];
-var sessionGrist = client.landMap.get(message.guild.id+"medium","gristCounter");
-for(let i=0;i<4;i++){
-  gristSet.push(sessionGrist.splice(Math.floor(Math.random()*sessionGrist.length),1)[0]);
-  if(sessionGrist.length<1){
-    sessionGrist = ["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"];
-  }
-}
-client.landMap.set(message.guild.id+"medium",sessionGrist,"gristCounter");
+
 //var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
 aspect = aspects[Math.floor((Math.random() * 11))];
 //console.log(`Generating all of the lands - ${Date.now() - startTime}`);

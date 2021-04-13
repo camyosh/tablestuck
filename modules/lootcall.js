@@ -41,11 +41,13 @@ const randomChar = {
   rareTraits1:["c","d","e","f","g","h","i","j","k","l"],
   rareTraits2:["N","M","L","K","J","I","H","G","F","E"],
   aspectTraits1:["m","n","o","p","q","r","s","t","u","v","w","x"],
-  aspectTraits2:["D","C","B","A","9","8","7","6","5","4","3","2"]
+  aspectTraits2:["D","C","B","A","9","8","7","6","5","4","3","2"],
+  gristRef:["2","3","4","5","6","7","8","9","A","B","C","D"],
+  gristNameRef:["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"]
 
 }
 
-exports.itemGen = function(table) {
+exports.itemGen = function(table,gristList) {
 
   let select = tables[table][Math.floor(Math.random()*tables[table].length)];
 
@@ -84,8 +86,7 @@ exports.itemGen = function(table) {
         break;
       }
     }else if(i==1&&code.charAt(0)!="0"&&code.charAt(0)!="/"){
-
-      code += `${randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)]}`
+      code += `${randomChar.gristRef[randomChar.gristNameRef.indexOf(gristList[Math.floor(Math.random()*4)])]}`
 
     }else{
       code+=`${defCode.charAt(i)}`
