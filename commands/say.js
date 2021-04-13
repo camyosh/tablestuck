@@ -32,7 +32,7 @@ exports.run = async function(client, message, args){
       if(!channelCheck.includes(channel)){
       channelCheck.push(channel);
       try{
-        if(charid!=occList[j][1]){
+        if(charid!=occList[j][1]&&client.funcall.dreamCheck(client,occList[j][1],local)){
         client.hookcall.say(client,message,occList[j][1],msg,name,img);
                 count++;
       }
@@ -50,7 +50,7 @@ exports.run = async function(client, message, args){
         if(client.playerMap.has(possessList[k],"pesterchannel")){
           channelCheck.push(client.playerMap.get(possessList[k],"pesterchannel"));
           try{
-            if(charid!=possessList[k]){
+            if(charid!=possessList[k]&&client.funcall.dreamCheck(client,possessList[k],local)){
             client.hookcall.say(client,message,possessList[k],msg,name,img);
                     count++;
           }
@@ -66,6 +66,6 @@ exports.run = async function(client, message, args){
 }
 }
 client.funcall.sleepHeal(client,charid);
-  message.channel.send(`Successfully sent message to ${count} channel(s)!`);
+  message.channel.send(`Sent message to ${count} channel(s)!`);
 
 }

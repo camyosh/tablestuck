@@ -17,12 +17,12 @@ function dubs(x){
 
 //10
 
-var aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
+var aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM",]
 
 var aspectItems = [
-  ["WINDSOCK","0?lEbRTh",1,1,[]],
+  ["WINDSOCK","0?mDbRTh",1,1,[]],
   ["PLANT","0PnCL1f3",1,1,[]],
-  ["COIN","0hoBM1Nd",1,1,[]],
+  ["COIN","0hoBLIhT",1,1,[]],
   ["CLOCK","0qpAT1M3",1,1,[]],
   ["LOCKET","0iq9haRT",1,1,[]],
   ["HORN","0dr8R4g3",1,1,[]],
@@ -1261,11 +1261,11 @@ return attachment;
 }
 }
 
-exports.underlingCheck = function(occList) {
+exports.underlingCheck = function(occList,client) {
   check = false;
   if(occList.length>0){
     for(i=0;i<occList.length;i++){
-      if(occList[i][0]==false){
+      if(occList[i][0]==false&&client.playerMap.get(occList[i][1],"faction")=="underling"){
         check=true;
       }
     }

@@ -97,7 +97,7 @@ if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
   client.playerMap.set("leaderboard",[message.author.username,b],"boondollarsGained");
 }
 if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
-  client.playerMap.set("leaderboard",[message.author.username,xp],"boondollarsGained");
+  client.playerMap.set("leaderboard",[message.author.username,xp],"experienceGained");
 }
 
 if(curCount>=client.limit&&client.limit!=0){
@@ -867,9 +867,24 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
   let name = client.playerMap.get(charid,"name");
 
   for(let i=0;i<occNew.length;i++){
-      if(occNew[i][1]!=charid&&client.playerMap.has(occNew[i][1],"channel")){
+      if(occNew[i][1]!=charid&&client.playerMap.has(occNew[i][1],"channel")&& dreamCheck(client,occNew[i][1],target)){
         client.channels.cache.get(client.playerMap.get(occNew[i][1],"channel")).send(`**${name.toUpperCase()}** has entered the room!`);
       }
   }
   moveEmbed();
+}
+function dreamCheck(client,target,local){
+
+  let targLocal = client.playerMap.get(target,"local");
+
+  if(targLocal[0]===local[0]&&targLocal[1]===local[1]&&targLocal[2]===local[2]&&targLocal[3]===local[3]&&targLocal[4]===local[4]){
+    return true;
+  } else {
+    return false;
+  }
+}
+exports.dreamCheck =  function(client,target,local){
+
+  return dreamCheck(client,target,local);
+
 }
