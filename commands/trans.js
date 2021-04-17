@@ -79,7 +79,7 @@ if(args[0]=="set"){
     return;
   };
 
-  if(dex[value][1].charAt(0)!="/"||dex[value][0]!="TRANSPORTALIZER"){
+  if(dex[value][1].charAt(0)!="@"){
     message.channel.send("The selected item is not a transportalizer!");
     return;
   }

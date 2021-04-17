@@ -67,11 +67,11 @@
 
     "d":40,
     "bd":[4,40],
-    "act":["abstain","abjure","abate","arsonate","arf","acerbate","argufy"],
+    "act":["abstain","abjure","abate","arsonate","arf","acerbate","argufy","abuse"],
     "stats":[0,0,0,3,3,3],
 
     "xp":128,
-    "drop":125,
+    "drop":250,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234218303127573/lich_base.png"
   },
   "giclopse":{
@@ -95,13 +95,13 @@
     "av":11,
     "prefMove":"assassinate",
 
-    "d":80,
+    "d":40,
     "bd":[8,80],
     "act":["astrict","asphixiate","acknowledge","arrest","assassinate"],
     "stats":[4,4,0,1,2,0],
 
     "xp":512,
-    "drop":625,
+    "drop":1250,
     "img":"https://cdn.discordapp.com/attachments/408119077840617493/808234216285405224/giclops.png"
   },
   "titachnid":{
@@ -123,7 +123,7 @@
     "stm":10,
     "vit":1600,
     "av":11,
-    "prefMove":"none",
+    "prefMove":"abuse",
 
     "d":160,
     "bd":[16,160],
@@ -131,7 +131,7 @@
     "stats":[5,5,3,5,2,1],
 
     "xp":2048,
-    "drop":3125,
+    "drop":6250,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
   },
   "player":{

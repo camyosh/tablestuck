@@ -37,7 +37,7 @@
   },
   "transportalizer":{
     "cost":1000,
-    "item":["TRANSPORTALIZER","//jG////",0,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"],
+    "item":["TRANSPORTALIZER","@/jG////",0,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"],
     "grist":"build",
     "costT":1000
   }

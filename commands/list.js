@@ -62,6 +62,10 @@ exports.run = (client,message,args) =>{
     msg+=`**[${i+1}] ${client.playerMap.get(occList[i][1],"name").toUpperCase()}** \n *${client.playerMap.get(occList[i][1],"type")}*\n\n`
   }
 
+  if(occList.length==0){
+    msg= "EMPTY";
+  }
+
   listPrint = new client.Discord.MessageEmbed()
   .setTitle(`**ROOM OCCUPANTS**`)
   .addField(`**AREA TYPE**`,`**${typeList[area[0]]}**`,true)

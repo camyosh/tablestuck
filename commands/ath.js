@@ -89,7 +89,7 @@ exports.run = (client, message, args) => {
      let value = parseInt(args[1], 10) - 1;
 
      if(isNaN(value)||value<0||value>=registry.length){
-       message.channe.send("That is not a valid selection!");
+       message.channel.send("That is not a valid selection!");
      }
 
      let deleted = registry.splice(value,1);
@@ -151,6 +151,49 @@ exports.run = (client, message, args) => {
      registry[value][2]=tier;
      client.playerMap.set(charid,registry,"registry");
      message.channel.send(`Scaled the ${registry[value][0]} to TIER ${tier}!`);
+     return;
+
+   } else if(args[0]=="name"){
+     if(!args[1]){
+       message.channel.send(`Select an item in the ATHENAEUM to change the NAME of that item. \n${client.auth.prefix}athenaeum name [item] [desired name]`);
+       return;
+     }
+
+     if(!args[2]){
+       message.channel.send("Please enter a desired name for the item!");
+       return;
+     }
+
+     let value = parseInt(args[1], 10) - 1;
+
+     if(isNaN(value)||value<0||value>=registry.length){
+       message.channel.send("That is not a valid selection!");
+       return;
+     }
+
+     let selectItem = registry[value];
+
+   //combine all args except for selection
+     let name = client.funcall.combineArgs(args,2);
+
+     let code = selectItem[1];
+     let oldName = selectItem[0];
+
+     if(code == "11111111" || code.charAt(0) == "/") {
+       message.channel.send("The name of that item cannot be changed!");
+       return;
+     }
+
+     if(name.length > 20) {
+       message.channel.send("That name is too long!");
+       return;
+     }
+
+     registry[value][0]=name;
+
+     client.playerMap.set(charid,registry,"registry");
+
+     message.channel.send(`Changed the name of the ${oldName} to ${name}`);
      return;
 
    }

@@ -232,7 +232,7 @@ exports.run = (client, message, args) => {
     gristCheck[client.grist[gristType].pos]-=cost2;
     gristCheck[0]-=cost1;
 
-    if(registry[value[0]][1].charAt(0)=="/"&&registry[value[0]][0]=="TRANSPORTALIZER"){
+    if(registry[value[0]][1].charAt(0)=="@"){
 
       let transCount = client.landMap.get(message.guild.id+"medium","transCount");
 

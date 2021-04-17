@@ -15,6 +15,7 @@ exports.run = async function(client, message, args){
   var gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"]
 
 //checks to see if the command user is Cam, as we don't want anyone else registering players for the tournament
+
   let charid = message.guild.id.concat(message.author.id);
 
 if(!client.landMap.has(message.guild.id+"medium")){
@@ -190,7 +191,7 @@ let startTime = Date.now();
 
   let randnum = Math.floor((Math.random() * 12));
 
-  const defBedroom = funcall.preItem("bedroom",7,[["GLASSES","vh//QaFS",1,1,[]],client.lootcall.lootGen(client,0)],gristSet);
+  const defBedroom = funcall.preItem("bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
 
   const armorsets = [["CLOTHES", "sQ//m9Kn", 1, 1, []], ["CLOTHES", "sd//1UGt", 1, 1, []], ["CLOTHES", "s4//1jKQ", 1, 1, []], ["CLOTHES", "s5//MEF3", 1, 1, []], ["CLOTHES", "sI//llDd", 1, 1, []], ["CLOTHES", "sh//jXDH", 1, 1, []], ["CLOTHES", "sK//dTnZ", 1, 1, []], ["CLOTHES", "sj//ZVxB", 1, 1, []], ["CLOTHES", "sY//t9oW", 1, 1, []], ["CLOTHES", "sl//RSD8", 1, 1, []], ["CLOTHES", "sO//jCtu", 1, 1, []], ["CLOTHES", "sD//2ydM", 1, 1, []]];
 

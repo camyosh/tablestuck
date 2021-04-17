@@ -38,7 +38,7 @@ exports.actionCheck = function(client, message, score){
 try{
   let charid = message.guild.id.concat(message.author.id);
   let curCount = client.playerMap.get(charid,"act");
-curCount++;
+//curCount++;
 switch(score){
   case "alchemized":
     increase = client.playerMap.get(charid,"itemsAlchemized");
@@ -124,12 +124,53 @@ if(curCount>=client.limit&&client.limit!=0){
   message.channel.send(stats);
   //enter stat stuff here
 }
-  client.playerMap.set(charid,curCount,"act")
+  //client.playerMap.set(charid,curCount,"act")
 }catch(err){
 }
 }
 
+exports.tick = function(client, message){
 
+  let charid = message.guild.id.concat(message.author.id);
+  let curCount = client.playerMap.get(charid,"act");
+  curCount++;
+
+  let b = client.playerMap.get(charid,"b");
+  let xp = client.playerMap.get(charid,"xp");
+  if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
+    client.playerMap.set("leaderboard",[message.author.username,b],"boondollarsGained");
+  }
+  if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
+    client.playerMap.set("leaderboard",[message.author.username,xp],"experienceGained");
+  }
+
+  if(curCount>=client.limit&&client.limit!=0){
+
+    let tiles = client.playerMap.get(charid,"tilesDiscovered");
+    let alchemized = client.playerMap.get(charid,"itemsAlchemized");
+    let underlings =  client.playerMap.get(charid,"underlingsDefeated");
+    let players =  client.playerMap.get(charid,"playersDefeated");
+    let bosses = client.playerMap.get(charid,"bossesDefeated");
+    let items = client.playerMap.get(charid,"itemsCaptchalogued");
+
+    message.channel.send("That was your last action in the tournament, here's your final stats:");
+    let stats = new client.Discord.MessageEmbed()
+    .setTitle(`**HERE'S HOW YOU DID**`)
+    .addField(`**EXPERIENCE GAINED**`,`${xp}`,true)
+    .addField(`**BOONDOLLARS GAINED**`,`${b}`,true)
+    .addField(`**TILES DISCOVERED**`,`${tiles}`,true)
+    .addField(`**ITEMS ALCHEMIZED**`,`${alchemized}`,true)
+    .addField(`**ITEMS CAPTCHALOGUED**`,`${items}`,true)
+    .addField(`**UNDERLNGS DEFEATED**`,`${underlings}`,true)
+    .addField(`**PLAYERS DEFEATED**`,`${players}`,true)
+    .addField(`**BOSSES DEFEATED**`,`${bosses}`,true)
+
+    message.channel.send(stats);
+    //enter stat stuff here
+  }
+
+  client.playerMap.set(charid,curCount,"act")
+}
 
 //defining tables to determine information about an area in ranArea
 //0 is empty, 1 is dungeon, 2 is construct, 3 is return node, 4 is village
@@ -665,11 +706,20 @@ exports.xpGive = function(client, message, xp, target){
   }
 }
 
-exports.combineArgs = function(args) {
+exports.combineArgs = function(args,start) {
+
   var i=1;
+
+  if(start!=undefined){
+    i=start;
+  }
+
   var output ="";
   while(args[i]){
-    output = output + args[i]+" ";
+    if(output.length>0){
+      output+=" ";
+    }
+    output = output + args[i];
     i++
   }
   return output;
@@ -867,9 +917,13 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
   let name = client.playerMap.get(charid,"name");
 
   for(let i=0;i<occNew.length;i++){
-      if(occNew[i][1]!=charid&&client.playerMap.has(occNew[i][1],"channel")&& dreamCheck(client,occNew[i][1],target)){
+    try{
+      if(occNew[i][1]!=charid && client.playerMap.has(occNew[i][1],"channel") && dreamCheck(client,occNew[i][1],target)){
         client.channels.cache.get(client.playerMap.get(occNew[i][1],"channel")).send(`**${name.toUpperCase()}** has entered the room!`);
       }
+    }catch(err){
+      console.log(err);
+    }
   }
   moveEmbed();
 }

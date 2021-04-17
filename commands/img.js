@@ -1,5 +1,11 @@
 
  exports.run = async function(client, message, args){
+
+if(!client.funcall.dmcheck(client,message)){
+  message.channel.send("Command is unstable, disabled temporarily");
+  return;
+}
+
 if(!args[0]){
   message.channel.send("Please include the text you want to display in this image!");
   return;

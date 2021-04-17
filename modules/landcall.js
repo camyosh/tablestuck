@@ -188,9 +188,9 @@ empty =[];
 
       let castle = client.landMap.get(message.guild.id+"medium",moon[1][i]);
 
-      castle[transLocal[0]][transLocal[1]][2][0][5].push(["TRANSPORTALIZER",`//jG${transCode1}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"])
+      castle[transLocal[0]][transLocal[1]][2][0][5].push([`${message.author.username}`,`@/jG${transCode1}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"])
 
-      section[temp[0][0]][temp[0][1]]=[11,1,[[[],[],`${moon[0][i]} OUTPOST`,false,[],[["TRANSPORTALIZER",`//jG${transCode}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"]]]]];
+      section[temp[0][0]][temp[0][1]]=[11,1,[[[],[],`${moon[0][i]} OUTPOST`,false,[],[[`${moon[0][i]} TRANSPORTALIZER`,`@/jG${transCode}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"]]]]];
       client.transMap.set(`${message.guild.id}${transCode}`,transSet);
       client.transMap.set(`${message.guild.id}${transCode1}`,transSet1);
       client.landMap.set(message.guild.id+"medium",transList,"transList");

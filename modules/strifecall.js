@@ -86,6 +86,7 @@ function passTurn(client, message, local) {
       case "GRAPPLE":
       case "PROTECT":
       case "NEXTBD":
+      case "NEXTFAV":
         removed = list[init[turn][0]][7].splice(i,1);
     }
   }
@@ -279,7 +280,7 @@ switch(client.playerMap.get(list[target][1],"faction")){
     }
     //split rewards between all participating players
 
-    let amount = Math.ceil(client.underlings[underling].drop / players);
+    let amount = Math.ceil(client.underlings[underling].drop / players)*2;
 
     if(client.traitcall.traitCheck(client,list[pos][1],"META")[1]){
       amount*=2;
