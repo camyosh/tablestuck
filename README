@@ -5,12 +5,13 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
   When the Node.js installation asks if you want to install tools necessary to compile native modules, please make sure that the box is checked!
   If you don't do this, you will need to install python and Visual Studio c++ manually.
 
-2- Once Node.js is installed, open the command terminal on your computer and type the following --
-  npm install discord.js
-  npm install enmap
-  npm install canvas
+2- Create a folder for the bot
+  Download this repository and put it in a folder inside that folder.
+  ->Bot folder/
+    ->This repository as a folder/
+      ->bot.js, other folders and files...
 
-3- Put this folder in the same folder as a text file called auth.json and paste the following into it --
+3- Create a text file called auth.json and paste the following into it --
   {
     "token": "YOUR DISCORD BOT TOKEN HERE",
     "prefix": ">",
@@ -33,6 +34,22 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
 
 5- Create an empty folder called "data" in the same folder as auth.json
 
-6- Open the file "run.bat" to start the bot
+6- Open the command terminal on your computer in the bot's folder and type the following --
+  npm install discord.js
+  npm install enmap
+  npm install canvas
+  This should create a folder called node_modules/ and files called package.json and package-lock.json
+  After that, the folder should be something like this --
+  ->Bot folder/
+    ->data/
+    ->node_modules/
+    ->This repository as a folder/
+      ->bot.js, other folders and files...
+    ->auth.json
+    ->package.json
+    ->package-lock.json
+
+7- Run the file "run.bat" (or "run.sh" on linux or mac) to start the bot
+  If you have nodemon or forever installed, you can use runrepeat.bat (runrepeat.sh) or runforever.bat (runforever.sh) to run the bot with those
 
 --this code is not the finished version of the bot and will continue to be updated regularly on github--
