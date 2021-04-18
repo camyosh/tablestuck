@@ -809,7 +809,7 @@ if(client.playerMap.has(list[init[turn][0]][1],"ping")){
   turnMsg+=`${message.guild.members.cache.get(ping)} `;
 }
 
-  turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\n See the list of actions you can take with ${client.auth.prefix}act, and ${client.auth.prefix}pass your turn once you're done!${alert}`;
+  turnMsg+=`it's your turn!\nYou have ${stamsg} STAMINA and ${list[init[turn][0]][3]} VITALITY remaining!\nSee the list of actions you can take with ${client.auth.prefix}act, and ${client.auth.prefix}pass your turn once you're done!\n${alert}`;
 //strifelist
 //send message to player's channel
   let embed = strifeList(client,local,active,list,turn,init,list[init[turn][0]][1],0,`STRIFE LIST (>list)`);
@@ -817,7 +817,7 @@ if(client.playerMap.has(list[init[turn][0]][1],"ping")){
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
-        client.funcall.chanMsg(client,list[active[i]][1],`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
+        client.funcall.chanMsg(client,list[active[i]][1],`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!\n${alert}`);
       }
     }
 
