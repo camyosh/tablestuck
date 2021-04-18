@@ -13,7 +13,7 @@ const tourneyList = client.auth.list;
     return;
   }*/
 
-  if(!tourneyList.includes(message.author.id)){
+  if(client.limit != 0 && !tourneyList.includes(message.author.id)){
 message.channel.send("You have not signed up for the tournament!");
 return;
   }
@@ -82,8 +82,10 @@ for(i=0;i<2;i++){
       return;
     }*/
 
-    message.channel.send("You can not re-register during a tournament!");
-    return;
+    if (client.limit != 0) {
+      message.channel.send("You can not re-register during a tournament!");
+      return;
+    }
 
     channel = client.playerMap.get(charid,"channel");
     pesterchannel = client.playerMap.get(charid,"pesterchannel");

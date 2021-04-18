@@ -17,6 +17,18 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
     "admin": "YOUR DISCORD ID HERE"
   }
 
+  The bot has a TOURNAMENT MODE. If client.limit in bot.js is 0, it is disabled, but if it is a number greater than 0, it is enabled.
+  If the bot is in TOURNAMENT MODE, auth.json will need an extra section called "list" with a list of discord IDs allowed in your tournament:
+  {
+    "token": "YOUR DISCORD BOT TOKEN HERE",
+    "prefix": ">",
+    "admin": "YOUR DISCORD ID HERE",
+    "list": [
+        "DISCORD ID",
+        "DISCORD ID"
+    ]
+  }
+
 4- Replace the information in the token and admin spaces with your own information to connect this program to your own discord bot
 
 5- Create an empty folder called "data" in the same folder as auth.json
