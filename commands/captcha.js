@@ -104,5 +104,5 @@ sec[local[1]][local[2]][2][local[3]] = room;
 client.landMap.set(land,sec,local[0]);
 client.playerMap.set(charid,currentInv,"sdex");
 funcall.actionCheck(client,message,"item");
-client.funcall.sleepHeal(client,charid);
+client.funcall.tick(client,message);
 }

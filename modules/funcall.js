@@ -134,6 +134,7 @@ exports.tick = function(client, message){
   let charid = message.guild.id.concat(message.author.id);
   let curCount = client.playerMap.get(charid,"act");
   curCount++;
+  client.funcall.sleepHeal(client,charid);
 
   let b = client.playerMap.get(charid,"b");
   let xp = client.playerMap.get(charid,"xp");
@@ -144,7 +145,7 @@ exports.tick = function(client, message){
     client.playerMap.set("leaderboard",[message.author.username,xp],"experienceGained");
   }
 
-  if(curCount>=client.limit&&client.limit!=0){
+  if(curCount==client.limit&&client.limit!=0){
 
     let tiles = client.playerMap.get(charid,"tilesDiscovered");
     let alchemized = client.playerMap.get(charid,"itemsAlchemized");
@@ -787,7 +788,7 @@ exports.sleepHeal = function(client,charid){
       if(vit+heal>gel){
         client.playerMap.set(charid,gel,"dreamvit");
       }else{
-        client.playerMap.set(charid,vit+heal,"dreamvit")
+        client.playerMap.set(charid,vit+heal,"dreamvit");
       }
     }
   }
@@ -814,8 +815,8 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
   }
 
     targSec[target[1]][target[2]][2][target[3]][4].push(occset);
-
-    if(target[4]==message.guild.id+"medium"&&targSec[target[1]][target[2]][2][target[3]][4].length==1){
+//the &&false is to disable prospitians spawning for the tournament
+    if(target[4]==message.guild.id+"medium"&&targSec[target[1]][target[2]][2][target[3]][4].length==1&&false){
       switch(target[0]){
         case "dm":
           targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
@@ -844,6 +845,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     targSec[target[1]][target[2]][2][target[3]][3]=true;
   }
 
+  client.funcall.tick(client,message);
   client.playerMap.set(charid,target,"local");
   client.landMap.set(target[4],targSec,target[0]);
 

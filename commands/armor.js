@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
   let name = client.playerMap.get(charid,"name");
 
 //if no arguments, display currently equipped armor
-
+ 
   if(!args[0]){
 
     if(armor.length==0){
@@ -105,6 +105,8 @@ exports.run = (client, message, args) => {
     client.landMap.set(land,sec,local[0]);
     client.playerMap.set(charid,armor,"armor");
 
+    client.funcall.tick(client,message);
+
     message.channel.send("Ejecting Armor!")
 
 //if first argument is equip, equip selected armor
@@ -161,6 +163,8 @@ exports.run = (client, message, args) => {
 
       client.playerMap.set(charid,sdex,"sdex");
       client.playerMap.set(charid,armor,"armor");
+
+      client.funcall.tick(client,message);
 
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
 

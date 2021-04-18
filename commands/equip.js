@@ -68,6 +68,7 @@ exports.run = (client, message, args) => {
 
   client.playerMap.set(charid,sdex,"sdex");
   client.playerMap.set(charid,spec,"spec");
+  client.funcall.tick(client,message);
 
   message.channel.send(`Successfully EQUIPPED the ${equipItem[0]} to your STRIFE SPECIBUS`);
 

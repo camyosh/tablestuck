@@ -41,7 +41,6 @@ exports.run = (client, message, args) => {
   let target = [local[0],x,y,0,local[4]];
 
     client.funcall.actionCheck(client,message);
-    client.funcall.sleepHeal(client,charid);
   let move = client.funcall.move(client,message,charid,local,target,true,`You take flight and land at a `);
 
 }

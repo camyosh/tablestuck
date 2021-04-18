@@ -267,7 +267,7 @@ exports.run = (client, message, args) => {
   clientSec[0][0][2][value[1]][5].push(registry[value[0]]);
   client.landMap.set(clientId,clientSec,"h");
   client.playerMap.set(clientId,gristCheck,"grist");
-  client.funcall.sleepHeal(client,charid);
+  client.funcall.tick(client,message);
 
   message.channel.send(`Deployed the ${registry[value[0]][0].toUpperCase()}`)
 

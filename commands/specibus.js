@@ -99,6 +99,7 @@ if(args[0]=="eject") {
   client.playerMap.set(charid,spec,"spec");
   client.playerMap.set(charid,0,"equip");
   message.channel.send(`Ejected the ${dropItem[0]}!`);
+  client.funcall.tick(client,message);
 
 } else {
 

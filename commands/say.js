@@ -65,7 +65,6 @@ exports.run = async function(client, message, args){
   }
 }
 }
-client.funcall.sleepHeal(client,charid);
   message.channel.send(`Sent message to ${count} channel(s)!`);
 
 }

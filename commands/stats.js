@@ -11,10 +11,6 @@ exports.run = (client, message, args) => {
     message.channel.send("You're not a registered player!");
     return;
   }
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
 
     var target = message.guild.id.concat(message.author.id);
 
@@ -33,7 +29,7 @@ exports.run = (client, message, args) => {
   .addField(`**Rung**`,rung,true)
   .addField(`**Experience**`,xp,true)
   .addField(`**XP to next Rung**`,(rungReq[rung+1])-xp,true)
-  //.addField(`**ACTIONS LEFT**`,client.limit - client.playerMap.get(target,"act"),true)
+  .addField(`**ACTIONS LEFT**`,client.limit - client.playerMap.get(target,"act"),true)
   .addField(`**TILES DISCOVERED**`,client.playerMap.get(target,"tilesDiscovered"),true)
   .addField(`**ITEMS ALCHEMIZED**`,client.playerMap.get(target,"itemsAlchemized"),true)
   .addField(`**ITEMS CAPTCHALOGUED**`,client.playerMap.get(target,"itemsCaptchalogued"),true)

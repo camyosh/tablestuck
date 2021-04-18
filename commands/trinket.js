@@ -94,6 +94,7 @@ exports.run = (client, message, args) => {
     client.playerMap.set(charid,trinket,"trinket");
 
     message.channel.send("Ejecting TRINKET!")
+    client.funcall.tick(client,message);
 
 //if first argument is equip, equip selected trinket
 
@@ -151,6 +152,7 @@ exports.run = (client, message, args) => {
       client.playerMap.set(charid,trinket,"trinket");
 
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
+      client.funcall.tick(client,message);
 
   } else {
     message.channel.send(`That is not a valid argument! Valid arguments for ${client.auth.prefix}trinket are eject and equip!`)

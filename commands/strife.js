@@ -159,9 +159,8 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
 
     //add all underlings in area to strife
     strifecall.underRally(client,local);
-    funcall.actionCheck(client,message);
+    client.funcall.tick(client,message);
     message.channel.send("Entering Strife!");
-    client.funcall.sleepHeal(client,charid);
 
     strifecall.start(client,message,local);
 

@@ -162,8 +162,9 @@ if(sdex.length > client.playerMap.get(charid,"cards")){
   client.playerMap.set(charid,sdex,"sdex");
   client.playerMap.set(charid,gristCheck,"grist");
 
+  client.funcall.tick(client,message);
+
   message.channel.send(msg)
-  client.funcall.sleepHeal(client,charid);
   client.funcall.actionCheck(client,message,"alchemized");
 
   }else{

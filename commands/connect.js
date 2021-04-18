@@ -57,6 +57,7 @@ exports.run = (client, message, args) => {
 
   client.playerMap.set(targetId,message.author.id,"server");
   client.playerMap.set(charid,args[0],"client");
+  client.funcall.tick(client,message);
 
   message.channel.send(`Registered ${client.playerMap.get(targetId,"name")} as your CLIENT PLAYER`);
 

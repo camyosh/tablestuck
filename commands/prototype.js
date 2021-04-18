@@ -58,4 +58,5 @@ client.playerMap.set(`n${charid}`,prototype,"prototype");
 client.playerMap.set(`n${charid}`,newName,"name")
 client.playerMap.set(charid,sdex,"sdex");
 message.channel.send(`You prototyped your SPRITE with the ${targetItem[0].toUpperCase()}, it is now ${newName}!`);
+client.funcall.tick(client,message);
 }

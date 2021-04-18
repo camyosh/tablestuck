@@ -187,6 +187,9 @@ try{
 
   if(client.playerMap.get(list[target][1],"type")=="player"){
     client.playerMap.set(list[target][1],false,"alive");
+
+
+
 try{
   increase = client.playerMap.get(message.guild.id.concat(message.author.id),"playersDefeated");
   increase++;
@@ -212,6 +215,8 @@ try{
 
     }
 
+      client.funcall.chanMsg(client,list[target][1],`***YOU DIED***`);
+
     //call the function to remove the character from strife
 
     leaveStrife(client,message,local,target);
@@ -221,7 +226,7 @@ try{
       leaveStrife(client,message,local,pos);
 
     }
-
+//end of player kill
   }else{
 
 
@@ -403,7 +408,6 @@ switch(client.playerMap.get(list[target][1],"faction")){
 
   }
 }catch(err){
-  message.channel.send("Tell cam you saw this");
   message.channel.send(err);
 }
 
@@ -516,6 +520,21 @@ function leaveStrife(client,message,local,pos){
 
   }
 client.funcall.chanMsg(client,charid,"Leaving Strife!");
+
+  if(!client.playerMap.get(charid,"alive")){
+    let temp;
+    let dreamSwitch=["local","vit","port","kinds","spec","modus","cards","scards","sdex","equip","trinket","armor"];
+    for(let i=0;i<dreamSwitch.length;i++){
+
+      temp =client.playerMap.get(charid,dreamSwitch[i])
+      client.playerMap.set(charid,client.playerMap.get(charid,`dream${dreamSwitch[i]}`),dreamSwitch[i]);
+      client.playerMap.set(charid,temp,`dream${dreamSwitch[i]}`);
+    }
+
+  client.funcall.chanMsg(client,charid,"Knocked out! Waking up as your DREAM/WAKING self.");
+  client.playerMap.set(charid,true,"alive")
+  }
+
 } else {
 
   let active = client.strifeMap.get(strifeLocal,"active");

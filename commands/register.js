@@ -7,11 +7,20 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = async function(client, message, args){
 
+const tourneyList = client.auth.list;
+/*  if(!args[0]||!message.mentions.members.first()){
+    message.channel.send("You have to ping a user");
+    return;
+  }*/
+
+  if(!tourneyList.includes(message.author.id)){
+message.channel.send("You have not signed up for the tournament!");
+return;
+  }
+
   let channel = ``;
   let pesterchannel = ``;
-
   let channelCheck = false;
-
   var gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"]
 
 //checks to see if the command user is Cam, as we don't want anyone else registering players for the tournament
@@ -72,6 +81,9 @@ for(i=0;i<2;i++){
       message.channel.send("You have to wait at least 5 minutes before registering again!");
       return;
     }*/
+
+    message.channel.send("You can not re-register during a tournament!");
+    return;
 
     channel = client.playerMap.get(charid,"channel");
     pesterchannel = client.playerMap.get(charid,"pesterchannel");
@@ -417,12 +429,15 @@ if(!channelCheck){
              allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
        },{
          id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
-         deny: ['VIEW_CHANNEL'], //Deny permissions
+         deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'], //Deny permissions
+       },{
+         id: message.guild.roles.cache.find(role => role.name === "SPECTATOR"),
+         allow: ['VIEW_CHANNEL']
        }
      ]//,
      //parent:"827335332789878814"
       })
-      var pesterchan = await message.guild.channels.create(`${message.author.username}-pester`, {
+      /*var pesterchan = await message.guild.channels.create(`${message.author.username}-pester`, {
           type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
           permissionOverwrites: [
              {
@@ -434,17 +449,17 @@ if(!channelCheck){
          }
        ]//,
        //parent:"827335362124316712"
-        })
+     })*/
 
         channel = chan.id;
-        pesterchannel = pesterchan.id;
+        pesterchannel = chan.id;
 
         client.hookcall.hookGen(client,pesterchannel);
 
         client.playerMap.set(charid,channel,"channel");
         client.playerMap.set(charid,pesterchannel,"pesterchannel");
 
-        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nThe ${client.auth.prefix}help command is out of date.\nContent is changing all the time.\n\nThere is no salvation.`);
+        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that soon, on the 20th of April, they will be participating in the PESTERCORD TOURNAMENT, and they'll have 2 days of preparation. You'll have 500 commands that you can take before being locked off. You can check how many commands you have left by doing the >stats command. You can check what ticks down this total in the rules channel. Make sure to watch the announcements channel as the command limit might be increased as the prep stage goes on.`);
   }
 
   generateChannels();
@@ -452,7 +467,7 @@ if(!channelCheck){
 }else{
   client.playerMap.set(charid,channel,"channel");
   client.playerMap.set(charid,pesterchannel,"pesterchannel");
-    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that today, the 1st of April, is a fantastic opportunity to test the Tablestuck Discord Bot 'Pestercord'. \nThe ${client.auth.prefix}help command is out of date.\nContent is changing all the time.\n\nThere is no salvation.`);
+    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that soon, on the 20th of April, they will be participating in the PESTERCORD TOURNAMENT, and they'll have 2 days of preparation. You'll have 500 commands that you can take before being locked off. You can check how many commands you have left by doing the >stats command. You can check what ticks down this total in the rules channel. Make sure to watch the announcements channel as the command limit might be increased as the prep stage goes on.`);
 }
 
 //console.log(`Finished setting character sheet - ${Date.now() - startTime}`);

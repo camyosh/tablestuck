@@ -15,7 +15,7 @@ exports.run = (client, message, args) => {
   const gateReq = [100,200,400,800,1600,3200,6400,12800];
 
   //retrieve player location
-
+ 
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
@@ -82,6 +82,8 @@ exports.run = (client, message, args) => {
   client.landMap.set(clientId,buildSpent,"spent");
 
   //if player can now reach next gate, send message
+
+  client.funcall.tick(client,message);
 
   if(gate>curGate){
 
