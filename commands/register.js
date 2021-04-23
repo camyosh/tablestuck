@@ -432,9 +432,6 @@ if(!channelCheck){
        },{
          id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
          deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'], //Deny permissions
-       },{
-         id: message.guild.roles.cache.find(role => role.name === "SPECTATOR"),
-         allow: ['VIEW_CHANNEL']
        }
      ]//,
      //parent:"827335332789878814"
