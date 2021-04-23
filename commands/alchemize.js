@@ -158,7 +158,7 @@ if(sdex.length > client.playerMap.get(charid,"cards")){
   msg += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
 }
 
-  client.landMap.set(charid,sec,local[0]);
+  client.landMap.set(land,sec,local[0]);
   client.playerMap.set(charid,sdex,"sdex");
   client.playerMap.set(charid,gristCheck,"grist");
 
