@@ -1,5 +1,6 @@
 exports.run = (client, message, args) => {
 
+
 if(args[0]=="reset"&&client.funcall.dmcheck(client,message)){
   var leaderboard = {
     experienceGained: ["NONE",0],
@@ -24,7 +25,7 @@ let items = client.playerMap.get("leaderboard","itemsCaptchalogued");
 
 
 let stats = new client.Discord.MessageEmbed()
-.setTitle(`**TOURNAMENT LEADERBOARD**`)
+.setTitle(`**SESSION LEADERBOARD**`)
 .addField(`**EXPERIENCE GAINED**`,`${exp[0]} **-** ${exp[1]}`,true)
 .addField(`**BOONDOLLARS GAINED**`,`${boon[0]} **-** ${boon[1]}`,true)
 .addField(`**TILES DISCOVERED**`,`${tiles[0]} **-** ${tiles[1]}`,true)
