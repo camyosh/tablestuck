@@ -1,4 +1,4 @@
-const tourney = false;
+const tourney = true;
 
 module.exports = (client, message) => {
   //ignore all bots
@@ -9,10 +9,10 @@ module.exports = (client, message) => {
   //Ignore all messages not starting with the prefix
   if(message.content.indexOf(client.auth.prefix) !== 0) return;
 
-  var freeAct = ["register","leaderboard","stats","scratch","help","initialize","trait"];
+  var freeAct = ["register","leaderboard","stats","scratch","help","initialize","trait","act"];
 
   if(tourney){
-    freeAct = ["register","leaderboard","stats","scratch","help","initialize","trait","heal","consume","act","strife","switch","specibus","sylladex","captcha","eject","alchemize","armor","trinket","equip","list","inspect"];
+    freeAct = ["register","leaderboard","stats","scratch","help","initialize","trait","heal","consume","act","strife","switch","specibus","sylladex","captcha","eject","alchemize","armor","trinket","equip","list","inspect","pass","quickalch","grist","ath","say","rename","use","allocate","push"];
   }
 
   //standard argument/command name definition
@@ -40,7 +40,7 @@ module.exports = (client, message) => {
       return;
     }
 
-    if(client.playerMap.get(charid,"act")>=client.limit&&client.limit!=0&&!freeAct.includes(command)){
+    if(client.playerMap.get(charid,"act")>=client.limit&&client.limit!=0&&!freeAct.includes(command)&&!client.funcall.dmcheck(client,message)){
       message.channel.send("You have reached your maximum number of actions for this tournament!");
       return;
     }

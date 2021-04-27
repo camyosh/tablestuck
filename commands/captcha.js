@@ -49,7 +49,7 @@ exports.run = (client, message, args) => {
 
   if(!args[1]){
 
-    if((room[5][value][1].charAt(0)=="/"&&(room[5][value][0]=="CRUXTRUDER"||room[5][value][0]=="TOTEM LATHE"||room[5][value][0]=="PUNCH DESIGNIX"||room[5][value][0]=="ALCHEMITER"))||room[5][value][1].charAt(0)=="@"){
+    if((room[5][value][1].charAt(0)=="/"&&(room[5][value][0]=="CRUXTRUDER"||room[5][value][0]=="TOTEM LATHE"||room[5][value][0]=="PUNCH DESIGNIX"||room[5][value][0]=="ALCHEMITER"||room[5][value][0]=="INSTANT ALCHEMITER"))||room[5][value][1].charAt(0)=="@"){
       message.channel.send("You can't pick that up!");
       return;
     }

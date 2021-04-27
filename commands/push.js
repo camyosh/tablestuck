@@ -20,7 +20,7 @@ exports.run = (client, message, args) => {
 
   console.log(Date.now()-time);
 
-  if(Date.now()-time<30000&&!client.funcall.dmcheck(client,message)){
+  if(Date.now()-time<120000&&!client.funcall.dmcheck(client,message)){
     message.channel.send("You need to wait until 30 seconds have passed since the last action taken to force-pass the turn!");
     return;
   }

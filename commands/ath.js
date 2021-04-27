@@ -137,7 +137,7 @@ exports.run = (client, message, args) => {
      let value = parseInt(args[1], 10) - 1;
 
      if(isNaN(value)||value<0||value>=registry.length){
-       message.channe.send("That is not a valid selection!");
+       message.channel.send("That is not a valid selection!");
        return;
      }
 

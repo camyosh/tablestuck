@@ -746,7 +746,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
       alert+=`**GARDEN OF EDEN** passively regenerated ${heal} vitality!\n`;
     }
 
-    if(true==true||carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
+    if(carry==true||client.traitcall.traitCheck(client,list[init[turn][0]][1],"BUSINESS")[0]){
       let carrystam = list[init[turn][0]][5];
 
       stamsg +=` + ${carrystam}`;

@@ -87,7 +87,7 @@ return;
     }
 
     let gel = client.playerMap.get(charid,"gel");
-    let heal = tier*.06;
+    let heal = tier*.03;
 
     if(client.traitcall.traitCheck(client,charid,"FOOD")[1]){
       heal*=2;
