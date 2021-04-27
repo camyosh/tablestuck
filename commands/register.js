@@ -205,7 +205,7 @@ let startTime = Date.now();
 
   let randnum = Math.floor((Math.random() * 12));
 
-  const defBedroom = funcall.preItem("bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
+  const defBedroom = funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
 
   const armorsets = [["CLOTHES", "sQ//m9Kn", 1, 1, []], ["CLOTHES", "sd//1UGt", 1, 1, []], ["CLOTHES", "s4//1jKQ", 1, 1, []], ["CLOTHES", "s5//MEF3", 1, 1, []], ["CLOTHES", "sI//llDd", 1, 1, []], ["CLOTHES", "sh//jXDH", 1, 1, []], ["CLOTHES", "sK//dTnZ", 1, 1, []], ["CLOTHES", "sj//ZVxB", 1, 1, []], ["CLOTHES", "sY//t9oW", 1, 1, []], ["CLOTHES", "sl//RSD8", 1, 1, []], ["CLOTHES", "sO//jCtu", 1, 1, []], ["CLOTHES", "sD//2ydM", 1, 1, []]];
 
@@ -213,12 +213,12 @@ let startTime = Date.now();
 
   const def = [[[5,7,[
      [[],[],"BEDROOM",false,[occset],defBedroom],
-     [[],[],"LIVING ROOM",false,[],funcall.preItem("living",7,[],gristSet)],
-     [[],[],"STUDY",false,[],funcall.preItem("study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]],gristSet)],
-     [[],[],"KITCHEN",false,[],funcall.preItem("kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
-     [[],[],"BATHROOM",false,[],funcall.preItem("bathroom",4,[],gristSet)],
-     [[],[],"YARD",false,[],funcall.preItem("yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
-     [[],[],"SHED",false,[],funcall.preItem("shed",8,[],gristSet)]
+     [[],[],"LIVING ROOM",false,[],funcall.preItem(client,"living",7,[],gristSet)],
+     [[],[],"STUDY",false,[],funcall.preItem(client,"study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]],gristSet)],
+     [[],[],"KITCHEN",false,[],funcall.preItem(client,"kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
+     [[],[],"BATHROOM",false,[],funcall.preItem(client,"bathroom",4,[],gristSet)],
+     [[],[],"YARD",false,[],funcall.preItem(client,"yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
+     [[],[],"SHED",false,[],funcall.preItem(client,"shed",8,[],gristSet)]
    ]]]];
 
    //console.log(`Finished generating player bedroom - ${Date.now() - startTime}`);
@@ -488,10 +488,10 @@ let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11)
 //var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
 aspect = aspects[Math.floor((Math.random() * 11))];
 //console.log(`Generating all of the lands - ${Date.now() - startTime}`);
-var s1 = await landcall.landGen(client,0,gategen[0],message,aspect);
-var s2 = await landcall.landGen(client,1,gategen[1],message,aspect);
-var s3 = await landcall.landGen(client,2,gategen[2],message,aspect);
-var s4 = await landcall.landGen(client,3,gategen[3],message,aspect);
+var s1 = await landcall.landGen(client,0,gategen[0],message,aspect,gristSet);
+var s2 = await landcall.landGen(client,1,gategen[1],message,aspect,gristSet);
+var s3 = await landcall.landGen(client,2,gategen[2],message,aspect,gristSet);
+var s4 = await landcall.landGen(client,3,gategen[3],message,aspect,gristSet);
 
 //console.log(`Lands have been generated - ${Date.now() - startTime}`);
 
@@ -499,10 +499,10 @@ var land = {
     name: [client.resources.landFirst[Math.floor(Math.random()*client.resources.landFirst.length)],client.resources.landSecond[Math.floor(Math.random()*client.resources.landSecond.length)]],
     aspect: aspect,
     grist: gristSet,
-    enter:false,
+    enter:true,
     spent: 0,
     floors: 0,
-    gate: 0,
+    gate: 6,
     gates:gategen,
     h:def,
     s1:s1[0],

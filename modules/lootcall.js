@@ -98,7 +98,7 @@ return [nameList[select],code,1,1,[]];
 }
 
 exports.lootGen = function(client,level){
-
+ 
   tierVary = [1,3,6,9,12];
   quantityMin = [5,25,125,625,3125];
   quantityMax = [10,50,250,1250,6250];

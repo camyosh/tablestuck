@@ -39,7 +39,7 @@ var defaultConstruct =[2,1,[[[],[],"LAND CONSTRUCT",false,[],[]]]];
 var defaultNode =[3,1,[[[],[],"RETURN NODE",false,[],[]]]];
 var defaultVillage =[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
 
-exports.landGen = function(client,sec,gateCoor,message,aspect) {
+exports.landGen = function(client,sec,gateCoor,message,aspect,gristSet) {
 
   let startTime = Date.now();
     //console.log(`Start time is ${startTime}`);
@@ -115,7 +115,8 @@ empty =[];
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[4,2,[[funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
+
   }
   //Creates the Land Constructs
   for(let i=0;i<3;i++){
