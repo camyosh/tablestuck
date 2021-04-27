@@ -13,7 +13,7 @@ const tourneyList = client.auth.list;
     return;
   }*/
 
-  if(!tourneyList.includes(message.author.id)){
+  if(client.limit != 0 && !tourneyList.includes(message.author.id)){
 message.channel.send("You have not signed up for the tournament!");
 return;
   }
@@ -82,8 +82,10 @@ for(i=0;i<2;i++){
       return;
     }*/
 
-    message.channel.send("You can not re-register during a tournament!");
-    return;
+    if (client.limit != 0) {
+      message.channel.send("You can not re-register during a tournament!");
+      return;
+    }
 
     channel = client.playerMap.get(charid,"channel");
     pesterchannel = client.playerMap.get(charid,"pesterchannel");
@@ -406,8 +408,9 @@ regImport();
 
 client.playerMap.set(charid,charSheet);
 
+let dateObj = new Date();
+console.log();
 if(!channelCheck){
-
   async function generateChannels(){
 
     var categoryList = [["827298639994421248","827298674547097657"],["827335332789878814","827335362124316712"]]
@@ -430,9 +433,6 @@ if(!channelCheck){
        },{
          id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
          deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'], //Deny permissions
-       },{
-         id: message.guild.roles.cache.find(role => role.name === "SPECTATOR"),
-         allow: ['VIEW_CHANNEL']
        }
      ]//,
      //parent:"827335332789878814"
@@ -459,7 +459,7 @@ if(!channelCheck){
         client.playerMap.set(charid,channel,"channel");
         client.playerMap.set(charid,pesterchannel,"pesterchannel");
 
-        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that soon, on the 20th of April, they will be participating in the PESTERCORD TOURNAMENT, and they'll have 2 days of preparation. You'll have 500 commands that you can take before being locked off. You can check how many commands you have left by doing the >stats command. You can check what ticks down this total in the rules channel. Make sure to watch the announcements channel as the command limit might be increased as the prep stage goes on.`);
+        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! ${client.auth.prefix}help is pretty out of date, so good luck figuring out how the commands work. We promise, we'll fix it sometime.`);
   }
 
   generateChannels();
@@ -467,7 +467,7 @@ if(!channelCheck){
 }else{
   client.playerMap.set(charid,channel,"channel");
   client.playerMap.set(charid,pesterchannel,"pesterchannel");
-    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. It just so happens that soon, on the 20th of April, they will be participating in the PESTERCORD TOURNAMENT, and they'll have 2 days of preparation. You'll have 500 commands that you can take before being locked off. You can check how many commands you have left by doing the >stats command. You can check what ticks down this total in the rules channel. Make sure to watch the announcements channel as the command limit might be increased as the prep stage goes on.`);
+    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! ${client.auth.prefix}help is pretty out of date, so good luck figuring out how the commands work. We promise, we'll fix it sometime.`);
 }
 
 //console.log(`Finished setting character sheet - ${Date.now() - startTime}`);

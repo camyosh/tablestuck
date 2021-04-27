@@ -47,7 +47,11 @@ module.exports = (client, message) => {
   } catch(err){
  console.log("failed when checking to see if someone is registered, or if they're over the tournament action limit.");
   }
+  if (client.limit != 0) {
 	 client.user.setActivity("PESTERCORD TOURNAMENT");
+  } else {
+    client.user.setActivity("PESTERCORD");
+  }
   // Run the command
   cmd.run(client, message, args);
 };
