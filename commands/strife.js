@@ -7,7 +7,7 @@ exports.run = (client, message, args) => {
     let target = message.author;
 
     //uncomment this code for the tournament
-
+/*
     if(!client.funcall.dmcheck(client,message)){
       message.channel.send("You must wait for the referee to add you to the Strife!");
       return;
@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
     }
 
     target = message.mentions.members.first();
-
+*/
 
 
     var charid = client.playerMap.get(message.guild.id.concat(target.id),"control");
