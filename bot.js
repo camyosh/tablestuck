@@ -59,7 +59,7 @@ const transMap = new Enmap({
 })
 
 const configMap = new Enmap({
-  naem: "configData",
+  name: "configData",
   dataDir:"../data"
 })
 
