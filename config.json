@@ -1,0 +1,15 @@
+{
+  "options": [
+    {
+    "name" : "DEATH",
+    "desc" : "**What happens when a player dies?**",
+    "choices": ["They go unconcious and can sleep to wake up","They are dead and must be revived to wake as their dream selves"],
+    "selection": 0
+    },{
+    "name" : "SUFFER",
+    "desc" : "**Why Are we Still On this Planet?**",
+    "choices": ["Just to Suffer","To become One With Oblivion","To Write Code"],
+    "selection": 0
+    }
+]
+}

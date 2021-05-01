@@ -52,6 +52,7 @@ if(args[0]=="confirm"){
   }
 
   client.landMap.delete(session);
+  client.configMap.delete(message.guild.id);
 
   message.channel.send("Session and all players PERMANENTLY deleted");
 

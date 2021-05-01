@@ -58,6 +58,11 @@ const transMap = new Enmap({
   dataDir:"../data"
 })
 
+const configMap = new Enmap({
+  naem: "configData",
+  dataDir:"../data"
+})
+
 //declare cooldowns
 
 //no cooldowns yet
@@ -95,6 +100,7 @@ client.auth = auth;
 client.playerMap = playerMap;
 client.landMap = landMap;
 client.transMap = transMap;
+client.configMap = configMap;
 client.grist = grist;
 //client.creds = creds;
 client.Discord = Discord;
@@ -108,6 +114,7 @@ client.map = require("./map.json");
 client.limit = 0;
 client.Canvas = Canvas;
 client.resources = require("./resources.json");
+
 //client.GoogleSpreadsheet = GoogleSpreadsheet;
 
 

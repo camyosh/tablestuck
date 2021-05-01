@@ -1,11 +1,16 @@
 exports.run = (client, message, args) => {
 
-
+  if(!client.funcall.dmcheck(client,message)){
+    message.channel.send("Only a DM can use this command! Make sure to give yourself a role named \"DM\" if you're in charge!");
+    return;
+  }
 if(client.landMap.has(message.guild.id+"medium")){
   message.channel.send("Session already exists!");
   return;
 }
-
+if(args[0].toLowerCase()!="confirm"){
+  message.channel.send(`make sure you've set up the ${client.auth.prefix}config command, some of the settings have no effect if changed after initialization! do "${client.auth.prefix}initialize confirm" when you're ready!`);
+}
 let castlegen = [[0,0],[0,0]];
 
 for(i=0;i<2;i++){

@@ -5,7 +5,7 @@ const strifecall = require("../modules/strifecall.js");
 exports.run = (client, message, args) => {
 
   if(!client.funcall.dmcheck(client,message)){
-    message.channel.send("Only a DM can use this command");
+    message.channel.send("Only a DM can use this command! Make sure to give yourself a role named \"DM\" if you're in charge!");
     return;
   }
   if(!args[0]){

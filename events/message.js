@@ -35,7 +35,7 @@ module.exports = (client, message) => {
       }
     }
 
-    if(!reg&&command!="register"&&command!="help"&&command!="initialize"&&command!="scratch"&&command!="leaderboard"){
+    if(!reg&&command!="register"&&command!="help"&&command!="initialize"&&command!="scratch"&&command!="leaderboard"&&command!="config"){
       message.channel.send("You are not registered! Register using the >register command!");
       return;
     }

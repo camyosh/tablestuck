@@ -13,7 +13,7 @@ if(client.strifecall.strifeTest(client, message, message.author) == true){
 }
 
 if(!client.funcall.dmcheck(client,message)){
-  message.channel.send("Only a DM can use this command");
+  message.channel.send("Only a DM can use this command! Make sure to give yourself a role named \"DM\" if you're in charge!");
   return;
 }
 
