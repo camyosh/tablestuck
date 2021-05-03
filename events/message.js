@@ -45,7 +45,7 @@ module.exports = (client, message) => {
       return;
     }
   } catch(err){
- console.log("failed when checking to see if someone is registered, or if they're over the tournament action limit.");
+ console.log("A player took an action when not reigistered, probably the DM. Mostly good to ignore.");
   }
   if (client.limit != 0) {
 	 client.user.setActivity("PESTERCORD TOURNAMENT");

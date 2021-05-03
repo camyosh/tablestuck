@@ -9,7 +9,6 @@ if(!client.configMap.has(message.guild.id)){
   console.log("creating a new config file!");
 client.configMap.set(message.guild.id,defaultConfig);
 }
-console.log(defaultConfig);
 configList = client.configMap.get(message.guild.id);
 if(!args[0]){
 msg = "";
@@ -26,13 +25,15 @@ for(let j=0;j<configList.options[i].choices.length;j++){
 
   configPrint = new client.Discord.MessageEmbed()
   .setTitle("**GAME CONFIGURATION**")
-  .addField("**INSTRUCTIONS:**",`options preceeded with an arrow are the current selections. \nDo ${client.auth.prefix}config [option name] [new choice] to change any of the settings, like \"${client.auth.prefix}config death 2\"`)
+  .addField("**INSTRUCTIONS:**",`options preceeded with an arrow are the current selections. \nDo ${client.auth.prefix}config [option name] [new choice] to change any of the settings, like \"${client.auth.prefix}config death 2\".\n\nYou can also do ${client.auth.prefix}config reset to reset your config to default settings.`)
   .addField("**OPTIONS:**",msg)
   message.channel.send(configPrint);
   return;
   }
 if(args[0].toLowerCase()==="reset"){
-
+client.configMap.set(message.guild.id,defaultConfig);
+message.channel.send("Config file reset to default!");
+return;
 }
 let selection = -1;
 for(let k=0;k<configList.options.length;k++){
