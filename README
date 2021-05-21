@@ -38,7 +38,7 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
   npm install discord.js
   npm install enmap
   npm install canvas
-  This should create a folder called node_modules/ and files called package.json and package-lock.json
+  This should create a folder called node_modules/ and files called package.json (which is only created on linux, warnings of it not being there are fine) and package-lock.json
   After that, the folder should be something like this --
   ->Bot folder/
     ->data/
