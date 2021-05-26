@@ -7,10 +7,6 @@ let local = client.playerMap.get(charid,"local");
 let sec = client.landMap.get(local[4],local[0]);
 let occList = sec[local[1]][local[2]][2][local[3]][4];
 
-if(client.strifecall.strifeTest(client, message, message.author) == true){
-  message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-  return;
-}
 
 if(!client.funcall.dmcheck(client,message)){
   message.channel.send("Only a DM can use this command! Make sure to give yourself a role named \"DM\" if you're in charge!");

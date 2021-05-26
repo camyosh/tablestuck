@@ -25,6 +25,9 @@ exports.run = (client,message,args) =>{
   let pos;
   let strifeLocal;
   let list;
+  let turn;
+  let init;
+  let active;
 
   if(client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")==false&&client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")==false&&client.traitcall.itemTrait(client,sdex[selectDex],"FOOD")==false&&dogCheck[0]==false){
     message.channel.send("That is not a consumable item!");
@@ -35,9 +38,16 @@ exports.run = (client,message,args) =>{
 
     pos = client.playerMap.get(charid,"pos");
     strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
+    turn = client.strifeMap.get(strifeLocal,"turn");
     list = client.strifeMap.get(strifeLocal,"list");
+    init = client.strifeMap.get(strifeLocal,"init");
+    active = client.strifeMap.get(strifeLocal,"active");
 
-    if(list[pos][6].includes("CONSUME")){
+ if(list[init[turn][0]][1]!=charid){
+   message.channel.send("You can only consume items on your turn!");
+   return;
+ }
+  if(list[pos][6].includes("CONSUME")){
 
       if(dogCheck[1]==true&&list[pos][6].includes("CONSUME2")){
 message.channel.send("You can't eat more than two items in a turn.");
@@ -53,6 +63,7 @@ return;
 
   let tier = sdex[selectDex][2];
   let msg = `You consume the ${sdex[selectDex][0]}!`
+  let msg2 = `${client.playerMap.get(list[init[turn][0]][1],"name")} consumes a ${sdex[selectDex][0]}!`;
 
   if(client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")){
     if(strifeCheck==false){
@@ -64,6 +75,7 @@ return;
     stamina+=tier;
     list[pos][5]=stamina;
     msg += `\nYou gain ${tier} STAMINA, you now have ${stamina} STAMINA!`;
+    msg2 += `\nThey gain ${tier} STAMINA, and now have ${stamina} STAMINA!`;
   }
   if(client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")){
     if(strifeCheck==false){
@@ -73,6 +85,7 @@ return;
 
     list[pos][7].push(`MEAT${tier}`);
     msg += `\nYou will do +${tier} BD on your next attack!`;
+    msg2 += `\nThey will do +${tier} BD on their next attack!`;
 
   }
 
@@ -108,13 +121,19 @@ return;
 
     }
 
-    msg+=`\n You heal ${Math.ceil(gel*heal)} VITALITY, you now have ${vit} / ${gel} VITALITY!`;
+    msg+=`\nYou heal ${Math.ceil(gel*heal)} VITALITY, you now have ${vit} / ${gel} VITALITY!`;
+    msg2+=`\nThey heal ${Math.ceil(gel*heal)} VITALITY, and now have ${vit} / ${gel} VITALITY!`;
 if(strifeCheck){
     list[pos][3]=vit;
   }
   }
 
   message.channel.send(msg);
+  for(let i=0;i<active.length;i++){
+    if(list[active[i]][0]==true&&list[active[i]][1]!=charid){
+      client.funcall.chanMsg(client,list[active[i]][1],msg2);
+    }
+  }
 
   if (strifeCheck) {
     list[pos][6].push("CONSUME");

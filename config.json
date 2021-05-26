@@ -15,6 +15,11 @@
     "desc" : "**Does every player start with the tutorial enabled?**",
     "choices": ["Yes","No"],
     "selection": 0
+  },{
+    "name" : "RETAIN",
+    "desc" : "**Do creatures hold on to leftover stamina from their last strife by default?**",
+    "choices": ["Yes","No"],
+    "selection": 0
     }
 ]
 }

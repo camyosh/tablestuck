@@ -589,6 +589,9 @@ function startTurn(client, message, local) {
   let stamroll;
   let stamsg;
   let carry = true;
+  if(client.configMap.get(message.guild.id).options[3].selection==1){
+    carry = false;
+  }
   let removed;
   let stunned = false;
   let alert = ``;
@@ -936,7 +939,7 @@ exports.turnTest = function(client, message, local) {
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let init = client.strifeMap.get(strifeLocal,"init");
 
-  var charid = message.guild.id.concat(message.author.id);
+  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
 
   let pos = client.playerMap.get(charid,"pos");
 

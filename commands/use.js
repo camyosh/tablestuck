@@ -113,7 +113,7 @@ exports.run = (client, message, args) => {
 sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
-                client.tutorcall.progressCheck(client,message,45);
+                client.tutorcall.progressCheck(client,message,46);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else if(room[5][selectRoom][4][0][4].length == 1){
@@ -130,7 +130,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 //sdex[selectDex][4].push(funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]));
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
-                client.tutorcall.progressCheck(client,message,45);
+                client.tutorcall.progressCheck(client,message,46);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               }
@@ -144,7 +144,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
               sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
               sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
               message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
-                client.tutorcall.progressCheck(client,message,45);
+                client.tutorcall.progressCheck(client,message,46);
               client.playerMap.set(charid,sdex,"sdex");
               return;
             } else if(room[5][selectRoom][4][0][4].length == 1){
@@ -154,7 +154,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 //sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0]));
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0],"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
-                client.tutorcall.progressCheck(client,message,45);
+                client.tutorcall.progressCheck(client,message,46);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
@@ -163,7 +163,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 //sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"))
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
-                client.tutorcall.progressCheck(client,message,45);
+                client.tutorcall.progressCheck(client,message,46);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               }
@@ -175,7 +175,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 //sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0]),room[5][selectRoom][4][1][4][0]));
                 sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0],"||"),room[5][selectRoom][4][1][4][0],"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
-                client.tutorcall.progressCheck(client,message,45);
+                client.tutorcall.progressCheck(client,message,46);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
@@ -185,7 +185,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
                 sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"),funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
-                client.tutorcall.progressCheck(client,message,45);
+                client.tutorcall.progressCheck(client,message,46);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               }

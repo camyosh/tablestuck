@@ -1,5 +1,7 @@
 exports.run = (client, message, args) => {
 
+//config check template: client.configMap.get(message.guild.id).options[#].selection==#
+
   if(!client.funcall.dmcheck(client,message)){
     message.channel.send("Only a DM can use this command! Make sure to give yourself a role named \"DM\" if you're in charge!");
     return;

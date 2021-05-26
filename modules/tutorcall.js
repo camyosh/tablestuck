@@ -1,6 +1,6 @@
 
 
-exports.progressCheck = async function(client,message,step){
+exports.progressCheck = async function(client,message,step,bypass = false){
   /*
   every player has an array of bools that say if they've passed certain stages of the tutorial.
     this means that progress can be made in any order, though the guide will try to lead the player along a certain route.
@@ -51,9 +51,10 @@ exports.progressCheck = async function(client,message,step){
     42:>quickalch
     43:put a blank card into the PUNCH DESIGNATRIX
     44: punch a code into the blank card
-    45: Alchemize a new item (>heal,>sleep)
-    46: complete >sleep,>heal, and >quickalch(the fakeout one)
-    47:actual >quickalch (disables >heal)
+    45:contined explaination from 44
+    46: Alchemize a new item (>heal,>sleep)
+    47: complete >sleep,>heal, and >quickalch(the fakeout one)
+    48:actual >quickalch (disables >heal)
     ------------
 
   */
@@ -64,7 +65,7 @@ exports.progressCheck = async function(client,message,step){
   if(!progress[0]){
     return;
   }
-  if(progress[step]){
+  if(progress[step]&&!bypass){
     return;
   }
 let tutorRef = require("../tutorRef.json");
@@ -105,15 +106,20 @@ ctx.fillRect(0,0,canvas.width,canvas.height);
 ctx.drawImage(sprite,0,0,300,500);
 ctx.font = "28px Courier Standard Bold";
 ctx.fillStyle = "#ffffff";
-ctx.textAlign
 ctx.fillText(msg,320,40);
 
 const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
 client.channels.cache.get(channelid).send(attachment);
-if(!progress[46]&&progress[38]&&progress[41]&&progress[45]){
-  setTimeout(function(){client.tutorcall.progressCheck(client,message,46);},2000);
+if(bypass){
+  return;
 }
-if(progress[47]){
+if(progress[44]){
+  setTimeout(function(){client.tutorcall.progressCheck(client,message,45);},2000);
+}
+if(!progress[47]&&progress[38]&&progress[41]&&progress[46]){
+  setTimeout(function(){client.tutorcall.progressCheck(client,message,47);},2000);
+}
+if(progress[48]){
   client.playerMap.set(charid,true,"tutcomplete");
 }
 }
