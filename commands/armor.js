@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
   let name = client.playerMap.get(charid,"name");
 
 //if no arguments, display currently equipped armor
- 
+
   if(!args[0]){
 
     if(armor.length==0){
@@ -71,7 +71,7 @@ exports.run = (client, message, args) => {
       message.channel.send(inspectItem);
 
     }
-
+    client.tutorcall.progressCheck(client,message,24);
     //if first argument is eject, eject armor
 
   } else if(args[0]=="eject"){

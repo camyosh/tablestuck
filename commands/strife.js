@@ -187,6 +187,7 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
 
   let strifeEmbed = new client.Discord.MessageEmbed()
   .setTitle()
+  client.tutorcall.progressCheck(client,message,33);
 
 
 

@@ -84,6 +84,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
   if(!args[0]||!args[1]||!args[2]){
     message.channel.send(`To use the Instant Alchemiter, you need to select an item from your sylladex, select an alchemy type (&& or ||), and select a second item from your sylladex. For example, ${client.auth.prefix}alchemize 1 && 2. If you want to just reproduce a single item, just select the first item.`);
+    client.tutorcall.progressCheck(client,message,47);
     return;
   }
 
@@ -227,6 +228,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
 }else{
     message.channel.send("To QUICK ALCHEMIZE, you must be in a room with an INSTANT ALCHEMITER");
+    client.tutorcall.progressCheck(client,message,42);
     return;
   }
 

@@ -84,6 +84,7 @@ exports.run = (client, message, args) => {
     .addField(`TRAITS`,msg);
 
     message.channel.send(embed);
+    client.tutorcall.progressCheck(client,message,25);
     return;
 
   }

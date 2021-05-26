@@ -67,6 +67,7 @@ exports.run = (client, message, args) => {
      const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,[],"alchemy athenaeum");
 
        message.channel.send(attachment);
+       client.tutorcall.progressCheck(client,message,26);
      }
 
      dexCheck();
@@ -166,9 +167,11 @@ if(sdex.length > client.playerMap.get(charid,"cards")){
 
   message.channel.send(msg)
   client.funcall.actionCheck(client,message,"alchemized");
+  client.tutorcall.progressCheck(client,message,31);
 
   }else{
     message.channel.send("To ALCHEMIZE, you must be in a room with an ALCHEMITER");
+    client.tutorcall.progressCheck(client,message,26);
     return;
   }
 

@@ -42,5 +42,5 @@ exports.run = (client, message, args) => {
 
     client.funcall.actionCheck(client,message);
   let move = client.funcall.move(client,message,charid,local,target,true,`You take flight and land at a `);
-
+  setTimeout(function(){client.tutorcall.progressCheck(client,message,40);},1500);
 }

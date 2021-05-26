@@ -153,6 +153,7 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
   if(!args[0]||pageturn){
     let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'pestercord.png');
     message.channel.send(attachment);
+      client.tutorcall.progressCheck(client,message,10);
     return;
   }
 

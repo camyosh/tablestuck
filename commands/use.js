@@ -69,6 +69,7 @@ exports.run = (client, message, args) => {
       if(selectCode.charAt(0) == "/" && (sdex[selectDex][0] == "SBURB DISC")){
 
       message.channel.send(`Installed the ${sdex[selectDex][0]} onto the ${room[5][selectRoom][0]}`)
+      client.tutorcall.progressCheck(client,message,15);
       let targetItem = sdex.splice(selectDex,1)[0];
       room[5][selectRoom][4].push(targetItem);
       sec[local[1]][local[2]][2][local[3]] = room;
@@ -85,7 +86,8 @@ exports.run = (client, message, args) => {
         if(selectCode == "11111111"){
           if(room[5][selectRoom][4].length<2){
 
-            message.channel.send(`Inserted the ${sdex[selectDex][0]} into a CARD SLOT on the TOTEM LATHE`)
+            message.channel.send(`Inserted the ${sdex[selectDex][0]} into a CARD SLOT on the TOTEM LATHE`);
+            client.tutorcall.progressCheck(client,message,27);
             let targetItem = sdex.splice(selectDex,1)[0];
             room[5][selectRoom][4].push(targetItem);
             sec[local[1]][local[2]][2][local[3]] = room;
@@ -111,6 +113,7 @@ exports.run = (client, message, args) => {
 sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
+                client.tutorcall.progressCheck(client,message,45);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else if(room[5][selectRoom][4][0][4].length == 1){
@@ -118,6 +121,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
                 sdex[selectDex][4].push(room[5][selectRoom][4][0][4][0]);
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
+                client.tutorcall.progressCheck(client,message,29);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
@@ -126,6 +130,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 //sdex[selectDex][4].push(funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]));
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
+                client.tutorcall.progressCheck(client,message,45);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               }
@@ -139,6 +144,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
               sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
               sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
               message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
+                client.tutorcall.progressCheck(client,message,45);
               client.playerMap.set(charid,sdex,"sdex");
               return;
             } else if(room[5][selectRoom][4][0][4].length == 1){
@@ -148,6 +154,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 //sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0]));
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0],"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
+                client.tutorcall.progressCheck(client,message,45);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
@@ -156,6 +163,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 //sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"))
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
+                client.tutorcall.progressCheck(client,message,45);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               }
@@ -167,6 +175,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 //sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0]),room[5][selectRoom][4][1][4][0]));
                 sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0],"||"),room[5][selectRoom][4][1][4][0],"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
+                client.tutorcall.progressCheck(client,message,45);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
@@ -176,6 +185,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
                 sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"),funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
+                client.tutorcall.progressCheck(client,message,45);
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               }
@@ -216,7 +226,8 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
             client.playerMap.set(charid,registry,"registry");
 
-            message.channel.send("Registered totem to the alchemy athenaeum!")
+            message.channel.send("Registered totem to the alchemy athenaeum!");
+            client.tutorcall.progressCheck(client,message,30);
 
             /*
             message.channel.send(`Placed the CARVED TOTEM onto the pedestal on the ALCHEMITER`)
@@ -234,6 +245,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
         if(room[5][selectRoom][4].length==0){
           if(selectCode == "11111111"){
             message.channel.send(`Inserted the ${sdex[selectDex][0]} into the CARD SLOT on the PUNCH DESIGNIX`);
+            client.tutorcall.progressCheck(client,message,43);
             let targetItem = sdex.splice(selectDex,1)[0];
             room[5][selectRoom][4].push(targetItem);
             sec[local[1]][local[2]][2][local[3]] = room;
@@ -246,6 +258,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
         } else {
           if(room[5][selectRoom][4][0][4].length<2){
             message.channel.send(`Punched the code for the ${sdex[selectDex][0]} onto the PUNCHED CARD`);
+            client.tutorcall.progressCheck(client,message,44);
             let targetItem = sdex[selectDex];
             room[5][selectRoom][4][0][0]="PUNCHED CARD";
             room[5][selectRoom][4][0][4].push(targetItem);
@@ -262,6 +275,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
   } else {
     if(sdex[selectDex][0]=="CAPTCHALOGUE CARD" && sdex[selectDex][1]=="11111111"){
       message.channel.send(`Added ${sdex[selectDex][3]} CAPTCHALOGUE CARDS to your SYLLADEX`);
+      client.tutorcall.progressCheck(client,message,14);
 
       let cards = client.playerMap.get(charid,"cards");
       cards += sdex[selectDex][3];
@@ -300,6 +314,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
         message.channel.send(`Entered the Land of ${landName[0]} and ${landName[1]}`);
         let targetItem = sdex.splice(selectDex,1);
         client.playerMap.set(charid,sdex,"sdex");
+        client.tutorcall.progressCheck(client,message,32);
 
         return;
 

@@ -28,14 +28,21 @@ module.exports = (client, message) => {
     let charid = message.guild.id.concat(message.author.id);
 
     let reg = false;
+    let alive = true;
 
     if(client.playerMap.has(charid)){
       if(client.playerMap.get(charid,"alive")){
         reg=true;
+      } else {
+        alive = false;
       }
     }
 
     if(!reg&&command!="register"&&command!="help"&&command!="initialize"&&command!="scratch"&&command!="leaderboard"&&command!="config"){
+      if(!alive){
+        message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
+        return;
+      }
       message.channel.send("You are not registered! Register using the >register command!");
       return;
     }

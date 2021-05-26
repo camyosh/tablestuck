@@ -37,7 +37,7 @@ exports.run = (client, message, args) => {
 
   value = parseInt(args[0], 10) - 1;
   if(isNaN(value)){
-    message.channel.send("That is not a valid argument!");
+    message.channel.send("That is not a valid argument! Make sure to give the number of an item in your room!");
     return;
   }
   if(value >= room[5].length || value < 0){
@@ -105,4 +105,8 @@ client.landMap.set(land,sec,local[0]);
 client.playerMap.set(charid,currentInv,"sdex");
 funcall.actionCheck(client,message,"item");
 client.funcall.tick(client,message);
+client.tutorcall.progressCheck(client,message,5);
+if(args[0]&&args[1]){
+client.tutorcall.progressCheck(client,message,13);
+}
 }

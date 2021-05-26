@@ -6,9 +6,14 @@
     "choices": ["They go unconcious and can sleep to wake up","They are dead and must be revived to wake as their dream selves"],
     "selection": 0
     },{
-    "name" : "SUFFER",
-    "desc" : "**Why Are we Still On this Planet?**",
-    "choices": ["Just to Suffer","To become One With Oblivion","To Write Code"],
+    "name" : "CHANNELS",
+    "desc" : "**How many channels are made when a player registers?***",
+    "choices": ["One, just their terminal","Two, their terminal and perstercord channel"],
+    "selection": 0
+  },{
+    "name" : "TUTORIAL",
+    "desc" : "**Does every player start with the tutorial enabled?**",
+    "choices": ["Yes","No"],
     "selection": 0
     }
 ]

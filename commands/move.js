@@ -23,6 +23,7 @@ exports.run = (client, message, args) => {
     .addField("**HELP**","Select a room number below to move to that room in this area, or select a direction (North, South, East or West) to move to the surrounding area!")
     .addField("**ROOMS**",msg);
     message.channel.send(roomDirect);
+    client.tutorcall.progressCheck(client,message,8);
     return;
   }
 
@@ -88,4 +89,5 @@ exports.run = (client, message, args) => {
   }
   console.log("Calling move function");
   let move = client.funcall.move(client,message,charid,local,target,mapCheck,msg);
+
 }

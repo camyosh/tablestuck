@@ -7,6 +7,8 @@ exports.run = (client,message,args) =>{
 
   let local = client.playerMap.get(charid,"local");
 
+  client.tutorcall.progressCheck(client,message,2);
+  
   if(client.strifecall.strifeTest(client, message, message.author) == true){
 
     let page = 0;

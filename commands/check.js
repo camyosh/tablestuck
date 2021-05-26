@@ -36,7 +36,8 @@ targId = occList[value][1];
   .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.playerMap.get(targId,"b")}`,true)
   .addField(`**RUNG**`,`${client.playerMap.get(targId,"rung")}`,true)
   .addField(`**BIO**`,`${client.playerMap.get(targId,"bio")}`)
-  .setImage(client.playerMap.get(targId,"img"))
+  .setImage(client.playerMap.get(targId,"img"));
+  client.tutorcall.progressCheck(client,message,16);
 
 
   message.channel.send(listPrint).catch(error => {

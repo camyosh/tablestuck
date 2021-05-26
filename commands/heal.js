@@ -22,9 +22,14 @@ exports.run = (client, message, args) => {
 
   if(local[0]=="h"){
     if(enter==true){
+      if(client.playerMap.get(charid,"tutcomplete")){
+        message.channel.send("Your Sprite believes in you now, you don't need any little crutch like >heal! You'll be fine.");
+        return;
+      }
       message.channel.send("You are fully healed by your sprite!");
       client.funcall.tick(client,message);
       client.playerMap.set(charid,gel,"vit");
+      client.tutorcall.progressCheck(client,message,38);
     } else {
       message.channel.send("You don't have a sprite to heal you!");
     }

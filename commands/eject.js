@@ -68,4 +68,5 @@ exports.run = (client, message, args) => {
   client.playerMap.set(charid,sdex,"sdex");
   message.channel.send(`Ejected the ${dropItem[0]}!`);
   client.funcall.tick(client,message);
+  client.tutorcall.progressCheck(client,message,6);
 }

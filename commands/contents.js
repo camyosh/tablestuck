@@ -42,6 +42,7 @@ exports.run = (client, message, args) => {
   const attachment = await client.imgcall.sdexCheck(client,message,page,args,2,dex[value][4],dex[value][4].length,dex[value][0]);
 
     message.channel.send(attachment);
+    client.tutorcall.progressCheck(client,message,12);
   }
 
   dexCheck();

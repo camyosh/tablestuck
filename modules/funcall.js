@@ -939,6 +939,10 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     }
   }
   moveEmbed();
+  setTimeout(function(){
+    client.tutorcall.progressCheck(client,message,8);
+    client.tutorcall.progressCheck(client,message,9)
+  },1500);
 }
 function dreamCheck(client,target,local){
 

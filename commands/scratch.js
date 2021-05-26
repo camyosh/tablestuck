@@ -7,7 +7,10 @@ exports.run = (client, message, args) => {
     message.channel.send(`Only someone with a role called "DM" can scratch a session!`);
     return;
   }
-
+if(!client.landMap.has(message.guild.id+"medium")){
+  message.channel.send(`You haven't done ${client.auth.prefix}initalize yet, there isn't anything to scratch yet!`);
+  return;
+}
 if(args[0]=="confirm"){
 
   message.channel.send("Scratching session...");

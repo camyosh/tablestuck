@@ -20,5 +20,6 @@ if(!args[0]){
 
 message.channel.send(`Saving Bio, players can see it using the ${client.auth.prefix}check command on you! Note, if the bio is too long, it won't appear!`);
 client.playerMap.set(charid,output,"bio");
+client.tutorcall.progressCheck(client,message,17);
 
 }

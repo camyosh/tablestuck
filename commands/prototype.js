@@ -11,6 +11,7 @@ exports.run = (client, message, args) => {
 
   if(!args[0]){
     message.channel.send("You need to choose an item from your SYLLADEX to prototype your SPRITE with!");
+    client.tutorcall.progressCheck(client,message,28);
     return;
   }
 

@@ -402,6 +402,7 @@ switch(client.playerMap.get(list[target][1],"faction")){
       if(active.length<=1){
         message.channel.send(`Last opponent defeated!`);
         leaveStrife(client,message,local,pos);
+        client.tutorcall.progressCheck(client,message,37);
       }
 
 
@@ -522,18 +523,23 @@ function leaveStrife(client,message,local,pos){
 client.funcall.chanMsg(client,charid,"Leaving Strife!");
 
   if(!client.playerMap.get(charid,"alive")){
+    if(client.configMap.get(message.guild.id).options[0].selection==0){
     let temp;
     let dreamSwitch=["local","vit","port","kinds","spec","modus","cards","scards","sdex","equip","trinket","armor"];
+
     for(let i=0;i<dreamSwitch.length;i++){
 
       temp =client.playerMap.get(charid,dreamSwitch[i])
       client.playerMap.set(charid,client.playerMap.get(charid,`dream${dreamSwitch[i]}`),dreamSwitch[i]);
       client.playerMap.set(charid,temp,`dream${dreamSwitch[i]}`);
     }
-
-  client.funcall.chanMsg(client,charid,"Knocked out! Waking up as your DREAM/WAKING self.");
+  (client.playerMap.get(charid,"dreamer")?client.playerMap.set(charid,false,"dreamer"):client.playerMap.set(charid,true,"dreamer"));
+  client.funcall.chanMsg(client,charid,`You've been knocked out! You are currently awake as ${(client.playerMap.get(charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.playerMap.get(charid,"dreamvit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
   client.playerMap.set(charid,true,"alive")
-  }
+} else {
+  message.channel.send("seems you picked the alternate death option, cool! This isn't finished so you're probably dead forever. HaHa!");
+}
+}
 
 } else {
 
@@ -551,8 +557,6 @@ client.funcall.chanMsg(client,charid,"Leaving Strife!");
     }
 
   }*/
-
-
   client.strifeMap.set(strifeLocal,active,"active");
   client.landMap.set(local[4],sec,local[0]);
 
@@ -584,7 +588,7 @@ function startTurn(client, message, local) {
   let stamfav = 0;
   let stamroll;
   let stamsg;
-  let carry = false;
+  let carry = true;
   let removed;
   let stunned = false;
   let alert = ``;

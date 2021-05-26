@@ -33,6 +33,7 @@ exports.run = (client, message, args) => {
     const attachment = await client.imgcall.sdexCheck(client,message,page,args,0,dex,cards,"sylladex");
 
       message.channel.send(attachment);
+      client.tutorcall.progressCheck(client,message,7);
     }
 
     dexCheck();

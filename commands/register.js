@@ -86,7 +86,10 @@ for(i=0;i<2;i++){
       message.channel.send("You can not re-register during a tournament!");
       return;
     }
-
+    if(args[0]!="confirm"){
+      message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}reigister confirm.`);
+      return;
+    }
     channel = client.playerMap.get(charid,"channel");
     pesterchannel = client.playerMap.get(charid,"pesterchannel");
 
@@ -338,6 +341,15 @@ regImport();
 
   //console.log(`Creating character sheet - ${Date.now() - startTime}`);
 
+if(client.configMap.get(message.guild.id).options[2].selection==0){
+  defaultTutor = [true];
+} else {
+  defaultTutor = [false];
+}
+let tutorRef = require("../tutorRef.json");
+for(let m=0;m<tutorRef.content.length;m++){
+  defaultTutor.push(false);
+}
   var charSheet = {
     control:charid,
     possess:[],
@@ -403,7 +415,11 @@ regImport();
     bio:"This player has not set their BIO!",
     img:"https://media.discordapp.net/attachments/408119077840617493/808458446374436914/human_base.png",
     registry:[],
-    timeOfReg:Date.now()
+    timeOfReg:Date.now(),
+    dreamer:false,
+    revived:false,
+    tutor:defaultTutor,
+    tutcomplete:false
   };
 
 client.playerMap.set(charid,charSheet);
@@ -437,7 +453,8 @@ if(!channelCheck){
      ]//,
      //parent:"827335332789878814"
       })
-      /*var pesterchan = await message.guild.channels.create(`${message.author.username}-pester`, {
+      if(client.configMap.get(message.guild.id).options[1].selection==1){
+      var pesterchan = await message.guild.channels.create(`${message.author.username}-pester`, {
           type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
           permissionOverwrites: [
              {
@@ -449,11 +466,14 @@ if(!channelCheck){
          }
        ]//,
        //parent:"827335362124316712"
-     })*/
-
+     })
+   }
         channel = chan.id;
+        if(client.configMap.get(message.guild.id).options[1].selection==1){
+        pesterchannel = pesterchan.id;
+      } else {
         pesterchannel = chan.id;
-
+      }
         client.hookcall.hookGen(client,pesterchannel);
 
         client.playerMap.set(charid,channel,"channel");
@@ -469,6 +489,7 @@ if(!channelCheck){
   client.playerMap.set(charid,pesterchannel,"pesterchannel");
     client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! ${client.auth.prefix}help is pretty out of date, so good luck figuring out how the commands work. We promise, we'll fix it sometime.`);
 }
+setTimeout(function(){client.tutorcall.progressCheck(client,message,1)},4000);
 
 //console.log(`Finished setting character sheet - ${Date.now() - startTime}`);
 

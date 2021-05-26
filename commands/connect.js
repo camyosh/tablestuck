@@ -36,6 +36,7 @@ exports.run = (client, message, args) => {
 
   if(!args[0]){
     message.channel.send(`You must enter a CLIENT CODE to connect to a CLIENT. Your CLIENT CODE is ${message.author.id}`);
+    client.tutorcall.progressCheck(client,message,18);
     return;
   }
 

@@ -161,7 +161,7 @@ exports.run = (client, message, args) => {
         target[0]+="m";
       }
       msg+=`You cross the `
-
+      setTimeout(function(){client.tutorcall.progressCheck(client,message,41);},1500);
     break;
     case 46:
 

@@ -41,5 +41,6 @@ exports.run = (client, message, args) => {
   let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
 
   message.channel.send(funcall.gristCacheEmbed(client, clientId));
+  client.tutorcall.progressCheck(client,message,20);
   return;
 }

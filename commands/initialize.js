@@ -67,6 +67,12 @@ for(i=0;i<2;i++){
 }
 client.playerMap.set("leaderboard",leaderboard);
 
+defaultConfig = require("../config.json");
+if(!client.configMap.has(message.guild.id)){
+  console.log("creating a new config file!");
+client.configMap.set(message.guild.id,defaultConfig);
+}
+
   message.channel.send("Session initialized!");
 
 }

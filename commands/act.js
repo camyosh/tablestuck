@@ -299,6 +299,7 @@ for(i=0;i<action.length;i++){
 
 let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
 message.channel.send(attachment);
+client.tutorcall.progressCheck(client,message,34);
 return;
   }
 
@@ -413,5 +414,6 @@ if(log){
   list[pos][6].push(""+select+equip);
   client.strifeMap.set(strifeLocal,list,"list")
   strifecall.act(client,message,local,action[select],active[target]);
+  client.tutorcall.progressCheck(client,message,35);
 }
 }

@@ -25,6 +25,7 @@ const strifecall =require("./modules/strifecall.js");
 const landcall =require("./modules/landcall.js");
 const imgcall =require("./modules/imgcall.js");
 const lootcall =require("./modules/lootcall.js");
+const tutorcall =require("./modules/tutorcall.js");
 
 client.traitcall = traitcall;
 client.strifecall = strifecall;
@@ -33,6 +34,7 @@ client.hookcall = hookcall;
 client.landcall = landcall;
 client.imgcall = imgcall;
 client.lootcall = lootcall;
+client.tutorcall = tutorcall;
 //declare enmaps
 if (!fs.existsSync("../data")){
   console.log("Data directory missing, please create it!")

@@ -18,6 +18,8 @@ exports.run = function(client, message, args) {
     client.playerMap.set(charid,temp,`dream${dreamSwitch[i]}`);
   }
 
+(client.playerMap.get(charid,"dreamer")?client.playerMap.set(charid,false,"dreamer"):client.playerMap.set(charid,true,"dreamer"));
 message.channel.send("You fall asleep, or are you waking up?");
-
+client.tutorcall.progressCheck(client,message,39);
+console.log(client.playerMap.get(charid,"dreamer"));
 }
