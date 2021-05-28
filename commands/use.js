@@ -122,6 +122,9 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][4].push(room[5][selectRoom][4][0][4][0]);
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,29);
+                if(client.playerMap.get(charid,"tutor",32)){
+                  client.tutorcall.progressCheck(client,message,46);
+                }
                 client.playerMap.set(charid,sdex,"sdex");
                 return;
               } else{
