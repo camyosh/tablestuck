@@ -2040,11 +2040,10 @@ if(aa.includes("RANDSTATUS")){
 
 
         alert+= `**MORTAL DECAY** YOUR DAMAGE SPREADS TO ALL FOES.\n`;
-        let id;
         if(log){
           console.log(`Mortal decay`);
         }
-        for(id=0;id<active.length;id++){
+        for(let id=0;id<active.length;id++){
           if(active[id]!=init[turn][0]&&active[id]!=target){
             list[id][3]-= damage;
             if(list[id][3] < 1 && client.traitcall.traitCheck(client,list[id][1],"CAT")[1] && !list[id][7].includes("NINELIVES")) {

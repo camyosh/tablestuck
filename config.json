@@ -8,7 +8,7 @@
     },{
     "name" : "CHANNELS",
     "desc" : "**How many channels are made when a player registers?***",
-    "choices": ["One, just their terminal","Two, their terminal and perstercord channel"],
+    "choices": ["One, just their terminal","Two, their terminal and perstercord channel","Zero, make the current channel their terminal"],
     "selection": 0
   },{
     "name" : "TUTORIAL",
@@ -20,6 +20,11 @@
     "desc" : "**Do creatures hold on to leftover stamina from their last strife by default?**",
     "choices": ["Yes","No"],
     "selection": 0
-    }
+  },{
+      "name" : "SELFCONNECT",
+      "desc" : "**Can players connect to themselves?**",
+      "choices": ["Yes","No"],
+      "selection": 0
+  }
 ]
 }

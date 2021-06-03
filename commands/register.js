@@ -100,7 +100,17 @@ for(i=0;i<2;i++){
     }catch(err){
       channelCheck=false;
     }
-
+let target;
+    if(client.playerMap.get(charid,"client")!="NA"&&client.playerMap.get(charid,"client")!=message.author.id){
+      target = message.guild.id.concat(client.playerMap.get(charid,"client"));
+      client.playerMap.set(target,"NA","server");
+      client.funcall.chanMsg(client,target,`Your server has re-registerd, leaving you without a server!`);
+    }
+    if(client.playerMap.get(charid,"server")!="NA"&&client.playerMap.get(charid,"server")!=message.author.id){
+      target = message.guild.id.concat(client.playerMap.get(charid,"server"));
+      client.playerMap.set(target,"NA","client");
+      client.funcall.chanMsg(client,target,`Your client has re-registerd, leaving you without a client!`);
+    }
 
   }
 
@@ -439,8 +449,12 @@ if(!channelCheck){
       //message.channel.send(client.channels.cache.get(categoryList[i][0]).children.size);
 
     }
-
-    var chan = await message.guild.channels.create(`${message.author.username}-terminal`, {
+    let chan,pesterchan;
+    if(client.configMap.get(message.guild.id).options[1].selection==2){
+      channel = message.channel.id;
+      pesterchannel = message.channel.id;
+    } else {
+    chan = await message.guild.channels.create(`${message.author.username}-terminal`, {
         type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
         permissionOverwrites: [
            {
@@ -454,7 +468,7 @@ if(!channelCheck){
      //parent:"827335332789878814"
       })
       if(client.configMap.get(message.guild.id).options[1].selection==1){
-      var pesterchan = await message.guild.channels.create(`${message.author.username}-pester`, {
+      pesterchan = await message.guild.channels.create(`${message.author.username}-pester`, {
           type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
           permissionOverwrites: [
              {
@@ -474,12 +488,13 @@ if(!channelCheck){
       } else {
         pesterchannel = chan.id;
       }
+    }
         client.hookcall.hookGen(client,pesterchannel);
 
         client.playerMap.set(charid,channel,"channel");
         client.playerMap.set(charid,pesterchannel,"pesterchannel");
 
-        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! ${client.auth.prefix}help is pretty out of date, so good luck figuring out how the commands work. We promise, we'll fix it sometime.`);
+        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
   }
 
   generateChannels();
@@ -487,7 +502,7 @@ if(!channelCheck){
 }else{
   client.playerMap.set(charid,channel,"channel");
   client.playerMap.set(charid,pesterchannel,"pesterchannel");
-    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! ${client.auth.prefix}help is pretty out of date, so good luck figuring out how the commands work. We promise, we'll fix it sometime.`);
+    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
 }
 setTimeout(function(){client.tutorcall.progressCheck(client,message,1)},4000);
 
