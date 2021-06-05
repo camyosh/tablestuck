@@ -17,7 +17,7 @@
     "selection": 0
   },{
     "name" : "RETAIN",
-    "desc" : "**Do creatures hold on to leftover stamina from their last strife by default?**",
+    "desc" : "**Do creatures hold on to leftover stamina from their last turn by default?**",
     "choices": ["Yes","No"],
     "selection": 0
   },{

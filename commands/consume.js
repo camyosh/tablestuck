@@ -63,8 +63,9 @@ return;
 
   let tier = sdex[selectDex][2];
   let msg = `You consume the ${sdex[selectDex][0]}!`
+if(strifeCheck){
   let msg2 = `${client.playerMap.get(list[init[turn][0]][1],"name")} consumes a ${sdex[selectDex][0]}!`;
-
+}
   if(client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")){
     if(strifeCheck==false){
       message.channel.send("You can't use that item outside of strife!");
@@ -129,13 +130,13 @@ if(strifeCheck){
   }
 
   message.channel.send(msg);
+  if(strifeCheck){
   for(let i=0;i<active.length;i++){
     if(list[active[i]][0]==true&&list[active[i]][1]!=charid){
       client.funcall.chanMsg(client,list[active[i]][1],msg2);
     }
   }
 
-  if (strifeCheck) {
     list[pos][6].push("CONSUME");
     client.strifeMap.set(strifeLocal, list, "list");
   }
