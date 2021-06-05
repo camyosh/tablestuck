@@ -5,11 +5,32 @@ exports.run = function(client, message, args) {
     return;
   }
   let charid = message.guild.id.concat(message.author.id);
+
+  if(!client.playerMap.has(charid,"sleepTimer")){
+    client.playerMap.set(charid,0,"sleepTimer");
+  }
+
   if(client.playerMap.get(charid,"revived")){
-    message.channel.send(`Since you've died, you don't have an alternative self to wake up as, and for the moment cannot sleep.`);
+    let s = client.playerMap.get(charid,"sleepTimer");
+    let t = Date.now();
+    if(t-s>300000){
+      let curvit = client.playerMap.get(charid,"vit");
+      let gel = client.playerMap.get(charid,"gel");
+      let healing = Math.floor(gel*.5);
+      if(curvit+healing>gel){
+        client.playerMap.set(charid,gel,"vit");
+      } else {
+        client.playerMap.set(charid,curvit+healing,"vit");
+      }
+    message.channel.send(`You sleep, healing for ${healing} Vitality, but have terrifying nightmares of horrifying terrors! You won't be able to go back to sleep for at least another 5 minutes...`);
+    client.playerMap.set(charid,t,"sleepTimer");
+    return;
+  } else {
+    message.channel.send(`You can't go to sleep again... not yet... the visions were too horrifying! You need to wait another ${Math.ceil((300000-(t-s))/1000)} seconds!`);
     return;
   }
-  if(client.playerMap.get(charid,"dreamvit")<1){
+  }
+  if(client.playerMap.get(charid,"dreamvit")<1&&client.configMap.get(message.guild.id).options[0].selection==0){
     message.channel.send(`You try to wake up, but your other self has less than 1 VITALITY! Every action you take as this self will heal your other self by 5 HP. Your other self currently has ${client.playerMap.get(charid,"dreamvit")} VITALITY.`);
     return;
   }

@@ -244,7 +244,7 @@
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808819423624036412/NOIR.png",
   "trait":"1d4 bonus to strike check",
 
-  "set":"Triple damage on crit"},
+  "set":"crits do x3 damage instead of x2"},
 
   "CHARLATAN":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808839515745550376/CHARLATAN.png",
@@ -316,7 +316,7 @@
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808873397390934036/RAGE.png",
   "trait":"1d6 chance to inflict STUN",
 
-  "set":"Crits deal 4x damage"},
+  "set":"Crit damage is doubled"},
 
   "BLOOD":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808874562346680360/BLOOD.png",

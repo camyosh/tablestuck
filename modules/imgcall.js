@@ -112,6 +112,9 @@ ctx.font = applyText(canvas,ctx,name,16,8,"FONTSTUCK",130)
 name = splitText(canvas,ctx,name,18)
 ctx.fillText(name,x+20,y+196-(Math.floor(14-ctx.measureText(name).emHeightAscent+ctx.measureText(name).emHeightDescent)/2));
 
+console.log(item[1]);
+console.log(item);
+
 let gristType = client.codeCypher[1][client.captchaCode.indexOf(item[1].charAt(1))];
 
 //grist type

@@ -209,10 +209,10 @@
   },
   "activate":{
     "name" : "ACTIVATE",
-    "cst"  : 3,
+    "cst"  : 4,
     "dmg" : 0,
-    "aa": "GAIN 1d4 STAMINA, REUSE",
-    "add":["STAMADD","REUSE"],
+    "aa": "GAIN 1d8 STAMINA",
+    "add":["STAMADD+"],
     "col": "0x6688fe",
     "img" : "",
     "BD"  : false,
@@ -524,8 +524,8 @@
 
   "assassinate":{
     "name" : "ASSASSINATE",
-    "cst"  : 8,
-    "dmg" : 3,
+    "cst"  : 6,
+    "dmg" : 2,
     "aa": "IF ACTION HITS, DEAL DAMAGE AS IF CRITICAL HIT",
     "add":["AUTOCRIT"],
     "col": "0xff4b2d",

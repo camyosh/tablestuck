@@ -43,7 +43,7 @@ for(let l=0;l<specialMerge.length;l++){
       sdex = client.playerMap.get(charid,"sdex");
       cardcount = client.playerMap.get(charid,"cards");
       client.playerMap.set(charid,cardcount+1,"cards");
-      sdex.push(client.playerMap.get(charid,"dream"+specialMerge[l]));
+      sdex.push(client.playerMap.get(charid,"dream"+specialMerge[l])[0]);
       client.playerMap.set(charid,sdex,"sdex");
     }
     client.playerMap.set(charid,[],"dream"+specialMerge[l]);

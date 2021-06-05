@@ -182,7 +182,7 @@ exports.run = (client, message, args) => {
         return;
       }
 
-      if(floor<3){
+      if(floor<2){
         target[0]=target[0].slice(0,-1);
       }else{
         target[0]=target[0].slice(0,-1)+`${(floor-1)}`;

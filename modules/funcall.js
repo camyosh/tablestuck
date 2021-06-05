@@ -23,7 +23,7 @@ function dubs(x){
 exports.dmcheck = function(client,message){
 try{
 
-  if(message.member.roles.cache.some(role => role.name === 'DM')||message.member.roles.cache.some(role => role.name === 'dm')||message.member.roles.cache.some(role => role.name === 'Dm')){
+  if(message.member.roles.cache.some(role => role.name.toLowerCase() === 'dm')||message.member.roles.cache.some(role => role.name.toLowerCase() === 'author')){
     return true;
   }else{
     return false;

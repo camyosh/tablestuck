@@ -1361,16 +1361,27 @@ attName = client.playerMap.get(list[init[turn][0]][1],"name");
           list[init[turn][0]][7].push("STAMFAV");
           break;
         case "STAMADD":
-          let newStam = Math.ceil(Math.random() * 4);
+          newStam = Math.ceil(Math.random() * 4);
           list[init[turn][0]][5]+= newStam;
-          let j;
-          for(j=0;j<active.length;j++){
-            if(list[active[j]][0]==true){
-              let chan = client.playerMap.get(list[active[j]][1],"channel");
+          let p;
+          for(p=0;p<active.length;p++){
+            if(list[active[p]][0]==true){
+              let chan = client.playerMap.get(list[active[p]][1],"channel");
               alert+=`${attName} gains ${newStam} STAMINA, they now have ${list[init[turn][0]][5]} STAMINA!\n`
             }
           }
           break;
+          case "STAMADD+":
+          newStam = Math.ceil(Math.random() * 8);
+            list[init[turn][0]][5]+= newStam;
+            let j;
+            for(j=0;j<active.length;j++){
+              if(list[active[j]][0]==true){
+                let chan = client.playerMap.get(list[active[j]][1],"channel");
+                alert+=`${attName} gains ${newStam} STAMINA, they now have ${list[init[turn][0]][5]} STAMINA!\n`
+              }
+            }
+            break;
         case "DISCOUNT":
           list[init[turn][0]][7].push("DISCOUNT");
           break;
@@ -2010,13 +2021,37 @@ if(aa.includes("RANDSTATUS")){
       }
 
       equals=true;
-      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[1]||client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[1]){
+
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[1]){
+        damage *= 3;
+        if(!paren){
+          damagemsg = `(`+damagemsg+`)`;
+          paren = true;
+        }
+        damagemsg += ` * 3`;
+        alert +=`1000/1000 CLOCKS DESTROYED! TRIPLE DAMAGE!\n`;
+      }else{
+        damage *= 2;
+        if(!paren){
+          damagemsg = `(`+damagemsg+`)`;
+          paren = true;
+        }
+        damagemsg += ` * 2`
+      }
+      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[1]){
+      damage *= 2;
+      damagemsg += ` * 2`;
+      alert +=`**BLASPHEMOUS WORD** - CRIT DOUBLED!\n`;
+    }
+
+//old crit calc
+    /*  if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[1]||client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[1]){
         if(!paren){
           damagemsg = `(`+damagemsg+`)`;
           paren = true;
         }
         if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"RAGE")[1]){
-        damage *= 4;
+        damage *= 2;
         damagemsg += ` * 4`;
         alert +=`**BLASPHEMOUS WORD** - QUADRUPLE DAMAGE!\n`;
       }
@@ -2032,7 +2067,7 @@ if(aa.includes("RANDSTATUS")){
         paren = true;
       }
       damagemsg += ` * 2`
-    }
+    }*/
     };
 
     if(damage < 0 || att == false) {
