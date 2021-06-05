@@ -4,10 +4,6 @@ const funcall = require("../modules/funcall.js");
 
 exports.run = async function(client, message, args) {
 
-  if(client.funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
 
   var charid = message.guild.id.concat(message.author.id);
   var local = client.playerMap.get(charid,"local");

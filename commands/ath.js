@@ -147,7 +147,10 @@ exports.run = (client, message, args) => {
        message.channel.send("That is not a valid TIER");
        return;
      }
-
+     if(client.traitcall.itemTrait(client,registry[value],"SHITTY")||client.traitcall.itemTrait(client,registry[value],"TRICKSTER")){
+       message.channel.send(`You can't change the tier of a ${(client.traitcall.itemTrait(client,registry[value],"SHITTY")?`SHITTY`:`TRICKSTER`)} item!`);
+       return;
+     }
      registry[value][2]=tier;
      client.playerMap.set(charid,registry,"registry");
      message.channel.send(`Scaled the ${registry[value][0]} to TIER ${tier}!`);

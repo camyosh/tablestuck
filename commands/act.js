@@ -6,12 +6,6 @@ const log =true;
 
 exports.run = (client, message, args) => {
 
-//Check if player is registered
-
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
 
 //Check if player is in STRIFE
 

@@ -6,11 +6,6 @@ const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,655
 
 exports.run = (client, message, args) => {
 
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
-
   if(strifecall.strifeTest(client, message, message.author) == true){
     message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
     return;
@@ -270,7 +265,13 @@ exports.run = (client, message, args) => {
   client.playerMap.set(clientId,gristCheck,"grist");
   client.funcall.tick(client,message);
 
-  message.channel.send(`Deployed the ${registry[value[0]][0].toUpperCase()}`)
+  let deployedItem = registry[value[0]][0].toUpperCase();
+  message.channel.send(`Deployed the ${deployedItem}`);
+
+  let alertClientList = ["CRUXTRUDER","TOTEM LATHE","ALCHEMITER","PRE-PUNCHED CARD","PUNCH DESIGNIX","INSTANT ALCHEMIZER","TRANSPORTALIZER"];
+  if(alertClientList.includes(deployedItem)&&client.playerMap.get(clientId,"local")[0]=="h"){
+    client.funcall.chanMsg(client,clientId,`There's a THUD as something is deployed in your ${clientSec[0][0][2][value[1]][2]}!`);
+  }
 
 
 

@@ -7,10 +7,6 @@ const rungReq = [0,1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24,26,28,30,34,38,42,4
 
 exports.run = (client, message, args) => {
 
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
 
     var target = message.guild.id.concat(message.author.id);
 

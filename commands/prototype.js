@@ -54,6 +54,7 @@ let targetItem = sdex.splice(selectDex,1)[0];
 prototype.push(targetItem);
 
 let newName = targetItem[0].toUpperCase()+name;
+newName = newName.split(" ").join("");
 
 client.playerMap.set(`n${charid}`,prototype,"prototype");
 client.playerMap.set(`n${charid}`,newName,"name")

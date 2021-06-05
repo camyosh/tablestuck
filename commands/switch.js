@@ -4,10 +4,6 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
 
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   let spec = client.playerMap.get(charid,"spec");

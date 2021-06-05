@@ -529,15 +529,72 @@ client.funcall.chanMsg(client,charid,"Leaving Strife!");
 
     for(let i=0;i<dreamSwitch.length;i++){
 
-      temp =client.playerMap.get(charid,dreamSwitch[i])
+      temp = client.playerMap.get(charid,dreamSwitch[i]);
       client.playerMap.set(charid,client.playerMap.get(charid,`dream${dreamSwitch[i]}`),dreamSwitch[i]);
       client.playerMap.set(charid,temp,`dream${dreamSwitch[i]}`);
     }
   (client.playerMap.get(charid,"dreamer")?client.playerMap.set(charid,false,"dreamer"):client.playerMap.set(charid,true,"dreamer"));
   client.funcall.chanMsg(client,charid,`You've been knocked out! You are currently awake as ${(client.playerMap.get(charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.playerMap.get(charid,"dreamvit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
-  client.playerMap.set(charid,true,"alive")
+  client.playerMap.set(charid,true,"alive");
 } else {
-  message.channel.send("seems you picked the alternate death option, cool! This isn't finished so you're probably dead forever. HaHa!");
+  playerIDArray = client.landMap.get(message.guild.id+"medium","playerList");
+  landName = client.landMap.get(charid,"name");
+
+  let msg = `A player has died! You have a weird sense they are `;
+  switch(client.playerMap.get(charid,"local")[0]){
+    case "h":
+    msg += `in someone's house...`;
+    break;
+    case "s1":
+    case "s2":
+    case "s3":
+    case "s4":
+    msg += `on the land of ${landName[0]} and ${landName[1]}...`;
+    break;
+    case "s1d":
+    case "s2d":
+    case "s3d":
+    case "s4d":
+    msg += `deep below the land of ${landName[0]} and ${landName[1]}...`;
+    break;
+    case "p":
+    case "pm":
+    msg += `on a bright moon...`;
+    break;
+    case "d":
+    case "dm":
+    msg += `on a dark moon...`;
+    break;
+    case "pc":
+    msg += `in a bright castle...`;
+    break;
+    case "dc":
+    msg += `in a dark castle...`;
+    break;
+    case "pmd":
+    case "pmd1":
+    case "pmd2":
+    msg += `in a bright dungeon...`;
+    break;
+    case "dmd":
+    case "dmd1":
+    case "dmd2":
+    msg += `in a dark dungeon...`;
+    break;
+    default:
+    msg += `in some unknown place...`;
+  }
+  msg += ` You should try to find them, and ${client.auth.prefix}revive them!`;
+  for(let i=0;i<playerIDArray.length;i++){
+    if(playerIDArray[i]!=charid){
+      client.funcall.chanMsg(client,playerIDArray[i],msg);
+    }
+  }
+  if(client.playerMap.get(charid,"revived")){
+  message.channel.send("It seems that you've died again. That might spell the end of your journey, for now...");
+  } else {
+  message.channel.send("Your allies have been alerted that you've perished. Now you can only wait for one of them to give you your second chance...");
+  }
 }
 }
 

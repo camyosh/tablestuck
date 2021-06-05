@@ -1,10 +1,5 @@
 exports.run = (client, message, args) => {
 
-  if(client.funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
-
   var charid = message.guild.id.concat(message.author.id);
   let handleList = client.landMap.get(message.guild.id+"medium","handleList");
 

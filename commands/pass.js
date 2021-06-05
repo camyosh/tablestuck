@@ -4,11 +4,6 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
-
   if(strifecall.strifeTest(client, message, message.author) == false){
     message.channel.send("You're not in Strife!");
     return;

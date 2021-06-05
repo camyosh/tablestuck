@@ -9,10 +9,6 @@ const tList = ["MELEE","RANGED","MAGIC","NA"];
 
 exports.run = (client, message, args) => {
 
-  if(funcall.regTest(client, message, message.author) == false){
-    message.channel.send("You're not a registered player!");
-    return;
-  }
 
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   var armor = client.playerMap.get(charid,"armor");

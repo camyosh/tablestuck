@@ -5,6 +5,10 @@ exports.run = function(client, message, args) {
     return;
   }
   let charid = message.guild.id.concat(message.author.id);
+  if(client.playerMap.get(charid,"revived")){
+    message.channel.send(`Since you've died, you don't have an alternative self to wake up as, and for the moment cannot sleep.`);
+    return;
+  }
   if(client.playerMap.get(charid,"dreamvit")<1){
     message.channel.send(`You try to wake up, but your other self has less than 1 VITALITY! Every action you take as this self will heal your other self by 5 HP. Your other self currently has ${client.playerMap.get(charid,"dreamvit")} VITALITY.`);
     return;

@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
 
   let targetid = message.guild.id.concat(message.mentions.members.first().id);
 
-  if(!client.funcall.regTest(client,message,message.mentions.members.first())){
+  if(!client.playerMap.has(message.guild.id.concat(message.mentions.members.first().id))){
     message.channel.send("The target is not registered!");
   }
 
