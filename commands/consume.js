@@ -62,9 +62,10 @@ return;
 }
 
   let tier = sdex[selectDex][2];
-  let msg = `You consume the ${sdex[selectDex][0]}!`
+  let msg,msg2;
+  msg = `You consume the ${sdex[selectDex][0]}!`
 if(strifeCheck){
-  let msg2 = `${client.playerMap.get(list[init[turn][0]][1],"name")} consumes a ${sdex[selectDex][0]}!`;
+  msg2 = `${client.playerMap.get(list[init[turn][0]][1],"name")} consumes a ${sdex[selectDex][0]}!`;
 }
   if(client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")){
     if(strifeCheck==false){

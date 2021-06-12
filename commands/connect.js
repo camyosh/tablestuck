@@ -42,6 +42,7 @@ exports.run = (client, message, args) => {
     target = client.playerMap.get(charid,"server");
     msg+=`You have a server, ${client.playerMap.get(message.guild.id.concat(target),"name")}.\n`;
   }
+  msg+=`You can now do ${client.auth.prefix}connect break to reset your server and client.`;
   message.channel.send(msg);
     client.tutorcall.progressCheck(client,message,18);
     return;
@@ -49,7 +50,21 @@ exports.run = (client, message, args) => {
   }
 
 //check if selected client code is a registered player
+  if(args[0]=="break"){
+    if(client.playerMap.get(charid,"client")!="NA"){
+      client.playerMap.set(client.playerMap.get(charid,"client"),"NA","server");
+      client.funcall.chanMsg(client,message.guild.id.concat(client.playerMap.get(charid,"client")),`${client.playerMap.get(charid,"name")} has broken their connection, they are no longer your SERVER!`);
+      client.playerMap.set(charid,"NA","client");
 
+    }
+    if(client.playerMap.get(charid,"server")!="NA"){
+      client.playerMap.set(client.playerMap.get(charid,"server"),"NA","client");
+      client.funcall.chanMsg(client,message.guild.id.concat(client.playerMap.get(charid,"server")),`${client.playerMap.get(charid,"name")} has broken their connection, they are no longer your CLIENT!`);
+      client.playerMap.set(charid,"NA","server");
+    }
+    message.channel.send("All connections severed!");
+    return;
+  }
   if(funcall.clientTest(client, message, args[0]) == false){
     message.channel.send("That player is not registered!");
     return;
