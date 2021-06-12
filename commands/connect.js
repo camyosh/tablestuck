@@ -52,13 +52,13 @@ exports.run = (client, message, args) => {
 //check if selected client code is a registered player
   if(args[0]=="break"){
     if(client.playerMap.get(charid,"client")!="NA"){
-      client.playerMap.set(client.playerMap.get(charid,"client"),"NA","server");
+      client.playerMap.set(message.guild.id.concat(client.playerMap.get(charid,"client")),"NA","server");
       client.funcall.chanMsg(client,message.guild.id.concat(client.playerMap.get(charid,"client")),`${client.playerMap.get(charid,"name")} has broken their connection, they are no longer your SERVER!`);
       client.playerMap.set(charid,"NA","client");
 
     }
     if(client.playerMap.get(charid,"server")!="NA"){
-      client.playerMap.set(client.playerMap.get(charid,"server"),"NA","client");
+      client.playerMap.set(message.guild.id.concat(client.playerMap.get(charid,"server")),"NA","client");
       client.funcall.chanMsg(client,message.guild.id.concat(client.playerMap.get(charid,"server")),`${client.playerMap.get(charid,"name")} has broken their connection, they are no longer your CLIENT!`);
       client.playerMap.set(charid,"NA","server");
     }
