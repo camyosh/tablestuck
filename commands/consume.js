@@ -112,7 +112,7 @@ if(strifeCheck){
       vit=gel;
     }
 
-    if(strifeCheck==true){
+    if(strifeCheck){
 
       list[pos][3]=vit;
 
@@ -123,7 +123,9 @@ if(strifeCheck){
     }
 
     msg+=`\nYou heal ${Math.ceil(gel*heal)} VITALITY, you now have ${vit} / ${gel} VITALITY!`;
+      if(strifeCheck){
     msg2+=`\nThey heal ${Math.ceil(gel*heal)} VITALITY, and now have ${vit} / ${gel} VITALITY!`;
+  }
 if(strifeCheck){
     list[pos][3]=vit;
   }

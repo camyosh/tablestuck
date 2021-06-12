@@ -87,7 +87,7 @@ for(i=0;i<2;i++){
       return;
     }
     if(args[0]!="confirm"){
-      message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}reigister confirm.`);
+      message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);
       return;
     }
     channel = client.playerMap.get(charid,"channel");
