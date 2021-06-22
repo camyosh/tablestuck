@@ -21,7 +21,13 @@ exports.run = (client, message, args) => {
 
   if(!client.playerMap.has(message.guild.id.concat(message.mentions.members.first().id))){
     message.channel.send("The target is not registered!");
+    return;
   }
+
+if(client.strifecall.strifeTest(client,message,message.mentions.members.first())){
+  message.channel.send("You can't teleport a player currently in strife!");
+  return;
+}
 
   let local = client.playerMap.get(charid,"local");
   //let sec = client.landMap.get(local[4],local[0]);
