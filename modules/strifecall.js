@@ -2609,8 +2609,18 @@ if(list[active[ik]][3] < 1){
 
   }
 }
+exports.spawn = function(client,message,underling,pregrist = "false"){
+  let charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  let local = client.playerMap.get(charid,"local");
+  let sec = client.landMap.get(local[4],local[0]);
+  let npcCount = client.landMap.get(message.guild.id+"medium","npcCount");
+  sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,underling,message.guild.id,npcCount,pregrist));
+  client.landMap.set(message.guild.id+"medium",npcCount+1,"npcCount");
+  client.landMap.set(charid,local,"local");
+  return client.playerMap.get(sec[local[1]][local[2]][2][local[3]][4][sec[local[1]][local[2]][2][local[3]][4].length-1][1],"name");
+}
 
-  function underSpawn(client,local,underling,sessionID,npcCount){
+  function underSpawn(client,local,underling,sessionID,npcCount,pregrist="false"){
 
     let landGrist;
 
@@ -2619,8 +2629,12 @@ if(list[active[ik]][3] < 1){
     }catch(err){
       landGrist = ["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"];
     }
-    let grist = landGrist[Math.floor((Math.random() * landGrist.length))];
-
+    let grist;
+    if(pregrist!="false"){
+      grist = pregrist;
+    } else {
+      grist = landGrist[Math.floor((Math.random() * landGrist.length))];
+    }
     let sessionProto = client.landMap.get(sessionID+"medium",`prototype`);
     let protoCheck = [];
 

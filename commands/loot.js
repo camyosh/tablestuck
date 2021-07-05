@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (client, message, args,merge = false) => {
 
   if(client.strifecall.strifeTest(client, message, message.author) == true){
     message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
@@ -14,7 +14,7 @@ for(let n=0;n<local.length;n++){
     matching=false;
   }
 }
-if(matching&&client.playerMap.get(charid,"revived")){
+if(merge||matching&&client.playerMap.get(charid,"revived")){
 
   let sec = client.landMap.get(local[4],local[0]);
   let occList = sec[local[1]][local[2]][2][local[3]][4];
@@ -49,6 +49,7 @@ for(let l=0;l<specialMerge.length;l++){
     client.playerMap.set(charid,[],"dream"+specialMerge[l]);
   }
 }
+if(!merge){
   for(let i=0;i<occList.length;i++){
     if(occList[i][1]==charid){
       sec[local[1]][local[2]][2][local[3]][4].splice(i,1);
@@ -56,8 +57,11 @@ for(let l=0;l<specialMerge.length;l++){
       break;
     }
   }
+}
   client.playerMap.set(charid,[],"dreamlocal");
+  if(!merge){
   message.channel.send("You touch your fallen body, and claim what was on it. It fades away.");
+}
 } else {
   message.channel.send("You don't have anything to do with this command.");
 }

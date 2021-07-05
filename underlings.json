@@ -134,6 +134,21 @@
     "drop":6250,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
   },
+  "denizen":{
+    "stm":12,
+    "vit":3000,
+    "av":13,
+
+    "d":1000,
+    "bd":[300,1000],
+    "act":["arrive","abuse"],
+    "stats":[0,0,0,0,0,0],
+    "prefMove":"none",
+
+  "xp":6000,
+    "drop":14000
+
+  },
   "player":{
     "stm":8,
     "av":1,

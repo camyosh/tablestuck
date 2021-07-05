@@ -25,6 +25,11 @@
       "desc" : "**Can players connect to themselves?**",
       "choices": ["Yes","No"],
       "selection": 0
+  },{
+      "name" : "FOG",
+      "desc" : "**Is there a Fog of War on player's planets?**",
+      "choices": ["Yes","No"],
+      "selection": 0
   }
 ]
 }

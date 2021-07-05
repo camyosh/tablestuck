@@ -9,7 +9,7 @@ exports.run = (client, message, args) => {
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   let local = client.playerMap.get(charid,"local");
 
-  if((!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"ROCKET")[1]&&!client.traitcall.traitCheck(client,charid,"SPACE")[0]&&local[0]!="p"&&local[0]!="pm"&&local[0]!="d"&&local[0]!="dm")){
+  if((!client.playerMap.get(charid,"godtier")&&!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"ROCKET")[1]&&!client.traitcall.traitCheck(client,charid,"SPACE")[0]&&local[0]!="p"&&local[0]!="pm"&&local[0]!="d"&&local[0]!="dm")){
     message.channel.send("You close your eyes and believe as hard as you can in the idea that maybe with a little bit of magic and a little bit of pixie dust you might be able to fly... you open your eyes to find your feet still planeted firmly on the ground as you remember that magic most definitely is not real.");
     return;
   }

@@ -90,7 +90,10 @@ empty =[];
   }
 
   //console.log(`Generating each third of the land with a for() loop - ${Date.now() - startTime}`);
-
+  let bedpos = 0;
+ if (sec==3){
+  bedpos = Math.ceil(Math.random()*3);
+ }
   for(j=3;j>0;j--){
     let length = 40;
   //Creates Dungeons
@@ -111,6 +114,11 @@ empty =[];
   }
 
   //console.log(`Generating villages, constructs, nodes - ${Date.now() - startTime}`);
+  if(bedpos==j){
+    let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
+    length--;
+    section[temp[0][0]][temp[0][1]]=[2,1,[[[],[],"DREAM BED",false,[],[]]]];
+  }
   //Creates a Village
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
@@ -1160,7 +1168,8 @@ for(i=0;i<11;i++){
   ctx.drawImage(numbers,32*(i+1),0,32,32,5,5+(32*(i+2)),32.8,31);
     for(j=0;j<11;j++){
             //comment out this if check to turn off fog of war on the main map
-      if(!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
+
+      if(client.configMap.get(message.guild.id).options[5].selection==0&&!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
       //if(false){
          ctx.drawImage(tiles,0,32,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
 

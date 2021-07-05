@@ -429,7 +429,8 @@ for(let m=0;m<tutorRef.content.length;m++){
     dreamer:false,
     revived:false,
     tutor:defaultTutor,
-    tutcomplete:false
+    tutcomplete:false,
+    godtier:false
   };
 
 client.playerMap.set(charid,charSheet);
