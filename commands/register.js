@@ -430,7 +430,8 @@ for(let m=0;m<tutorRef.content.length;m++){
     revived:false,
     tutor:defaultTutor,
     tutcomplete:false,
-    godtier:false
+    godtier:false,
+    sleepTimer:0
   };
 
 client.playerMap.set(charid,charSheet);

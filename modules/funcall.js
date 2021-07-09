@@ -741,11 +741,17 @@ exports.gristCacheEmbed = function(client, charid) {
   //retrieve character's grist details
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
   let rung = client.playerMap.get(charid,"rung");
-  let max = client.cache[rung];
+  let max;
+  if(client.playerMap.get(charid,`godtier`)){
+    max = `♾️`
+  } else {
+    max = client.cache[rung];
+  }
   let grist = client.playerMap.get(charid,"grist");
   let name = client.playerMap.get(charid,"name");
   let msg =``;
   let i;
+
 
   //loop to list all of a player's grist types and ammounts
 

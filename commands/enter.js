@@ -114,7 +114,7 @@ exports.run = (client, message, args) => {
     break;
     case 3:
 
-    target = ["h",0,0,0,local[4]];
+    target = ["h",0,0,0,charid];
     mapCheck=false;
     msg+=`You enter the RETURN NODE and are transported to a `
 

@@ -16,6 +16,7 @@ exports.run = (client, message, args) => {
   if(!args[0]){
 
     for (let i = 0; i < sec[local[1]][local[2]][2].length; i++) {
+
       msg += `**[${i+1}] ${sec[local[1]][local[2]][2][i][2]}**\n\n`
     }
     roomDirect = new client.Discord.MessageEmbed()
@@ -69,7 +70,15 @@ exports.run = (client, message, args) => {
     }
 
     target[3]=value;
+    if(local[0]=="h"){
+      if(local[4]==charid){
+        msg+=`You move within your house and enter the `;
+      } else {
+        msg+=`You move within ${client.playerMap.get(local[4],"name").toUpperCase()}'s house and enter the `
+      }
+    } else {
     msg+=`You move between rooms and enter the `;
+  }
     mapCheck = false;
 
   }

@@ -307,21 +307,21 @@ switch(client.playerMap.get(list[target][1],"faction")){
 
       let rung = client.playerMap.get(charid,"rung");
       let grist = client.playerMap.get(charid,"grist");
-
+      let godtier = client.playerMap.get(charid,`godtier`);
   if(list[target][7].includes("CORRUPT")){
-    if(grist[13]+(amount*4)>rungGrist[rung]){
+    if(!godtier&&grist[13]+(amount*4)>rungGrist[rung]){
       grist[13]=rungGrist[rung];
     } else {
       grist[13]+=(amount*4);
     }
   } else {
-      if(grist[0]+(amount*4)>rungGrist[rung]){
+      if(!godtier&&grist[0]+(amount*4)>rungGrist[rung]){
         grist[0]=rungGrist[rung];
       } else {
         grist[0]+=(amount*4);
       }
     }
-      if(grist[client.grist[primaryType].pos]+(amount*2)>rungGrist[rung]){
+      if(!godtier&&grist[client.grist[primaryType].pos]+(amount*2)>rungGrist[rung]){
         grist[client.grist[primaryType].pos]=rungGrist[rung];
       } else {
         grist[client.grist[primaryType].pos]+=(amount*2);
@@ -333,7 +333,7 @@ switch(client.playerMap.get(list[target][1],"faction")){
         }
         let j;
         for(j=1;j<13;j++){
-          if(grist[j]+amount>rungGrist[rung]){
+          if(!godtier&&grist[j]+amount>rungGrist[rung]){
             grist[j]=rungGrist[rung];
           } else {
             grist[j]+=amount;
@@ -342,7 +342,7 @@ switch(client.playerMap.get(list[target][1],"faction")){
 
       } else {
 
-        if(grist[client.grist[secondType].pos]+(amount)>rungGrist[rung]){
+        if(!godtier&&grist[client.grist[secondType].pos]+(amount)>rungGrist[rung]){
           grist[client.grist[secondType].pos]=rungGrist[rung];
         } else {
           grist[client.grist[secondType].pos]+=(amount);
@@ -356,12 +356,13 @@ switch(client.playerMap.get(list[target][1],"faction")){
 
 //send message to all players currently in strife
 
-
+      if(!client.playerMap.get(charid,`godtier`)){
       client.funcall.chanMsg(client,charid,`${rewardMsg}**${xp} XP**`);
-
-//call function to give players XP
       giveXp(client,charid,xp);
-    //end switch
+    } else {
+      client.funcall.chanMsg(client,charid,`${rewardMsg}**0 XP**`);
+    }
+
   }
 
     break;
@@ -537,6 +538,17 @@ client.funcall.chanMsg(client,charid,"Leaving Strife!");
   client.funcall.chanMsg(client,charid,`You've been knocked out! You are currently awake as ${(client.playerMap.get(charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.playerMap.get(charid,"dreamvit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
   client.playerMap.set(charid,true,"alive");
 } else {
+
+  if(client.playerMap.get(charid,"godtier")){
+    if(client.configMap.get(message.guild.id).options[6].selection==0){
+      client.playerMap.set(charid,Date.now(),"sleepTimer");
+      message.channel.send(`Looks like your conditional immortality saves you from perishing forever, though it'll take some time to get up again. You can ${client.auth.prefix}revive yourself in 5 minutes.`);
+      return;
+    } else {
+      message.channel.send(`You've fallen in combat, and though you reached godtier, your life still hangs in the ballance. Call out to your Author, and they will ${client.auth.prefix}revive you if your death was not Heroic or Just.`);
+      return;
+    }
+  } else {
   playerIDArray = client.landMap.get(message.guild.id+"medium","playerList");
   landName = client.landMap.get(charid,"name");
 
@@ -590,6 +602,7 @@ client.funcall.chanMsg(client,charid,"Leaving Strife!");
       client.funcall.chanMsg(client,playerIDArray[i],msg);
     }
   }
+}
   if(client.playerMap.get(charid,"revived")){
   message.channel.send("It seems that you've died again. That might spell the end of your journey, for now...");
   } else {
@@ -2203,8 +2216,14 @@ if(aa.includes("RANDSTATUS")){
 
     list[target][3] -= damage;
     if(absorb==true){
+      let healdif = damage;
+      if(client.playerMap.get(list[init[turn][0]][1],"gel")<list[init[turn][0]][3]+damage){
+        healdif = client.playerMap.get(list[init[turn][0]][1],"gel")-list[init[turn][0]][3];
+        list[init[turn][0]][3] = client.playerMap.get(list[init[turn][0]][1],"gel");
+      } else {
       list[init[turn][0]][3]+= damage;
-      alert +=`ATTACKER HEALS FOR ${damage} VITALITY!\n`
+    }
+      alert +=`ATTACKER HEALS FOR ${healdif} VITALITY!\n`
     }
 
 

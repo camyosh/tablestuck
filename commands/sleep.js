@@ -6,10 +6,6 @@ exports.run = function(client, message, args) {
   }
   let charid = message.guild.id.concat(message.author.id);
 
-  if(!client.playerMap.has(charid,"sleepTimer")){
-    client.playerMap.set(charid,0,"sleepTimer");
-  }
-
   if(client.playerMap.get(charid,"revived")){
     let s = client.playerMap.get(charid,"sleepTimer");
     let t = Date.now();

@@ -23,7 +23,7 @@ if(args[0].toLowerCase()==="enter"){
   message.channel.send("Player built up and entered!");
   return;
 }
-if(args[0].toLowerCase()==="god"&&false){
+if(args[0].toLowerCase()==="god"){
   (client.playerMap.get(charid,"godtier")?client.playerMap.set(charid,false,"godtier"):client.playerMap.set(charid,true,"godtier"));
   message.channel.send(`Player ${client.playerMap.get(charid,"godtier")?`granted Godtier!`:`mortalized again!`}`);
   return;

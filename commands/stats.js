@@ -16,6 +16,12 @@ exports.run = (client, message, args) => {
   let vit = client.playerMap.get(target,"vit");
   let rung = client.playerMap.get(target,"rung");
   let xp = client.playerMap.get(target,"xp");
+  let xpToRung;
+  if(rung==100){
+    xpToRung = `MAX RUNG`;
+  } else {
+    xpToRung = (rungReq[rung+1])-xp;
+  }
 
   let stats = new client.Discord.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S** Stats`)
@@ -24,7 +30,7 @@ exports.run = (client, message, args) => {
   .addField(`**Boondollars**`,`${client.emojis.cache.get('735664076180422758')} ${b}`,true)
   .addField(`**Rung**`,rung,true)
   .addField(`**Experience**`,xp,true)
-  .addField(`**XP to next Rung**`,(rungReq[rung+1])-xp,true);
+  .addField(`**XP to next Rung**`,xpToRung,true);
   if (client.limit != 0) {
     stats.addField(`**ACTIONS LEFT**`,client.limit - client.playerMap.get(target,"act"),true)
   }

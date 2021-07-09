@@ -13,15 +13,65 @@ if(client.configMap.get(message.guild.id).options[0].selection!=1){
   let area = sec[local[1]][local[2]];
   let channelCheck = [];
   let revcheck = false;
-  if(!area[2][0][3]==="DREAM BED"&&!client.playerMap.get(charid,"alive")){
+
+  if(client.funcall.dmcheck(client,message)&&client.configMap.get(message.guild.id).options[6].selection==1){
+    if(!args[0]||!message.mentions.members.first()){
+      message.channel.send(`If you are using this command as a player, do ""${client.auth.prefix}revive override". If you're using this as a Author/DM judging a Godtier's fate, ping them to bring them back. Otherwise, let them lay.`);
+      return;
+    }
+    if(args[0].toLowerCase()!=`override`){
+    if(message.mentions.members.first()){
+      let target = message.guild.id.concat(message.mentions.members.first().id);
+
+      if(client.playerMap.get(target,"godtier")&&!client.playerMap.get(target,"alive")){
+        message.channel.send(`Revived ${client.playerMap.get(target,"name")}!`);
+        client.playerMap.set(target,true,"alive");
+        client.playerMap.set(target,client.playerMap.get(target,"gel")*.5,"vit");
+        client.funcall.chanMsg(client,target,`Your death has been judged to be unremarkable, congradulations, you get to be alive again. You are too spooked to sleep for a while, though.`);
+        client.playerMap.set(target,Date.now(),"sleepTimer");
+        return;
+      } else {
+        message.channel.send("That player doesn't need reviving, or isn't yet Godtier!");
+        return;
+      }
+    }
+
+    }
+  }
+
+
+  if(client.playerMap.get(charid,"godtier")&&!client.playerMap.get(charid,"alive")&&client.configMap.get(message.guild.id).options[6].selection==0){
+      let s = client.playerMap.get(charid,"sleepTimer");
+      let t = Date.now();
+      if(t-s>20000){
+        client.playerMap.set(charid,true,"alive");
+        client.playerMap.set(charid,client.playerMap.get(charid,"gel")*.5,"vit");
+        message.channel.send("You get up off the ground, your wounds mostly healed. You can't think of sleeping for a while either...");
+        client.playerMap.set(charid,t,"sleepTimer");
+      } else {
+        message.channel.send(`You try to get up, but your body still needs more rest. It'll be ${Math.ceil((300000-(t-s))/1000)} more seconds, wait a bit longer.`);
+      }
+    return;
+  }
+
+  if(area[2][0][2]!="DREAM BED"&&area[2][0][2]!="SACRIFICIAL SLAB"&&!client.playerMap.get(charid,"alive")){
     message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
     return;
   }
+
 for(let i=0;i<occList.length;i++){
   if(client.playerMap.get(occList[i][1],"type")=="player"&&!client.playerMap.get(occList[i][1],"alive")){
     revcheck = true;
     if(charid==occList[i][1]){
-    message.channel.send(`The light around you surges, round-tipped pillars that line the bed glowing. Your body floats up, and you hover in mid-air, adorned in new clothes. They are...comfy.`);
+      if(area[2][0][2]==="DREAM BED"&&client.playerMap.get(occList[i][1],"revived")){
+        message.channel.send(`Your body lies inert on the bed it was meant to become something greater upon. It seems you lack a dreaming self to ascend. Maybe there's another place for you, somewhere.`);
+        return;
+      } else {
+        if(area[2][0][2]==="DREAM BED"){
+          message.channel.send(`The light around you surges, round-tipped pillars that line the bed glowing. Your body floats up, and you hover in mid-air, adorned in new clothes. They are...comfy.`);
+        } else {
+          message.channel.send(`The dark chamber glows as the slab hums with energy. Your body floats up, and you hover in mid-air, adorned in new clothes. They are...comfy. Last chance.`);
+        }
     client.playerMap.set(charid,true,"godtier");
         //removes dreamself from wherever they are and merges the bodies if the player hasn't revived yet
     if(!client.playerMap.get(occList[i][1],"revived")){
@@ -32,7 +82,7 @@ for(let i=0;i<occList.length;i++){
     for(let i=0;i<dreamoccList.length;i++){
       if(dreamoccList[i][1]==charid){
         dreamsec[dreamlocal[1]][dreamlocal[2]][2][dreamlocal[3]][4].splice(i,1);
-        client.landMap.set(dreamlocal[4],sec,dreamlocal[0]);
+        client.landMap.set(dreamlocal[4],dreamsec,dreamlocal[0]);
         break;
       }
     }
@@ -53,8 +103,13 @@ for(let i=0;i<occList.length;i++){
     client.playerMap.set(charid,[[`GODTIER PAJAMAS`,`s!${quickKey[0][aspectIndex]}${quickKey[1][aspectIndex]}0000`,1,1,[]]],"armor")
     client.playerMap.set(charid,true,"alive");
     client.playerMap.set(charid,client.playerMap.get(charid,"gel"),"vit");
-
-
+    let playerIDArray = client.landMap.get(message.guild.id+"medium","playerList");
+    for(let i=0;i<playerIDArray.length;i++){
+      if(playerIDArray[i]!=charid){
+        client.funcall.chanMsg(client,playerIDArray[i],`The sky glows as you see the ${client.landMap.get(charid,"aspect")} symbol burn in the distance. Someone has ascended.`);
+      }
+    }
+}
 } else {
     if(client.playerMap.get(occList[i][1],"revived")){
       message.channel.send(`it seems ${client.playerMap.get(occList[i][1],"name")} has already been revived, and can't be brought back again, at least not like this.`);

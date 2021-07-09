@@ -391,7 +391,7 @@ while(!hitWall){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][0] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-            client.strifecall.dungeonSpawn(client, sec, [curx,0], 'basilisk', message),
+            client.strifecall.dungeonSpawn(client, sec, [curx,0], 'denizen', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
@@ -1052,6 +1052,12 @@ while(empty.length>0){
 
     empty5.splice(empty5.findIndex(tile => tile[0] == temp[0][0] && tile[1] == temp[0][1]),1)
   }
+//tossing in the sac slabs, stealing the light aspect symbol for now.
+  let tempRan = Math.floor(Math.random()*empty4.length)-1;
+  let temp=empty4.splice(tempRan,1);
+  section[6][temp[0][0]][temp[0][1]]=[35,1,[[[],[],"SACRIFICIAL SLAB",false,[],[]]]];
+  section[9][temp[0][0]][temp[0][1]]=[35,1,[[[],[],"SACRIFICIAL SLAB",false,[],[]]]];
+  empty5.splice(empty5.findIndex(tile => tile[0] == temp[0][0] && tile[1] == temp[0][1]),1)
 
   while(empty3.length>0){
     let temp=empty3.splice(Math.floor(Math.random()*empty3.length)-1,1);

@@ -30,6 +30,11 @@
       "desc" : "**Is there a Fog of War on player's planets?**",
       "choices": ["Yes","No"],
       "selection": 0
+  },{
+      "name" : "IMMORTAL",
+      "desc" : "**How do godtier players revive if killed?**",
+      "choices": ["They come back to life after 5 minutes","A DM/Author is summoned to judge their fate"],
+      "selection": 0
   }
 ]
 }

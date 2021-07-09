@@ -260,6 +260,20 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
             let targetItem = sdex[selectDex];
             room[5][selectRoom][4][0][0]="PUNCHED CARD";
             room[5][selectRoom][4][0][4].push(targetItem);
+            let newName = ``;
+            for(let i=0; i<room[5][selectRoom][4][0][4].length; i++){
+              if(i>0){
+                newName+=`// `;
+              }
+              newName+=`${room[5][selectRoom][4][0][4][i][0]} `
+
+            }
+            if(newName.length>32){
+              newName=newName.slice(0,32);
+            }
+
+            room[5][selectRoom][4][0][0]=newName;
+
             sec[local[1]][local[2]][2][local[3]] = room;
             client.landMap.set(land,sec,local[0]);
           } else {

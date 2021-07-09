@@ -52,7 +52,7 @@ module.exports = (client, message) => {
       return;
     }
   } catch(err){
- console.log("A player took an action when not reigistered, probably the DM. Mostly good to ignore.");
+ console.log("A player took an action when not registered, probably the DM. Mostly good to ignore.");
   }
   if (client.limit != 0) {
 	 client.user.setActivity("PESTERCORD TOURNAMENT");
