@@ -766,6 +766,8 @@ exports.gristCacheEmbed = function(client, charid) {
 }
 
 exports.chanMsg = function(client, target, msg, embed){
+  if(!msg)
+    return;
 try{
   if(client.playerMap.has(target,"channel")){
     if(embed!=undefined){
