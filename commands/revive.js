@@ -15,14 +15,12 @@ if(client.configMap.get(message.guild.id).options[0].selection!=1){
   let revcheck = false;
 
   if(client.funcall.dmcheck(client,message)&&client.configMap.get(message.guild.id).options[6].selection==1){
-    if(!args[0]||!message.mentions.members.first()){
+    if(!args[0]&&!message.mentions.members.first()){
       message.channel.send(`If you are using this command as a player, do ""${client.auth.prefix}revive override". If you're using this as a Author/DM judging a Godtier's fate, ping them to bring them back. Otherwise, let them lay.`);
       return;
     }
-    if(args[0].toLowerCase()!=`override`){
     if(message.mentions.members.first()){
       let target = message.guild.id.concat(message.mentions.members.first().id);
-
       if(client.playerMap.get(target,"godtier")&&!client.playerMap.get(target,"alive")){
         message.channel.send(`Revived ${client.playerMap.get(target,"name")}!`);
         client.playerMap.set(target,true,"alive");
@@ -36,7 +34,7 @@ if(client.configMap.get(message.guild.id).options[0].selection!=1){
       }
     }
 
-    }
+
   }
 
 
@@ -63,6 +61,10 @@ for(let i=0;i<occList.length;i++){
   if(client.playerMap.get(occList[i][1],"type")=="player"&&!client.playerMap.get(occList[i][1],"alive")){
     revcheck = true;
     if(charid==occList[i][1]){
+      if(client.playerMap.get(charid,"godtier")){
+        message.channel.send(`You've already reached godtier, you can't do it again! Wait for Fate to decide if you live or die.`);
+        return;
+      }
       if(area[2][0][2]==="DREAM BED"&&client.playerMap.get(occList[i][1],"revived")){
         message.channel.send(`Your body lies inert on the bed it was meant to become something greater upon. It seems you lack a dreaming self to ascend. Maybe there's another place for you, somewhere.`);
         return;
@@ -106,11 +108,19 @@ for(let i=0;i<occList.length;i++){
     let playerIDArray = client.landMap.get(message.guild.id+"medium","playerList");
     for(let i=0;i<playerIDArray.length;i++){
       if(playerIDArray[i]!=charid){
+        try{
         client.funcall.chanMsg(client,playerIDArray[i],`The sky glows as you see the ${client.landMap.get(charid,"aspect")} symbol burn in the distance. Someone has ascended.`);
+      } catch(error) {
+        console.log("Stopped a failed message in revive ln.122");
+      }
       }
     }
 }
 } else {
+  if(client.playerMap.get(occList[i][1],"godtier")){
+    message.channel.send(`it seems ${client.playerMap.get(occList[i][1],"name")} has ascended to godtier. If they're dead, their life is in Fate's hands now. Nothing you can do.`);
+    return;
+  }
     if(client.playerMap.get(occList[i][1],"revived")){
       message.channel.send(`it seems ${client.playerMap.get(occList[i][1],"name")} has already been revived, and can't be brought back again, at least not like this.`);
       return;

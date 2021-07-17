@@ -198,7 +198,7 @@ try{
     client.playerMap.set("leaderboard",[message.author.username,increase],"playersDefeated");
   }
 }catch(err){
-
+message.channel.send("Failed to send a message, strifecall ln.201");
 }
     let name = client.playerMap.get(list[target][1],"name");
 
@@ -218,13 +218,15 @@ try{
       client.funcall.chanMsg(client,list[target][1],`***YOU DIED***`);
 
     //call the function to remove the character from strife
-
-    leaveStrife(client,message,local,target);
-
-    if(active.length<=1){
+    if(active.length==2){
+      leaveStrife(client,message,local,target);
       message.channel.send(`Last opponent defeated!`);
       leaveStrife(client,message,local,pos);
-
+    }else if(active.length<=1){
+      message.channel.send(`Last opponent defeated!`);
+      leaveStrife(client,message,local,pos);
+    } else {
+      leaveStrife(client,message,local,target);
     }
 //end of player kill
   }else{
@@ -522,7 +524,7 @@ function leaveStrife(client,message,local,pos){
 
   }
 client.funcall.chanMsg(client,charid,"Leaving Strife!");
-
+try{
   if(!client.playerMap.get(charid,"alive")){
     if(client.configMap.get(message.guild.id).options[0].selection==0){
     let temp;
@@ -610,7 +612,9 @@ client.funcall.chanMsg(client,charid,"Leaving Strife!");
   }
 }
 }
-
+} catch(error){
+  console.log("There's some kind of funky message in strifecall ln.614!");
+}
 } else {
 
   let active = client.strifeMap.get(strifeLocal,"active");

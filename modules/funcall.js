@@ -775,6 +775,7 @@ try{
   }
   }
 }catch(err){
+  console.log("Error occured with the chanMsg command!");
   console.log(err);
 }
 
