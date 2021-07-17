@@ -287,8 +287,20 @@ switch(client.playerMap.get(list[target][1],"faction")){
     }
     //split rewards between all participating players
 
-    let amount = Math.ceil(client.underlings[underling].drop / players)*2;
-
+    let multiplier;
+    switch(client.configMap.get(message.guild.id).options[7].selection){
+      case 1:
+      multiplier = 2;
+      break;
+      case 2:
+      multiplier = .5;
+      break;
+      default:
+      multiplier = 1;
+    }
+    console.log(`Multiplier is: ${multiplier}`);
+    let amount = (client.underlings[underling].drop / players)*multiplier;
+    console.log(`Amount is: ${amount}`);
     if(client.traitcall.traitCheck(client,list[pos][1],"META")[1]){
       amount*=2;
     }
@@ -311,22 +323,22 @@ switch(client.playerMap.get(list[target][1],"faction")){
       let grist = client.playerMap.get(charid,"grist");
       let godtier = client.playerMap.get(charid,`godtier`);
   if(list[target][7].includes("CORRUPT")){
-    if(!godtier&&grist[13]+(amount*4)>rungGrist[rung]){
+    if(!godtier&&grist[13]+Math.ceil(amount*4)>rungGrist[rung]){
       grist[13]=rungGrist[rung];
     } else {
-      grist[13]+=(amount*4);
+      grist[13]+=Math.ceil(amount*4);
     }
   } else {
-      if(!godtier&&grist[0]+(amount*4)>rungGrist[rung]){
+      if(!godtier&&grist[0]+Math.ceil(amount*4)>rungGrist[rung]){
         grist[0]=rungGrist[rung];
       } else {
-        grist[0]+=(amount*4);
+        grist[0]+=Math.ceil(amount*4);
       }
     }
-      if(!godtier&&grist[client.grist[primaryType].pos]+(amount*2)>rungGrist[rung]){
+      if(!godtier&&grist[client.grist[primaryType].pos]+Math.ceil(amount*2)>rungGrist[rung]){
         grist[client.grist[primaryType].pos]=rungGrist[rung];
       } else {
-        grist[client.grist[primaryType].pos]+=(amount*2);
+        grist[client.grist[primaryType].pos]+=Math.ceil(amount*2);
       }
       //if rainbow grist, add to all grist types
       if(secondType=="rainbow"){
@@ -335,24 +347,24 @@ switch(client.playerMap.get(list[target][1],"faction")){
         }
         let j;
         for(j=1;j<13;j++){
-          if(!godtier&&grist[j]+amount>rungGrist[rung]){
+          if(!godtier&&grist[j]+Math.ceil(amount)>rungGrist[rung]){
             grist[j]=rungGrist[rung];
           } else {
-            grist[j]+=amount;
+            grist[j]+=Math.ceil(amount);
           }
         }
 
       } else {
 
-        if(!godtier&&grist[client.grist[secondType].pos]+(amount)>rungGrist[rung]){
+        if(!godtier&&grist[client.grist[secondType].pos]+Math.ceil(amount)>rungGrist[rung]){
           grist[client.grist[secondType].pos]=rungGrist[rung];
         } else {
-          grist[client.grist[secondType].pos]+=(amount);
+          grist[client.grist[secondType].pos]+=Math.ceil(amount);
         }
 
       }
 
-      rewardMsg+=`**${client.emojis.cache.get(client.grist[repgrist].emoji)} ${amount*4}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${amount*2}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${amount}** and `;
+      rewardMsg+=`**${client.emojis.cache.get(client.grist[repgrist].emoji)} ${Math.ceil(amount*4)}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${Math.ceil(amount*2)}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${Math.ceil(amount)}** and `;
       client.playerMap.set(charid,grist,"grist");
     }
 

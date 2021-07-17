@@ -35,6 +35,11 @@
       "desc" : "**How do godtier players revive if killed?**",
       "choices": ["They come back to life after 5 minutes","A DM/Author is summoned to judge their fate"],
       "selection": 0
+  },{
+      "name" : "GRIST",
+      "desc" : "**What is the grist multiplier?**",
+      "choices": ["x1","x2","x1/2 (warning, terrible)"],
+      "selection": 0
   }
 ]
 }
