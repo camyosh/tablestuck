@@ -75,7 +75,8 @@ for(i=0;i<2;i++){
   message.channel.send(`A session for this server has not been initialized! Do ${client.auth.prefix}initialize to fix this.`);
   return;
 }
-
+let aspectChoice;
+ let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
   if(client.playerMap.has(charid)){
     /*if(client.playerMap.get(charid,"timeOfReg") + 300000 > Date.now()){
       message.channel.send("You have to wait at least 5 minutes before registering again!");
@@ -89,6 +90,16 @@ for(i=0;i<2;i++){
     if(args[0]!="confirm"){
       message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);
       return;
+    }
+    if(!args[1]){
+      aspectChoice="random";
+    } else {
+      if(!aspects.includes(args[1].toUpperCase())){
+        message.channel.send("Sorry, that aspect doesn't exist! Re-register with a valid aspect, or none at all to get a random one!");
+        return;
+      } else {
+        aspectChoice=args[1].toUpperCase();
+      }
     }
     channel = client.playerMap.get(charid,"channel");
     pesterchannel = client.playerMap.get(charid,"pesterchannel");
@@ -111,11 +122,20 @@ let target;
       client.playerMap.set(target,"NA","client");
       client.funcall.chanMsg(client,target,`Your client has re-registerd, leaving you without a client!`);
     }
+  } else {
 
+  if(!args[0]){
+    aspectChoice="random";
+  } else {
+    if(!aspects.includes(args[0].toUpperCase())){
+      message.channel.send("Sorry, that aspect doesn't exist! Re-register with a valid aspect, or none at all to get a random one!");
+      return;
+    } else {
+      aspectChoice=args[0].toUpperCase();
+    }
   }
-
-
-
+}
+console.log(aspectChoice);
 let startTime = Date.now();
   console.log(`Start time is ${startTime}`);
 
@@ -124,7 +144,7 @@ let startTime = Date.now();
 
 
   //declaring who the target to be registered is and their charid (The server id + the user id)
- let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
+
   let target = message.author;
   var occset = [true,charid];
 
@@ -524,7 +544,12 @@ let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11)
 
 
 //var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
+let aspect;
+if(aspectChoice === "random"){
 aspect = aspects[Math.floor((Math.random() * 11))];
+} else {
+aspect = aspectChoice;
+}
 //console.log(`Generating all of the lands - ${Date.now() - startTime}`);
 var s1 = await landcall.landGen(client,0,gategen[0],message,aspect,gristSet);
 var s2 = await landcall.landGen(client,1,gategen[1],message,aspect,gristSet);
