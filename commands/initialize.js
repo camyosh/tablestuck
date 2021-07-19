@@ -50,7 +50,8 @@ for(i=0;i<2;i++){
     transCount:0,
     gristCounter:["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"],
     aspectCounter:[0,0,0,0,0,0,0,0,0,0,0,0],
-    bf:client.landcall.battlefieldGen(client,message)
+    bf:client.landcall.battlefieldGen(client,message),
+    registerTimer:0
   }
 
   client.landMap.set(message.guild.id+"medium", medium);

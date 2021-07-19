@@ -75,6 +75,14 @@ for(i=0;i<2;i++){
   message.channel.send(`A session for this server has not been initialized! Do ${client.auth.prefix}initialize to fix this.`);
   return;
 }
+
+if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
+  message.channel.send("Sorry, someone else is registering, wait a few seconds!");
+  return;
+} else {
+  client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
+}
+console.log(client.landMap.get(message.guild.id+"medium","registerTimer")-Date.now());
 let aspectChoice;
  let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
   if(client.playerMap.has(charid)){
@@ -580,7 +588,7 @@ var land = {
 console.log(`The Land of ${land.name[0]} and ${land.name[1]} -- LO${land.name[0].substring(0,1).toUpperCase()}A${land.name[1].substring(0,1).toUpperCase()}`);
 //adds the charaacter sheet and land sheet to the database
 
-client.landMap.set(charid,land)
+client.landMap.set(charid,land);
 
   console.log(`End time is ${Date.now() - startTime}`);
 
