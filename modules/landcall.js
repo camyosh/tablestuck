@@ -413,7 +413,7 @@ while(!hitWall){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][10] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-            client.strifecall.dungeonSpawn(client, sec, [curx,10], 'basilisk', message),
+            client.strifecall.dungeonSpawn(client, sec, [curx,10], 'denizen', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
@@ -434,7 +434,7 @@ deleted = genDirection.splice(0,1);
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[10][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-            client.strifecall.dungeonSpawn(client, sec, [10,cury], 'basilisk', message),
+            client.strifecall.dungeonSpawn(client, sec, [10,cury], 'denizen', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
@@ -455,7 +455,7 @@ deleted = genDirection.splice(0,1);
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[0][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-            client.strifecall.dungeonSpawn(client, sec, [0,cury], 'basilisk', message),
+            client.strifecall.dungeonSpawn(client, sec, [0,cury], 'denizen', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
@@ -478,7 +478,7 @@ genDirection =["n","s","e","w"];
 if (denizen == false){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
 }
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
@@ -514,7 +514,7 @@ while(!hitWall){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][0] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-            client.strifecall.dungeonSpawn(client, sec, [curx,0], 'basilisk', message),
+            client.strifecall.dungeonSpawn(client, sec, [curx,0], 'denizen', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
@@ -536,7 +536,7 @@ while(!hitWall){
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][10] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-            client.strifecall.dungeonSpawn(client, sec, [curx,10], 'basilisk', message),
+            client.strifecall.dungeonSpawn(client, sec, [curx,10], 'denizen', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
@@ -557,7 +557,7 @@ deleted = genDirection.splice(0,1);
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[10][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-            client.strifecall.dungeonSpawn(client, sec, [10,cury], 'basilisk', message),
+            client.strifecall.dungeonSpawn(client, sec, [10,cury], 'denizen', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
@@ -578,7 +578,7 @@ deleted = genDirection.splice(0,1);
         hitWall=true;
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[0][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-            client.strifecall.dungeonSpawn(client, sec, [0,cury], 'basilisk', message),
+            client.strifecall.dungeonSpawn(client, sec, [0,cury], 'denizen', message),
           ],[lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
@@ -601,7 +601,7 @@ genDirection =["n","s","e","w"];
 if (denizen == false){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
 }
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);

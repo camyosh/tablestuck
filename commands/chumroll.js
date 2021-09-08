@@ -169,10 +169,10 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
 
       }
 
-      let msg;
+      let msg = '';
 
       for(let i=page*10;i<handleList.length&&i<(page+1)*10;i++){
-        msg+=`**[${handleList[i][2]}] ${handleList[i][1]}**\n*${client.playerMap.get(handleList[i][0])}*\n\n`;
+        msg+=`**[${handleList[i][2]}] ${handleList[i][1]}**\n*${client.playerMap.get(handleList[i][0],"name")}*\n\n`;
       }
 
       chumPrint = new client.Discord.MessageEmbed()

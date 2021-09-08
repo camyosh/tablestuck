@@ -25,6 +25,14 @@ return;
 
 //checks to see if the command user is Cam, as we don't want anyone else registering players for the tournament
 
+if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
+  message.channel.send("Sorry, someone else is registering, wait a few seconds!");
+  return;
+} else {
+  client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
+}
+console.log(client.landMap.get(message.guild.id+"medium","registerTimer")-Date.now());
+
   let charid = message.guild.id.concat(message.author.id);
 
 if(!client.landMap.has(message.guild.id+"medium")){
@@ -76,13 +84,7 @@ for(i=0;i<2;i++){
   return;
 }
 
-if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
-  message.channel.send("Sorry, someone else is registering, wait a few seconds!");
-  return;
-} else {
-  client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
-}
-console.log(client.landMap.get(message.guild.id+"medium","registerTimer")-Date.now());
+
 let aspectChoice;
  let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
   if(client.playerMap.has(charid)){
@@ -95,7 +97,7 @@ let aspectChoice;
       message.channel.send("You can not re-register during a tournament!");
       return;
     }
-    if(args[0]!="confirm"){
+    if(args[0].toLowerCase()!="confirm"){
       message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);
       return;
     }

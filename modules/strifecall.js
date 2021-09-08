@@ -823,7 +823,8 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
       } else {
         list[init[turn][0]][3]+=heal;
       }
-      alert+=`Life trait consumed ${list[init[turn][0]][5]} stamina and restored ${heal} vitality!\n`;
+      alert+=`\nLife trait consumed ${list[init[turn][0]][5]} STAMINA and restored ${heal} VITALITY!\n`;
+      list[init[turn][0]][5] = 0;
     }
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"LIFE")[1]){
