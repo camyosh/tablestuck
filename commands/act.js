@@ -16,7 +16,7 @@ exports.run = (client, message, args) => {
 
 //Defining variables
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
 
 
 

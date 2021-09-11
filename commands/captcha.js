@@ -9,7 +9,9 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userID = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userID,"possess");
+  var sburbid = charid.substring(1);
 
 //get player location and room inventory
 

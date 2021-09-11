@@ -1,12 +1,16 @@
 exports.run = (client, message, args) => {
 
-charid = message.guild.id.concat(message.author.id);
+
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner");
+
 let defaultTutor = [true];
 let tutorRef = require("../tutorRef.json");
 for(let m=0;m<tutorRef.content.length-1;m++){
   defaultTutor.push(false);
 }
-let progress = client.playerMap.get(charid,"tutor");
+let progress = client.userMap.get(userid,"tutor");
 if(!args[0]){
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1200,500);
@@ -33,18 +37,18 @@ return;
 }
 
 if(args[0]=="reset"){
-  client.playerMap.set(charid,defaultTutor,"tutor");
+  client.userMap.set(userid,defaultTutor,"tutor");
   message.channel.send(`tutorial progress reset (and tutorial turned on, if it wasn't already)! do ${client.auth.prefix}tutorial start to get the first tutorial message again, without re-registering.`);
   return;
 }
 if(args[0]=="start"){
-  client.tutorcall.progressCheck(client,message,1);
+  client.tutorcall.progressCheck(client,message,1,true);
   return;
 }
 if(args[0]=="switch"){
-  let progress = client.playerMap.get(charid,"tutor");
+  let progress = client.userMap.get(userid,"tutor");
   (progress[0]?progress[0]=false:progress[0]=true);
-  client.playerMap.set(charid,progress,"tutor");
+  client.userMap.set(userid,progress,"tutor");
   message.channel.send(`Tutorial ${(progress[0]?`Enabeled`:`Disabled`)}!`);
   return;
 }

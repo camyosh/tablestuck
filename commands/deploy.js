@@ -11,7 +11,9 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = message.guild.id.concat(message.author.id);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner")
 
 //retrieve player location and check for computer
 
@@ -32,20 +34,27 @@ exports.run = (client, message, args) => {
 
   //check if connected to a client
 
-  if(client.playerMap.get(charid,"client") == "NA") {
+  if(client.sburbMap.get(charid,"client") == "NA") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
 
-  let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
+  let clientId = client.sburbMap.get(charid,"client");
+  let clientChar;
+
+  if(client.sburbMap.get(clientId,"dreamer")){
+    clientChar = client.sburbMap.get(clientId,"dreamingID")
+  } else {
+    clientChar = client.sburbMap.get(clientId,"wakingID")
+  }
 
 //retrieve client information
 
-  let clientLocal = client.playerMap.get(clientId,"local");
+  let clientLocal = client.playerMap.get(clientChar,"local");
   let clientSec = client.landMap.get(clientId,"h");
   let gristLand = client.landMap.get(clientId,"grist")[0];
-  let deployCheck = client.playerMap.get(clientId,"deploy");
-  let gristCheck = client.playerMap.get(clientId,"grist");
+  let deployCheck = client.sburbMap.get(clientId,"deploy");
+  let gristCheck = client.sburbMap.get(clientId,"grist");
 
   //let defaultRegistry = [client.registry["cruxtruder"].item,client.registry["totem lathe"].item,client.registry["alchemiter"].item,client.registry["pre-punched card"].item,client.registry["punch designix"].item,client.registry["instant alchemiter"].item]
 
@@ -54,7 +63,7 @@ exports.run = (client, message, args) => {
     defaultRegistry.push(client.registry[phernalia[i]].item)
   }
 
-  let clientRegistry = client.playerMap.get(clientId,"registry");
+  let clientRegistry = client.sburbMap.get(clientId,"registry");
 
   let registry = defaultRegistry.concat(clientRegistry);
 
@@ -211,7 +220,7 @@ exports.run = (client, message, args) => {
             xp:0,
             rung:0,
             b:0,
-            bio:`${client.playerMap.get(clientId,"name").toUpperCase()}'S SPRITE`,
+            bio:`${client.sburbMap.get(clientId,"name").toUpperCase()}'S SPRITE`,
             img:"https://media.discordapp.net/attachments/808210897008984087/808224784856514560/Kernelsprite-gray.gif"
           }
           client.playerMap.set(spriteID,spriteSheet);
@@ -221,7 +230,7 @@ exports.run = (client, message, args) => {
         }
 
         deployCheck[value[0]]=true;
-        client.playerMap.set(clientId,deployCheck,"deploy");
+        client.sburbMap.set(clientId,deployCheck,"deploy");
       }
     }
 
@@ -262,15 +271,15 @@ exports.run = (client, message, args) => {
 
   clientSec[0][0][2][value[1]][5].push(registry[value[0]]);
   client.landMap.set(clientId,clientSec,"h");
-  client.playerMap.set(clientId,gristCheck,"grist");
+  client.sburbMap.set(clientId,gristCheck,"grist");
   client.funcall.tick(client,message);
 
   let deployedItem = registry[value[0]][0].toUpperCase();
   message.channel.send(`Deployed the ${deployedItem}`);
 
   let alertClientList = ["CRUXTRUDER","TOTEM LATHE","ALCHEMITER","PRE-PUNCHED CARD","PUNCH DESIGNIX","INSTANT ALCHEMIZER","TRANSPORTALIZER"];
-  if(alertClientList.includes(deployedItem)&&client.playerMap.get(clientId,"local")[0]=="h"){
-    client.funcall.chanMsg(client,clientId,`There's a THUD as something is deployed in your ${clientSec[0][0][2][value[1]][2]}!`);
+  if(alertClientList.includes(deployedItem)&&client.playerMap.get(clientChar,"local")[0]=="h"){
+    client.funcall.chanMsg(client,clientChar,`There's a THUD as something is deployed in your ${clientSec[0][0][2][value[1]][2]}!`);
   }
 
 

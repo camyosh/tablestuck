@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
 
   //declare important variables
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
 
   let sdex = client.playerMap.get(charid,"sdex");
   let cards = client.playerMap.get(charid,"cards");

@@ -14,18 +14,22 @@ if(!args[0]){
 message.channel.send(msg);
 return;
 }
-let charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+
+var userid = message.guild.id.concat(message.author.id);
+var charid = client.userMap.get(userid,"possess");
+var sburbid = charid.substring(1);
+
 if(args[0].toLowerCase()==="enter"){
 
-  client.landMap.set(charid,true,"enter");
-  client.landMap.set(charid,7,"gate");
-  client.landMap.set(charid,12800,"spent");
+  client.landMap.set(sburbid,true,"enter");
+  client.landMap.set(sburbid,7,"gate");
+  client.landMap.set(sburbid,12800,"spent");
   message.channel.send("Player built up and entered!");
   return;
 }
 if(args[0].toLowerCase()==="god"){
-  (client.playerMap.get(charid,"godtier")?client.playerMap.set(charid,false,"godtier"):client.playerMap.set(charid,true,"godtier"));
-  message.channel.send(`Player ${client.playerMap.get(charid,"godtier")?`granted Godtier!`:`mortalized again!`}`);
+  (client.sburbMap.get(sburbid,"godtier")?client.sburbMap.set(sburbid,false,"godtier"):client.sburbMap.set(sburbid,true,"godtier"));
+  message.channel.send(`Player ${client.sburbMap.get(sburbid,"godtier")?`granted Godtier!`:`mortalized again!`}`);
   return;
 
 }

@@ -2,15 +2,15 @@ exports.run = (client, message, args) => {
 
   if(!args[0]){
 
-    var target = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-
-
+    var userid = message.guild.id.concat(message.author.id);
+    var charid = client.userMap.get(userid,"possess");
+    var sburbid = client.playerMap.get(charid,"owner");
     let traits = [];
     let traitCount = [];
-    let specibus = client.playerMap.get(target,"spec");
-    let equip = client.playerMap.get(target,"equip");
-    let armor = client.playerMap.get(target,"armor");
-    let trinket = client.playerMap.get(target,"trinket");
+    let specibus = client.playerMap.get(charid,"spec");
+    let equip = client.playerMap.get(charid,"equip");
+    let armor = client.playerMap.get(charid,"armor");
+    let trinket = client.playerMap.get(charid,"trinket");
 
     if(specibus.length != 0){
 

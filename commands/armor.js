@@ -10,7 +10,7 @@ const tList = ["MELEE","RANGED","MAGIC","NA"];
 exports.run = (client, message, args) => {
 
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
   var armor = client.playerMap.get(charid,"armor");
   let name = client.playerMap.get(charid,"name");
 

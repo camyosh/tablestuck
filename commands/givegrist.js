@@ -34,14 +34,16 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  var userid = message.guild.id.concat(message.mentions.members.first().id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner");
 
-  var charid = message.guild.id.concat(message.mentions.members.first().id);
-  let grist = client.playerMap.get(charid,"grist");
+  let grist = client.sburbMap.get(sburbid,"grist");
 
 
   grist[select]+=value;
 
-    client.playerMap.set(charid,grist,"grist");
+    client.sburbMap.set(sburbid,grist,"grist");
 
     message.channel.send(`Gave player ${value} ${gristTypes[select]} grist!`);
 }

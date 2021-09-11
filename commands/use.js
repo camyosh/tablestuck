@@ -9,7 +9,9 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = message.guild.id.concat(message.author.id);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner")
 
   let local = client.playerMap.get(charid,"local");
   let land = local[4];
@@ -117,7 +119,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][4].push(room[5][selectRoom][4][0][4][0]);
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,29);
-                if(client.playerMap.get(charid,"tutor")[32]){
+                if(client.userMap.get(userid,"tutor")[32]){
                   client.tutorcall.progressCheck(client,message,46);
                 }
                 client.playerMap.set(charid,sdex,"sdex");
@@ -197,7 +199,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
       } else if(room[5][selectRoom][0] == "ALCHEMITER") {
           if(selectCode == "########"){
 
-            let registry = client.playerMap.get(charid,"registry");
+            let registry = client.sburbMap.get(sburbid,"registry");
 
             let item = sdex[selectDex][4][0];
 
@@ -222,7 +224,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
             registry.unshift(item);
 
-            client.playerMap.set(charid,registry,"registry");
+            client.sburbMap.set(sburbid,registry,"registry");
 
             message.channel.send("Registered totem to the alchemy athenaeum!");
             client.tutorcall.progressCheck(client,message,30);
@@ -301,18 +303,18 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
 
       if(sdex[selectDex][0]=="CRUXITE ARTIFACT"){
-        let enterCheck = client.landMap.get(charid,"enter");
+        let enterCheck = client.landMap.get(sburbid,"enter");
 
         if(enterCheck){
           message.channel.send("You've already entered the medium!");
           return;
         }
 
-        let landName = client.landMap.get(charid,"name");
+        let landName = client.landMap.get(sburbid,"name");
 
         let mediumPrototype = client.landMap.get(message.guild.id+"medium","prototype");
 
-        let spriteProto = client.playerMap.get(`n${charid}`,"prototype");
+        let spriteProto = client.playerMap.get(`n${sburbid}`,"prototype");
 
         for(let i=0;i<spriteProto.length;i++){
           mediumPrototype.push(spriteProto[i]);
@@ -322,7 +324,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
         client.landMap.set(message.guild.id+"medium",mediumPrototype,"prototype");
 
-        client.landMap.set(charid,true,"enter");
+        client.landMap.set(sburbid,true,"enter");
         message.channel.send(`Entered the Land of ${landName[0]} and ${landName[1]}`);
         let targetItem = sdex.splice(selectDex,1);
         client.playerMap.set(charid,sdex,"sdex");

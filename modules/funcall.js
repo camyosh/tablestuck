@@ -36,78 +36,81 @@ try{
 
 exports.actionCheck = function(client, message, score){
 try{
-  let charid = message.guild.id.concat(message.author.id);
-  let curCount = client.playerMap.get(charid,"act");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner");
+  let curCount = client.sburbMap.get(sburbid,"act");
+  let name = client.playerMap.get(charid,"name");
 //curCount++;
 switch(score){
   case "alchemized":
-    increase = client.playerMap.get(charid,"itemsAlchemized");
+    increase = client.sburbMap.get(sburbid,"itemsAlchemized");
     increase++;
-    client.playerMap.set(charid,increase,"itemsAlchemized");
+    client.sburbMap.set(sburbid,increase,"itemsAlchemized");
     if(increase>client.playerMap.get("leaderboard","itemsAlchemized")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"itemsAlchemized");
+      client.playerMap.set("leaderboard",[name,increase],"itemsAlchemized");
     }
     break;
   case "tile":
-    increase = client.playerMap.get(charid,"tilesDiscovered");
+    increase = client.sburbMap.get(sburbid,"tilesDiscovered");
     increase++;
-    client.playerMap.set(charid,increase,"tilesDiscovered");
+    client.sburbMap.set(sburbid,increase,"tilesDiscovered");
 
     if(increase>client.playerMap.get("leaderboard","tilesDiscovered")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"tilesDiscovered");
+      client.playerMap.set("leaderboard",[name,increase],"tilesDiscovered");
     }
     break;
   case "underling":
-    increase = client.playerMap.get(charid,"underlingsDefeated");
+    increase = client.sburbMap.get(sburbid,"underlingsDefeated");
     increase++;
-    client.playerMap.set(charid,increase,"underlingsDefeated");
+    client.sburbMap.set(sburbid,increase,"underlingsDefeated");
     if(increase>client.playerMap.get("leaderboard","underlingsDefeated")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"underlingsDefeated");
+      client.playerMap.set("leaderboard",[name,increase],"underlingsDefeated");
     }
     break;
   case "player":
-    increase = client.playerMap.get(charid,"playersDefeated");
+    increase = client.sburbMap.get(sburbid,"playersDefeated");
     increase++;
-    client.playerMap.set(charid,increase,"playersDefeated");
+    client.sburbMap.set(sburbid,increase,"playersDefeated");
     if(increase>client.playerMap.get("leaderboard","playersDefeated")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"playersDefeated");
+      client.playerMap.set("leaderboard",[name,increase],"playersDefeated");
     }
     break;
   case "boss":
-    increase = client.playerMap.get(charid,"bossesDefeated");
+    increase = client.sburbMap.get(sburbid,"bossesDefeated");
     increase++;
-    client.playerMap.set(charid,increase,"bossesDefeated");
+    client.sburbMap.set(sburbid,increase,"bossesDefeated");
     if(increase>client.playerMap.get("leaderboard","bossesDefeated")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"bossesDefeated");
+      client.playerMap.set("leaderboard",[name,increase],"bossesDefeated");
     }
     break;
   case "item":
-    increase = client.playerMap.get(charid,"itemsCaptchalogued");
+    increase = client.sburbMap.get(sburbid,"itemsCaptchalogued");
     increase++;
-    client.playerMap.set(charid,increase,"itemsCaptchalogued");
+    client.sburbMap.set(sburbid,increase,"itemsCaptchalogued");
     if(increase>client.playerMap.get("leaderboard","itemsCaptchalogued")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"itemsCaptchalogued");
+      client.playerMap.set("leaderboard",[name,increase],"itemsCaptchalogued");
     }
     break;
 }
 
-let b = client.playerMap.get(charid,"b");
-let xp = client.playerMap.get(charid,"xp");
+let b = client.sburbMap.get(sburbid,"b");
+let xp = client.sburbMap.get(sburbid,"xp");
 if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
-  client.playerMap.set("leaderboard",[message.author.username,b],"boondollarsGained");
+  client.playerMap.set("leaderboard",[name,b],"boondollarsGained");
 }
 if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
-  client.playerMap.set("leaderboard",[message.author.username,xp],"experienceGained");
+  client.playerMap.set("leaderboard",[name,xp],"experienceGained");
 }
 
 if(curCount>=client.limit&&client.limit!=0){
 
-  let tiles = client.playerMap.get(charid,"tilesDiscovered");
-  let alchemized = client.playerMap.get(charid,"itemsAlchemized");
-  let underlings =  client.playerMap.get(charid,"underlingsDefeated");
-  let players =  client.playerMap.get(charid,"playersDefeated");
-  let bosses = client.playerMap.get(charid,"bossesDefeated");
-  let items = client.playerMap.get(charid,"itemsCaptchalogued");
+  let tiles = client.sburbMap.get(sburbid,"tilesDiscovered");
+  let alchemized = client.sburbMap.get(sburbid,"itemsAlchemized");
+  let underlings =  client.sburbMap.get(sburbid,"underlingsDefeated");
+  let players =  client.sburbMap.get(sburbid,"playersDefeated");
+  let bosses = client.sburbMap.get(sburbid,"bossesDefeated");
+  let items = client.sburbMap.get(sburbid,"itemsCaptchalogued");
 
   message.channel.send("That was your last action in the tournament, here's your final stats:");
   let stats = new client.Discord.MessageEmbed()
@@ -768,12 +771,35 @@ exports.gristCacheEmbed = function(client, charid) {
 exports.chanMsg = function(client, target, msg, embed){
   if(!msg)
     return;
-try{
-  if(client.playerMap.has(target,"channel")){
+    if(client.playerMap.get(target,"control").length<1){
+      return;
+    } else {
+      controlList = client.playerMap.get(target,"control");
+      for(let i=0;i<controlList.length;i++){
+        if(embed!=undefined){
+        client.channels.cache.get(client.userMap.get(controlList[i],"channel")).send(msg,embed);
+        }else{
+        client.channels.cache.get(client.sburbMap.get(controlList[i],"channel")).send(msg);
+      }
+      }
+    }
+  }
+/*try{
+
+  let charid;
+  if(client.sburbMap.get(target,"dreamer")){
+    charid = client.sburbMap.get(target,"dreamingID");
+  }else{
+    charid = client.sburbMap.get(target,"wakingID");
+  }
+
+
+
+  if(client.sburbMap.has(target,"channel")){
     if(embed!=undefined){
-    client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg,embed);
+    client.channels.cache.get(client.sburbMap.get(target,"channel")).send(msg,embed);
     }else{
-    client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg);
+    client.channels.cache.get(client.sburbMap.get(target,"channel")).send(msg);
   }
   }
 }catch(err){
@@ -781,7 +807,14 @@ try{
   console.log(err);
 }
 
-  let possess = client.playerMap.get(target,"possess");
+  let charid;
+  if(client.sburbMap.get(target,"dreamer")){
+    charid = client.sburbMap.get(target,"dreamingID");
+  }else{
+    charid = client.sburbMap.get(target,"wakingID");
+  }
+
+  let possess = client.playerMap.get(charid,"control");
 
   for(let i=0;i<possess.length;i++){
     if(embed!=undefined){
@@ -791,7 +824,7 @@ try{
   }
   }
 
-}
+} */
 
 exports.sleepHeal = function(client,charid){
   if(client.playerMap.has(charid,"dreamvit")){
@@ -930,8 +963,10 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
       .setImage(`attachment://actionlist.png`)
     }
 
-    if(client.playerMap.has(charid,"channel")){
-      client.channels.cache.get(client.playerMap.get(charid,"channel")).send(listEmbed)
+    let sburbid = client.playerMap.get(charid,"owner");
+
+    if(client.sburbMap.has(sburbid,"channel")){
+      client.channels.cache.get(client.sburbMap.get(sburbid,"channel")).send(listEmbed)
     }
 
   }
@@ -940,9 +975,10 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
 
   for(let i=0;i<occNew.length;i++){
     try{
-      if(occNew[i][1]!=charid && client.playerMap.has(occNew[i][1],"channel") && dreamCheck(client,occNew[i][1],target)){
-        client.channels.cache.get(client.playerMap.get(occNew[i][1],"channel")).send(`**${name.toUpperCase()}** has entered the room!`);
-      }
+      if(occNew[i][1]!=charid){
+      chanMsg(client, occNew[i][1], `**${name.toUpperCase()}** has entered the room!`)
+    }
+      
     }catch(err){
       console.log(err);
     }

@@ -11,15 +11,18 @@ exports.run = (client, message, args) => {
 
   //defining important variables
 
-    var charid = message.guild.id.concat(message.author.id);
+  var userID = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userID,"possess");
+  var sburbID = charid.substring(1);
+
     var local = client.playerMap.get(charid,"local");
     let land = local[4];
     let sec = client.landMap.get(land,local[0]);
     let area = sec[local[1]][local[2]];
     let room = area[2][local[3]];
-    var gristCheck = client.playerMap.get(charid,"grist");
+    var gristCheck = client.sburbMap.get(sburbID,"grist");
     let sdex = client.playerMap.get(charid,"sdex");
-    let registry = client.playerMap.get(charid,"registry");
+    let registry = client.sburbMap.get(sburbID,"registry");
 
   //define variables for the FOR loop
 
@@ -95,7 +98,7 @@ exports.run = (client, message, args) => {
      let deleted = registry.splice(value,1);
      message.channel.send(`Deleted the ${deleted[0][0]} from the athenaeum!`);
 
-     client.playerMap.set(charid,registry,"registry");
+     client.sburbMap.set(sburbID,registry,"registry");
 
    } else if(args[0]=="push"){
 
@@ -116,7 +119,7 @@ exports.run = (client, message, args) => {
      registry.unshift(temp[0]);
 
      message.channel.send(`moved the ${temp[0][0]} to the first position in the athenaeum!`);
-     client.playerMap.set(charid,registry,"registry");
+     client.sburbMap.set(sburbID,registry,"registry");
 
    } else if(args[0]=="tier"){
      if(!quick){
@@ -152,7 +155,7 @@ exports.run = (client, message, args) => {
        return;
      }
      registry[value][2]=tier;
-     client.playerMap.set(charid,registry,"registry");
+     client.sburbMap.set(sburbID,registry,"registry");
      message.channel.send(`Scaled the ${registry[value][0]} to TIER ${tier}!`);
      return;
 
@@ -194,7 +197,7 @@ exports.run = (client, message, args) => {
 
      registry[value][0]=name;
 
-     client.playerMap.set(charid,registry,"registry");
+     client.sburbMap.set(sburbID,registry,"registry");
 
      message.channel.send(`Changed the name of the ${oldName} to ${name}`);
      return;

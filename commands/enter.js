@@ -13,7 +13,10 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner")
+
   var occset = [true,charid];
 
   let local = client.playerMap.get(charid,"local");
@@ -114,7 +117,7 @@ exports.run = (client, message, args) => {
     break;
     case 3:
 
-    target = ["h",0,0,0,charid];
+    target = ["h",0,0,0,sburbid];
     mapCheck=false;
     msg+=`You enter the RETURN NODE and are transported to a `
 

@@ -1,6 +1,8 @@
 exports.run = (client, message, args) => {
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = charid.substring(1);
 
   let local = client.playerMap.get(charid,"local");
 
@@ -24,6 +26,7 @@ if(args[0]){
     return;
   }
 targId = occList[value][1];
+targSburb = client.playerMap.get(targId,"owner");
 
 }
 
@@ -32,11 +35,11 @@ targId = occList[value][1];
   .addField(`**NAME**`,`**${client.playerMap.get(targId,"name").toUpperCase()}**`,true)
   .addField(`**TYPE**`,`**${client.playerMap.get(targId,"type").toUpperCase()}**`,true)
   .addField(`**FACTION**`,`**${client.playerMap.get(targId,"faction").toUpperCase()}**`,true)
-  .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.playerMap.get(targId,"vit")} / ${client.playerMap.get(targId,"gel")}`,true)
+  .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.playerMap.get(targId,"vit")} / ${client.sburbMap.get(targSburb,"gel")}`,true)
   .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.playerMap.get(targId,"b")}`,true)
-  .addField(`**RUNG**`,`${client.playerMap.get(targId,"rung")}`,true)
-  .addField(`**BIO**`,`${client.playerMap.get(targId,"bio")}`)
-  .setImage(client.playerMap.get(targId,"img"));
+  .addField(`**RUNG**`,`${client.sburbMap.get(targSburb,"rung")}`,true)
+  .addField(`**BIO**`,`${client.sburbMap.get(targSburb,"bio")}`)
+  .setImage(client.sburbMap.get(targSburb,"img"));
   client.tutorcall.progressCheck(client,message,16);
 
 
@@ -47,9 +50,9 @@ targId = occList[value][1];
     .addField(`**NAME**`,`**${client.playerMap.get(targId,"name").toUpperCase()}**`,true)
     .addField(`**TYPE**`,`**${client.playerMap.get(targId,"type").toUpperCase()}**`,true)
     .addField(`**FACTION**`,`**${client.playerMap.get(targId,"faction").toUpperCase()}**`,true)
-    .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.playerMap.get(targId,"vit")} / ${client.playerMap.get(targId,"gel")}`,true)
+    .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.playerMap.get(targId,"vit")} / ${client.sburbMap.get(targSburb,"gel")}`,true)
     .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.playerMap.get(targId,"b")}`,true)
-    .addField(`**RUNG**`,`${client.playerMap.get(targId,"rung")}`,true)
+    .addField(`**RUNG**`,`${client.sburbMap.get(targSburb,"rung")}`,true)
     message.channel.send(listPrint);
   })
 

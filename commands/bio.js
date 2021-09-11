@@ -5,7 +5,9 @@ if(!args[0]){
   return;
 }
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+var userID = message.guild.id.concat(message.author.id);
+var charid = client.userMap.get(userID,"possess");
+var sburbID = charid.substring(1);
 
   var i=0;
   var output ="";
@@ -19,7 +21,7 @@ if(!args[0]){
   output = output.slice(0,-1);
 
 message.channel.send(`Saving Bio, players can see it using the ${client.auth.prefix}check command on you! Note, if the bio is too long, it won't appear!`);
-client.playerMap.set(charid,output,"bio");
+client.sburbMap.set(sburbID,output,"bio");
 client.tutorcall.progressCheck(client,message,17);
 
 }

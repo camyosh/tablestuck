@@ -17,15 +17,19 @@ exports.run = (client, message, args) => {
 
 //defining important variables
 
-  var charid = message.guild.id.concat(message.author.id);
+  var userID = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userID,"possess");
+  var sburbID = charid.substring(1);
+
   var local = client.playerMap.get(charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  var gristCheck = client.playerMap.get(charid,"grist");
+  console.log(sburbID);
+  var gristCheck = client.sburbMap.get(sburbID,"grist");
   let sdex = client.playerMap.get(charid,"sdex");
-  let registry = client.playerMap.get(charid,"registry");
+  let registry = client.sburbMap.get(sburbID,"registry");
 
 //define variables for the FOR loop
 
@@ -156,7 +160,7 @@ if(sdex.length > client.playerMap.get(charid,"cards")){
 
   client.landMap.set(land,sec,local[0]);
   client.playerMap.set(charid,sdex,"sdex");
-  client.playerMap.set(charid,gristCheck,"grist");
+  client.sburbMap.set(sburbID,gristCheck,"grist");
 
   client.funcall.tick(client,message);
 

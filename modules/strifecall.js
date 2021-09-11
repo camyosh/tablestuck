@@ -1007,7 +1007,7 @@ exports.strifeTest = function(client, message, target) {
 
   let charid = message.guild.id.concat(target.id);
 
-  let controlId = client.playerMap.get(charid,"control");
+  let controlId = client.userMap.get(charid,"possess");
 
     if(client.playerMap.get(controlId,"strife")==false){
 

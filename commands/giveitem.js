@@ -17,7 +17,10 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = message.guild.id.concat(message.mentions.members.first().id);
+  var userid = message.guild.id.concat(message.mentions.members.first().id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner");
+
   var code = args[0];
 
   if(!code.length==8){

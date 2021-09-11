@@ -12,7 +12,10 @@ exports.run = (client, message, args) => {
 
   //check for computer with sburb installed
 
-  var charid = message.guild.id.concat(message.author.id);
+  var userID = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userID,"possess");
+  var sburbid = charid.substring(1);
+  
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   let compCheck = client.traitcall.compTest(client,message,charid,room);
@@ -27,14 +30,14 @@ exports.run = (client, message, args) => {
 
   //check if connected to a client
 
-  if(client.playerMap.get(charid,"client") == "NA") {
+  if(client.sburbMap.get(sburbid,"client") == "NA") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
 
 //retrieve client charid
 
-  let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
+  let clientId = client.sburbMap.get(sburbid,"client");
 
   message.channel.send(funcall.gristCacheEmbed(client, clientId));
   client.tutorcall.progressCheck(client,message,20);

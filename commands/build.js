@@ -16,7 +16,10 @@ exports.run = (client, message, args) => {
 
   //retrieve player location
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = charid.substring(1);
+
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
 
@@ -35,15 +38,15 @@ exports.run = (client, message, args) => {
 
   //if no client player is connected cancel
 
-  if(client.playerMap.get(charid,"client") == "NA") {
+  if(client.sburbMap.get(sburbid,"client") == "NA") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
   //retrieve clients charid
-  let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
+  let clientId = client.sburbMap.get(sburbid,"client");
   //checks if amount spent is greater than amount of grist player has
   let buildSpent = client.landMap.get(clientId,"spent");
-  let grist = client.playerMap.get(clientId,"grist");
+  let grist = client.sburbMap.get(clientId,"grist");
   let gate = 0;
   let curGate = client.landMap.get(clientId,"gate");
   //convert grist amount to number
@@ -79,7 +82,7 @@ exports.run = (client, message, args) => {
     }
   }
 
-  client.playerMap.set(clientId,grist,"grist");
+  client.sburbMap.set(clientId,grist,"grist");
   client.landMap.set(clientId,buildSpent,"spent");
 
   //if player can now reach next gate, send message

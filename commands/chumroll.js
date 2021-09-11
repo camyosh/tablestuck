@@ -5,14 +5,17 @@ const funcall = require("../modules/funcall.js");
 exports.run = async function(client, message, args) {
 
 
-  var charid = message.guild.id.concat(message.author.id);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = charid.substring(1);
+
   var local = client.playerMap.get(charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
-  let chumroll = client.playerMap.get(charid,"chumroll");
+  let chumroll = client.sburbMap.get(sburbid,"chumroll");
   let blockroll = [];
 
-  if(client.playerMap.has(charid,"block")){
-    blockroll = client.playerMap.get(charid,"block");
+  if(client.sburbMap.has(sburbid,"block")){
+    blockroll = client.sburbMap.get(sburbid,"block");
     return;
   }
 //registers the custom homestuck font
@@ -116,7 +119,7 @@ ctx.fillText(`PAGE ${pagenumber+1}/${pageMax}`,300,170);
 ctx.fillStyle =`#ffffff`;
 ctx.font = `bold 24px Courier Standard Bold`;
 
-ctx.fillText(`[${client.playerMap.get(charid,"chumtag")}]${client.playerMap.get(charid,"chumhandle")}`,60,628);
+ctx.fillText(`[${client.sburbMap.get(sburbid,"chumtag")}]${client.sburbMap.get(sburbid,"chumhandle")}`,60,628);
 let plonline = client.traitcall.compTest(client,message,charid,room);
 if(plonline[0]){
 ctx.drawImage(online,15,605,32,32);
@@ -127,14 +130,14 @@ ctx.drawImage(online,15,605,32,32);
 let targonline = [false,false];
 for(let i=pagenumber*10;i<chumroll.length&&i<(pagenumber+1)*10;i++){
   let tag = i;
-if(client.playerMap.has(chumroll[i],"chumtag")){
-  tag = client.playerMap.get(chumroll[i],"chumtag");
+if(client.sburbMap.has(chumroll[i],"chumtag")){
+  tag = client.sburbMap.get(chumroll[i],"chumtag");
 }
-ctx.font = applyText(canvas,`[${tag}]${client.playerMap.get(chumroll[i],"chumhandle")}`);
+ctx.font = applyText(canvas,`[${tag}]${client.sburbMap.get(chumroll[i],"chumhandle")}`);
 
-ctx.fillText(`[${tag}]${client.playerMap.get(chumroll[i],"chumhandle")}`,50,203+((i-(pagenumber*10))*40));
+ctx.fillText(`[${tag}]${client.sburbMap.get(chumroll[i],"chumhandle")}`,50,203+((i-(pagenumber*10))*40));
 
-  targlocal = client.playerMap.get(chumroll[i],"local");
+  targlocal = client.sburbMap.get(chumroll[i],"local");
   targroom = client.landMap.get(targlocal[4],targlocal[0])[targlocal[1]][targlocal[2]][2][targlocal[3]];
 
 targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
@@ -172,7 +175,7 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
       let msg = '';
 
       for(let i=page*10;i<handleList.length&&i<(page+1)*10;i++){
-        msg+=`**[${handleList[i][2]}] ${handleList[i][1]}**\n*${client.playerMap.get(handleList[i][0],"name")}*\n\n`;
+        msg+=`**[${handleList[i][2]}] ${handleList[i][1]}**\n*${client.sburbMap.get(handleList[i][0],"name")}*\n\n`;
       }
 
       chumPrint = new client.Discord.MessageEmbed()
@@ -187,7 +190,7 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
     let hcheck =false;
     for(h=0;h<handleList.length&&hcheck==false;h++){
       if(handleList[h][2].toLowerCase()==args[1].toLowerCase()||handleList[h][1].toLowerCase()==args[1].toLowerCase()){
-        if(handleList[h][0]==charid){
+        if(handleList[h][0]==sburbid){
           message.channel.send("You can't add yourself as a chum, dummy!");
           return;
         }
@@ -198,10 +201,10 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
         chumroll.push(handleList[h][0]);
         message.channel.send(`Added ${handleList[h][1]} to your chumroll!`);
         hcheck =true;
-        let targetChums = client.playerMap.get(handleList[h][0],"chumroll");
-        if(!targetChums.includes(charid)){
-          targetChums.push(charid);
-          client.playerMap.set(handleList[h][0],targetChums,"chumroll");
+        let targetChums = client.sburbMap.get(handleList[h][0],"chumroll");
+        if(!targetChums.includes(sburbid)){
+          targetChums.push(sburbid);
+          client.sburbMap.set(handleList[h][0],targetChums,"chumroll");
         }
       }
     }
@@ -209,7 +212,7 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
       message.channel.send("Couldn't find a chum with that handle in this session!");
       return;
     }
-    client.playerMap.set(charid,chumroll,"chumroll");
+    client.sburbMap.set(sburbid,chumroll,"chumroll");
 
 
   }
@@ -223,7 +226,7 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
 
     let tagList = [];
     for(let i=0;i<chumroll.length;i++){
-      tagList.push(client.playermap.get(chumroll[i],"tag").toLowerCase());
+      tagList.push(client.sburbmap.get(chumroll[i],"tag").toLowerCase());
     }
 
     if(tagList.includes(args[1].toLowerCase())){
@@ -239,7 +242,7 @@ targonline = client.traitcall.compTest(client,message,chumroll[i],targroom);
         blockroll.push(targId);
       }
 
-      client.playerMap.set(charid,blockroll,"block");
+      client.sburbMap.set(sburbid,blockroll,"block");
 
     }else{
       message.channel.send("There is no player on your chumroll with that tag!");

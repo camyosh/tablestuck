@@ -2,7 +2,9 @@ const tierBD = [[1,2],[1,4],[1,6],[1,8],[1,10],[1,12],[2,16],[2,20],[2,24],[3,30
 
 exports.run = (client,message,args) =>{
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = charid.substring(1);
 
   let sdex = client.playerMap.get(charid,"sdex");
 
@@ -101,7 +103,7 @@ if(strifeCheck){
       vit = client.playerMap.get(charid,"vit");
     }
 
-    let gel = client.playerMap.get(charid,"gel");
+    let gel = client.sburbMap.get(sburbid,"gel");
     let heal = tier*.03;
 
     if(client.traitcall.traitCheck(client,charid,"FOOD")[1]){
