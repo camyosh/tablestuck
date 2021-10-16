@@ -9,8 +9,10 @@ exports.run = (client, message, args) => {
     message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
     return;
   }
-  var charid = message.guild.id.concat(message.author.id);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner")
 
-  message.channel.send(funcall.gristCacheEmbed(client, charid));
+  message.channel.send(funcall.gristCacheEmbed(client, sburbid));
   return;
 }

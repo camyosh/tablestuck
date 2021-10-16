@@ -605,8 +605,8 @@ if(!channelCheck){
     //makes a webhook for pesterchum stuff.
         client.hookcall.hookGen(client,pesterchannel);
 
-        client.playerMap.set(sburbid,channel,"channel");
-        client.playerMap.set(sburbid,pesterchannel,"pesterchannel");
+        client.sburbMap.set(sburbid,channel,"channel");
+        client.sburbMap.set(sburbid,pesterchannel,"pesterchannel");
 
         client.channels.cache.get(channel).send(`${sburbSheet.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
   }
@@ -614,8 +614,8 @@ if(!channelCheck){
   generateChannels();
 
 }else{
-  client.playerMap.set(sburbid,channel,"channel");
-  client.playerMap.set(sburbid,pesterchannel,"pesterchannel");
+  client.sburbMap.set(sburbid,channel,"channel");
+  client.sburbMap.set(sburbid,pesterchannel,"pesterchannel");
     client.channels.cache.get(channel).send(`${sburbSheet.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
 }
 client.userMap.set(userid,channel,"channel");
