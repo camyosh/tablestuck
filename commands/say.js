@@ -1,8 +1,10 @@
 exports.run = async function(client, message, args){
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  let name = client.playerMap.get(charid,"name");
-  let img = client.playerMap.get(charid,"img");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.sburbMap.get(charid,"owner");
+  let name = client.sburbMap.get(sburbid,"name");
+  let img = client.sburbMap.get(sburbid,"img");
 
   let local = client.playerMap.get(charid,"local");
 
@@ -26,9 +28,15 @@ exports.run = async function(client, message, args){
   let count = 0;
 
   for(j=0;j<occList.length;j++){
-
-    if(client.playerMap.has(occList[j][1],"pesterchannel")){
-      channel = client.playerMap.get(occList[j][1],"pesterchannel");
+//checks if anyone is controlling the given character in a room
+    if(client.playerMap.get(occList[j][1],"control").length>0){
+      possessList = client.playerMap.get(occList[j][1],"control");
+      //for each controller
+      for(let k=0;k<possessList.length;k++){
+ //Goes through list of Controllers and sends a message to each of their PESTERCHANNELS.
+      }
+      //----
+      channel = client.userMap.get(occList[j][1],"pesterchannel");
       if(!channelCheck.includes(channel)){
       channelCheck.push(channel);
       try{

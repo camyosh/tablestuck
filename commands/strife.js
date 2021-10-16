@@ -22,8 +22,10 @@ exports.run = (client, message, args) => {
 */
 
 
-    var charid = client.playerMap.get(message.guild.id.concat(target.id),"control");
-    let local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner");
+  let local = client.playerMap.get(charid,"local");
 // if player is in strife, leave strife
 
     if(strifecall.strifeTest(client, message, target) == true){

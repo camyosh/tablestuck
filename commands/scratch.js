@@ -24,15 +24,22 @@ if(args[0]=="confirm"){
   for(let i=0;i<playerList.length;i++){
 
     if(client.playerMap.has(`n${playerList[i]}`)){
-
         client.playerMap.delete(`n${playerList[i]}`);
     }
     if(client.landMap.has(playerList[i])){
       client.landMap.delete(playerList[i]);
     }
-    if(client.playerMap.has(playerList[i])){
-
-        client.playerMap.delete(playerList[i]);
+    if(client.playerMap.has(`w${playerList[i]}`)){
+        client.playerMap.delete(`w${playerList[i]}`);
+    }
+    if(client.playerMap.has(`d${playerList[i]}`)){
+        client.playerMap.delete(`d${playerList[i]}`);
+    }
+    if(client.sburbMap.has(playerList[i])){
+      client.sburbMap.delete(playerList[i]);
+    }
+    if(client.userMap.has(playerList[i].slice(0,18)){
+        client.userMap.delete(playerList[i].slice(0,18));
     }
   }
 

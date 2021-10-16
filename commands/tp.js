@@ -5,7 +5,10 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner");
 
   if(!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"SPACE")[1]){
     message.channel.send("You must have the SPACE set bonus or be a DM to teleport!");
@@ -17,10 +20,11 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  let targetid = message.guild.id.concat(message.mentions.members.first().id);
+  let targetid = client.userMap.get(message.guild.id.concat(message.mentions.members.first().id),"possess");
 
-  if(!client.playerMap.has(message.guild.id.concat(message.mentions.members.first().id))){
+  if(!client.playerMap.has(targetid)){
     message.channel.send("The target is not registered!");
+    return;
   }
 
   let local = client.playerMap.get(charid,"local");
