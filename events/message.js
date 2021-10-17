@@ -44,7 +44,8 @@ module.exports = (client, message) => {
         dislikes:[],
         housetype:"NONE",
         charCount:0,
-        channel:"NONE"
+        channel:"NONE",
+        pesterchannel:"NONE"
       }
       //pushes the data to the database
       client.userMap.set(userid,userSetup);
@@ -60,7 +61,7 @@ let charid = client.userMap.get(userid,"possess");
 //checks if the player has a character database and is alive or not.
     if(charid!="NONE"){
         reg=true;
-      if(client.playerMap.get(charid,"alive")){
+      if(client.charcall.charCheck(charid,"alive")){
         alive=true;
       } else {
         alive=false;

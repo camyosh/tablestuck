@@ -84,7 +84,7 @@ let aspectChoice;
       return;
     }
       //checks to see if the currently possessed creature exists and is a player.
-      if(client.playerMap.has(charid)&&client.playerMap.get(charid,"type")=="player"){
+      if(client.playerMap.has(charid)){
     //if someone is possessing a player, it won't let them re-register unless they confirm it.
     if(args[0].toLowerCase()!="confirm"){
       message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);

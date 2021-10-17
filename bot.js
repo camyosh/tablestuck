@@ -13,8 +13,8 @@ const grist =require("./grist.json"); //tracks grist types and their data.
 const registry =require("./registry.json"); //initial deploy list
 const actionList =require("./actions.json");//covers all actions and their data.
 
-
 //gets all modules
+const charcall =require("./modules/charcall.js");
 const traitcall =require("./modules/traitcall.js");
 const hookcall =require("./modules/hookcall.js");
 const funcall =require("./modules/funcall.js");
@@ -25,6 +25,7 @@ const lootcall =require("./modules/lootcall.js");
 const tutorcall =require("./modules/tutorcall.js");
 
 //makes all modules passable through client
+client.charcall = charcall;
 client.traitcall = traitcall;
 client.strifecall = strifecall;
 client.funcall = funcall;
@@ -39,7 +40,7 @@ client.tutorcall = tutorcall;
 if (!fs.existsSync("../data")){
   console.log("Data directory missing, please create it!")
 }
-//tracks all characters (waking selves, dream selves, underlings, other NPCs)
+//tracks all player characters (waking selves, dream selves)
 const playerMap = new Enmap({
   name: "playerData",
   dataDir:"../data"
@@ -72,6 +73,11 @@ const transMap = new Enmap({
 //tracks each game's configurations.
 const configMap = new Enmap({
   name: "configData",
+  dataDir:"../data"
+});
+//tracks npc data
+const npcMap = new Enmap({
+  name: "npcData",
   dataDir:"../data"
 });
 
@@ -121,6 +127,7 @@ client.transMap = transMap;
 client.configMap = configMap;
 client.userMap = userMap;
 client.sburbMap = sburbMap;
+client.npcMap = npcMap;
 client.grist = grist;
 client.Discord = Discord;
 client.registry = registry;
