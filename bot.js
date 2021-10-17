@@ -6,15 +6,23 @@ const Enmap = require('enmap');
 const fs = require('fs');
 const Canvas = require("canvas");
 
-
+//creates data folder and auth file if they don't exist.
+if (!fs.existsSync("./data")){
+  fs.mkdirSync("./data");
+  console.log("New data directory was created.");
+}
+if (!fs.existsSync("./auth.json")){
+  fs.copyFileSync("./auth-template.json","./auth.json");
+  console.log("new auth file was copied from template.");
+}
 //declare json files
-const auth = require("../auth.json"); //external data: bot token, bot prefix, tournament list
+const auth = require("./auth.json"); //external data: bot token, bot prefix, tournament list
 const grist =require("./grist.json"); //tracks grist types and their data.
 const registry =require("./registry.json"); //initial deploy list
 const actionList =require("./actions.json");//covers all actions and their data.
 
 //gets all modules
-const charcall =require("./modules/charcall.js");
+//const charcall =require("./modules/charcall.js");
 const traitcall =require("./modules/traitcall.js");
 const hookcall =require("./modules/hookcall.js");
 const funcall =require("./modules/funcall.js");
@@ -25,7 +33,7 @@ const lootcall =require("./modules/lootcall.js");
 const tutorcall =require("./modules/tutorcall.js");
 
 //makes all modules passable through client
-client.charcall = charcall;
+//client.charcall = charcall;
 client.traitcall = traitcall;
 client.strifecall = strifecall;
 client.funcall = funcall;
@@ -37,48 +45,45 @@ client.tutorcall = tutorcall;
 
 //declare enmaps
 //checks if a data folder exists
-if (!fs.existsSync("../data")){
-  console.log("Data directory missing, please create it!")
-}
 //tracks all player characters (waking selves, dream selves)
 const playerMap = new Enmap({
   name: "playerData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 //tracks user data, created when a player sends their first command.
 const userMap = new Enmap({
   name: "userData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 //tracks player data that stays consistant between characters.
 const sburbMap = new Enmap({
   name: "sburbData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 //tracks all land data and the medium for each session.
 const landMap= new Enmap({
   name: "landData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 //tracks all active strifes and their participants.
 const strifeMap = new Enmap({
   name: "strifeData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 //tracks all transportalizers and where they lead.
 const transMap = new Enmap({
   name: "transportalizerData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 //tracks each game's configurations.
 const configMap = new Enmap({
   name: "configData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 //tracks npc data
 const npcMap = new Enmap({
   name: "npcData",
-  dataDir:"../data"
+  dataDir:"./data"
 });
 
 

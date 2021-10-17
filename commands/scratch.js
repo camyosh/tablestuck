@@ -38,7 +38,7 @@ if(args[0]=="confirm"){
     if(client.sburbMap.has(playerList[i])){
       client.sburbMap.delete(playerList[i]);
     }
-    if(client.userMap.has(playerList[i].slice(0,18)){
+    if(client.userMap.has(playerList[i].slice(0,18))){
         client.userMap.delete(playerList[i].slice(0,18));
     }
   }
