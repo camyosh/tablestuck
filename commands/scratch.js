@@ -38,8 +38,8 @@ if(args[0]=="confirm"){
     if(client.sburbMap.has(playerList[i])){
       client.sburbMap.delete(playerList[i]);
     }
-    if(client.userMap.has(playerList[i].slice(0,18))){
-        client.userMap.delete(playerList[i].slice(0,18));
+    if(client.userMap.has(playerList[i].slice(0,36))){
+        client.userMap.delete(playerList[i].slice(0,36));
     }
   }
 
@@ -53,9 +53,8 @@ if(args[0]=="confirm"){
 
   for(let i=0;i<npcCount;i++){
 
-    console.log("Trying to delete NPC");
+
     if(client.playerMap.has(`n${message.guild.id}/${i}`)){
-      console.log("deleting NPC");
         client.playerMap.delete(`n${message.guild.id}/${i}`);
 
     }

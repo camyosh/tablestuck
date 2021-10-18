@@ -58,10 +58,10 @@ exports.progressCheck = async function(client,message,step,bypass = false){
     ------------
 
   */
-  charid = message.guild.id.concat(message.author.id);
-  channelid = client.playerMap.get(charid,"channel");
-  progress = client.playerMap.get(charid,"tutor");
-
+  userid = message.guild.id.concat(message.author.id);
+  charid = client.userMap.get(userid,"possess");
+  channelid = client.charcall.charData(client,userid,charid,"channel");
+  progress = client.charcall.charData(client,userid,charid,"tutor");
   if(!progress[0]){
     return;
   }
@@ -72,7 +72,7 @@ let tutorRef = require("../tutorRef.json");
 let msg = ``;
   msg = tutorRef.content[step];
   progress[step]=true;
-  client.playerMap.set(charid,progress,"tutor");
+  client.userMap.set(userid,progress,"tutor");
 
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1000,500);
@@ -120,6 +120,6 @@ if(!progress[47]&&progress[38]&&progress[41]&&progress[46]){
   setTimeout(function(){client.tutorcall.progressCheck(client,message,47);},2000);
 }
 if(progress[48]){
-  client.playerMap.set(charid,true,"tutcomplete");
+  client.userMap.set(userid,true,"tutcomplete");
 }
 }

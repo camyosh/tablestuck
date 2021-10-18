@@ -16,6 +16,8 @@ module.exports = (client, message) => {
   if(tourney){
     freeAct = ["register","leaderboard","stats","scratch","help","initialize","trait","heal","consume","act","strife","switch","specibus","sylladex","captcha","eject","alchemize","armor","trinket","equip","list","inspect","pass","quickalch","grist","ath","say","rename","use","allocate","push"];
   }
+  //list of all commands accepted pre-registry.
+  var preReg =["register","help","ping","initialize","scratch","leaderboard","config"];
 
   //standard argument/command name definition
   const args = message.content.slice(client.auth.prefix.length).trim().split(/ +/g);
@@ -61,7 +63,7 @@ let charid = client.userMap.get(userid,"possess");
 //checks if the player has a character database and is alive or not.
     if(charid!="NONE"){
         reg=true;
-      if(client.charcall.charCheck(charid,"alive")){
+      if(client.charcall.charCheck(client,charid,"alive")){
         alive=true;
       } else {
         alive=false;
@@ -69,9 +71,9 @@ let charid = client.userMap.get(userid,"possess");
     }
 
 //allows some commands to be run by dead and unregistered players, otherwise it ends the program.
-    if(!reg&&!alive&&command!="register"&&command!="help"&&command!="initialize"&&command!="scratch"&&command!="leaderboard"&&command!="config"){
+    if(!reg&&!alive&&preReg.indexOf(command)==-1){
       //revive has to be allowed for dead players in the case of Godtiering.
-      if(!alive&&command!="revive"){
+      if(reg&&!alive&&command!="revive"){
         message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
         return;
       }
@@ -88,7 +90,7 @@ let charid = client.userMap.get(userid,"possess");
   if (client.limit != 0) {
 	 client.user.setActivity("PESTERCORD TOURNAMENT");
   } else {
-    client.user.setActivity("PESTERCORD");
+    client.user.setActivity("Tablestuck Development");
   }
   // Run the command
   cmd.run(client, message, args);

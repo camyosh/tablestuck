@@ -22,7 +22,7 @@ const registry =require("./registry.json"); //initial deploy list
 const actionList =require("./actions.json");//covers all actions and their data.
 
 //gets all modules
-//const charcall =require("./modules/charcall.js");
+const charcall =require("./modules/charcall.js");
 const traitcall =require("./modules/traitcall.js");
 const hookcall =require("./modules/hookcall.js");
 const funcall =require("./modules/funcall.js");
@@ -33,7 +33,7 @@ const lootcall =require("./modules/lootcall.js");
 const tutorcall =require("./modules/tutorcall.js");
 
 //makes all modules passable through client
-//client.charcall = charcall;
+client.charcall = charcall;
 client.traitcall = traitcall;
 client.strifecall = strifecall;
 client.funcall = funcall;
@@ -44,7 +44,6 @@ client.lootcall = lootcall;
 client.tutorcall = tutorcall;
 
 //declare enmaps
-//checks if a data folder exists
 //tracks all player characters (waking selves, dream selves)
 const playerMap = new Enmap({
   name: "playerData",
