@@ -109,17 +109,17 @@ ctx.fillStyle = "#ffffff";
 ctx.fillText(msg,320,40);
 
 const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
-client.channels.cache.get(channelid).send(attachment);
+await client.channels.cache.get(channelid).send(attachment);
 if(bypass){
   return;
 }
 if(progress[44]){
-  setTimeout(function(){client.tutorcall.progressCheck(client,message,45);},2000);
+client.tutorcall.progressCheck(client,message,45);
 }
 if(!progress[47]&&progress[38]&&progress[41]&&progress[46]){
-  setTimeout(function(){client.tutorcall.progressCheck(client,message,47);},2000);
+client.tutorcall.progressCheck(client,message,47);
 }
 if(progress[48]){
-  client.userMap.set(userid,true,"tutcomplete");
+client.userMap.set(userid,true,"tutcomplete");
 }
 }

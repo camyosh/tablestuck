@@ -1,8 +1,8 @@
+
 exports.run = async function(client, message, args){
 
 //lists valid tourney players who can register, if applicable.
 const tourneyList = client.auth.list;
-
 //if the tournament is live, only valid players can register.
   if(client.limit != 0 && !tourneyList.includes(message.author.id)){
 message.channel.send("You have not signed up for the tournament!");
@@ -16,25 +16,25 @@ if(!client.landMap.has(message.guild.id+"medium")){
 }
 
 //initializes some basic variables needed for registration.
-  let channels = [``,``];
-  let chumhandle = ``;
-  let chumtag = ``;
-  let channelCheck = false;
-  let lunarSway;
-  let repDef = [0,0];
-  let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE",
+  var channels = [``,``];
+  var chumhandle = ``;
+  var chumtag = ``;
+  var channelCheck = false;
+  var lunarSway;
+  var repDef = [0,0];
+  var aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE",
                 "BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
 
   //list of possible armors a player might start with.
   const armorsets = [["CLOTHES", "sQ//m9Kn", 1, 1, []], ["CLOTHES", "sd//1UGt", 1, 1, []], ["CLOTHES", "s4//1jKQ", 1, 1, []], ["CLOTHES", "s5//MEF3", 1, 1, []], ["CLOTHES", "sI//llDd", 1, 1, []], ["CLOTHES", "sh//jXDH", 1, 1, []], ["CLOTHES", "sK//dTnZ", 1, 1, []], ["CLOTHES", "sj//ZVxB", 1, 1, []], ["CLOTHES", "sY//t9oW", 1, 1, []], ["CLOTHES", "sl//RSD8", 1, 1, []], ["CLOTHES", "sO//jCtu", 1, 1, []], ["CLOTHES", "sD//2ydM", 1, 1, []]];
   //gets the location of the dream tower.
-  let towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
+  var towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
 
 
 
 //gets the data for the user. userid is only used here in the pure form, of guildid concatted with author id.
-let userid = `${message.guild.id}${message.author.id}`
-let userData = client.userMap.get(userid);
+var userid = `${message.guild.id}${message.author.id}`
+var userData = client.userMap.get(userid);
 
 /*sburbid is for the sburbMap key. for players, it will be the same as userid, but
 dm's who might make multiple player sheets will have different sburbid's for each
@@ -44,7 +44,7 @@ to the end of the sburbid.
 
 //since the game is built for re-registering for easy testing, mulitple characters
 //cannot be made at this time.
-let sburbid;
+var sburbid;
 if(userData.charCount>0){
  sburbid = `${userid}${userData.charCount}`;
 } else {
@@ -52,8 +52,9 @@ if(userData.charCount>0){
 }
 //---- Start of Execution ----------------------------------------------------------------------------------------------------
 //startTime is used to keep track of how long resgistration takes, for debugging purposes.
-let startTime = Date.now();
+var startTime = Date.now();
 console.log(`Start time is ${Date.now()-startTime}`);
+
  //checks if the user has any charcter, player or NPC, under their control.
   if(userData.possess=="NONE"){
     aspectChoice = chooseAspect(args[0],aspects);
@@ -69,9 +70,9 @@ console.log(`Start time is ${Date.now()-startTime}`);
   message.channel.send("You can't re-register while controlling an NPC! possess a player and try again.");
   return;
   }
-  //if someone is possessing a player, it won't let them re-register unless they confirm it.
+  //if someone is possessing a player, it won't var them re-register unless they confirm it.
   else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
-      message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);
+      message.channel.send(`Be careful, if you re-register now, all of your data will be devared! If you're sure about this, do ${client.auth.prefix}register confirm.`);
       return;
   }else{
     //only pre-existing players reach this point.
@@ -83,42 +84,42 @@ console.log(`Start time is ${Date.now()-startTime}`);
     channelCheck = true;
     //checks if the channel still exists, and determines if new ones need to be made.
     try{
-      client.channels.cache.get(channels[0]).send(`Re-registering`);
+      await client.channels.cache.get(channels[0]).send(`Re-registering`);
     }catch(err){
       channelCheck=false;
     }
     await clearConnections(client,sburbid);
   }
   //manages the Registration Timer, so that people don't register too quickly.
-  if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
+  /*if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
     message.channel.send("Sorry, someone else is registering, wait a few seconds!");
     return;
   } else {
     client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
-  }
+  }*/
 
 await createTutorial(client,message,userid,userData);
 await chumCheck(client,message,userid,sburbid,chumhandle,chumtag);
 await charSetup(userData,sburbid);
-let gristSet= await createGristSet(client,message)
-let defBedroom = client.funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
-let beginData = await beginWorld(client,userData,defBedroom,armorsets,gristSet);
-let moonData = await dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom);
+var gristSet= await createGristSet(client,message)
+var defBedroom = client.funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
+var beginData = await beginWorld(client,userData,defBedroom,armorsets,gristSet);
+var moonData = await dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom);
 await createSheets(client,message,userid,sburbid,userData,armorsets,beginData[0],moonData,towerLocal,channels,chumhandle,chumtag,repDef);
 //beginData = [randnum,def]
-let dateObj = new Date();
+var dateObj = new Date();
 //creates channels if the player doesn't have any.
 if(!channelCheck){
-  channels = await generateChannels(client,message,sburbid,dateObj,channels);
+  channels = await generateChannels(client,message,sburbid,channels);
 }else{
   client.sburbMap.set(sburbid,channels[0],"channel");
   client.sburbMap.set(sburbid,channels[1],"pesterchannel");
-  client.channels.cache.get(channels[0]).send(`${userData.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
 }
 userData.channel = channels[0];
 userData.pesterchannel = channels[1];
 
 await finishLandGen(client,message,sburbid,aspectChoice,aspects,gristSet,beginData[1]);
+await client.channels.cache.get(channels[0]).send(`${userData.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
 await tutorStart(client,message);
 
 console.log(`End time is ${Date.now() - startTime}`);
@@ -140,8 +141,8 @@ function createTutorial(client,message,userid,userData){
   }
 
   //for the number of steps in the tutorial, this generates a new bool set to false.
-  let tutorRef = require("../tutorRef.json");
-  for(let m=0;m<tutorRef.content.length;m++){
+  var tutorRef = require("../tutorRef.json");
+  for(var m=0;m<tutorRef.content.length;m++){
     defaultTutor.push(false);
   }
 
@@ -153,7 +154,7 @@ function createTutorial(client,message,userid,userData){
 
 function clearConnections(client,sburbid){
   //target will be the sburbid of the player's client and/or server for this function.
-  let target;
+  var target;
 
   //checks if you had a server or client, and resets their client or server (you) to N/A.
   if(client.sburbMap.get(sburbid,"client")!="NA"&&client.sburbMap.get(sburbid,"client")!=sburbid){
@@ -189,18 +190,18 @@ function chooseAspect(input,aspects){
 
 function chumCheck(client,message,userid,sburbid,chumhandle,chumtag){
   //gets a list of every player and their chumhandle registered to the medium.
-    let playerList = client.landMap.get(message.guild.id+"medium","playerList");
-    let handleList = client.landMap.get(message.guild.id+"medium","handleList");
+    var playerList = client.landMap.get(message.guild.id+"medium","playerList");
+    var handleList = client.landMap.get(message.guild.id+"medium","handleList");
 
   //sets the chumhandle for the character.
     chumhandle = client.userMap.get(userid,"name").split(" ").join("");
 
-  //sets the chumtag for the character, defaulted to the first two letters of their name.
+  //sets the chumtag for the character, defaulted to the first two varters of their name.
     chumtag = chumhandle.substring(0,2).toUpperCase();
 
-    let tagCount = 0;
-    let handleCount = 0;
-    let index="NA";
+    var tagCount = 0;
+    var handleCount = 0;
+    var index="NA";
     for(i=0;i<handleList.length;i++){
       //counts every case where the new chumhandle matches an existing one.
       if(handleList[i][1].substring(0,chumhandle.length).toLowerCase()==chumhandle.toLowerCase()&&handleList[i][0]!=sburbid){
@@ -254,7 +255,7 @@ function createGristSet(client,message){
   type.*/
   var gristSet = [];
   var sessionGrist = client.landMap.get(message.guild.id+"medium","gristCounter");
-  for(let i=0;i<4;i++){
+  for(var i=0;i<4;i++){
     gristSet.push(sessionGrist.splice(Math.floor(Math.random()*sessionGrist.length),1)[0]);
     //refills the grist list if all 12 are used up
     if(sessionGrist.length<1){
@@ -270,7 +271,7 @@ function beginWorld(client,userData,defBedroom,armorsets,gristSet){
     var occset = [true,userData.possess];
 
  //picks a random number 0-11 for the armor the player starts with.
-  let randnum = Math.floor((Math.random() * 12));
+  var randnum = Math.floor((Math.random() * 12));
 
 //builds the room array. defBedroom had to be defined earlier, so that occset can be insterted now.
 //preItem stocks a room based on it's loot table and the land's grist type.
@@ -287,10 +288,10 @@ function beginWorld(client,userData,defBedroom,armorsets,gristSet){
 }
 function dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom){
   //gets the list of players in the dream moon towers
-    let prospitList = client.landMap.get(message.guild.id+"medium","prospitList");
-    let derseList = client.landMap.get(message.guild.id+"medium","derseList");
+    var prospitList = client.landMap.get(message.guild.id+"medium","prospitList");
+    var derseList = client.landMap.get(message.guild.id+"medium","derseList");
 
-    let roomIndex = -1;
+    var roomIndex = -1;
 
   //if the player already exists on a moon, it'll keep them there.
     if(prospitList.includes(sburbid)){
@@ -327,9 +328,9 @@ function dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,
     client.landMap.set(message.guild.id+"medium",prospitList,"prospitList");
     client.landMap.set(message.guild.id+"medium",derseList,"derseList");
 
-    let moonMap = client.landMap.get(message.guild.id+"medium",lunarSway);
+    var moonMap = client.landMap.get(message.guild.id+"medium",lunarSway);
    //if the character had a room before, this puts them there. Otherwise, it's added on to the end.
-   let towerRoom;
+   var towerRoom;
   if(roomIndex==-1){
     towerRoom = moonMap[towerLocal[0]][towerLocal[1]][2].length;
     moonMap[towerLocal[0]][towerLocal[1]][2].push([[],[],`${userData.name.toUpperCase()}'S DREAM TOWER`,false,[
@@ -453,10 +454,10 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
 }
 async function finishLandGen(client,message,sburbid,aspectChoice,aspects,gristSet,def){
   //determines where all the gates on the land will be.
-  let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
+  var gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 
   //sets the land's aspect based on registration choice (TO BE REMOVED)
-  let aspect;
+  var aspect;
   if(aspectChoice === "random"){
   aspect = aspects[Math.floor((Math.random() * 11))];
   } else {
@@ -494,8 +495,8 @@ async function finishLandGen(client,message,sburbid,aspectChoice,aspects,gristSe
   //pushes the land to the database defined by the sburbid.
   client.landMap.set(sburbid,land);
 }
-async function generateChannels(client,message,sburbid,dateObj,channels){
-  let chan,pesterchan;
+async function generateChannels(client,message,sburbid,channels){
+  var chan,pesterchan;
   if(client.configMap.get(message.guild.id).options[1].selection==2){
     channels[0] = message.channel.id;
     channels[1] = message.channel.id;
@@ -537,11 +538,9 @@ async function generateChannels(client,message,sburbid,dateObj,channels){
   }
   //makes a webhook for pesterchum stuff.
       client.hookcall.hookGen(client,channels[1]);
-
       client.sburbMap.set(sburbid,channels[0],"channel");
       client.sburbMap.set(sburbid,channels[1],"pesterchannel");
 
-      client.channels.cache.get(channels[0]).send(`${client.sburbMap.get(sburbid,"name")} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
 return channels;
 }
 async function tutorStart(client,message){

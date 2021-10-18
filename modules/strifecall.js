@@ -2691,8 +2691,6 @@ exports.spawn = function(client,message,underling,pregrist = "false"){
     for(i=0;i<prototype.length;i++){
       undername += prototype[i][0]+` `;
     }
-    console.log(landGrist);
-    console.log(`Underling grist is ${grist}`);
     let npcSet = {
       name: `${grist.toUpperCase()} ${undername}${underling.toUpperCase()}`,
       possess:[],

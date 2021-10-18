@@ -147,7 +147,7 @@ client.resources = require("./resources.json");
 
 //starting up the bot
 
-client.on('ready', () =>{
+client.once('ready', () =>{
   console.log("You have a feeling it's going to be a long day");
   client.user.setActivity("Tablestuck Development");
 });
