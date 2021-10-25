@@ -3,14 +3,12 @@
     "stm":4,
     "vit":25,
     "av":3,
-
     "d":5,
     "bd":[1,4],
     "act":["aggrieve","astrict","asphixiate"],
     "stats":[0,0,0,0,0,0],
     "prefMove":"none",
-
-  "xp":2,
+    "xp":2,
     "drop":1,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234217234104330/imp_base.png"
   },
@@ -19,13 +17,11 @@
     "vit":50,
     "av":5,
     "prefMove":"none",
-
     "d":10,
     "bd":[1,10],
     "act":["assail","assault"],
     "stats":[1,1,0,0,0,0],
-
-  "xp":8,
+    "xp":8,
     "drop":5,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234219503484928/ogre_base.png"
   },
@@ -34,12 +30,10 @@
     "vit":100,
     "av":7,
     "prefMove":"none",
-
     "d":20,
     "bd":[2,20],
     "act":["assimilate","arsonate"],
     "stats":[1,1,2,2,0,1],
-
     "xp":32,
     "drop":25,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234213932400654/basilisk_base.png"
@@ -49,12 +43,10 @@
     "vit":200,
     "av":9,
     "prefMove":"none",
-
     "d":40,
     "bd":[4,40],
     "act":["acquire","assimilate","astound","abate"],
     "stats":[0,0,0,3,3,3],
-
     "xp":128,
     "drop":125,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234218303127573/lich_base.png"
@@ -64,12 +56,10 @@
     "vit":400,
     "av":9,
     "prefMove":"arf",
-
     "d":40,
     "bd":[4,40],
     "act":["abstain","abjure","abate","arsonate","arf","acerbate","argufy","abuse"],
     "stats":[0,0,0,3,3,3],
-
     "xp":128,
     "drop":250,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234218303127573/lich_base.png"
@@ -79,12 +69,10 @@
     "vit":400,
     "av":11,
     "prefMove":"none",
-
     "d":80,
     "bd":[8,80],
     "act":["assail","assault","assure","abolish"],
     "stats":[4,4,0,1,2,0],
-
     "xp":512,
     "drop":625,
     "img":"https://cdn.discordapp.com/attachments/408119077840617493/808234216285405224/giclops.png"
@@ -94,12 +82,10 @@
     "vit":800,
     "av":11,
     "prefMove":"assassinate",
-
     "d":40,
     "bd":[8,80],
     "act":["astrict","asphixiate","acknowledge","arrest","assassinate"],
     "stats":[4,4,0,1,2,0],
-
     "xp":512,
     "drop":1250,
     "img":"https://cdn.discordapp.com/attachments/408119077840617493/808234216285405224/giclops.png"
@@ -108,13 +94,11 @@
     "stm":6,
     "vit":800,
     "av":11,
-
     "d":160,
     "bd":[16,160],
     "act":["abuse","absorb","arsonate","actualize"],
     "stats":[5,5,3,5,2,1],
     "prefMove":"none",
-
     "xp":2048,
     "drop":3125,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
@@ -124,12 +108,10 @@
     "vit":1600,
     "av":11,
     "prefMove":"abuse",
-
     "d":160,
     "bd":[16,160],
     "act":["abuse"],
     "stats":[5,5,3,5,2,1],
-
     "xp":2048,
     "drop":6250,
     "img":"https://media.discordapp.net/attachments/408119077840617493/808234220866240522/titachnid_base.png"
@@ -138,22 +120,18 @@
     "stm":12,
     "vit":3000,
     "av":13,
-
     "d":1000,
     "bd":[300,1000],
     "act":["arrive","abuse"],
     "stats":[0,0,0,0,0,0],
     "prefMove":"none",
-
-  "xp":6000,
+    "xp":6000,
     "drop":14000
-
   },
   "player":{
     "stm":8,
     "av":1,
     "prefMove":"none",
-
     "d":1,
     "bd":[1,2],
     "act":["aggrieve","abscond"],
@@ -164,7 +142,6 @@
     "stm":8,
     "av":3,
     "prefMove":"none",
-
     "d":5,
     "bd":[1,4],
     "act":["aggrieve"],
@@ -176,77 +153,65 @@
     "vit":100,
     "av":6,
     "prefMove":"none",
-
     "d":5,
     "bd":[1,4],
     "act":["aggrieve"],
     "stats":[0,0,0,0,0,0],
-
-  "xp":2
+    "xp":2
   },
   "medium carapacian":{
     "stm":6,
     "vit":150,
     "av":8,
     "prefMove":"none",
-
     "d":10,
     "bd":[2,8],
     "act":["aggrieve"],
     "stats":[0,0,0,0,0,0],
-
-  "xp":2
+    "xp":2
   },
   "tall carapacian":{
     "stm":8,
     "vit":200,
     "av":12,
     "prefMove":"none",
-
     "d":15,
     "bd":[3,12],
     "act":["aggrieve"],
     "stats":[0,0,0,0,0,0],
-
-  "xp":2
+    "xp":2
   },
   "large carapacian":{
     "stm":8,
     "vit":250,
     "av":10,
     "prefMove":"none",
-
     "d":20,
     "bd":[4,16],
     "act":["aggrieve"],
     "stats":[0,0,0,0,0,0],
-
-  "xp":2
+    "xp":2
   },
   "arhagent":{
     "stm":10,
     "vit":300,
     "av":14,
     "prefMove":"none",
-
     "d":25,
     "bd":[5,20],
     "act":["aggrieve"],
     "stats":[0,0,0,0,0,0],
-
-  "xp":2
+    "xp":2
   },
   "shopkeep":{
     "stm":8,
     "vit":200,
     "av":14,
     "prefMove":"none",
-
     "d":20,
     "bd":[4,16],
     "act":["aggrieve"],
     "stats":[0,0,0,0,0,0],
-
-  "xp":2
+    "xp":2
   }
 }

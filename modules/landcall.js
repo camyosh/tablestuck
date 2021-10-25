@@ -1,14 +1,13 @@
-const funcall = require("./funcall.js");
-const lootcall = require("./lootcall.js");
-const stifecall = require("./strifecall.js");
-//10 dungeons, 10 villages, 15 return nodes, 10 constructs, 1 gate, 10 random loot, 65 nothing
 
-//var output = [AREA TYPE,NUMBER OF ROOMS,[[roomType,roomLoot,roomName,roomVisite,occ,roomInv],[room2]]];
-//default empty = [0,1,[0,random number,"Clearing",false,[underlings],[items]]]
+//a land consists of 10 dungeons, 10 villages, 15 return nodes, 10 constructs, 1 gate, 10 random loot, and 65 clearings.
+
+//generic room structure: [AREA TYPE,NUMBER OF ROOMS,[[[roomShopPool],[unused?],roomName,roomVisited,[occ],[roomInv]],[room2]]];
+//default empty = [0,1,[[],[],"CLEARING",false,[underlings],[items]]];
 
 var defaultEmpty = [0,1,[[[],[],"CLEARING",false,[],[]]]];
 var defaultGate = [6,1,[[[],[],"GATE",false,[],[]]]];
 
+//this function for rolling 2dx feels like it should be replaced by one function.
 function dubs(x){
   return Math.floor(Math.random() * x) + Math.floor(Math.random() * x);
 }
@@ -123,7 +122,7 @@ empty =[];
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[4,2,[[funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[4,2,[[client.funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
 
   }
   //Creates the Land Constructs
@@ -146,7 +145,7 @@ empty =[];
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[0,1,[[[],[],"CLEARING",false,[],[lootcall.lootB(client, sec, dubs(8))]]]];
+    section[temp[0][0]][temp[0][1]]=[0,1,[[[],[],"CLEARING",false,[],[client.lootcall.lootB(client, sec, dubs(8))]]]];
   }
 
   //console.log(`Finished generating those things - ${Date.now() - startTime}`);
@@ -256,7 +255,7 @@ let b = 0;
                 client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], bossList[sec], message),
                 client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
                 client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)
-              ],[lootcall.lootA(client, sec, dubs(8))]]]];
+              ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
 
             dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
@@ -274,7 +273,7 @@ let b = 0;
               dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]-k,roomCoor[0][1]], bossList[sec], message),
               client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
               client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)
-            ],[lootcall.lootA(client, sec, dubs(8))]]]];
+            ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
             dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
             }
@@ -291,7 +290,7 @@ let b = 0;
               if ((b==5&&sec==0)||(b==10&&sec==1)){
               dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]+k], bossList[sec], message),
               client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
-              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)],[lootcall.lootA(client, sec, dubs(8))]]]];
+              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)],[client.lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
             dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] = dungeonRoomGen(client,sec);
           }
@@ -309,7 +308,7 @@ let b = 0;
             if ((b==5&&sec==0)||(b==10&&sec==1)){
               dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]-k], bossList[sec], message),
               client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
-              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)],[lootcall.lootA(client, sec, dubs(8))]]]];
+              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)],[client.lootcall.lootA(client, sec, dubs(8))]]]];
             } else {
             dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] = dungeonRoomGen(client,sec);
           }
@@ -341,7 +340,7 @@ let b = 0;
       if(dungeon[roomCoor[0][0]][random][0]==0||dungeon[roomCoor[0][0]][random][0]==10){
         dungeon[roomCoor[0][0]][random] = [8,1,[[[],[],"BOSS ROOM",false,[
           client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], bossList[sec], message)
-        ],[lootcall.lootA(client, sec, dubs(8))]]]];
+        ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
         bosscheck=true;
       }
     }
@@ -352,7 +351,7 @@ let b = 0;
       if(dungeon[random][roomCoor[0][1]][0]==0||dungeon[roomCoor[0][0]][random][0]==10){
         dungeon[random][roomCoor[0][1]] = [8,1,[[[],[],"BOSS ROOM",false,[
           client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], bossList[sec], message)
-        ],[lootcall.lootA(client, sec, dubs(8))]]]];
+        ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
         bosscheck=true;
       }
     }
@@ -392,7 +391,7 @@ while(!hitWall){
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][0] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,0], 'denizen', message),
-          ],[lootcall.lootA(client, sec, dubs(8))]]]];
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
 
@@ -414,7 +413,7 @@ while(!hitWall){
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][10] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,10], 'denizen', message),
-          ],[lootcall.lootA(client, sec, dubs(8))]]]];
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
@@ -435,7 +434,7 @@ deleted = genDirection.splice(0,1);
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[10][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [10,cury], 'denizen', message),
-          ],[lootcall.lootA(client, sec, dubs(8))]]]];
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
@@ -456,7 +455,7 @@ deleted = genDirection.splice(0,1);
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[0][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [0,cury], 'denizen', message),
-          ],[lootcall.lootA(client, sec, dubs(8))]]]];
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
@@ -478,12 +477,12 @@ genDirection =["n","s","e","w"];
 if (denizen == false){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 }
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[[],[],"DENIZEN MINION",false,[
-    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 }
 
 } else if(sec=="m"){
@@ -515,7 +514,7 @@ while(!hitWall){
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][0] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,0], 'denizen', message),
-          ],[lootcall.lootA(client, sec, dubs(8))]]]];
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
 
@@ -537,7 +536,7 @@ while(!hitWall){
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][10] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,10], 'denizen', message),
-          ],[lootcall.lootA(client, sec, dubs(8))]]]];
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
@@ -558,7 +557,7 @@ deleted = genDirection.splice(0,1);
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[10][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [10,cury], 'denizen', message),
-          ],[lootcall.lootA(client, sec, dubs(8))]]]];
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
@@ -579,7 +578,7 @@ deleted = genDirection.splice(0,1);
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[0][cury] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [0,cury], 'denizen', message),
-          ],[lootcall.lootA(client, sec, dubs(8))]]]];
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
       } else {
@@ -601,12 +600,12 @@ genDirection =["n","s","e","w"];
 if (denizen == false){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
-    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 }
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[[],[],"DENIZEN MINION",false,[
-    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[lootcall.lootA(client, sec, dubs(8))]]]];
+    client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 }
 
 }
@@ -619,7 +618,7 @@ function dungeonRoomGen(client,sec) {
   switch(Math.floor((Math.random() * 4))){
 
 case 3:
-return [10,1,[[[],[],"DUNGEON ROOM",false,[],[lootcall.lootB(client, sec, dubs(8))]]]];
+return [10,1,[[[],[],"DUNGEON ROOM",false,[],[client.lootcall.lootB(client, sec, dubs(8))]]]];
 break;
   default:
   return [10,1,[[[],[],"DUNGEON ROOM",false,[],[]]]];

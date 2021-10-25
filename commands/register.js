@@ -1,5 +1,9 @@
-
 exports.run = async function(client, message, args){
+
+//First, there's a series of checks to see if the function should be run at all.
+//This way, processing messages can be sent properly even when the bot is busy.
+
+//T1 checks: see if they can register at all.
 
 //lists valid tourney players who can register, if applicable.
 const tourneyList = client.auth.list;
@@ -8,32 +12,14 @@ const tourneyList = client.auth.list;
 message.channel.send("You have not signed up for the tournament!");
 return;
   }
-
 //checks to see if the medium exists, aka the session has been initialized.
 if(!client.landMap.has(message.guild.id+"medium")){
   message.channel.send(`A session for this server has not been initialized! Do ${client.auth.prefix}initialize to fix this.`);
   return;
 }
 
-//initializes some basic variables needed for registration.
-  var channels = [``,``];
-  var chumhandle = ``;
-  var chumtag = ``;
-  var channelCheck = false;
-  var lunarSway;
-  var repDef = [0,0];
-  var aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE",
-                "BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
-
-  //list of possible armors a player might start with.
-  const armorsets = [["CLOTHES", "sQ//m9Kn", 1, 1, []], ["CLOTHES", "sd//1UGt", 1, 1, []], ["CLOTHES", "s4//1jKQ", 1, 1, []], ["CLOTHES", "s5//MEF3", 1, 1, []], ["CLOTHES", "sI//llDd", 1, 1, []], ["CLOTHES", "sh//jXDH", 1, 1, []], ["CLOTHES", "sK//dTnZ", 1, 1, []], ["CLOTHES", "sj//ZVxB", 1, 1, []], ["CLOTHES", "sY//t9oW", 1, 1, []], ["CLOTHES", "sl//RSD8", 1, 1, []], ["CLOTHES", "sO//jCtu", 1, 1, []], ["CLOTHES", "sD//2ydM", 1, 1, []]];
-  //gets the location of the dream tower.
-  var towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
-
-
-
 //gets the data for the user. userid is only used here in the pure form, of guildid concatted with author id.
-var userid = `${message.guild.id}${message.author.id}`
+var userid = `${message.guild.id}${message.author.id}`;
 var userData = client.userMap.get(userid);
 
 /*sburbid is for the sburbMap key. for players, it will be the same as userid, but
@@ -50,82 +36,98 @@ if(userData.charCount>0){
 } else {
  sburbid = userid;
 }
-//---- Start of Execution ----------------------------------------------------------------------------------------------------
-//startTime is used to keep track of how long resgistration takes, for debugging purposes.
-var startTime = Date.now();
-console.log(`Start time is ${Date.now()-startTime}`);
 
- //checks if the user has any charcter, player or NPC, under their control.
-  if(userData.possess=="NONE"){
-    aspectChoice = chooseAspect(args[0],aspects);
-    if(!aspectChoice) return;
-  }
-  //if there is an active tournament, people can't re-register.
-  else if (client.limit != 0) {
-    message.channel.send("You can not re-register during a tournament!");
+var aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE",
+              "BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
+var channels = [``,``];
+var aspectChoice;
+var channelCheck;
+//T2: checks if the player has registered before and acts accordingly.
+
+//checks if the user has any charcter, player or NPC, under their control.
+if(userData.possess=="NONE"){
+  aspectChoice = chooseAspect(args[0],aspects);
+  if(!aspectChoice) return;
+}
+//checks to see if the currently possessed creature is an NPC, not a player.
+else if(!client.playerMap.has(userData.possess)){
+message.channel.send("You can't re-register while controlling an NPC! possess a player and try again.");
+return;
+}
+//if someone is possessing a player, it won't let them re-register unless they confirm it.
+else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
+    message.channel.send(`Be careful, if you re-register now, all of your data will be devared! If you're sure about this, do ${client.auth.prefix}register confirm.`);
     return;
-  }
-  //checks to see if the currently possessed creature is an NPC, not a player.
-  else if(!client.playerMap.has(userData.possess)){
-  message.channel.send("You can't re-register while controlling an NPC! possess a player and try again.");
-  return;
-  }
-  //if someone is possessing a player, it won't var them re-register unless they confirm it.
-  else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
-      message.channel.send(`Be careful, if you re-register now, all of your data will be devared! If you're sure about this, do ${client.auth.prefix}register confirm.`);
-      return;
-  }else{
-    //only pre-existing players reach this point.
-    aspectChoice = chooseAspect(args[1],aspects);
-    if(!aspectChoice) return;
-    //stores channel data for the pre-existing player
-    channels[0] = client.sburbMap.get(sburbid,"channel");
-    channels[1] = client.sburbMap.get(sburbid,"pesterchannel");
-    channelCheck = true;
-    //checks if the channel still exists, and determines if new ones need to be made.
+}else{
+  //only pre-existing players reach this point.
+  aspectChoice = chooseAspect(args[1],aspects);
+  if(!aspectChoice) return;
+  //stores channel data for the pre-existing player
+  channels[0] = client.sburbMap.get(sburbid,"channel");
+  channels[1] = client.sburbMap.get(sburbid,"pesterchannel");
+  channelCheck = true;
+  //checks if the channel still exists, and determines if new ones need to be made.
     try{
       await client.channels.cache.get(channels[0]).send(`Re-registering`);
     }catch(err){
       channelCheck=false;
     }
-    await clearConnections(client,sburbid);
+  await clearConnections(client,sburbid);
+}
+await register(client,message,args,userid,userData,sburbid,aspects,aspectChoice,channelCheck,channels);
+}
+//---- Start of Execution ----------------------------------------------------------------------------------------------------
+async function register(client,message,args,userid,userData,sburbid,aspects,aspectChoice,channelCheck,channels){
+  //initializes some basic variables needed for registration.
+    var chumhandle = ``;
+    var chumtag = ``;
+    var lunarSway;
+    var repDef = [0,0];
+    //list of possible armors a player might start with.
+    const armorsets = [["CLOTHES", "sQ//m9Kn", 1, 1, []], ["CLOTHES", "sd//1UGt", 1, 1, []], ["CLOTHES", "s4//1jKQ", 1, 1, []], ["CLOTHES", "s5//MEF3", 1, 1, []], ["CLOTHES", "sI//llDd", 1, 1, []], ["CLOTHES", "sh//jXDH", 1, 1, []], ["CLOTHES", "sK//dTnZ", 1, 1, []], ["CLOTHES", "sj//ZVxB", 1, 1, []], ["CLOTHES", "sY//t9oW", 1, 1, []], ["CLOTHES", "sl//RSD8", 1, 1, []], ["CLOTHES", "sO//jCtu", 1, 1, []], ["CLOTHES", "sD//2ydM", 1, 1, []]];
+    //gets the location of the dream tower.
+    var towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
+
+  //startTime is used to keep track of how long resgistration takes, for debugging purposes.
+  var startTime = Date.now();
+  console.log(`Start time is ${Date.now()-startTime}`);
+
+    //manages the Registration Timer, so that people don't register too quickly.
+    /*if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
+      message.channel.send("Sorry, someone else is registering, wait a few seconds!");
+      return;
+    } else {
+      client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
+    }*/
+
+  await createTutorial(client,message,userid,userData);
+  await chumCheck(client,message,userid,sburbid,chumhandle,chumtag);
+  await charSetup(userData,sburbid);
+  var gristSet= await createGristSet(client,message)
+  var defBedroom = client.funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
+  var beginData = await beginWorld(client,userData,defBedroom,armorsets,gristSet);
+  var moonData = await dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom);
+  await createSheets(client,message,userid,sburbid,userData,armorsets,beginData[0],moonData,towerLocal,channels,chumhandle,chumtag,repDef);
+  //beginData = [randnum,def]
+  var dateObj = new Date();
+  //creates channels if the player doesn't have any.
+  if(!channelCheck){
+    channels = await generateChannels(client,message,sburbid,channels);
+  }else{
+    client.sburbMap.set(sburbid,channels[0],"channel");
+    client.sburbMap.set(sburbid,channels[1],"pesterchannel");
   }
-  //manages the Registration Timer, so that people don't register too quickly.
-  /*if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
-    message.channel.send("Sorry, someone else is registering, wait a few seconds!");
-    return;
-  } else {
-    client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
-  }*/
+  userData.channel = channels[0];
+  userData.pesterchannel = channels[1];
 
-await createTutorial(client,message,userid,userData);
-await chumCheck(client,message,userid,sburbid,chumhandle,chumtag);
-await charSetup(userData,sburbid);
-var gristSet= await createGristSet(client,message)
-var defBedroom = client.funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
-var beginData = await beginWorld(client,userData,defBedroom,armorsets,gristSet);
-var moonData = await dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom);
-await createSheets(client,message,userid,sburbid,userData,armorsets,beginData[0],moonData,towerLocal,channels,chumhandle,chumtag,repDef);
-//beginData = [randnum,def]
-var dateObj = new Date();
-//creates channels if the player doesn't have any.
-if(!channelCheck){
-  channels = await generateChannels(client,message,sburbid,channels);
-}else{
-  client.sburbMap.set(sburbid,channels[0],"channel");
-  client.sburbMap.set(sburbid,channels[1],"pesterchannel");
-}
-userData.channel = channels[0];
-userData.pesterchannel = channels[1];
+  await finishLandGen(client,message,sburbid,aspectChoice,aspects,gristSet,beginData[1]);
+  await client.channels.cache.get(channels[0]).send(`${userData.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
+  await tutorStart(client,message);
 
-await finishLandGen(client,message,sburbid,aspectChoice,aspects,gristSet,beginData[1]);
-await client.channels.cache.get(channels[0]).send(`${userData.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
-await tutorStart(client,message);
+  console.log(`End time is ${Date.now() - startTime}`);
 
-console.log(`End time is ${Date.now() - startTime}`);
 
 }
-
 //------- Start of Function Definitions -------------------------------------------------------
 function createTutorial(client,message,userid,userData){
   //if the user doesn't already have tutorial data, it'll be created here.

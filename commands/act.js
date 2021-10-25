@@ -1,15 +1,12 @@
-const funcall = require("../modules/funcall.js");
-const strifecall = require("../modules/strifecall.js");
 const tierDmg = [1,5,7,10,14,19,25,32,40,49,59,70,82,95,109,124,140];
 const log =true;
 //Used to take actions during STRIFE
 
 exports.run = (client, message, args) => {
 
-
 //Check if player is in STRIFE
 
-  if(strifecall.strifeTest(client, message, message.author) == false){
+  if(client.strifecall.strifeTest(client, message, message.author) == false){
     message.channel.send("You are not currently in Strife!")
     return;
   }
@@ -398,7 +395,7 @@ if(log){
   //If action is ABSCOND, leave combat by calling leaveStrife function. Otherwise, spend stamina for the action and call the act function
 
   if(action[select] == "abscond"){
-    strifecall.leaveStrife(client,message,local,pos);
+    client.strifecall.leaveStrife(client,message,local,pos);
     message.channel.send("Absconding!");
   } else {
   list[pos][5] -= cost;
@@ -407,7 +404,7 @@ if(log){
   }
   list[pos][6].push(""+select+equip);
   client.strifeMap.set(strifeLocal,list,"list")
-  strifecall.act(client,message,local,action[select],active[target]);
+  client.strifecall.act(client,message,local,action[select],active[target]);
   client.tutorcall.progressCheck(client,message,35);
 }
 }
