@@ -63,7 +63,7 @@ let charid = client.userMap.get(userid,"possess");
 //checks if the player has a character database and is alive or not.
     if(charid!="NONE"){
         reg=true;
-      if(client.charcall.charCheck(client,charid,"alive")){
+      if(client.charcall.charData(client,charid,"alive")){
         alive=true;
       } else {
         alive=false;

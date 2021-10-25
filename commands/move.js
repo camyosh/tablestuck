@@ -6,7 +6,9 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner");
   var occset = [true,charid];
   let msg = ``;
   let local = client.playerMap.get(charid,"local");
@@ -90,7 +92,7 @@ exports.run = (client, message, args) => {
     message.channel.send("you can't go that way!");
     return;
   } else if(target[0].length>1&&target[0].charAt(local[0].length-1)=="d"){
-    if(sec[target[1]][target[2]][2][0][3]==false && client.landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)&& !client.funcall.dmcheck(client,message)){
+    if(sec[target[1]][target[2]][2][0][3]==false && client.charcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)&& !client.funcall.dmcheck(client,message)){
 
       message.channel.send("You can't continue on until the Underlings have been defeated!");
       return;

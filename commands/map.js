@@ -11,7 +11,8 @@ exports.run = function(client, message, args) {
   }
 
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+var userid = message.guild.id.concat(message.author.id);
+var charid = client.userMap.get(userid,"possess");
 let local = client.playerMap.get(charid,`local`);
 
 if(local[0]==`h`){

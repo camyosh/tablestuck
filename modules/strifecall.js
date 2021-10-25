@@ -1046,7 +1046,7 @@ exports.underSpawn = function(client, local, sec, sessionID) {
   let room = area[2][local[3]];
 
 let underlingChoice;
-let rung = client.playerMap.get(local[4],"rung");
+let rung = client.sburbMap.get(local[4],"rung");
 if(client.landMap.get(local[4],"enter")==false&&local[0]=="h"){
 return sec;
 }
@@ -2693,7 +2693,7 @@ exports.spawn = function(client,message,underling,pregrist = "false"){
     }
     let npcSet = {
       name: `${grist.toUpperCase()} ${undername}${underling.toUpperCase()}`,
-      possess:[],
+      control:[],
       type: underling,
       faction: "underling",
       vit:client.underlings[underling].vit,
@@ -2731,7 +2731,7 @@ exports.spawn = function(client,message,underling,pregrist = "false"){
 
     npcID = `n${sessionID}/${npcCount}`;
 
-    client.playerMap.set(npcID,npcSet);
+    client.npcMap.set(npcID,npcSet);
 
     let occset = [false,npcID,grist];
 

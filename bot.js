@@ -87,6 +87,8 @@ const npcMap = new Enmap({
 
 
 // a > A > 1
+//list of all aspects for use all over the place.
+client.aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM"];
 //action list for reference by alchemy.
 client.action=[
   ["no action","no action","no action","no action","accede","accelerate","accessorize","acclaim","acclimate","accomplish","account","accumulate","accuse","acerbate","acknowledge","acquaint","acquire","actualize","actuate","activate","acupressure","arbitrate","arborize","archive","ardor","arf","argufy","arise","arithmetize","armamentify","arraign",

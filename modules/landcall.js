@@ -1,24 +1,21 @@
 
-//a land consists of 10 dungeons, 10 villages, 15 return nodes, 10 constructs, 1 gate, 10 random loot, and 65 clearings.
 
 //generic room structure: [AREA TYPE,NUMBER OF ROOMS,[[[roomShopPool],[unused?],roomName,roomVisited,[occ],[roomInv]],[room2]]];
 //default empty = [0,1,[[],[],"CLEARING",false,[underlings],[items]]];
 
-var defaultEmpty = [0,1,[[[],[],"CLEARING",false,[],[]]]];
-var defaultGate = [6,1,[[[],[],"GATE",false,[],[]]]];
+const defaultEmpty = [0,1,[[[],[],"CLEARING",false,[],[]]]];
+const defaultGate = [6,1,[[[],[],"GATE",false,[],[]]]];
 
 //this function for rolling 2dx feels like it should be replaced by one function.
 function dubs(x){
   return Math.floor(Math.random() * x) + Math.floor(Math.random() * x);
 }
+
 //Land Key(0-9):
 //EMPTY, DUNGEON, CONSTRUCT, NODE, VILLAGE, HOUSE, GATE, WALL, BOSS, DENIZEN
 
-//10
 
-var aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM",]
-
-var aspectItems = [
+const aspectItems = [
   ["WINDSOCK","0?mDbRTh",1,1,[]],
   ["PLANT","0PnCL1f3",1,1,[]],
   ["COIN","0hoBLIhT",1,1,[]],
@@ -33,22 +30,21 @@ var aspectItems = [
   ["SKULL","0yx2d0Om",1,1,[]]
 ]
 
-//let defaultDungeon =[1,2,[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]];
-var defaultConstruct =[2,1,[[[],[],"LAND CONSTRUCT",false,[],[]]]];
-var defaultNode =[3,1,[[[],[],"RETURN NODE",false,[],[]]]];
-var defaultVillage =[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
+//defines a few more room constants
+const defaultConstruct =[2,1,[[[],[],"LAND CONSTRUCT",false,[],[]]]];
+const defaultNode =[3,1,[[[],[],"RETURN NODE",false,[],[]]]];
+const defaultVillage =[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
 
+//called to make a section of a land.
 exports.landGen = function(client,sec,gateCoor,message,aspect,gristSet) {
 
-  let startTime = Date.now();
-    //console.log(`Start time is ${startTime}`);
-
+  //Unused variables for generating outposts.
   let outpostCheck = false;
   let outpostChance = 3;
   let section = [];
 
-  //console.log(`Generating empty land and dungeon - ${Date.now() - startTime}`);
 
+//creates a 2d array that is an 11x11 grid of default squares for a land and dungeon.
   for(let i=0;i<11;i++){
     section.push([[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]],[0,1,[[[],[],"CLEARING",false,[],[]]]]]);
   }
@@ -57,102 +53,100 @@ exports.landGen = function(client,sec,gateCoor,message,aspect,gristSet) {
     dungeon.push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
   }
 
-  //console.log(`Finished generating empty land and dungeon - ${Date.now() - startTime}`);
-
+//empty is a one-dimentional array with the coordinates of every square on the 11x11
+//land grid, used to determine which spaces are still open.
 empty =[];
   for(let i=0;i<11;i++){
-    for(j=0;j<11;j++){
+    for(let j=0;j<11;j++){
       empty.push([i,j]);
     }
   }
 
-  //console.log(`Finished setting up the empty array - ${Date.now() - startTime}`);
+//generates the gate for a land, or if it's the fourth section, the denizen dungeon.
   let dunCount;
   let denizenCheck = false;
-  //Creates the Gate on the Land
+  //gate locations are pre-generated so they can be stored in the landmap.
   let pos = (gateCoor[0]*11)+(gateCoor[1]);
+  //if this isn't the 4th section, then the gate is placed as normal.
   if (sec!=3){
   let gate = empty.splice(pos,1);
   section[gate[0][0]][gate[0][1]]=[6,1,[[[],[],"GATE",false,[],[]]]];
   } else {
+    //if it is the 4th section, the denizen lair is created, and the entrance is placed in the middle.
     denizenCheck = true;
     let temp=empty.splice(60,1);
     section[temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DENIZEN LAIR ENTRANCE",false,[[]],[]]]];
-    //console.log(`Calling DungeonGen for Denizen lair - ${Date.now() - startTime}`);
     dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
-    //console.log(`Resolved DungeonGen - ${Date.now() - startTime}`);
   }
+ //sections 1 and 2 have 6 dungeons, section 3 has 3 dungeons, and section 4 has only 1 denizen dungeon.
   if(sec>1){
     dunCount = 1;
   } else {
-    dunCount =2;
+    dunCount = 2;
   }
 
-  //console.log(`Generating each third of the land with a for() loop - ${Date.now() - startTime}`);
+//bedpos tells the game to generate the dream bed in the 4th section of a player's land,
+//in one of the three areas.
   let bedpos = 0;
  if (sec==3){
   bedpos = Math.ceil(Math.random()*3);
  }
+ //this is the big loop that runs the land gen code 3 times to spread out stuff.
+ //it deincriments because j is used as an index multiplier, so the lands generate
+ //bottom to top.
   for(j=3;j>0;j--){
+    //since there's always a gate or denizen lair, the 11x11 grid has 120 empty spaces,
+    //which means each third will have 40 in it. This makes it so that temp is never
+    //an invalid value in empty.
     let length = 40;
   //Creates Dungeons
-
-  //console.log(`Generating ${dunCount+1} dungeons - ${Date.now() - startTime}`);
-
   for(let i=0;i<dunCount;i++){
     if(!denizenCheck){
   let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
   length--;
   section[temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DUNGEON ENTRANCE",false,[],[]]]];
-  //section[temp[0][0]][temp[0][1]]=[1,6,[funcall.roomGenCall(client,1,sec,1),funcall.roomGenCall(client,1,sec,2),funcall.roomGenCall(client,1,sec,3),funcall.roomGenCall(client,1,sec,4)]];
-
-  //console.log(`Calling DungeonGen for normal dungeon - ${Date.now() - startTime}`);
   dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
-  //console.log(`Resolved DungeonGen - ${Date.now() - startTime}`);
   }
   }
 
-  //console.log(`Generating villages, constructs, nodes - ${Date.now() - startTime}`);
+  //Creates Dreambed if needed
   if(bedpos==j){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     section[temp[0][0]][temp[0][1]]=[2,1,[[[],[],"DREAM BED",false,[],[]]]];
   }
-  //Creates a Village
+  //Creates a Village (9 per section)
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     section[temp[0][0]][temp[0][1]]=[4,2,[[client.funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
 
   }
-  //Creates the Land Constructs
+  //Creates the Land Constructs (9 per section)
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     if(Math.floor(Math.random()*4)==0){
-      section[temp[0][0]][temp[0][1]]=[2,1,[[[],[],"LAND CONSTRUCT",false,[],[aspectItems[aspects.indexOf(aspect)]]]]];
+      section[temp[0][0]][temp[0][1]]=[2,1,[[[],[],"LAND CONSTRUCT",false,[],[aspectItems[client.aspects.indexOf(aspect)]]]]];
     } else {
       section[temp[0][0]][temp[0][1]]=[2,1,[[[],[],"LAND CONSTRUCT",false,[],[]]]];
     }
   }
-  //Creates the return nodes
+  //Creates the return nodes (12 per section)
   for(let i=0;i<4;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     section[temp[0][0]][temp[0][1]]=[3,1,[[[],[],"RETURN NODE",false,[],[]]]];
   }
-  //Creates free loot
+  //Creates free loot (9 per section)
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
     section[temp[0][0]][temp[0][1]]=[0,1,[[[],[],"CLEARING",false,[],[client.lootcall.lootB(client, sec, dubs(8))]]]];
   }
-
-  //console.log(`Finished generating those things - ${Date.now() - startTime}`);
-  }
+}
+  //Moon outposts appear on only the first section of a land.
   if(sec==0){
-
-    //console.log(`Generating moon outposts - ${Date.now() - startTime}`);
     for(let i=0;i<2;i++){
       let moon=[["PROSPIT","DERSE"],["pc","dc"]];
       let temp=empty.splice(Math.floor(Math.random()*empty.length));
@@ -161,7 +155,7 @@ empty =[];
       let transCode = "0000";
       let transCode1 = "0000";
       let moonCode = "0000";
-
+      //block to generate the ID of the transportalizers.
       while(transList.includes(transCode)||transCode=="0000"){
         transCode = "";
         for(k=0;k<4;k++){
@@ -183,7 +177,7 @@ empty =[];
       transCount++;
 
       let transLocal = client.landMap.get(message.guild.id+"medium","transLocal");
-
+      //transSet goes on the land, transSet1 is added to the respective moon.
       var transSet = {
         local:["s1",temp[0][0],temp[0][1],0,message.guild.id.concat(message.author.id)],
         target:`${message.guild.id}${transCode1}`
@@ -206,25 +200,26 @@ empty =[];
       client.landMap.set(message.guild.id+"medium",castle,moon[1][i]);
 
     }
-
-    //console.log(`Finished generating moon outposts - ${Date.now() - startTime}`);
   }
-
-  //console.log(`Finished generation - ${Date.now() - startTime}`);
+//all areas and dungeons of the section have been completed.
 return [section,dungeon];
 
 
 }
 
 function dungeonGen(client,roomCoor,sec,dungeon,message) {
-
+  //lists current bosses and their names in the order they appear.
   let bossList = ["unicorn","kraken","hecatoncheires"];
-  let support = ["basilisk","basilisk"];
-
+  let support = ["basilisk","basilisk","basilisk"];
+  //every dungeon has an exit where the entrance is, so we start with that.
   dungeon[roomCoor[0][0]][roomCoor[0][1]]=[1,1,[[[],[],"DUNGEON EXIT",false,[],[]]]];
+
   let s = 0;
   let lv2 = [];
   let lv3 = [];
+  //because section 1 and 2 dungeons only make 1 or 2 paths, respectively, the directions they
+  //split off to has to be selected. If the exit is in a location where a direction
+  //can't be used (aka too close to the edge of the map), the option is spliced from the array.
   if(sec==0||sec==1){
   let direction=["x+","x-","y+","y-"];
     //roomCoor[0][0]+,roomCoor[0][0]-,roomCoor[0][1]+,roomCoor[0][1]-
@@ -238,89 +233,130 @@ function dungeonGen(client,roomCoor,sec,dungeon,message) {
     } else if(roomCoor[0][1]<5){
       removed = direction.splice(direction.indexOf("y-"),1);
     }
-
+//s is used as a variable for a more usable sec, so section 1 is s = 1, etc.
+//since only sections 1 and 2 run this part, s is either 1 or 2.
 s = sec+1;
+//b counts for when it's time to spawn a dungeon's boss.
 let b = 0;
-
-  for(o=0;o<s;o++) {
+let bossTime = false;
+let occupied = false;
+  for(let o=0;o<s;o++) {
+    //randomly picks a direction from the remaining valid directions.
     switch (direction[Math.floor((Math.random() * direction.length))]) {
       case "x+":
         removed = direction.splice(direction.indexOf("x+"),1);
-        for(k=0;k<5;k++){
+        for(let k=0;k<5;k++){
             b++;
-
-          if(dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] [0] != 1 && dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] [0] != 8){
-            if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] =[8,1,[[[],[],"BOSS ROOM",false,[
-                client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], bossList[sec], message),
-                client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
-                client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)
-              ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
-            } else {
-
+          //checks if the room it's about to generate over is already a room or boss.
+          if(dungeon[roomCoor[0][0]+k][roomCoor[0][1]][0]==1 || dungeon[roomCoor[0][0]+k][roomCoor[0][1]][0] == 8)
+            occupied = true;
+          //if b is at it's max value, generates the boss room and it's monsters.
+          if ((b==5&&sec==0)||(b==10&&sec==1))
+            bossTime = true;
+          if(!occupied&&!bossTime){
+            //if it's not a boss, makes a normal room with a chance of loot.
             dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
+          } else if (bossTime){
+            while(occupied){
+              k--;
+              if(dungeon[roomCoor[0][0]+k][roomCoor[0][1]][0]!=1 && dungeon[roomCoor[0][0]+k][roomCoor[0][1]][0] != 8){
+                occupied = false;
+              }
+            }
+            dungeon[roomCoor[0][0]+k] [roomCoor[0][1]] =[8,1,[[[],[],"BOSS ROOM",false,[
+              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], bossList[sec], message),
+              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
+              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)
+            ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+            k=5;
           }
-        }
+      occupied = false;
       }
       break;
       case "x-":
       removed = direction.splice(direction.indexOf("x-"),1);
-
-        for(k=0;k<5;k++){
-            b++;
-          if(dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] [0] != 1 && dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] [0] != 8){
-              if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]-k,roomCoor[0][1]], bossList[sec], message),
-              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
-              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)
-            ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
-            } else {
-            dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
-            }
+      for(let k=0;k<5;k++){
+          b++;
+        if(dungeon[roomCoor[0][0]-k][roomCoor[0][1]][0]==1 || dungeon[roomCoor[0][0]-k][roomCoor[0][1]][0] == 8)
+          occupied = true;
+        if ((b==5&&sec==0)||(b==10&&sec==1))
+          bossTime = true;
+        if(!occupied&&!bossTime){
+          dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] = dungeonRoomGen(client,sec);
+        } else if (bossTime){
+          while(occupied){
+            k--;
+            if(dungeon[roomCoor[0][0]-k][roomCoor[0][1]][0]!=1 && dungeon[roomCoor[0][0]-k][roomCoor[0][1]][0] != 8)
+              occupied = false;
           }
+          dungeon[roomCoor[0][0]-k] [roomCoor[0][1]] =[8,1,[[[],[],"BOSS ROOM",false,[
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]-k,roomCoor[0][1]], bossList[sec], message),
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]-k,roomCoor[0][1]], support[sec], message),
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]-k,roomCoor[0][1]], support[sec], message)
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+          k=5;
         }
-
+      occupied = false;
+      }
       break;
       case "y+":
       removed = direction.splice(direction.indexOf("y+"),1);
-
-        for(k=0;k<5;k++){
+      for(let k=0;k<5;k++){
           b++;
-          if(dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] [0] != 1 && dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] [0] != 8 /*&& roomCoor[0][1]+k <= 10*/){
-              if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]+k], bossList[sec], message),
-              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
-              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)],[client.lootcall.lootA(client, sec, dubs(8))]]]];
-            } else {
-            dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] = dungeonRoomGen(client,sec);
+        if(dungeon[roomCoor[0][0]][roomCoor[0][1]+k][0]==1 || dungeon[roomCoor[0][0]][roomCoor[0][1]+k][0] == 8)
+          occupied = true;
+        if ((b==5&&sec==0)||(b==10&&sec==1))
+          bossTime = true;
+        if(!occupied&&!bossTime){
+          dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] = dungeonRoomGen(client,sec);
+        } else if (bossTime){
+          while(occupied){
+            k--;
+            if(dungeon[roomCoor[0][0]][roomCoor[0][1]+k][0]!=1 && dungeon[roomCoor[0][0]][roomCoor[0][1]+k][0] != 8)
+              occupied = false;
           }
-          }
-
+          dungeon[roomCoor[0][0]] [roomCoor[0][1]+k] =[8,1,[[[],[],"BOSS ROOM",false,[
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]+k], bossList[sec], message),
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]+k], support[sec], message),
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]+k], support[sec], message)
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+          k=5;
         }
-
+      occupied = false;
+      }
       break;
       case "y-":
       removed = direction.splice(direction.indexOf("y-"),1);
-
-        for(k=0;k<5;k++){
+      for(let k=0;k<5;k++){
           b++;
-          if(dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] [0] != 1 && dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] [0] != 8){
-            if ((b==5&&sec==0)||(b==10&&sec==1)){
-              dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] =[8,1,[[[],[],"DUNGEON ROOM",false,[client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]-k], bossList[sec], message),
-              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message),
-              client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0]+k,roomCoor[0][1]], support[sec], message)],[client.lootcall.lootA(client, sec, dubs(8))]]]];
-            } else {
-            dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] = dungeonRoomGen(client,sec);
+        if(dungeon[roomCoor[0][0]][roomCoor[0][1]-k][0]==1 || dungeon[roomCoor[0][0]][roomCoor[0][1]-k][0] == 8)
+          occupied = true;
+        if ((b==5&&sec==0)||(b==10&&sec==1))
+          bossTime = true;
+        if(!occupied&&!bossTime){
+          dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] = dungeonRoomGen(client,sec);
+        } else if (bossTime){
+          while(occupied){
+            k--;
+            if(dungeon[roomCoor[0][0]][roomCoor[0][1]-k][0]!=1 && dungeon[roomCoor[0][0]][roomCoor[0][1]-k][0] != 8)
+              occupied = false;
           }
-          }
-
+          dungeon[roomCoor[0][0]] [roomCoor[0][1]-k] =[8,1,[[[],[],"BOSS ROOM",false,[
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]-k], bossList[sec], message),
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]-k], support[sec], message),
+            client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],roomCoor[0][1]-k], support[sec], message)
+          ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+          k=5;
         }
-
+      occupied = false;
+      }
       break;
-
     }
   }
 } else if(sec==2){
+  //this is all for the section 3 dungeon, which generates in a cross pattern.
+  //it checks every space in the cross, and as long as it isn't a boss room or enterance, it
+  //makes a dungeon room there.
   for(k=0;k<11;k++){
     if(dungeon[roomCoor[0][0]] [k] [0] != 1 && dungeon[roomCoor[0][0]] [k] [0] != 8){
       dungeon[roomCoor[0][0]] [k] = dungeonRoomGen(client,sec);
@@ -333,14 +369,17 @@ let b = 0;
     }
   }
   let bosscheck = false;
+  //flips a coin to choose which path to make the boss room in.
   switch(Math.floor((Math.random() * 1))){
     case 0:
     while(!bosscheck){
+      //randomly picks a room along a path and places the boss in an empty room.
       let random = Math.floor((Math.random() * 11))
-      if(dungeon[roomCoor[0][0]][random][0]==0||dungeon[roomCoor[0][0]][random][0]==10){
-        dungeon[roomCoor[0][0]][random] = [8,1,[[[],[],"BOSS ROOM",false,[
-          client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], bossList[sec], message)
-        ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+      if(dungeon[roomCoor[0][0]][random][0]==10){
+        dungeon[roomCoor[0][0]] [random] =[8,1,[[[],[],"BOSS ROOM",false,[
+        client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], bossList[sec], message),
+        client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], support[sec], message),
+        client.strifecall.dungeonSpawn(client, sec, [roomCoor[0][0],random], support[sec], message)],[client.lootcall.lootA(client, sec, dubs(8))]]]];
         bosscheck=true;
       }
     }
@@ -348,10 +387,11 @@ let b = 0;
     case 1:
       while(!bosscheck){
       let random = Math.floor((Math.random() * 11))
-      if(dungeon[random][roomCoor[0][1]][0]==0||dungeon[roomCoor[0][0]][random][0]==10){
-        dungeon[random][roomCoor[0][1]] = [8,1,[[[],[],"BOSS ROOM",false,[
-          client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], bossList[sec], message)
-        ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+      if(dungeon[random][roomCoor[0][1]][0]==10){
+        dungeon[roomCoor[0][0]] [random] =[8,1,[[[],[],"BOSS ROOM",false,[
+        client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], bossList[sec], message),
+        client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], support[sec], message),
+        client.strifecall.dungeonSpawn(client, sec, [random,roomCoor[0][1]], support[sec], message)],[client.lootcall.lootA(client, sec, dubs(8))]]]];
         bosscheck=true;
       }
     }
@@ -363,18 +403,22 @@ let b = 0;
 [x][/][/]
 */
 } else if(sec==3){
+//this is the section 4 dungeon, or the denizen dungeon.
 let emptyTiles=[];
-
 let genDirection =["n","s","e","w"];
 let pathStart = [[roomCoor[0][0],roomCoor[0][1]],[roomCoor[0][0],roomCoor[0][1]],[roomCoor[0][0],roomCoor[0][1]],[roomCoor[0][0],roomCoor[0][1]]];
 let g = 0;
 let denizen = false;
+
+//pathStart and genDirection work together to make sure there's at least one branch
+//in each direction for the denizen dungeon.
 while(pathStart.length != 0){
 let curx = pathStart[0][0];
 let cury = pathStart[0][1];
 let deleted = pathStart.splice(0,1);
 let hitWall = false;
 let curDirection;
+//after the 4 main directions have been made, the direction is randomly selected.
 if(g<4){
 curDirection = genDirection[g];
 g++;
@@ -382,19 +426,20 @@ g++;
 curDirection = genDirection[Math.floor((Math.random()*4))];
 }
 while(!hitWall){
-  //let hallLength = Math.floor((Math.random()*3))+1;
   switch (curDirection){
     case "n":
-    for(m=0;m<2 && !hitWall;m++){
+    //this generates 2 rooms before checking direction agin.
+    for(let m=0;m<2 && !hitWall;m++){
       if((--cury)<0){
         hitWall=true;
+        //whenever a branching path hits a wall, there's a 10% chance the denizen spawns there.
         if(Math.floor(Math.random()*10)==0 && denizen == false){
           dungeon[curx][0] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
             client.strifecall.dungeonSpawn(client, sec, [curx,0], 'denizen', message),
           ],[client.lootcall.lootA(client, sec, dubs(8))]]]];
           denizen=true;
         }
-
+        //if a wall isn't hit, the basic tile is made.
       } else {
         if(dungeon[curx][cury][0] == 7){
         dungeon[curx][cury] = dungeonRoomGen(client,sec);
@@ -402,9 +447,11 @@ while(!hitWall){
       }
     }
   } if (Math.floor(Math.random()*2)==1 && g<4 &&!hitWall){
+    //50% of the time, the tile is saved as a future branching point.
     pathStart.push([curx,cury]);
   }
    deleted = genDirection.splice(1,1);
+   //the opposite direction is then removed from genDirection, to prevent backtracking.
     break;
     case "s":
     for(m=0;m<2 && !hitWall;m++){
@@ -470,15 +517,20 @@ deleted = genDirection.splice(0,1);
     deleted = genDirection.splice(2,1);
     break;
   }
+//a new direction is then picked from the remaining 3 and genDirection is reset.
 curDirection = genDirection[Math.floor((Math.random()*genDirection.length))];
 genDirection =["n","s","e","w"];
+//this iterates until the branch hits a wall.
 }
 }
+//once all paths have been generated,if the denizen has yet to been generated, it
+//will be placed in a random empty room.
 if (denizen == false){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [9,1,[[[],[],"DENIZEN CHAMBER",false,[
     client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'denizen', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 }
+//four denizen minions are also placed around the map, to eventually be bosses.
 for (d=0;d<4;d++){
   roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
   dungeon [roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[[],[],"DENIZEN MINION",false,[
@@ -486,8 +538,9 @@ for (d=0;d<4;d++){
 }
 
 } else if(sec=="m"){
+//this is in theory for the moon dungeon, but I never see where it's called, and it's
+//an exact copy of the section 4 gen. Look into why this is here.
 let emptyTiles=[];
-
 let genDirection =["n","s","e","w"];
 let pathStart = [[roomCoor[0][0],roomCoor[0][1]],[roomCoor[0][0],roomCoor[0][1]],[roomCoor[0][0],roomCoor[0][1]],[roomCoor[0][0],roomCoor[0][1]]];
 let g = 0;
@@ -609,12 +662,13 @@ for (d=0;d<4;d++){
 }
 
 }
-
+//lv2 and lv3 are always empty, this is for the moon dungeons later.
   return [dungeon,lv2,lv3];
 
 }
 
 function dungeonRoomGen(client,sec) {
+  //25% of the time, there is loot in a dungeon room. That's what this is for.
   switch(Math.floor((Math.random() * 4))){
 
 case 3:
@@ -627,6 +681,7 @@ break;
 }
 //==========================================================================================
 exports.battlefieldGen = function(client,message){
+  //though untested, this should in theory make a blank checkerboard pattern for the battlefield.
 let battleMap = [];
 let battleLine = [];
 let lastBlack = true;
@@ -647,10 +702,11 @@ return battleMap;
 }
 
 exports.moonGen = function(client,castleLocal,towerLocal,message){
-
+//generates everything needed for both moons.
   let section = [[],[],[],[],[],[],[],[],[],[]];
   for(i=0;i<11;i++){
-//   prospit,derse,prospitmoon,dersemoon,pdungeon1,2,3,ddungeon1,2,3
+  //bunch of empty spaces being made.
+  //prospit,derse,prospitmoon,dersemoon,pdungeon1,2,3,ddungeon1,2,3
     section[0].push([[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]]]);
     section[1].push([[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]],[10,1,[[[],[],"ALLEYWAY",false,[],[]]]]]);
     section[2].push([[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]],[10,1,[[[],[],"STREET",false,[],[]]]]]);
@@ -669,15 +725,9 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
 
   let dungeon = [[],[],[],[]];
   for(i=0;i<11;i++){
-
     for(j=0;j<dungeon.length;j++){
       dungeon[j].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]])
     }
-    /*
-    dungeon[0].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
-    dungeon[1].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
-    dungeon[2].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);
-    dungeon[3].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]]);*/
   }
 
   let castle = [[],[]];
@@ -687,10 +737,6 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
       castle[j].push([[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]  , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]] , [7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]],[7,1,[[[],[],"OUT OF BOUNDS",false,[],[]]]]])
     }
 }
-
-
-
-  //dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
 
   let select = [0,1,3,4,6,7,9,10]
   let empty = [];
@@ -1082,10 +1128,11 @@ while(empty.length>0){
 
 exports.drawMap = async function(client,message,mini) {
 
-  let charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-let local = client.playerMap.get(charid,`local`);
-let input = client.landMap.get(local[4],local[0]);
-let aspect;
+var userid = message.guild.id.concat(message.author.id);
+var charid = client.userMap.get(userid,"possess");
+var local = client.playerMap.get(charid,`local`);
+var input = client.landMap.get(local[4],local[0]);
+var aspect;
 
 try {
   aspect = client.landMap.get(local[4],"aspect");
@@ -1275,20 +1322,21 @@ for(i=-1;i<2;i++){
 return attachment;
 }
 }
+//this will be remade and moved to charcall.
+// exports.underlingCheck = function(occList,client) {
+//   check = false;
+//   if(occList.length>0){
+//     for(i=0;i<occList.length;i++){
+//       if(occList[i][0]==false&&client.playerMap.get(occList[i][1],"faction")=="underling"){
+//         check=true;
+//       }
+//     }
+//   }
+//
+//   return check;
+// }
 
-exports.underlingCheck = function(occList,client) {
-  check = false;
-  if(occList.length>0){
-    for(i=0;i<occList.length;i++){
-      if(occList[i][0]==false&&client.playerMap.get(occList[i][1],"faction")=="underling"){
-        check=true;
-      }
-    }
-  }
-
-  return check;
-}
-
+//creates a carpacian
 exports.carSpawn = function(client,local,lunar,sessionID){
 
   let picList = [["https://media.discordapp.net/attachments/808757312520585227/814739963824439296/dersite_short.png","https://media.discordapp.net/attachments/808757312520585227/814739982748221480/dersite_normal.png","https://media.discordapp.net/attachments/808757312520585227/814740004618240050/dersite_tall.png","https://media.discordapp.net/attachments/808757312520585227/814740019902021652/dersite_beefy.png"],["https://media.discordapp.net/attachments/808757312520585227/814740073681518612/prospitian_short.png","https://media.discordapp.net/attachments/808757312520585227/814740091306115112/prospitian_normal.png","https://media.discordapp.net/attachments/808757312520585227/814740144933830666/prospitian_tall.png","https://media.discordapp.net/attachments/808757312520585227/814740171705548861/prospitian_beefy.png"]];
@@ -1310,7 +1358,7 @@ exports.carSpawn = function(client,local,lunar,sessionID){
 
   let npcSet = {
     name: `${lunarList[1][lunar]}`,
-    possess:[],
+    control:[],
     type: typeList[type],
     faction: lunarList[0][lunar],
     vit:client.underlings[typeList[type]].vit,
@@ -1347,7 +1395,7 @@ exports.carSpawn = function(client,local,lunar,sessionID){
 
   let id = `n${sessionID}/${npcCount}`;
 
-  client.playerMap.set(id,npcSet);
+  client.npcMap.set(id,npcSet);
 
   let occSet = [false,id];
 

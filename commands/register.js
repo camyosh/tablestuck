@@ -36,9 +36,6 @@ if(userData.charCount>0){
 } else {
  sburbid = userid;
 }
-
-var aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE",
-              "BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
 var channels = [``,``];
 var aspectChoice;
 var channelCheck;
@@ -46,7 +43,7 @@ var channelCheck;
 
 //checks if the user has any charcter, player or NPC, under their control.
 if(userData.possess=="NONE"){
-  aspectChoice = chooseAspect(args[0],aspects);
+  aspectChoice = chooseAspect(args[0]);
   if(!aspectChoice) return;
 }
 //checks to see if the currently possessed creature is an NPC, not a player.
@@ -60,7 +57,7 @@ else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
     return;
 }else{
   //only pre-existing players reach this point.
-  aspectChoice = chooseAspect(args[1],aspects);
+  aspectChoice = chooseAspect(args[1]);
   if(!aspectChoice) return;
   //stores channel data for the pre-existing player
   channels[0] = client.sburbMap.get(sburbid,"channel");
@@ -74,10 +71,10 @@ else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
     }
   await clearConnections(client,sburbid);
 }
-await register(client,message,args,userid,userData,sburbid,aspects,aspectChoice,channelCheck,channels);
+await register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels);
 }
 //---- Start of Execution ----------------------------------------------------------------------------------------------------
-async function register(client,message,args,userid,userData,sburbid,aspects,aspectChoice,channelCheck,channels){
+async function register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels){
   //initializes some basic variables needed for registration.
     var chumhandle = ``;
     var chumtag = ``;
@@ -120,7 +117,7 @@ async function register(client,message,args,userid,userData,sburbid,aspects,aspe
   userData.channel = channels[0];
   userData.pesterchannel = channels[1];
 
-  await finishLandGen(client,message,sburbid,aspectChoice,aspects,gristSet,beginData[1]);
+  await finishLandGen(client,message,sburbid,aspectChoice,gristSet,beginData[1]);
   await client.channels.cache.get(channels[0]).send(`${userData.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
   await tutorStart(client,message);
 
@@ -171,7 +168,7 @@ function clearConnections(client,sburbid){
   }
 }
 
-function chooseAspect(input,aspects){
+function chooseAspect(input){
   //sets up some variables and arrays for choosing your aspect. will eventually
   //be replaced by user data editing program.
 
@@ -180,7 +177,7 @@ function chooseAspect(input,aspects){
     aspectChoice="random";
   } else {
     //checks if the given aspect is valid.
-    if(!aspects.includes(input.toUpperCase())){
+    if(!client.aspects.includes(input.toUpperCase())){
       message.channel.send("Sorry, that aspect doesn't exist! Re-register with a valid aspect, or none at all to get a random one!");
       return;
     } else {
@@ -454,14 +451,14 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
   client.sburbMap.set(sburbid,sburbSheet);
   client.userMap.set(userid,userData);
 }
-async function finishLandGen(client,message,sburbid,aspectChoice,aspects,gristSet,def){
+async function finishLandGen(client,message,sburbid,aspectChoice,gristSet,def){
   //determines where all the gates on the land will be.
   var gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 
   //sets the land's aspect based on registration choice (TO BE REMOVED)
   var aspect;
   if(aspectChoice === "random"){
-  aspect = aspects[Math.floor((Math.random() * 11))];
+  aspect = client.aspects[Math.floor((Math.random() * 11))];
   } else {
   aspect = aspectChoice;
   }

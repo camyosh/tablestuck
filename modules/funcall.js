@@ -134,8 +134,10 @@ if(curCount>=client.limit&&client.limit!=0){
 
 exports.tick = function(client, message){
 
-  let charid = message.guild.id.concat(message.author.id);
-  let curCount = client.playerMap.get(charid,"act");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var sburbid = client.playerMap.get(charid,"owner");
+  let curCount = client.sburbMap.get(sburbid,"act");
   curCount++;
   client.funcall.sleepHeal(client,charid);
 
@@ -771,10 +773,10 @@ exports.gristCacheEmbed = function(client, charid) {
 exports.chanMsg = function(client, target, msg, embed){
   if(!msg)
     return;
-    if(client.playerMap.get(target,"control").length<1){
+    if(client.charcall.charData(client,target,"control").length<1){
       return;
     } else {
-      controlList = client.playerMap.get(target,"control");
+      controlList = client.charcall.charData(client,target,"control");
       for(let i=0;i<controlList.length;i++){
         if(embed!=undefined){
         client.channels.cache.get(client.userMap.get(controlList[i],"channel")).send(msg,embed);
@@ -908,9 +910,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
 
   if(occNew.length > 1){
     let occCheck = [false,false];
-    console.log("Occnew");
     for(let i=0;i<occNew.length;i++){
-      console.log(i);
       if(occNew[i][0]==false){
         occCheck[0]=true;
       } else if(!occNew[i][1]==charid){
@@ -934,7 +934,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     let i;
     let list = ``;
     for(let i=0;i<10&&i<occList.length;i++){
-      list+=`**[${i+1}] ${client.playerMap.get(occList[i][1],"name").toUpperCase()}** \n *${client.playerMap.get(occList[i][1],"type")}*\n\n`
+      list+=`**[${i+1}] ${client.charcall.charData(client,occList[i][1],"name").toUpperCase()}** \n *${client.charcall.charData(client,occList[i][1],"type")}*\n\n`
     }
 
     var listEmbed;
@@ -976,9 +976,9 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
   for(let i=0;i<occNew.length;i++){
     try{
       if(occNew[i][1]!=charid){
-      chanMsg(client, occNew[i][1], `**${name.toUpperCase()}** has entered the room!`)
+      client.funcall.chanMsg(client,occNew[i][1],`**${name.toUpperCase()}** has entered the room!`)
     }
-      
+
     }catch(err){
       console.log(err);
     }

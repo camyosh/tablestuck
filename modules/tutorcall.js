@@ -60,8 +60,8 @@ exports.progressCheck = async function(client,message,step,bypass = false){
   */
   userid = message.guild.id.concat(message.author.id);
   charid = client.userMap.get(userid,"possess");
-  channelid = client.charcall.charData(client,userid,charid,"channel");
-  progress = client.charcall.charData(client,userid,charid,"tutor");
+  channelid = client.charcall.allData(client,userid,charid,"channel");
+  progress = client.charcall.allData(client,userid,charid,"tutor");
   if(!progress[0]){
     return;
   }

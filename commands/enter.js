@@ -80,8 +80,8 @@ exports.run = (client, message, args) => {
     let clientGates;
     let clientCheck = false;
 
-    let sburbClient = client.playerMap.get(local[4],"client");
-    let clientid =message.guild.id.concat(sburbClient);
+    let sburbClient = client.sburbMap.get(local[4],"client");
+    let clientid = message.guild.id.concat(sburbClient);
 
     if(client.landMap.has(clientid)){
 
