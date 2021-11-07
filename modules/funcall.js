@@ -697,17 +697,17 @@ exports.xpGive = function(client, message, xp, target){
 
   client.message.send(`${name} got ${xp} XP and now has ${newXp} XP!`);
 
-  if(newXp >= client.xpReq[curRung+1]){
+  if(newXp >= client.xpReq(curRung+1)){
 
     let stats = client.playerMap.get(target,"stats");
     let curVit = client.playerMap.get(target,"vit");
-    let curCache = client.cache[curRung];
+    let curCache = client.cache(curRung);
 
     let gvGain = 0;
     let i;
 
-    for(i = curRung; newXp >= client.xpReq[i+1]; i++){
-      gvGain += (client.gvGet[i+1] + (stats[1]*(client.gvGet[i+1] / 5)));
+    for(i = curRung; newXp >= client.xpReq(i+1); i++){
+      gvGain += (client.gvGet(i+1) + (stats[1]*(client.gvGet(i+1) / 5)));
     }
     let newVit = curVit+gvGain;
 
@@ -717,7 +717,7 @@ exports.xpGive = function(client, message, xp, target){
     .setTitle(`${name} ASCENDED THEIR ECHELADDER!`)
     .addField("RUNG",`${curRung} + ${i - curRung}`,true)
     .addField("GEL VISCOSITY",`${client.emojis.cache.get('721452682115809454')} ${curGel} + ${gvGain}`)
-    .addField("GRIST CACHE", `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache[i] - curCache}`)
+    .addField("GRIST CACHE", `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache(i) - curCache}`)
     .setThumbnail(target.avatarURL());
     message.channel.send(congrats);
   }
@@ -750,7 +750,7 @@ exports.gristCacheEmbed = function(client, charid) {
   if(client.playerMap.get(charid,`godtier`)){
     max = `♾️`
   } else {
-    max = client.cache[rung];
+    max = client.cache(rung);
   }
   let grist = client.playerMap.get(charid,"grist");
   let name = client.playerMap.get(charid,"name");
