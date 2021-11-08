@@ -1,9 +1,5 @@
 exports.run = (client, message, args) => {
 
-    if(client.strifecall.strifeTest(client, message, message.author) == true){
-      message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-      return;
-    }
 
   //defining the costs to alchemize the item based on the tier
 

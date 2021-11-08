@@ -18,7 +18,8 @@ module.exports = (client, message) => {
   }
   //list of all commands accepted pre-registry.
   var preReg =["register","help","ping","initialize","scratch","leaderboard","config"];
-
+  //list of all commands that can be taken in strife
+  var strifeAct =["act","armor","bio","check","chumcheck","chumroll","config","consume","debug","givegrist","giveitem","help","initialize","leaderboard","list","pass","pester","ping","possess","push","say","scratch","spawn","specibus","stats","strife","switch","sylladex","tutorial","trinket","trait"];
   //standard argument/command name definition
   const args = message.content.slice(client.auth.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
@@ -32,7 +33,7 @@ module.exports = (client, message) => {
   let userid = message.guild.id.concat(message.author.id);
 
 
-      //creates user data if they send a command for the first time.
+    //creates user data if they send a command for the first time.
     if(!client.userMap.has(userid)){
       let userSetup = {
         possess:"NONE",
@@ -71,18 +72,22 @@ let charid = client.userMap.get(userid,"possess");
     }
 
 //allows some commands to be run by dead and unregistered players, otherwise it ends the program.
-    if(!reg&&!alive&&preReg.indexOf(command)==-1){
-      //revive has to be allowed for dead players in the case of Godtiering.
-      if(reg&&!alive&&command!="revive"){
-        message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
-        return;
-      }
+    if(!reg&&preReg.indexOf(command)==-1){
       message.channel.send("You are not registered! Register using the >register command!");
+      return;
+    }
+    //revive has to be allowed for dead players in the case of Godtiering.
+    if(reg&&!alive&&(preReg.indexOf(command)==-1||command!="revive")){
+      message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
+      return;
+    }
+    if(reg&&alive&&client.charcall.charData(client,charid,"strife")&&!strifeAct.has(command)){
+      message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }
 
 //check for tournaments to see if you hit the action limit. Ignored if you're a DM, or unreigstered.
-    if(reg&&client.sburbMap.get(charid.substring(1),"act")>=client.limit&&client.limit!=0&&!freeAct.includes(command)&&!client.funcall.dmcheck(client,message)){
+    if(reg&&client.charcall.allData(client,userid,charid,"act")>=client.limit&&client.limit!=0&&!freeAct.includes(command)&&!client.funcall.dmcheck(client,message)){
       message.channel.send("You have reached your maximum number of actions for this tournament!");
       return;
     }

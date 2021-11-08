@@ -5,17 +5,14 @@ const log =true;
 exports.run = (client, message, args) => {
 
 //Check if player is in STRIFE
+  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
 
-  if(client.strifecall.strifeTest(client, message, message.author) == false){
+  if(!client.charcall.charData(client,charid,"strife")){
     message.channel.send("You are not currently in Strife!")
     return;
   }
 
 //Defining variables
-
-  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
-
-
 
   let local = client.playerMap.get(charid,"local");
   let pos = client.playerMap.get(charid,"pos");

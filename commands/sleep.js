@@ -1,12 +1,8 @@
 exports.run = function(client, message, args) {
 
-  if(client.strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send(`You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!`);
-    return;
-  }
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.sburbMap.get(charid,"owner");
+  var sburbid = client.playerMap.get(charid,"owner");
 
   if(client.sburbMap.get(sburbid,"revived")){
     let s = client.sburbMap.get(sburbid,"sleepTimer");
@@ -39,7 +35,7 @@ exports.run = function(client, message, args) {
     return;
   }
     client.userMap.set(userid,target,"possess");
-    (client.sburbMap.set(sburbid,"dreamer")?client.sburbMap.set(sburbid,false,"dreamer"):client.sburbMap.set(sburbid,true,"dreamer"));
+    (client.sburbMap.get(sburbid,"dreamer")?client.sburbMap.set(sburbid,false,"dreamer"):client.sburbMap.set(sburbid,true,"dreamer"));
 
     let controlList = client.playerMap.get(charid,"control");
     for(let i=0;i<controlList.length;i++){
@@ -52,5 +48,5 @@ exports.run = function(client, message, args) {
 
     message.channel.send("You fall asleep, or are you waking up?");
     client.tutorcall.progressCheck(client,message,39);
-    console.log(client.sburbMap.set(sburbid,"dreamer"));
+    console.log(client.sburbMap.get(sburbid,"dreamer"));
 }

@@ -8,11 +8,6 @@ const gateName = ["FIRST","SECOND","THIRD","FOURTH","FIFTH","SIXTH","SEVENTH"];
 
 exports.run = (client, message, args) => {
 
-  if(client.strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
   var sburbid = client.playerMap.get(charid,"owner")

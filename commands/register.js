@@ -53,7 +53,7 @@ return;
 }
 //if someone is possessing a player, it won't let them re-register unless they confirm it.
 else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
-    message.channel.send(`Be careful, if you re-register now, all of your data will be devared! If you're sure about this, do ${client.auth.prefix}register confirm.`);
+    message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);
     return;
 }else{
   //only pre-existing players reach this point.
@@ -374,13 +374,13 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
   var dreamSheet = {
     control:[],
     owner:sburbid,
-    name: `${userData.name}'s Dream Self'`,
+    name: `${userData.name}'s Dream Self`,
     faction:"player",
     type:"player",
     strife:false,
     pos:0,
     alive:true,
-    local:[moonData[0],towerLocal[0],towerLocal[1],moonData[1],message.guild.id+"medium"],
+    local:[moonData[1],towerLocal[0],towerLocal[1],moonData[0],message.guild.id+"medium"],
     b: 0,
     vit: 100,
     port: 1,

@@ -29,7 +29,7 @@ exports.run = (client, message, args) => {
     message.channel.send("You already have that weapon equipped!");
     return;
   }
-  if(client.strifecall.strifeTest(client,message,message.author)){
+  if(client.charcall.charData(client,charid,"strife")){
     let local = client.playerMap.get(charid,"local");
     let pos = client.playerMap.get(charid,"pos");
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;

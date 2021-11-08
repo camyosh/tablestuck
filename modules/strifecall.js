@@ -1003,22 +1003,6 @@ exports.start = function(client, message, local) {
   startTurn(client,message,local);
 }
 
-exports.strifeTest = function(client, message, target) {
-
-  let charid = message.guild.id.concat(target.id);
-
-  let controlId = client.userMap.get(charid,"possess");
-
-    if(client.playerMap.get(controlId,"strife")==false){
-
-      return false;
-    }
-    else{
-
-      return true;
-    }
-}
-
 exports.turnTest = function(client, message, local) {
 //test if it's a player's turn
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;

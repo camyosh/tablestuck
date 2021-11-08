@@ -4,11 +4,6 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
   var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
   let sdex = client.playerMap.get(charid,"sdex");
   let cards = client.playerMap.get(charid,"cards");

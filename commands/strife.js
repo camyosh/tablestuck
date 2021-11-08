@@ -28,7 +28,7 @@ exports.run = (client, message, args) => {
   let local = client.playerMap.get(charid,"local");
 // if player is in strife, leave strife
 
-    if(strifecall.strifeTest(client, message, target) == true){
+if(client.charcall.charData(client,charid,"strife")){
 
       client.strifecall.leaveStrife(client,message,local,client.playerMap.get(charid,"pos"));
       return;

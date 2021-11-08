@@ -5,12 +5,6 @@ const strifecall = require(`../modules/strifecall.js`);
 
 exports.run = function(client, message, args) {
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send(`You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!`);
-    return;
-  }
-
-
 var userid = message.guild.id.concat(message.author.id);
 var charid = client.userMap.get(userid,"possess");
 let local = client.playerMap.get(charid,`local`);

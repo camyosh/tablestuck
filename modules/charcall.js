@@ -30,13 +30,15 @@ exports.charData = function(client,charid,datatype){
     return client.npcMap.get(charid,datatype);
   }
 }
- exports.npcCheck = function(client,userid,charid,datatype){
-   if(client.charcall.charData(userid,charid,datatype)=="NONE"){
-     return false;
-   } else {
+//returns a bool based on if the charid belongs to an NPC or not.
+ exports.npcCheck = function(client,charid){
+   if(client.npcMap.has(userid)){
      return true;
+   } else {
+     return false;
    }
  }
+ //checks if there is an underling present in a given occList.
  exports.underlingCheck = function(occList,client) {
    check = false;
    if(occList.length>0){

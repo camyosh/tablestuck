@@ -5,12 +5,7 @@ const strifecall = require("../modules/strifecall.js");
 const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
 
 exports.run = (client, message, args) => {
-
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
+  
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
   var sburbid = client.playerMap.get(charid,"owner")

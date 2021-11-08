@@ -14,7 +14,8 @@ exports.run = (client,message,args) =>{
   let page = 0;
   let pageMax = 1;
   let pageTurn = false;
-  let inStrife = client.strifecall.strifeTest(client, message, message.author);
+  let inStrife = client.charcall.charData(client,charid,"strife");
+
 
   // Variables for in strife
   let strifeLocal;

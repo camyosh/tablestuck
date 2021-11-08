@@ -10,7 +10,7 @@ exports.run = (client,message,args) =>{
 
   let dogCheck = client.traitcall.traitCheck(client,charid,"DOG");
 
-  let strifeCheck = client.strifecall.strifeTest(client, message, message.author);
+  let strifeCheck = client.charcall.charData(client,charid,"strife");
 
   selectDex = parseInt(args[0], 10) - 1;
   if(isNaN(selectDex)){

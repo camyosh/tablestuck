@@ -4,8 +4,8 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(strifecall.strifeTest(client, message, message.author) == false){
-    message.channel.send("You're not in Strife!");
+  if(!client.charcall.charData(client,charid,"strife")){
+    message.channel.send("You are not currently in Strife!")
     return;
   }
 

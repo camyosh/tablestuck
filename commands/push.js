@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
 
-  if(client.strifecall.strifeTest(client, message, message.author) == false){
+  if(!client.charcall.charData(client,charid,"strife")){
     message.channel.send("You are not currently in Strife!")
     return;
   }

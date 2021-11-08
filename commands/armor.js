@@ -72,7 +72,7 @@ exports.run = (client, message, args) => {
 
   } else if(args[0]=="eject"){
 
-    if(client.strifecall.strifeTest(client, message, message.author) == true){
+    if(client.charcall.charData(client,charid,"strife")){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }
@@ -109,7 +109,7 @@ exports.run = (client, message, args) => {
 
   } else if(args[0]=="equip"){
 
-    if(client.strifecall.strifeTest(client, message, message.author) == true){
+    if(client.charcall.charData(client,charid,"strife")){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }

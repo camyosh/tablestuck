@@ -2,7 +2,7 @@
 
 
 exports.run = (client, message, args) => {
-
+//TODO: add clearing out all related strifes
   if(!client.funcall.dmcheck(client,message)){
     message.channel.send(`Only someone with a role called "DM" can scratch a session!`);
     return;
@@ -30,10 +30,10 @@ if(args[0]=="confirm"){
       client.landMap.delete(playerList[i]);
     }
     if(client.playerMap.has(`w${playerList[i]}`)){
-        client.playerMap.delete(`w${playerList[i]}`);
+      client.playerMap.delete(`w${playerList[i]}`);
     }
     if(client.playerMap.has(`d${playerList[i]}`)){
-        client.playerMap.delete(`d${playerList[i]}`);
+      client.playerMap.delete(`d${playerList[i]}`);
     }
     if(client.sburbMap.has(playerList[i])){
       client.sburbMap.delete(playerList[i]);
