@@ -219,9 +219,7 @@ exports.inspect = async function (client,message,args,type,item){
 
   let trait1 = client.traitList[client.captchaCode.indexOf(item[1].charAt(2))]
   let trait2 = client.traitList2[client.captchaCode.indexOf(item[1].charAt(3))]
-
-  let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(item[1].charAt(0))]];
-  let action =[client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(item[1].charAt(4))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(item[1].charAt(5))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(item[1].charAt(6))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(item[1].charAt(7))]]];
+  let action =[client.action[client.codeCypher[4][client.captchaCode.indexOf(item[1].charAt(4))]],client.action[client.codeCypher[5][client.captchaCode.indexOf(item[1].charAt(5))]],client.action[client.codeCypher[6][client.captchaCode.indexOf(item[1].charAt(6))]],client.action[client.codeCypher[7][client.captchaCode.indexOf(item[1].charAt(7))]]];
 
   const cardSheet = await client.Canvas.loadImage(`./miscsprites/CAPTCHACARD.png`);
   const gristSheet = await client.Canvas.loadImage(`./miscsprites/GRISTSPRITES.png`);

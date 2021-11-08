@@ -9,18 +9,16 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner")
 
 
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
   let occList = room[4];
   let dex = room[5];
-  const tList = ["MELEE","RANGED","MAGIC","NA"];
 //sec[local[1]][local[2]][2][local[3]][5] DEX
 
   if(!args[0] || args[0] == "page"){

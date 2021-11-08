@@ -1,11 +1,11 @@
 const tierDmg = [1,5,7,10,14,19,25,32,40,49,59,70,82,95,109,124,140];
-const log =true;
 //Used to take actions during STRIFE
 
 exports.run = (client, message, args) => {
 
 //Check if player is in STRIFE
-  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
   if(!client.charcall.charData(client,charid,"strife")){
     message.channel.send("You are not currently in Strife!")
@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
   let type = client.charcall.charData(client,charid,"type");
   let spec = client.charcall.charData(client,charid,"spec");
   let equip = client.charcall.charData(client,charid,"equip");
-  let damage = client.underlings[client.charcall.charData(client,charid,"type")];
+  let damage = client.underlings[client.charcall.charData(client,charid,"type")].d;
   //gets all strife data
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
   let active = client.strifeMap.get(strifeLocal,"active");
@@ -42,28 +42,23 @@ let action = [];
   //adds default actions based on character type.
   action=action.concat(client.underlings[type].act);
 
-  if(client.playerMap.has(charid,"prototype")){
-    let prototype = client.playerMap.get(charid,"prototype");
-
+  //checks if the character has a prototyping, or several, attached.
+  if(client.charcall.hasData(client,charid,"prototype")){
+    let prototype = client.charcall.charData(client,charid,"prototype");
+    //adds every action given by prototypes
     for(let j =0;j<prototype.length;j++){
-      let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(prototype[j][1].charAt(0))]];
       for(let i=0;i<4;i++){
-        action.push(client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]]);
+        action.push(client.action[client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]]);
 
+      }
+    }
   }
-  }
-
-  }
-
-//retrieving the weaponkind and action list for a weapon
-
-  //let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
-  //let action = [client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(spec[equip][1].charAt(4))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(spec[equip][1].charAt(5))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(spec[equip][1].charAt(6))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(spec[equip][1].charAt(7))]],"aggrieve","abscond"];
 
 //if no additional arguments, display list of actions
 
   if(!args[0]){
-
+    //both applyText functions make it so that both the name and information text
+    //fit within the constraints of the box.
     function applyText(canvas, msg, width){
     let fontsize = 20;
     ctx.font = `bold ${fontsize}px FONTSTUCK`;
@@ -83,6 +78,7 @@ let action = [];
     }
       return ctx.font;
     }
+    //splitText will break the text into two lines if it's beyond a certain length.
     function splitText(msg){
       if(msg.length>28){
         let i=26;
@@ -102,6 +98,7 @@ let action = [];
     }
 client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
 client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
+//the image is based on the number of actions so there will always be space.
 const canvas = client.Canvas.createCanvas(1000,(Math.ceil(action.length/2)*130) +165);
 const ctx = canvas.getContext('2d');
 //-----BOXES-----
@@ -164,8 +161,18 @@ ctx.fillText("CST",820-d,125);
 ctx.fillText("DMG",910-d,125);
 
 
-
 for(i=0;i<action.length;i++){
+  let lcost = client.actionList[action[i]].cst
+  if(list[pos][7].includes("DISCOUNT")){
+    if(lcost > 1){
+       lcost--;
+     }
+  }
+  if(client.traitcall.traitCheck(client,charid,"MIND")[1]){
+    if(lcost > 1){
+      lcost--;
+    }
+  }
 
   let m=d
 
@@ -241,13 +248,8 @@ for(i=0;i<action.length;i++){
   ctx.strokeRect(30+m,195+(130*j),440,70);
 
   //text
-  //ctx.fillStyle = "#ffffff";
-  //ctx.fillText(i+1,50,175+(130*j));
   ctx.font = `bold 32px Courier Standard Bold`;
   ctx.fillStyle = "#000000";
-  ctx.fillText(client.actionList[action[i]].cst,320+m,175+(130*j));
-  ctx.fillText(client.actionList[action[i]].dmg*damage,410+m,175+(130*j));
-
   //action name image
 
   ctx.fillStyle = "#ffffff";
@@ -279,7 +281,7 @@ for(i=0;i<action.length;i++){
   ctx.fillRect(355+m,145+(130*j),115,40);
   ctx.strokeRect(355+m,145+(130*j),115,40);
   ctx.fillStyle = tempcolor;
-  ctx.fillText(client.actionList[action[i]].cst,320+m,175+(130*j));
+  ctx.fillText(lcost,320+m,175+(130*j));
   ctx.fillText(client.actionList[action[i]].dmg*damage,410+m,175+(130*j));
 }
 
@@ -293,21 +295,11 @@ return;
 
   select = parseInt(args[0], 10) - 1;
   if(isNaN(select) || select > action.length-1 || select < 0){
-    message.channel.send("That is not a valid argument!");
-    return;
-  }
-
-//Make sure action is not being taken outside of turn unless INSTANT
-
-  if(init[turn][0] != pos && !client.actionList[action[select]].add.includes("INSTANT")){
-    message.channel.send("You can't take non INSTANT ACTIONS outside of your turn!");
+    message.channel.send(`That is not a valid action choice! It must be a number from 1 to ${action.length}.`);
     return;
   }
 
 //If action has FIRST, makes sure its the first action taken this turn
-if(log){
-  console.log(`${action[select]} is position ${select} from ${action}`);
-}
   if(client.actionList[action[select]].add.includes("FIRST")){
     if(list[pos][6].length > 0){
       message.channel.send("That ACTION can only be used if it is the first ACTION taken on a turn!");
@@ -323,40 +315,20 @@ if(log){
   };
 
 //If there is no second argument, list all participants in strife and their VITALITY
-
   if(!args[1]){
-    /*
-    let msg = ``;
-    let i;
-    for(i=0;i<active.length;i++){
-        msg += `**[${i+1}]** **${client.playerMap.get(list[active[i]][1],"name").toUpperCase()}** [VIT - ${list[active[i]][3]}]\n\n`
-    }
-
-    let embed = new client.Discord.MessageEmbed()
-    .setTitle(`**SELECT A TARGET**`)
-    .addField(`**AVAILABLE TARGETS**`,msg)
-    .setColor("#00e371")
-
-    try{message.channel.send(embed);}catch(err){message.channel.send(msg)};
-    return;
-    */
-
     client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,`SELECT A TARGET (${client.auth.prefix}list)`)
     return;
   }
 
   //Make sure second argument is a number
-
   target = parseInt(args[1], 10) - 1;
   if(isNaN(target) || target >active.length-1 || target < 0){
-    message.channel.send("That is not a valid argument!");
+    message.channel.send(`That is not a valid target! It must be a number from 1 to ${active.length}.`);
     return;
   }
 
   //Retrieve stamina cost and check if any status effects change the cost
-
   let cost = client.actionList[action[select]].cst
-
   if(list[pos][7].includes("DISCOUNT")){
     if(cost > 1){
        cost--;
@@ -367,13 +339,11 @@ if(log){
       cost--;
     }
   }
-
-
   //Check if player can pay the stamina cost
 
   if(cost > list[pos][5]){
     if(client.traitcall.traitCheck(client,charid,"DOOM")[0]){
-      let maxvit = client.playerMap.get(charid,"gel");
+      let maxvit = client.charcall.allData(charid,"gel");
       let doomcost= Math.floor(cost-list[pos][5])*.1*maxvit;
       if(list[pos][3]-doomcost<=0){
         message.channel.send(`You don't have enough STAMINA to afford that action, or enough VITALITY to sacrifice for it! That action costs ${cost} STAMINA and you have ${list[pos][5]} STAMINA!`);

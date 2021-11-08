@@ -1,5 +1,4 @@
 const funcall = require("../modules/funcall.js");
-
 const strifecall = require("../modules/strifecall.js");
 
 //command to alchemize an item from a totem in the alchemiter
@@ -12,23 +11,27 @@ exports.run = (client, message, args) => {
 
 //defining important variables
 
-  var userID = message.guild.id.concat(message.author.id);
-  var charid = client.userMap.get(userID,"possess");
-  var sburbID = charid.substring(1);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+
 
   var local = client.playerMap.get(charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  console.log(sburbID);
-  var gristCheck = client.sburbMap.get(sburbID,"grist");
+  var gristCheck = client.charcall.allData(client,userid,charid,"grist");
   let sdex = client.playerMap.get(charid,"sdex");
-  let registry = client.sburbMap.get(sburbID,"registry");
-
+  let registry = client.charcall.allData(client,userid,charid,"registry");
+//underings have "grist" defined as their grist type, not an array of active grist.
+//until changed, this will catch them and prevent them from alchemizing.
+try{
+ const test = gristCheck[2];
+}catch(err){
+  message.channel.send("Sorry, you dont seem to have any grist to alchemize with!");
+  return;
+}
 //define variables for the FOR loop
-
-  let i;
   let alchemiter = false;
   let item;
   let cost1;
@@ -36,16 +39,13 @@ exports.run = (client, message, args) => {
   let grist;
 
 //Check every item in the room to find alchemiter, if there is check for any cruxite artifact
-
-
-  for(i=0;i<room[5].length;i++){
+  for(let i=0;i<room[5].length;i++){
     if(room[5][i][1].charAt(0) == "/"&&(room[5][i][0]=="ALCHEMITER"||room[5][i][0]=="INSTANT ALCHEMITER")){
       alchemiter=true;
     }
   }
 
  if(alchemiter==true||client.traitcall.traitCheck(client,charid,"COMPUTER")[1]){
-
    if(!args[0] || args[0] == "page"){
      let page = 0;
      if (args[1]&&args[0] == "page") {
@@ -57,7 +57,6 @@ exports.run = (client, message, args) => {
      }
 
      async function dexCheck(){
-
      const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,[],"alchemy athenaeum");
 
        message.channel.send(attachment);

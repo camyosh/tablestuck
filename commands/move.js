@@ -1,6 +1,6 @@
 
 exports.run = (client, message, args) => {
-  
+
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
   var sburbid = client.playerMap.get(charid,"owner");
@@ -71,7 +71,7 @@ exports.run = (client, message, args) => {
       if(local[4]==charid){
         msg+=`You move within your house and enter the `;
       } else {
-        msg+=`You move within ${client.playerMap.get(local[4],"name").toUpperCase()}'s house and enter the `
+        msg+=`You move within ${client.sburbMap.get(local[4],"name").toUpperCase()}'s house and enter the `
       }
     } else {
     msg+=`You move between rooms and enter the `;

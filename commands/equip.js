@@ -6,15 +6,12 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner")
 
-  let sdex = client.playerMap.get(charid,"sdex");
-  let cards = client.playerMap.get(charid,"cards");
-
-  let scards = client.playerMap.get(charid,"scards");
-  let spec = client.playerMap.get(charid,"spec");
-
-  let kinds = client.playerMap.get(charid,"kinds");
+  let sdex = client.charcall.charData(client,charid,"sdex");
+  let cards = client.charcall.charData(client,charid,"cards");
+  let scards = client.charcall.charData(client,charid,"scards");
+  let spec = client.charcall.charData(client,charid,"spec");
+  let kinds = client.charcall.charData(client,charid,"kinds");
 
 //make sure strife specibus is allocated
 
@@ -58,8 +55,8 @@ exports.run = (client, message, args) => {
   let equipItem = sdex.splice(selectDex,1)[0];
   spec.push(equipItem);
 
-  client.playerMap.set(charid,sdex,"sdex");
-  client.playerMap.set(charid,spec,"spec");
+  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+  client.charcall.setAnyData(client,userid,charid,spec,"spec");
   client.funcall.tick(client,message);
 
   message.channel.send(`Successfully EQUIPPED the ${equipItem[0]} to your STRIFE SPECIBUS`);

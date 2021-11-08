@@ -33,84 +33,65 @@ try{
 }
 }
 
-
+//TODO: make experience and boondollars gained actually track what they say
 exports.actionCheck = function(client, message, score){
 try{
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner");
-  let curCount = client.sburbMap.get(sburbid,"act");
-  let name = client.playerMap.get(charid,"name");
+  let curCount = client.charcall.allData(client,userid,charid,"act");
+  let name = client.charcall.allData(client,userid,charid,"name");
+  let leaderAdd = message.guild.id+"mediumlead";
+  let key = "";
+  //if any character doesnt have an action count (probably an underling) the program stops here.
+  if(curCount=="NONE"){
+    return;
+  }
 //curCount++;
 switch(score){
   case "alchemized":
-    increase = client.sburbMap.get(sburbid,"itemsAlchemized");
-    increase++;
-    client.sburbMap.set(sburbid,increase,"itemsAlchemized");
-    if(increase>client.playerMap.get("leaderboard","itemsAlchemized")[1]){
-      client.playerMap.set("leaderboard",[name,increase],"itemsAlchemized");
-    }
+    key = "itemsAlchemized"
     break;
   case "tile":
-    increase = client.sburbMap.get(sburbid,"tilesDiscovered");
-    increase++;
-    client.sburbMap.set(sburbid,increase,"tilesDiscovered");
-
-    if(increase>client.playerMap.get("leaderboard","tilesDiscovered")[1]){
-      client.playerMap.set("leaderboard",[name,increase],"tilesDiscovered");
-    }
+    key = "tilesDiscovered"
     break;
   case "underling":
-    increase = client.sburbMap.get(sburbid,"underlingsDefeated");
-    increase++;
-    client.sburbMap.set(sburbid,increase,"underlingsDefeated");
-    if(increase>client.playerMap.get("leaderboard","underlingsDefeated")[1]){
-      client.playerMap.set("leaderboard",[name,increase],"underlingsDefeated");
-    }
+    key = "underlingsDefeated"
     break;
   case "player":
-    increase = client.sburbMap.get(sburbid,"playersDefeated");
-    increase++;
-    client.sburbMap.set(sburbid,increase,"playersDefeated");
-    if(increase>client.playerMap.get("leaderboard","playersDefeated")[1]){
-      client.playerMap.set("leaderboard",[name,increase],"playersDefeated");
-    }
+    key = "playersDefeated"
     break;
   case "boss":
-    increase = client.sburbMap.get(sburbid,"bossesDefeated");
-    increase++;
-    client.sburbMap.set(sburbid,increase,"bossesDefeated");
-    if(increase>client.playerMap.get("leaderboard","bossesDefeated")[1]){
-      client.playerMap.set("leaderboard",[name,increase],"bossesDefeated");
-    }
+    key = "bossesDefeated"
     break;
   case "item":
-    increase = client.sburbMap.get(sburbid,"itemsCaptchalogued");
-    increase++;
-    client.sburbMap.set(sburbid,increase,"itemsCaptchalogued");
-    if(increase>client.playerMap.get("leaderboard","itemsCaptchalogued")[1]){
-      client.playerMap.set("leaderboard",[name,increase],"itemsCaptchalogued");
-    }
+    key = "itemsCaptchalogued"
     break;
 }
 
-let b = client.sburbMap.get(sburbid,"b");
-let xp = client.sburbMap.get(sburbid,"xp");
-if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
-  client.playerMap.set("leaderboard",[name,b],"boondollarsGained");
+increase = client.charcall.allData(client,userid,charid,key);
+increase++;
+client.charcall.setAnyData(client,userid,charid,increase,key);
+if(increase>client.landMap.get(leaderAdd,key)[1]){
+  client.landMap.set(leaderAdd,[name,increase],key);
 }
-if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
-  client.playerMap.set("leaderboard",[name,xp],"experienceGained");
+
+let b = client.charcall.allData(client,userid,charid,"b");
+let xp = client.charcall.allData(client,userid,charid,"xp");
+if(b>client.landMap.get(leaderAdd,"boondollarsGained")[1]){
+  client.landMap.set(leaderAdd,[name,b],"boondollarsGained");
+}
+if(xp>client.landMap.get(leaderAdd,"experienceGained")[1]){
+  client.landMap.set(leaderAdd,[name,xp],"experienceGained");
 }
 
 if(curCount>=client.limit&&client.limit!=0){
 
-  let tiles = client.sburbMap.get(sburbid,"tilesDiscovered");
-  let alchemized = client.sburbMap.get(sburbid,"itemsAlchemized");
-  let underlings =  client.sburbMap.get(sburbid,"underlingsDefeated");
-  let players =  client.sburbMap.get(sburbid,"playersDefeated");
-  let bosses = client.sburbMap.get(sburbid,"bossesDefeated");
-  let items = client.sburbMap.get(sburbid,"itemsCaptchalogued");
+  let tiles = client.charcall.allData(client,userid,charid,"tilesDiscovered");
+  let alchemized = client.charcall.allData(client,userid,charid,"itemsAlchemized");
+  let underlings =  client.charcall.allData(client,userid,charid,"underlingsDefeated");
+  let players =  client.charcall.allData(client,userid,charid,"playersDefeated");
+  let bosses = client.charcall.allData(client,userid,charid,"bossesDefeated");
+  let items = client.charcall.allData(client,userid,charid,"itemsCaptchalogued");
 
   message.channel.send("That was your last action in the tournament, here's your final stats:");
   let stats = new client.Discord.MessageEmbed()
@@ -136,18 +117,21 @@ exports.tick = function(client, message){
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner");
-  let curCount = client.sburbMap.get(sburbid,"act");
+  let curCount = client.charcall.allData(client,userid,charid,"act");
+  let leaderAdd = message.guild.id+"mediumlead";
+  //anything without an action counter gets bounced here
+  if(curCount=="NONE")
+    return;
   curCount++;
   client.funcall.sleepHeal(client,charid);
 
-  let b = client.playerMap.get(charid,"b");
-  let xp = client.playerMap.get(charid,"xp");
-  if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
-    client.playerMap.set("leaderboard",[message.author.username,b],"boondollarsGained");
+  let b = client.charcall.allData(client,userid,charid,"b");
+  let xp = client.charcall.allData(client,userid,charid,"xp");
+  if(b>client.landMap.get(leaderAdd,"boondollarsGained")[1]){
+    client.landMap.set(leaderAdd,[name,b],"boondollarsGained");
   }
-  if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
-    client.playerMap.set("leaderboard",[message.author.username,xp],"experienceGained");
+  if(xp>client.landMap.get(leaderAdd,"experienceGained")[1]){
+    client.landMap.set(leaderAdd,[name,xp],"experienceGained");
   }
 
   if(curCount==client.limit&&client.limit!=0){
@@ -779,9 +763,9 @@ exports.chanMsg = function(client, target, msg, embed){
       controlList = client.charcall.charData(client,target,"control");
       for(let i=0;i<controlList.length;i++){
         if(embed!=undefined){
-        client.channels.cache.get(client.userMap.get(controlList[i],"channel")).send(msg,embed);
+        client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send(msg,embed);
         }else{
-        client.channels.cache.get(client.sburbMap.get(controlList[i],"channel")).send(msg);
+        client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send(msg);
       }
       }
     }

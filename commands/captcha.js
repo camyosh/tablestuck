@@ -4,21 +4,18 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  var userID = message.guild.id.concat(message.author.id);
-  var charid = client.userMap.get(userID,"possess");
-  var sburbid = charid.substring(1);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
 //get player location and room inventory
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  let currentInv = client.playerMap.get(charid,"sdex");
+  let currentInv = client.charcall.charData(client,charid,"sdex");
   let targetItem;
-
-  console.log(local[0]);
 
   if(local[0]!="h"&&landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)){
     message.channel.send("You can't captchalogue items while there are Underlings here!");
@@ -86,7 +83,7 @@ exports.run = (client, message, args) => {
 
   currentInv.unshift(targetItem);
   let mess = `CAPTCHALOGUED the ${targetItem[0]} from the ${room[2]}.`
-  if(currentInv.length > client.playerMap.get(charid,"cards")){
+  if(currentInv.length > client.charcall.charData(client,charid,"cards")){
     let dropItem = currentInv.pop();
     room[5].push(dropItem);
     mess += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
@@ -94,7 +91,7 @@ exports.run = (client, message, args) => {
 message.channel.send(mess);
 sec[local[1]][local[2]][2][local[3]] = room;
 client.landMap.set(land,sec,local[0]);
-client.playerMap.set(charid,currentInv,"sdex");
+client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
 funcall.actionCheck(client,message,"item");
 client.funcall.tick(client,message);
 client.tutorcall.progressCheck(client,message,5);

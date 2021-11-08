@@ -514,8 +514,6 @@ function leaveStrife(client,message,local,pos){
   } else {
 
     let active = client.strifeMap.get(strifeLocal,"active");
-
-
     let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
     let sec = client.landMap.get(local[4],local[0]);
     //remove player from list of active characters, player positions, and lower player count by 1
@@ -660,7 +658,7 @@ function startTurn(client, message, local) {
 //retrieve strife id
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
-  client.playerMap.set(strifeLocal,Date.now(),"time");
+  client.strifeMap.set(strifeLocal,Date.now(),"time");
 
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let list = client.strifeMap.get(strifeLocal,"list");
@@ -2629,18 +2627,18 @@ if(list[active[ik]][3] < 1){
 
   }
 }
-exports.spawn = function(client,message,underling,pregrist = "false"){
-  let charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  let local = client.playerMap.get(charid,"local");
+exports.spawn = function(client,message,underling,pregrist = false){
+  let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+  let local = client.charcall.charData(client,charid,"local");
   let sec = client.landMap.get(local[4],local[0]);
   let npcCount = client.landMap.get(message.guild.id+"medium","npcCount");
   sec[local[1]][local[2]][2][local[3]][4].push(underSpawn(client,local,underling,message.guild.id,npcCount,pregrist));
   client.landMap.set(message.guild.id+"medium",npcCount+1,"npcCount");
-  client.landMap.set(charid,local,"local");
-  return client.playerMap.get(sec[local[1]][local[2]][2][local[3]][4][sec[local[1]][local[2]][2][local[3]][4].length-1][1],"name");
+  client.landMap.set(local[4],sec,local[0]);
+  return client.charcall.charData(client,sec[local[1]][local[2]][2][local[3]][4][sec[local[1]][local[2]][2][local[3]][4].length-1][1],"name");
 }
 
-  function underSpawn(client,local,underling,sessionID,npcCount,pregrist="false"){
+  function underSpawn(client,local,underling,sessionID,npcCount,pregrist){
 
     let landGrist;
 
@@ -2650,7 +2648,7 @@ exports.spawn = function(client,message,underling,pregrist = "false"){
       landGrist = ["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"];
     }
     let grist;
-    if(pregrist!="false"){
+    if(pregrist){
       grist = pregrist;
     } else {
       grist = landGrist[Math.floor((Math.random() * landGrist.length))];
@@ -2930,9 +2928,9 @@ function strifeList(client,local,active,list,turn,init,charid,page,title){
 
   for(i=0+(page*10);i<((page+1)*10)&&i<active.length;i++){
     if(active[i]==init[turn][0]){
-      msg += `**[${i+1}]** **${client.playerMap.get(list[active[i]][1],"name").toUpperCase()}** [VIT - ${list[active[i]][3]}] [**TURN**]\n\n`
+      msg += `**[${i+1}]** **${client.charcall.charData(client,list[active[i]][1],"name").toUpperCase()}** [VIT - ${list[active[i]][3]}] [**TURN**]\n\n`
     } else {
-      msg += `**[${i+1}]** **${client.playerMap.get(list[active[i]][1],"name").toUpperCase()}** [VIT - ${list[active[i]][3]}]\n\n`
+      msg += `**[${i+1}]** **${client.charcall.charData(client,list[active[i]][1],"name").toUpperCase()}** [VIT - ${list[active[i]][3]}]\n\n`
     }
   }
 

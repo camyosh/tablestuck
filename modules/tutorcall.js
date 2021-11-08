@@ -62,7 +62,7 @@ exports.progressCheck = async function(client,message,step,bypass = false){
   charid = client.userMap.get(userid,"possess");
   channelid = client.charcall.allData(client,userid,charid,"channel");
   progress = client.charcall.allData(client,userid,charid,"tutor");
-  if(!progress[0]){
+  if(!progress[1]){
     return;
   }
   if(progress[step]&&!bypass){

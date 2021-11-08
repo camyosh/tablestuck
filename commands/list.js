@@ -5,9 +5,8 @@ exports.run = (client,message,args) =>{
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner")
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
 
   client.tutorcall.progressCheck(client,message,2);
 
@@ -71,7 +70,7 @@ exports.run = (client,message,args) =>{
     let msg = ``;
 
     for(i=0+(page*10);i<((page+1)*10)&&i<occList.length;i++){
-      msg+=`**[${i+1}] ${client.playerMap.get(occList[i][1],"name").toUpperCase()}** \n *${client.playerMap.get(occList[i][1],"type")}*\n\n`
+      msg+=`**[${i+1}] ${client.charcall.charData(client,occList[i][1],"name").toUpperCase()}** \n *${client.charcall.charData(client,occList[i][1],"type")}*\n\n`
     }
 
     if(occList.length==0){

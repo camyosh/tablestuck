@@ -9,10 +9,10 @@ const tList = ["MELEE","RANGED","MAGIC","NA"];
 
 exports.run = (client, message, args) => {
 
-
-  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
-  var armor = client.playerMap.get(charid,"armor");
-  let name = client.playerMap.get(charid,"name");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var armor = client.charcall.charData(client,charid,"armor");
+  let name = client.charcall.charData(client,charid,"name");
 
 //if no arguments, display currently equipped armor
 
@@ -84,7 +84,7 @@ exports.run = (client, message, args) => {
 
     //defining player location to place ejected armor in
 
-    let local = client.playerMap.get(charid,"local");
+    let local = client.charcall.charData(client,charid,"local");
     let land = local[4];
     let sec = client.landMap.get(land,local[0]);
     let area = sec[local[1]][local[2]];
@@ -99,11 +99,9 @@ exports.run = (client, message, args) => {
     room[5].push(dropItem);
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
-    client.playerMap.set(charid,armor,"armor");
-
+    client.charcall.setAnyData(client,userid,charid,armor,"armor");
+    message.channel.send("Ejecting Armor!");
     client.funcall.tick(client,message);
-
-    message.channel.send("Ejecting Armor!")
 
 //if first argument is equip, equip selected armor
 
@@ -114,7 +112,7 @@ exports.run = (client, message, args) => {
       return;
     }
 
-    let sdex = client.playerMap.get(charid,"sdex");
+    let sdex = client.charcall.charData(client,charid,"sdex");
 
     //if no second argument, cancel
 
@@ -157,12 +155,10 @@ exports.run = (client, message, args) => {
       let equipItem = sdex.splice(selectDex,1)[0];
       armor.push(equipItem);
 
-      client.playerMap.set(charid,sdex,"sdex");
-      client.playerMap.set(charid,armor,"armor");
-
-      client.funcall.tick(client,message);
-
+      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+      client.charcall.setAnyData(client,userid,charid,armor,"armor");
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
+      client.funcall.tick(client,message);
 
   } else {
     message.channel.send(`That is not a valid argument! Valid arguments for ${client.auth.prefix}armor are eject and equip!`)

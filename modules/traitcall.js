@@ -6,14 +6,14 @@ exports.traitCheck = function(client,target,traitName){
   let check = [false,false];
 
   let traitCount = 0;
-  let specibus = client.playerMap.get(target,"spec");
-  let equip = client.playerMap.get(target,"equip");
-  let armor = client.playerMap.get(target,"armor");
-  let trinket = client.playerMap.get(target,"trinket");
-  //Check weapon first\
+  let specibus = client.charcall.charData(client,target,"spec");
+  let equip = client.charcall.charData(client,target,"equip");
+  let armor = client.charcall.charData(client,target,"armor");
+  let trinket = client.charcall.charData(client,target,"trinket");
+  //Check weapon first
   let prototype = [];
-  if(client.playerMap.has(target,"prototype")){
-    prototype = client.playerMap.get(target,"prototype");
+  if(client.charcall.hasData(client,target,"prototype")){
+    prototype = client.charcall.charData(client,"prototype");
     for(i=0;i<prototype.length;i++){
       if(client.traitList[client.captchaCode.indexOf(prototype[i][1].charAt(2))]==traitName){
         traitCount++;
@@ -46,11 +46,7 @@ exports.traitCheck = function(client,target,traitName){
   }
 
   //Check Equipment
-console.log(trinket);
-console.log(trinket.length)
   if(trinket.length!=0){
-    console.log(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))]);
-    console.log("Testing");
     if(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))]==traitName){
       traitCount++;
     }
@@ -72,6 +68,7 @@ console.log(trinket.length)
   return check;
 
 }catch(err){
+  console.log(err);
   return [false,false];
 }
 

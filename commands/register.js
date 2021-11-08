@@ -246,7 +246,7 @@ function charSetup(userData,sburbid){
   userData.possess = `w${sburbid}`;
   //adds both waking and sleeping selves to the speeddial, for faster DM possession.
   userData.speeddial.push([`w${sburbid}`,`${userData.name}`]);
-  userData.speeddial.push([`d${sburbid}`,`${userData.name}'s Dream Self'`]);
+  userData.speeddial.push([`d${sburbid}`,`${userData.name}'s Dream Self`]);
 }
 function createGristSet(client,message){
   /*randomizes the grist for the land, based on which grists have or haven't been used
