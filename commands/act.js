@@ -13,19 +13,21 @@ exports.run = (client, message, args) => {
   }
 
 //Defining variables
-
-  let local = client.playerMap.get(charid,"local");
-  let pos = client.playerMap.get(charid,"pos");
-  let type = client.playerMap.get(charid,"type");
+  //grabs the data of the character, be it player or underling under user control.
+  let local = client.charcall.charData(client,charid,"local");
+  let pos = client.charcall.charData(client,charid,"pos");
+  let type = client.charcall.charData(client,charid,"type");
+  let spec = client.charcall.charData(client,charid,"spec");
+  let equip = client.charcall.charData(client,charid,"equip");
+  let damage = client.underlings[client.charcall.charData(client,charid,"type")];
+  //gets all strife data
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
-  let spec = client.playerMap.get(charid,"spec");
-  let equip = client.playerMap.get(charid,"equip");
   let active = client.strifeMap.get(strifeLocal,"active");
   let list = client.strifeMap.get(strifeLocal,"list");
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let init = client.strifeMap.get(strifeLocal,"init");
-  let damage = client.underlings[client.playerMap.get(charid,"type")];
 
+//as long as the character has a weapon equipped, it overrides the default damage.
   if(spec.length>0){
     damage=tierDmg[spec[equip][2]];
   }
@@ -33,14 +35,11 @@ exports.run = (client, message, args) => {
 //Check if EQUIP is an actual weapon in the specibus
 let action = [];
 
-
+  //as long as the equipped weapon exists, all actions are added to the character's action pool.
   if(equip<spec.length){
-    let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
-    action =[client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(spec[equip][1].charAt(4))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(spec[equip][1].charAt(5))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(spec[equip][1].charAt(6))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(spec[equip][1].charAt(7))]]];
-    //message.channel.send("You do not have a WEAPON equipped!");
-    //return;
+    action =[client.action[client.codeCypher[4][client.captchaCode.indexOf(spec[equip][1].charAt(4))]],client.action[client.codeCypher[5][client.captchaCode.indexOf(spec[equip][1].charAt(5))]],client.action[client.codeCypher[6][client.captchaCode.indexOf(spec[equip][1].charAt(6))]],client.action[client.codeCypher[7][client.captchaCode.indexOf(spec[equip][1].charAt(7))]]];
   }
-
+  //adds default actions based on character type.
   action=action.concat(client.underlings[type].act);
 
   if(client.playerMap.has(charid,"prototype")){
