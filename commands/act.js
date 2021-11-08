@@ -16,9 +16,8 @@ exports.run = (client, message, args) => {
 
   let local = client.playerMap.get(charid,"local");
   let pos = client.playerMap.get(charid,"pos");
-    let type = client.playerMap.get(charid,"type");
+  let type = client.playerMap.get(charid,"type");
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
-
   let spec = client.playerMap.get(charid,"spec");
   let equip = client.playerMap.get(charid,"equip");
   let active = client.strifeMap.get(strifeLocal,"active");

@@ -38,15 +38,16 @@ exports.run = function(client, message, args) {
     (client.sburbMap.get(sburbid,"dreamer")?client.sburbMap.set(sburbid,false,"dreamer"):client.sburbMap.set(sburbid,true,"dreamer"));
 
     let controlList = client.playerMap.get(charid,"control");
+    let targList = client.playerMap.get(target,"control");
+    targList.push(userid);
     for(let i=0;i<controlList.length;i++){
       if(controlList[i]==userid){
-        controlList.splice(i,1);
+       controlList.splice(i,1);
       }
     }
-    client.playerMap.set(charid,controlList,"control");
-    client.playerMap.set(target,client.playerMap.get(target,"control").push(userid),"control");
 
+    client.playerMap.set(charid,controlList,"control");
+    client.playerMap.set(target,targList,"control");
     message.channel.send("You fall asleep, or are you waking up?");
     client.tutorcall.progressCheck(client,message,39);
-    console.log(client.sburbMap.get(sburbid,"dreamer"));
 }
