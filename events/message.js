@@ -48,7 +48,8 @@ module.exports = (client, message) => {
         housetype:"NONE",
         charCount:0,
         channel:"NONE",
-        pesterchannel:"NONE"
+        pesterchannel:"NONE",
+        ping:`@${message.author.id}`
       }
       //pushes the data to the database
       client.userMap.set(userid,userSetup);

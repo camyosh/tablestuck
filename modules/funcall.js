@@ -42,10 +42,6 @@ try{
   let name = client.charcall.allData(client,userid,charid,"name");
   let leaderAdd = message.guild.id+"mediumlead";
   let key = "";
-  //if any character doesnt have an action count (probably an underling) the program stops here.
-  if(curCount=="NONE"){
-    return;
-  }
 //curCount++;
 switch(score){
   case "alchemized":
@@ -67,7 +63,10 @@ switch(score){
     key = "itemsCaptchalogued"
     break;
 }
-
+//if the target doesn't have a score for the action being incremented, return.
+if(client.charcall.allData(client,userid,charid,key)=="NONE"){
+  return;
+}
 increase = client.charcall.allData(client,userid,charid,key);
 increase++;
 client.charcall.setAnyData(client,userid,charid,increase,key);
@@ -84,7 +83,7 @@ if(xp>client.landMap.get(leaderAdd,"experienceGained")[1]){
   client.landMap.set(leaderAdd,[name,xp],"experienceGained");
 }
 
-if(curCount>=client.limit&&client.limit!=0){
+if(curCount!="NONE"&&curCount>=client.limit&&client.limit!=0){
 
   let tiles = client.charcall.allData(client,userid,charid,"tilesDiscovered");
   let alchemized = client.charcall.allData(client,userid,charid,"itemsAlchemized");
@@ -428,7 +427,6 @@ exports.alchemize = function(client, item1, item2, type){
 
     }
 
-    console.log(coderes);
 
   }
   if(code1[0]==code2[0]){
@@ -836,9 +834,8 @@ exports.sleepHeal = function(client,charid){
 exports.move = function(client,message,charid,local,target,mapCheck,msg){
 
   let targSec = client.landMap.get(target[4],target[0]);
-
-  let occset = [true,charid];
-
+  var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
+  var userid = message.guild.id.concat(message.author.id);
   if(local[0]==target[0]&&local[4]==target[4]){
 
     targSec[local[1]][local[2]][2][local[3]][4].splice(targSec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
@@ -885,7 +882,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
   }
 
   client.funcall.tick(client,message);
-  client.playerMap.set(charid,target,"local");
+  client.charcall.setAnyData(client,userid,charid,target,"local");
   client.landMap.set(target[4],targSec,target[0]);
 
   let occNew = targSec[target[1]][target[2]][2][target[3]][4];
@@ -910,7 +907,8 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
   }
 
   async function moveEmbed(){
-
+    var userid = message.guild.id.concat(message.author.id);
+    var charid = client.userMap.get(userid,"possess");
     dex = targSec[target[1]][target[2]][2][target[3]][5];
     var attachment = await client.imgcall.sdexCheck(client,message,0,false,3,dex,dex.length,`${targSec[target[1]][target[2]][2][target[3]][2]} (>inspect)`);
     let occList = targSec[target[1]][target[2]][2][target[3]][4];
@@ -947,15 +945,11 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
       .setImage(`attachment://actionlist.png`)
     }
 
-    let sburbid = client.playerMap.get(charid,"owner");
-
-    if(client.sburbMap.has(sburbid,"channel")){
-      client.channels.cache.get(client.sburbMap.get(sburbid,"channel")).send(listEmbed)
-    }
+    client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send(listEmbed)
 
   }
 
-  let name = client.playerMap.get(charid,"name");
+  let name = client.charcall.charData(client,charid,"name");
 
   for(let i=0;i<occNew.length;i++){
     try{
@@ -975,7 +969,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
 }
 function dreamCheck(client,target,local){
 
-  let targLocal = client.playerMap.get(target,"local");
+  let targLocal = client.charcall.charData(client,target,"local");
 
   if(targLocal[0]===local[0]&&targLocal[1]===local[1]&&targLocal[2]===local[2]&&targLocal[3]===local[3]&&targLocal[4]===local[4]){
     return true;
@@ -984,7 +978,5 @@ function dreamCheck(client,target,local){
   }
 }
 exports.dreamCheck =  function(client,target,local){
-
   return dreamCheck(client,target,local);
-
 }

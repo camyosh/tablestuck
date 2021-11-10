@@ -4,68 +4,39 @@ exports.run = (client, message, args) => {
 
     var userid = message.guild.id.concat(message.author.id);
     var charid = client.userMap.get(userid,"possess");
-    var sburbid = client.playerMap.get(charid,"owner");
     let traits = [];
     let traitCount = [];
-    let specibus = client.playerMap.get(charid,"spec");
-    let equip = client.playerMap.get(charid,"equip");
-    let armor = client.playerMap.get(charid,"armor");
-    let trinket = client.playerMap.get(charid,"trinket");
-
-    if(specibus.length != 0){
-
-      if(traits.includes(client.traitList[client.captchaCode.indexOf(specibus[equip][1].charAt(2))])){
-        traitCount[traits.indexOf(client.traitList[client.captchaCode.indexOf(specibus[equip][1].charAt(2))])]++
+    let specibus = client.charcall.charData(client,charid,"spec");
+    let equip = client.charcall.charData(client,charid,"equip");
+    let armor = client.charcall.charData(client,charid,"armor");
+    let trinket = client.charcall.charData(client,charid,"trinket");
+    let prototype = client.charcall.charData(client,charid,"prototype");
+    let checklist = [];
+    if(prototype!="NONE"&&prototype.length>0){
+      for(let i=0;i<prototype.length;i++){
+        checklist.push(prototype[i]);
+      }
+    }
+    if(specibus.length != 0) checklist.push(specibus[equip][1]);
+    if(armor.length!=0) checklist.push(armor[0][1]);
+    if(trinket.length!=0) checklist.push(trinket[0][1]);
+    while(checklist.length>0){
+      capcode = checklist.pop();
+      if(traits.includes(client.traitList[client.captchaCode.indexOf(capcode.charAt(2))])){
+        traitCount[traits.indexOf(client.traitList[client.captchaCode.indexOf(capcode.charAt(2))])]++
       } else {
-        traits.push(client.traitList[client.captchaCode.indexOf(specibus[equip][1].charAt(2))]);
+        traits.push(client.traitList[client.captchaCode.indexOf(capcode.charAt(2))]);
         traitCount.push(1);
       }
 
-      if(traits.includes(client.traitList2[client.captchaCode.indexOf(specibus[equip][1].charAt(3))])){
-        traitCount[traits.indexOf(client.traitList2[client.captchaCode.indexOf(specibus[equip][1].charAt(3))])]++
+      if(traits.includes(client.traitList2[client.captchaCode.indexOf(capcode.charAt(3))])){
+        traitCount[traits.indexOf(client.traitList2[client.captchaCode.indexOf(capcode.charAt(3))])]++
       } else {
-        traits.push(client.traitList2[client.captchaCode.indexOf(specibus[equip][1].charAt(3))]);
+        traits.push(client.traitList2[client.captchaCode.indexOf(capcode.charAt(3))]);
         traitCount.push(1);
       }
     }
-    //Check armor
-    if(armor.length!=0){
-
-      if(traits.includes(client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))])){
-        traitCount[traits.indexOf(client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))])]++
-      } else {
-        traits.push(client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))]);
-        traitCount.push(1);
-      }
-
-      if(traits.includes(client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))])){
-        traitCount[traits.indexOf(client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))])]++
-      } else {
-        traits.push(client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))]);
-        traitCount.push(1);
-      }
-    }
-    //Check Equipment
-    if(trinket.length!=0){
-
-      if(traits.includes(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))])){
-        traitCount[traits.indexOf(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))])]++
-      } else {
-        traits.push(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))]);
-        traitCount.push(1);
-      }
-
-      if(traits.includes(client.traitList2[client.captchaCode.indexOf(trinket[0][1].charAt(3))])){
-        traitCount[traits.indexOf(client.traitList2[client.captchaCode.indexOf(trinket[0][1].charAt(3))])]++
-      } else {
-        traits.push(client.traitList2[client.captchaCode.indexOf(trinket[0][1].charAt(3))]);
-        traitCount.push(1);
-      }
-    }
-    console.log(`Traits: ${traits}\nTrait Count: ${traitCount}`);
-
     let msg = ``;
-
     for(let i=0; i<traits.length; i++){
       if(traits[i]!="NONE"){
 

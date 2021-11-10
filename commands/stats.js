@@ -9,21 +9,19 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.sburbMap.get(charid,"owner");
 
-  let gel = client.sburbMap.get(sburbid,"gel");
-  let b = client.playerMap.get(charid,"b");
-  let name = client.playerMap.get(charid,"name");
-  let vit = client.playerMap.get(charid,"vit");
-  let rung = client.sburbMap.get(sburbid,"rung");
-  let xp = client.sburbMap.get(sburbid,"xp");
+  let gel = client.charcall.allData(client,userid,charid,"gel");
+  let b = client.charcall.allData(client,userid,charid,"b");
+  let name = client.charcall.allData(client,userid,charid,"name");
+  let vit = client.charcall.allData(client,userid,charid,"vit");
+  let rung = client.charcall.allData(client,userid,charid,"rung");
+  let xp = client.charcall.allData(client,userid,charid,"xp");
   let xpToRung;
-  if(rung==100){
-    xpToRung = `MAX RUNG`;
-  } else {
-    xpToRung = (rungReq[rung+1])-xp;
-  }
-
+    if(rung==100){
+      xpToRung = `MAX RUNG`;
+    } else {
+      xpToRung = (rungReq[rung+1])-xp;
+    }
   let stats = new client.Discord.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S** Stats`)
   .addField(`**Gel Viscosity**`,`${client.emojis.cache.get('735664168400584715')} ${gel}`,true)
@@ -35,12 +33,12 @@ exports.run = (client, message, args) => {
   if (client.limit != 0) {
     stats.addField(`**ACTIONS LEFT**`,client.limit - client.sburbMap.get(sburbid,"act"),true)
   }
-  stats.addField(`**TILES DISCOVERED**`,client.sburbMap.get(sburbid,"tilesDiscovered"),true)
-  .addField(`**ITEMS ALCHEMIZED**`,client.sburbMap.get(sburbid,"itemsAlchemized"),true)
-  .addField(`**ITEMS CAPTCHALOGUED**`,client.sburbMap.get(sburbid,"itemsCaptchalogued"),true)
-  .addField(`**UNDERLNGS DEFEATED**`,client.sburbMap.get(sburbid,"underlingsDefeated"),true)
-  .addField(`**PLAYERS DEFEATED**`,client.sburbMap.get(sburbid,"playersDefeated"),true)
-  .addField(`**BOSSES DEFEATED**`,client.sburbMap.get(sburbid,"bossesDefeated"),true)
+  stats.addField(`**TILES DISCOVERED**`,client.charcall.allData(client,userid,charid,"tilesDiscovered"),true)
+  .addField(`**ITEMS ALCHEMIZED**`,client.charcall.allData(client,userid,charid,"itemsAlchemized"),true)
+  .addField(`**ITEMS CAPTCHALOGUED**`,client.charcall.allData(client,userid,charid,"itemsCaptchalogued"),true)
+  .addField(`**UNDERLNGS DEFEATED**`,client.charcall.allData(client,userid,charid,"underlingsDefeated"),true)
+  .addField(`**PLAYERS DEFEATED**`,client.charcall.allData(client,userid,charid,"playersDefeated"),true)
+  .addField(`**BOSSES DEFEATED**`,client.charcall.allData(client,userid,charid,"bossesDefeated"),true)
 
   message.channel.send(stats);
 

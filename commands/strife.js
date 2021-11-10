@@ -24,13 +24,12 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner");
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
+  var isNPC = client.charcall.npcCheck(client,charid);
 // if player is in strife, leave strife
 
 if(client.charcall.charData(client,charid,"strife")){
-
-      client.strifecall.leaveStrife(client,message,local,client.playerMap.get(charid,"pos"));
+      client.strifecall.leaveStrife(client,message,local,client.charcall.charData(client,charid,"pos"));
       return;
 
     //  message.channel.send("You are already in STRIFE! You can leave by ABSCONDING, which is >act 6 1");
@@ -69,11 +68,11 @@ if(client.charcall.charData(client,charid,"strife")){
 */
   }
 
-  let armor = client.playerMap.get(charid,"armor");
-  let vit = client.playerMap.get(charid,"vit");
+  let armor = client.charcall.charData(client,charid,"armor");
+  let vit = client.charcall.charData(client,charid,"vit");
 
-  let spec =client.playerMap.get(charid,"spec");
-  let equip = client.playerMap.get(charid,"equip");
+  let spec =client.charcall.charData(client,charid,"spec");
+  let equip = client.charcall.charData(client,charid,"equip");
 
 /*  if(equip>=spec.length){
     message.channel.send("You must have a weapon equipped before entering strife!");
@@ -82,19 +81,20 @@ if(client.charcall.charData(client,charid,"strife")){
 */
   let grist;
 //determine grist type for effectiveness
-  if(armor.length == 0){
+if(armor.length == 0){
     grist = "artifact"
+    //unarmored underlings keep their grist type.
+    if(isNPC) grist = client.charcall.charData(client,charid,"gristtype");
   } else {
     grist = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(armor[0][1].charAt(1))]];
   };
-
 
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let occ = sec[local[1]][local[2]][2][local[3]][4];
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`
-  let profile = [true,charid,grist,vit,0,1,[],[]];
+  let profile = [(isNPC?false:true),charid,grist,vit,0,1,[],[]];
 
   if(client.strifeMap.has(strifeLocal)){
 
@@ -123,9 +123,9 @@ if(client.charcall.charData(client,charid,"strife")){
     client.strifeMap.set(strifeLocal,active,"active");
     client.strifeMap.set(strifeLocal,players,"players");
     client.strifeMap.set(strifeLocal,playerpos,"playerpos");
-    client.playerMap.set(charid,pos,"pos");
+    client.charcall.setAnyData(client,userid,charid,pos,"pos");
 
-    client.playerMap.set(charid,true,"strife");
+    client.charcall.setAnyData(client,userid,charid,true,"strife");
     funcall.actionCheck(client,message);
     let turn = client.strifeMap.get(strifeLocal,"turn");
     client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,"ENTERING STRIFE!");
@@ -174,8 +174,8 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
     }*/
 
     client.strifeMap.set(strifeLocal,strifeSet);
-    client.playerMap.set(charid,0,"pos");
-    client.playerMap.set(charid,true,"strife");
+    client.charcall.setAnyData(client,userid,charid,0,"pos");
+    client.charcall.setAnyData(client,userid,charid,true,"strife");
 
 
     //add all underlings in area to strife
@@ -186,11 +186,5 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
     strifecall.start(client,message,local);
 
   }
-
-  let strifeEmbed = new client.Discord.MessageEmbed()
-  .setTitle()
   client.tutorcall.progressCheck(client,message,33);
-
-
-
 }

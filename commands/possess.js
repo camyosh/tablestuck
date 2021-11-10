@@ -59,8 +59,8 @@ let target = client.userMap.get(userid,"possess");
   destination.push(userid);
   client.charcall.setAnyData(client,userid,charid,destination,"control");
 
-  message.channel.send(`Stopped possessing ${client.charcall.charData(client,target,"name").toUpperCase()}!\n
-  You have been shifted to your first Speed Dial option, ${speeddial[0][1].toUpperCase()}.`);
+  message.channel.send(`Stopped possessing ${client.charcall.charData(client,target,"name").toUpperCase()}!
+You have been shifted to your first Speed Dial option, ${speeddial[0][1].toUpperCase()}.`);
   return;
 }
 let isSpeed = false;

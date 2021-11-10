@@ -58,9 +58,6 @@ return alert;
 
 function passTurn(client, message, local) {
 
-  if(log){
-    console.log(`passing turn`);
-  }
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
   //chack if the strife exists in the database
@@ -103,25 +100,15 @@ function passTurn(client, message, local) {
 
   let msg;
 
-  //determine if character passing turn is a player or underling
-
-  console.log("adding pass turn to message");
-
-
-   msg = `${client.playerMap.get(list[init[turn][0]][1],"name")} passes their turn!`;
-
+   msg = `${client.charcall.charData(client,list[init[turn][0]][1],"name")} passes their turn!`;
 
  //send passing turn message to every participating player's terminal channel
 
- console.log(`Sending pass turn message to all players`);
-
   for(i=0;i<active.length;i++){
-    if(list[active[i]][0]==true){
+    if(client.charcall.charData(client,list[active[i]][1],"control").length>0){
       client.funcall.chanMsg(client,list[active[i]][1],msg);
     }
   }
-
-  console.log(`finished sending message`);
 
 //keep passing turn until turn is passed to a player who is still alive
 
@@ -129,10 +116,7 @@ function passTurn(client, message, local) {
   var newturn;
   let emCheck = false;
 
-  console.log(`Passing turn until finds living player`);
-
   for(turn++;check==false;turn++){
-    console.log(`Turn is ${turn}`);
     if(turn>=init.length){
       turn = 0;
     }
@@ -164,7 +148,7 @@ function passTurn(client, message, local) {
 }
 
 } else {
-  console.log("Stopped a crash!");
+  console.log("Stopped passTurn being run in a location with no strife!");
 }
 
 }
@@ -182,39 +166,30 @@ try{
   let active = client.strifeMap.get(strifeLocal,"active");
   let players = client.strifeMap.get(strifeLocal,"players");
   let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
+  let userid = message.guild.id.concat(message.author.id);
+  //sets the target to be dead, regardless of character type.
+  client.charcall.setAnyData(client,userid,list[target][1],false,"alive");
+  //if the character dying is a player, set them to being dead and give kill credit.
+  if(client.charcall.charData(client,list[target][1],"type")=="player"){
 
-//check if dead character is an underling or player
-
-  if(client.playerMap.get(list[target][1],"type")=="player"){
-    client.playerMap.set(list[target][1],false,"alive");
-
-
-
-try{
-  increase = client.playerMap.get(message.guild.id.concat(message.author.id),"playersDefeated");
+  charid = client.userMap.get(userid,"possess");
+  //as long as the killer has a character that tracks player kills, they get the credit.
+  if(client.charcall.allData(client,userid,charid,"playersDefeated")!="NONE"){
+  increase = client.charcall.allData(client,userid,charid,"playersDefeated");
   increase++;
-  client.playerMap.set(message.guild.id.concat(message.author.id),increase,"playersDefeated");
-  if(increase>client.playerMap.get("leaderboard","playersDefeated")[1]){
-    client.playerMap.set("leaderboard",[message.author.username,increase],"playersDefeated");
+  client.charcall.setAnyData(client,userid,charid,increase,"playersDefeated");
+  if(increase>client.landMap.get(`${message.guild.id}mediumlead`,"playersDefeated")[1]){
+    client.landMap.set(`${message.guild.id}mediumlead`,[client.charcall.charData(client,charid,"name"),increase],"playersDefeated");
   }
-}catch(err){
-message.channel.send("Failed to send a message, strifecall ln.201");
 }
-    let name = client.playerMap.get(list[target][1],"name");
+    let name = client.charcall.charData(client,list[target][1],"name");
 
     //send death message to all participating player's terminals
-
-    if(log){
-      console.log(`Sending Death message`);
-    }
-
-    let k;
-    for(k=0;k<active;k++){
-
+    for(let k=0;k<active.length;k++){
+      if(list[active[i]][1]!=list[target][1]){
       client.funcall.chanMsg(client,list[active[i]][1],`${name} died!`);
-
+      }
     }
-
       client.funcall.chanMsg(client,list[target][1],`***YOU DIED***`);
 
     //call the function to remove the character from strife
@@ -230,30 +205,20 @@ message.channel.send("Failed to send a message, strifecall ln.201");
     }
 //end of player kill
   }else{
+    let npc;
+    npc = client.charcall.charData(client,list[target][1],"type");
 
-
-    let underling;
-    try{
-      underling = client.playerMap.get(list[target][1],"type");
-    }catch(err){
-      console.log("Stopped a crash - underling not found!")
-      return;
+    if(npc=="unicorn"||npc=="kraken"||npc=="hecatoncheires"||npc=="denizen"){
+      client.funcall.actionCheck(client,message,"boss");
+    }else if (npc=="underling") {
+      client.funcall.actionCheck(client,message,"underling");
     }
 
-try{
-      if(underling=="unicorn"||underling=="kraken"||underling=="hecatoncheires"||underling=="denizen"){
-        client.funcall.actionCheck(client,message,"boss");
-      } else {
-        client.funcall.actionCheck(client,message,"underling");
-    }
-    }catch(err){
-    }
-
-let rewardMsg = `The **${client.playerMap.get(list[target][1],"name")}** has been defeated! \nYou get `
-let xp = client.underlings[underling].xp;
+let rewardMsg = `The **${client.charcall.charData(client,list[target][1],"name")}** has been defeated! \nYou get `
+let xp = client.underlings[npc].xp;
     //figure out what all the underling drops on death
 
-switch(client.playerMap.get(list[target][1],"faction")){
+switch(client.charcall.charData(client,list[target][1],"faction")){
 
     case "underling":
     let primaryType = list[target][2];
@@ -299,7 +264,12 @@ switch(client.playerMap.get(list[target][1],"faction")){
       multiplier = 1;
     }
     console.log(`Multiplier is: ${multiplier}`);
-    let amount = (client.underlings[underling].drop / players)*multiplier;
+    let canGrist
+    //this makes it so an underling piloted by a player won't reduce the total grist
+    for(let i=0;i<players;i++){
+     if(client.charcall.allData(client,userid,charid,"grist")!="NONE") canGrist++;
+    }
+    let amount = (client.underlings[npc].drop / canGrist)*multiplier;
     console.log(`Amount is: ${amount}`);
     if(client.traitcall.traitCheck(client,list[pos][1],"META")[1]){
       amount*=2;
@@ -314,14 +284,17 @@ switch(client.playerMap.get(list[target][1],"faction")){
       console.log(`Giving ${players} players grist`);
     }
 
-    for(i=0;i<players;i++){
+    for(let i=0;i<players;i++){
       let charid = list[playerpos[i]][1];
+      let userid = client.charcall.charData(client,charid,"control")[0];
+      //checks if the target can hold grist. Most underlings can't, players can.
+      if(client.charcall.allData(client,userid,charid,"grist")!="NONE"){
+      let rung = client.charcall.allData(client,userid,charid,"rung");
+      let grist = client.charcall.allData(client,userid,charid,"grist");
+      let godtier = client.charcall.allData(client,userid,charid,`godtier`);
+      //if an npc can collect grist but can't godtier, this will avoid crashes.
+      if(godtier=="NONE") godtier = false;
 
-      if(client.playerMap.get(charid,"type")=="player"){
-
-      let rung = client.playerMap.get(charid,"rung");
-      let grist = client.playerMap.get(charid,"grist");
-      let godtier = client.playerMap.get(charid,`godtier`);
   if(list[target][7].includes("CORRUPT")){
     if(!godtier&&grist[13]+Math.ceil(amount*4)>rungGrist[rung]){
       grist[13]=rungGrist[rung];
@@ -365,12 +338,12 @@ switch(client.playerMap.get(list[target][1],"faction")){
       }
 
       rewardMsg+=`**${client.emojis.cache.get(client.grist[repgrist].emoji)} ${Math.ceil(amount*4)}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${Math.ceil(amount*2)}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${Math.ceil(amount)}** and `;
-      client.playerMap.set(charid,grist,"grist");
+      client.charcall.setAnyData(client,userid,charid,grist,"grist");
     }
 
 //send message to all players currently in strife
 
-      if(!client.playerMap.get(charid,`godtier`)){
+      if(!godtier&&client.charcall.allData(client,userid,charid,"xp")!="NONE"){
       client.funcall.chanMsg(client,charid,`${rewardMsg}**${xp} XP**`);
       giveXp(client,charid,xp);
     } else {
@@ -382,46 +355,26 @@ switch(client.playerMap.get(list[target][1],"faction")){
     break;
     case "derse":
     case "prospit":
-
     for(i=0;i<players;i++){
       let charid = list[playerpos[i]][1];
-
-      if(client.playerMap.get(charid,"type")=="player"){
-
-      let rung = client.playerMap.get(charid,"rung");
-
-      rewardMsg+=`**${client.emojis.cache.get(client.grist[repgrist].emoji)} ${amount*4}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${amount*2}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${amount}** and `;
-
-  }
-  client.funcall.chanMsg(client,charid,`The **${client.playerMap.get(list[target][1],"name")}** has been defeated!`);
-
-//call function to give players XP
+      client.funcall.chanMsg(client,charid,`The **${client.charcall.charData(client,list[target][1],"name")}** has been defeated!`);
     }
-
-//send message to all players currently in strife
-
     break;
     default:
-    name = client.playerMap.get(list[target][1],"name");
+    name = client.charcall.charData(client,list[target][1],"name");
     for(let i=0;i<players;i++){
       let charid = list[playerpos[i]][1];
       client.funcall.chanMsg(client,charid,`The **${name}** has been defeated!`);
-
     }
-
     break;
 }
 //call function to remove the dead target from strife
-      //client.playerMap.delete(list[target][1]);
       leaveStrife(client,message,local,target);
       if(active.length<=1){
         message.channel.send(`Last opponent defeated!`);
         leaveStrife(client,message,local,pos);
         client.tutorcall.progressCheck(client,message,37);
       }
-
-
-
   }
 }catch(err){
   message.channel.send(err);
@@ -430,42 +383,33 @@ switch(client.playerMap.get(list[target][1],"faction")){
 }
 
 function giveXp(client,target,xp){
-
-  if(log){
-    console.log(`giving xp`);
-  }
-
-if(client.playerMap.get(target,"type")!="player"){
-  return;
-}
-
-  curXp = client.playerMap.get(target,"xp");
-  curRung = client.playerMap.get(target,"rung");
+  userid = client.charcall.charData(client,target,"owner")[0];
+  curXp = client.charcall.allData(client,userid,target,"xp");
+  curRung = client.charcall.allData(client,userid,target,"rung");
 
 //check if XP gained is higher than what is needed to level up
 
   if((curRung==100)||(curXp+xp)<rungReq[(curRung+1)]){
     //if not levelling up, set new XP total
-    client.playerMap.set(target, curXp + xp,"xp");
+    client.charcall.setAnyData(client,userid,target,curXp + xp,"xp");
   } else {
-    let curGv = client.playerMap.get(target,"gel");
-    let curBoon = client.playerMap.get(target,"b");
-    let name = client.playerMap.get(target,"name");
+    let curGv = client.charcall.allData(client,userid,target,"gel");
+    let curBoon = client.charcall.allData(client,userid,target,"b");
+    let name = client.charcall.allData(client,userid,target,"name");
     let newRung = curRung;
     let newGv;
     let newBoon = curBoon;
     let i;
 
     //give rewards for every new rung climbed
-
     for(i=curRung;curXp + xp >= rungReq[(i+1)]; i++){
       newBoon+=rungBoon[i+1];
     }
 
-    client.playerMap.set(target,curXp + xp,"xp");
-    client.playerMap.set(target,rungGel[i],"gel");
-    client.playerMap.set(target,i,"rung");
-    client.playerMap.set(target,newBoon,"b");
+    client.charcall.setAnyData(client,userid,target,curXp + xp,"xp");
+    client.charcall.setAnyData(client,userid,target,rungGel[i],"gel");
+    client.charcall.setAnyData(client,userid,target,i,"rung");
+    client.charcall.setAnyData(client,userid,target,newBoon,"b");
 
     let congrats = new client.Discord.MessageEmbed()
     .setTitle(`**${name}** climbed their ECHELADDER!`)
@@ -478,82 +422,82 @@ if(client.playerMap.get(target,"type")!="player"){
   }
 }
 
-function giveGrist(client,target,type,amount){
-  let rung = client.playerMap.get(target,"rung");
-  let grist = client.playerMap.get(target,"grist");
-
-  grist[gristTypes.indexOf(type)]+=amount
-
-  if(grist[gristTypes.indexOf(type)]>rungGrist[rung]){
-    grist[gristTypes.indexOf(type)] = rungGrist[rung];
-  }
-
-  client.playerMap.set(target,grist,"grist");
-
-}
-
 function leaveStrife(client,message,local,pos){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`
   let list = client.strifeMap.get(strifeLocal,"list");
   let init = client.strifeMap.get(strifeLocal,"init");
   var charid = list[pos][1];
-
+  let userid = client.charcall.charData(client,charid,"control");
   let turn = client.strifeMap.get(strifeLocal,"turn");
-//check if target is underling or player
-  if(list[pos][0]==true){
-
   let players = client.strifeMap.get(strifeLocal,"players");
 
+//if it's an npc without a controller leaving, it will be deleted from the room.
+if(userid=="NONE"){
+let active = client.strifeMap.get(strifeLocal,"active");
+let sec = client.landMap.get(local[4],local[0]);
+let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1)];
+client.strifeMap.set(strifeLocal,active,"active");
+client.landMap.set(local[4],sec,local[0]);
+return;
+}
 //if player leaving is the last in strife, delete strife database
+  userid=userid[0];
   if(players <= 1){
     client.strifeMap.delete(strifeLocal);
-    client.playerMap.set(charid,list[pos][3],"vit");
-    client.playerMap.set(charid,false,"strife");
-
+    client.charcall.setAnyData(client,userid,charid,list[pos][3],"vit");
+    client.charcall.setAnyData(client,userid,charid,false,"strife");
   } else {
-
     let active = client.strifeMap.get(strifeLocal,"active");
     let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
     let sec = client.landMap.get(local[4],local[0]);
     //remove player from list of active characters, player positions, and lower player count by 1
     let removed = [active.splice(active.indexOf(pos),1),playerpos.splice(playerpos.indexOf(pos),1)];
     players --;
-
-
     client.strifeMap.set(strifeLocal,active,"active");
     client.strifeMap.set(strifeLocal,players,"players");
     client.strifeMap.set(strifeLocal,playerpos,"playerpos");
     client.landMap.set(local[4],sec,local[0]);
-    client.playerMap.set(charid,false,"strife");
-    client.playerMap.set(charid,list[pos][3],"vit");
-
+    client.charcall.setAnyData(client,userid,charid,false,"strife");
+    client.charcall.setAnyData(client,userid,charid,list[pos][3],"vit");
+//makes sure the turn is passed if needed.
     if(init[turn][0] == pos){
       passTurn(client,message,local);
     }
-
   }
-client.funcall.chanMsg(client,charid,"Leaving Strife!");
-try{
-  if(!client.playerMap.get(charid,"alive")){
-    if(client.configMap.get(message.guild.id).options[0].selection==0){
-    let temp;
-    let dreamSwitch=["local","vit","port","kinds","spec","modus","cards","scards","sdex","equip","trinket","armor"];
 
-    for(let i=0;i<dreamSwitch.length;i++){
+  if(!client.charcall.charData(client,charid,"alive")){
 
-      temp = client.playerMap.get(charid,dreamSwitch[i]);
-      client.playerMap.set(charid,client.playerMap.get(charid,`dream${dreamSwitch[i]}`),dreamSwitch[i]);
-      client.playerMap.set(charid,temp,`dream${dreamSwitch[i]}`);
+    if(client.charcall.allData(client,userid,charid,"dreamself")=="NONE"){
+      //TODO: what happens to npcs controlled by players when they die?
     }
-  (client.playerMap.get(charid,"dreamer")?client.playerMap.set(charid,false,"dreamer"):client.playerMap.set(charid,true,"dreamer"));
-  client.funcall.chanMsg(client,charid,`You've been knocked out! You are currently awake as ${(client.playerMap.get(charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.playerMap.get(charid,"dreamvit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
-  client.playerMap.set(charid,true,"alive");
-} else {
 
-  if(client.playerMap.get(charid,"godtier")){
+    if(client.configMap.get(message.guild.id).options[0].selection==0){
+      if(client.charcall.allData(client,userid,charid,"dreamer")){
+        target = client.charcall.allData(client,userid,charid,"wakingID");
+      } else {
+        target = client.charcall.allData(client,userid,charid,"dreamingID");
+      }
+    (client.charcall.allData(client,userid,charid,"dreamer")?client.charcall.setAnyData(client,userid,charid,false,"dreamer"):client.charcall.setAnyData(client,userid,charid,true,"dreamer"));
+    //up to here, the actual number of controllers has beeen arbitrary, since nothing was changed.
+    //now we need to make sure all controllers are moved to the other self and
+    //possession is set appropriately.
+    let controllers = client.charcall.charData(client,charid,"control");
+    let targList = client.charcall.charData(client,target,"control");
+    for(let i=0;i<controllers.length;i++){
+    client.userMap.set(controllers[i],target,"possess");
+    targList.push(controllers[i]);
+    }
+    client.charcall.setAnyData(client,userid,charid,[],"control");
+    client.charcall.setAnyData(client,userid,target,targList,"control");
+  client.funcall.chanMsg(client,target,`You've been knocked out! You are currently awake as ${(client.charcall.allData(client,userid,charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.playerMap.get(charid,"dreamvit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
+  client.charcall.setAnyData(client,userid,charid,true,"alive");
+} else {
+  let godtier = client.charcall.allData(client,userid,charid,"godtier");
+  if(godtier=="NONE") godtier = false;
+  if(godtier){
     if(client.configMap.get(message.guild.id).options[6].selection==0){
-      client.playerMap.set(charid,Date.now(),"sleepTimer");
+      client.charcall.setAnyData(client,userid,charid,Date.now(),"sleepTimer");
       message.channel.send(`Looks like your conditional immortality saves you from perishing forever, though it'll take some time to get up again. You can ${client.auth.prefix}revive yourself in 5 minutes.`);
       return;
     } else {
@@ -561,13 +505,14 @@ try{
       return;
     }
   } else {
-  playerIDArray = client.landMap.get(message.guild.id+"medium","playerList");
-  landName = client.landMap.get(charid,"name");
+  sburbidArray = client.landMap.get(message.guild.id+"medium","playerList");
+  local = client.charcall.charData(client,charid,"local");
+  landName = client.landMap.get(local[4],"name");
 
   let msg = `A player has died! You have a weird sense they are `;
-  switch(client.playerMap.get(charid,"local")[0]){
+  switch(client.charcall.charData(client,charid,"local")[0]){
     case "h":
-    msg += `in someone's house...`;
+    msg += `in ${client.sburbMap.get(local[4],"name")}'s house...`;
     break;
     case "s1":
     case "s2":
@@ -609,47 +554,23 @@ try{
     msg += `in some unknown place...`;
   }
   msg += ` You should try to find them, and ${client.auth.prefix}revive them!`;
-  for(let i=0;i<playerIDArray.length;i++){
-    if(playerIDArray[i]!=charid){
-      client.funcall.chanMsg(client,playerIDArray[i],msg);
+  for(let i=0;i<sburbidArray.length;i++){
+    destination = sburbidArray[i].wakingID;
+    altdestination = sburbidArray[i].dreamingID;
+    if(destination!=charid&&altdestination!=charid){
+      client.funcall.chanMsg(client,destination,msg);
     }
   }
 }
-  if(client.playerMap.get(charid,"revived")){
+  if(client.charcall.allData(client,userid,charid,"revived")){
   message.channel.send("It seems that you've died again. That might spell the end of your journey, for now...");
   } else {
   message.channel.send("Your allies have been alerted that you've perished. Now you can only wait for one of them to give you your second chance...");
   }
 }
-}
-} catch(error){
-  console.log("There's some kind of funky message in strifecall ln.614!");
-}
 } else {
-
-  let active = client.strifeMap.get(strifeLocal,"active");
-  let sec = client.landMap.get(local[4],local[0]);
-
-//  let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1] && occpos[2] === list[pos][2]),1)];
-  let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1)];
-  /*for(i=0;i<sec[local[1]][local[2]][2][local[3]][4].length;i++){
-
-    if(sec[local[1]][local[2]][2][local[3]][4][i][1]==list[pos][1]&&sec[local[1]][local[2]][2][local[3]][4][i][2]==list[pos][2]){
-
-      sec[local[1]][local[2]][2][local[3]][4].splice(i,1);
-
-    }
-
-  }*/
-  client.strifeMap.set(strifeLocal,active,"active");
-  client.landMap.set(local[4],sec,local[0]);
-
-  /*if(init[turn][0] == pos && active.length>1){
-    passTurn(client,message,local);
-  }*/
-
+client.funcall.chanMsg(client,charid,"Leaving Strife!");
 }
-
 }
 
 //used to start a player or underlings turn and initiate
@@ -659,11 +580,11 @@ function startTurn(client, message, local) {
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
   client.strifeMap.set(strifeLocal,Date.now(),"time");
-
+  let userid = message.guild.id.concat(message.author.id);
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let list = client.strifeMap.get(strifeLocal,"list");
   let init = client.strifeMap.get(strifeLocal,"init");
-  let type = client.playerMap.get(list[init[turn][0]][1],"type");
+  let type = client.charcall.charData(client,list[init[turn][0]][1],"type");
   let i;
 //reset actions taken this turn
   list[init[turn][0]][6]=[];
@@ -757,8 +678,8 @@ function startTurn(client, message, local) {
 
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CHARLATAN")[0]){
 
-  let specibus = client.playerMap.get(list[init[turn][0]][1],"spec");
-  let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
+  let specibus = client.charcall.charData(client,list[init[turn][0]][1],"spec");
+  let equip = client.charcall.charData(client,list[init[turn][0]][1],"equip");
 
   if(specibus.length>0){
 
@@ -766,7 +687,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CHARLATAN")[0]){
 
   specibus[equip][1] = charlaCode;
 
-  client.playerMap.set(list[init[turn][0]][1],specibus,"spec");
+  client.charcall.setAnyData(client,userid,list[init[turn][0]][1],specibus,"spec");
 
   }
 }
@@ -813,7 +734,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"LIFE")[0]&&list[init[turn][0]][5]>0){
       //let curVit = list[init[turn][0]][3];
-      let gel = client.playerMap.get(list[init[turn][0]][1],"gel");
+      let gel = client.charcall.allData(client,userid,list[init[turn][0]][1],"gel");
 
       let heal = Math.floor((list[init[turn][0]][5]*.04)*gel);
       if((heal+list[init[turn][0]][3])>gel){
@@ -826,8 +747,8 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
     }
 
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"LIFE")[1]){
-      let armor = client.playerMap.get(list[init[turn][0]][1],"armor");
-      let gel = client.playerMap.get(list[init[turn][0]][1],"gel");
+      let armor = client.charcall.charData(client,list[init[turn][0]][1],"armor");
+      let gel = client.charcall.allData(client,userid,list[init[turn][0]][1],"gel");
       let heal = Math.floor((Math.random() * (tierBD[armor[0][2]][1] - 1)) + tierBD[armor[0][2]][0]);
 
       if((heal+list[init[turn][0]][3])>gel){
@@ -887,17 +808,9 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
 //retrieve player channel information
 
 let turnMsg = ``;
-
-console.log(`Retrieving ping ${client.playerMap.has(list[init[turn][0]][1],"ping")}`)
-
-if(client.playerMap.has(list[init[turn][0]][1],"ping")){
-
-  console.log("retrieved ping")
-
-  let ping = client.playerMap.get(list[init[turn][0]][1],"ping");
-
-  console.log(ping)
+  let ping = client.charcall.allData(client,userid,list[init[turn][0]][1],"ping");
 //send message to player's channel
+if(ping!="NONE"){
   turnMsg+=`${message.guild.members.cache.get(ping)} `;
 }
 
@@ -909,7 +822,7 @@ if(client.playerMap.has(list[init[turn][0]][1],"ping")){
 
     for(i=0;i<active.length;i++){
       if(list[active[i]][0]==true && active[i]!=init[turn][0]){
-        client.funcall.chanMsg(client,list[active[i]][1],`${client.playerMap.get(list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
+        client.funcall.chanMsg(client,list[active[i]][1],`${client.charcall.charData(client,list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
       }
     }
 
@@ -1007,8 +920,8 @@ exports.turnTest = function(client, message, local) {
 
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let init = client.strifeMap.get(strifeLocal,"init");
-
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
   let pos = client.playerMap.get(charid,"pos");
 
@@ -1104,9 +1017,9 @@ exports.underRally = function(client, local) {
 
   for(i=0;i<occList.length;i++){
 
-    if(occList[i][0]==false){
+    if(occList[i][0]==false&&client.charcall.charData(client,occList[i][1],"control").length===0){
 
-      let profile = [false,occList[i][1],client.playerMap.get(occList[i][1],"grist"),client.playerMap.get(occList[i][1],"vit"),0,0,[],[]]
+      let profile = [false,occList[i][1],client.charcall.charData(client,occList[i][1],"gristtype"),client.charcall.charData(client,occList[i][1],"vit"),0,0,[],[]]
 
       let list = client.strifeMap.get(strifeLocal,"list");
       let init = client.strifeMap.get(strifeLocal,"init");
@@ -1204,12 +1117,6 @@ exports.underRally = function(client, local) {
     let bdroll;
     let absorb = false;
     let tarGrist;
-
-console.log(message.author.username);
-
-console.log(list[target]);
-console.log(list);
-console.log(target);
 
     if(client.traitcall.traitCheck(client,list[target][1],"BLOOD")[0]){
       if(!Math.floor(Math.random()*12)&&active.length>2){
@@ -2680,7 +2587,7 @@ exports.spawn = function(client,message,underling,pregrist = false){
       faction: "underling",
       vit:client.underlings[underling].vit,
       gel:client.underlings[underling].vit,
-      grist: grist,
+      gristtype: grist,
       strife:false,
       pos:0,
       alive:true,
@@ -2715,7 +2622,7 @@ exports.spawn = function(client,message,underling,pregrist = false){
 
     client.npcMap.set(npcID,npcSet);
 
-    let occset = [false,npcID,grist];
+    let occset = [false,npcID];
 
     //sec[local[1]][local[2]][2][local[3]][4].push(occset);
 

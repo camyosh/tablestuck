@@ -29,18 +29,20 @@ exports.setAnyData = function(client,userid,charid,data,key){
     if(client.playerMap.get(charid).hasOwnProperty(key)){
       client.playerMap.set(charid,data,key);
     }else if(client.sburbMap.get(sburbid).hasOwnProperty(key)){
-      client.sburbMap.set(charid,data,key);
+      client.sburbMap.set(sburbid,data,key);
     }else if(client.userMap.get(userid).hasOwnProperty(key)){
-      client.userMap.set(charid,data,key);
+      client.userMap.set(userid,data,key);
     }else{
+      console.log(`Couldn't assign data ${data} to key ${key} for ${charid}.`);
       return;
     }
   }else{
     if(client.npcMap.get(charid).hasOwnProperty(key)){
       client.npcMap.set(charid,data,key);
     } else if(client.userMap.get(userid).hasOwnProperty(key)){
-      client.userMap.set(charid,data,key);
+      client.userMap.set(userid,data,key);
     } else {
+    console.log(`Couldn't assign data ${data} to key ${key} for ${charid}.`);
     return;
     }
   }
@@ -49,8 +51,10 @@ exports.setAnyData = function(client,userid,charid,data,key){
 exports.charData = function(client,charid,datatype){
   if(client.playerMap.has(charid)){
     return client.playerMap.get(charid,datatype);
-  } else {
+  } else if(client.npcMap.has(charid)) {
     return client.npcMap.get(charid,datatype);
+  } else {
+    return "NONE";
   }
 }
 //checks if a character has a given datatype
@@ -68,7 +72,7 @@ exports.hasData = function(client,charid,datatype){
 }
 //returns a bool based on if the charid belongs to an NPC or not.
  exports.npcCheck = function(client,charid){
-   if(client.npcMap.has(userid)){
+   if(client.npcMap.has(charid)){
      return true;
    } else {
      return false;
@@ -79,7 +83,7 @@ exports.hasData = function(client,charid,datatype){
    check = false;
    if(occList.length>0){
      for(i=0;i<occList.length;i++){
-       if(occList[i][0]==false&&client.charcall.charData(client,occList[i][0],"faction")=="underling"){
+       if(occList[i][0]==false&&client.charcall.charData(client,occList[i][0],"control").length===0){
          check=true;
        }
      }

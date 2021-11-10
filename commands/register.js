@@ -99,7 +99,7 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
 
   await createTutorial(client,message,userid,userData);
   await chumCheck(client,message,userid,sburbid,chumhandle,chumtag);
-  await charSetup(userData,sburbid);
+  await charSetup(userData,sburbid,channelCheck);
   var gristSet= await createGristSet(client,message)
   var defBedroom = client.funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
   var beginData = await beginWorld(client,userData,defBedroom,armorsets,gristSet);
@@ -109,7 +109,7 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
   var dateObj = new Date();
   //creates channels if the player doesn't have any.
   if(!channelCheck){
-    channels = await generateChannels(client,message,sburbid,channels);
+    channels = await generateChannels(client,message,userid,sburbid,channels);
   }else{
     client.sburbMap.set(sburbid,channels[0],"channel");
     client.sburbMap.set(sburbid,channels[1],"pesterchannel");
@@ -240,13 +240,15 @@ function chumCheck(client,message,userid,sburbid,chumhandle,chumtag){
     client.landMap.set(message.guild.id+"medium",playerList,"playerList");
     client.landMap.set(message.guild.id+"medium",handleList,"handleList");
 }
-function charSetup(userData,sburbid){
+function charSetup(userData,sburbid,channelCheck){
   //userData.possess is the character the user is controlling, which will start as the
   //user's waking self.
   userData.possess = `w${sburbid}`;
   //adds both waking and sleeping selves to the speeddial, for faster DM possession.
-  userData.speeddial.push([`w${sburbid}`,`${userData.name}`]);
-  userData.speeddial.push([`d${sburbid}`,`${userData.name}'s Dream Self`]);
+  if(!channelCheck){
+    userData.speeddial.push([`w${sburbid}`,`${userData.name}`]);
+    userData.speeddial.push([`d${sburbid}`,`${userData.name}'s Dream Self`]);
+  }
 }
 function createGristSet(client,message){
   /*randomizes the grist for the land, based on which grists have or haven't been used
@@ -450,6 +452,7 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
   client.playerMap.set(`d${sburbid}`,dreamSheet);
   client.sburbMap.set(sburbid,sburbSheet);
   client.userMap.set(userid,userData);
+  client.userMap.set(userid,channels[0],"channel");
 }
 async function finishLandGen(client,message,sburbid,aspectChoice,gristSet,def){
   //determines where all the gates on the land will be.
@@ -494,7 +497,7 @@ async function finishLandGen(client,message,sburbid,aspectChoice,gristSet,def){
   //pushes the land to the database defined by the sburbid.
   client.landMap.set(sburbid,land);
 }
-async function generateChannels(client,message,sburbid,channels){
+async function generateChannels(client,message,userid,sburbid,channels){
   var chan,pesterchan;
   if(client.configMap.get(message.guild.id).options[1].selection==2){
     channels[0] = message.channel.id;
