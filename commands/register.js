@@ -451,8 +451,8 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
   client.playerMap.set(`w${sburbid}`,wakingSheet);
   client.playerMap.set(`d${sburbid}`,dreamSheet);
   client.sburbMap.set(sburbid,sburbSheet);
+  userData.channel=channels[0];
   client.userMap.set(userid,userData);
-  client.userMap.set(userid,channels[0],"channel");
 }
 async function finishLandGen(client,message,sburbid,aspectChoice,gristSet,def){
   //determines where all the gates on the land will be.

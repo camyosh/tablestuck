@@ -49,7 +49,7 @@ let target = client.userMap.get(userid,"possess");
   let control = client.charcall.charData(client,target,"control");
   control.splice(control.indexOf(userid),1);
   client.charcall.setAnyData(client,userid,target,control,"control");
-
+  checkStrife(client,message,target);
   //second, sets your default body to your current possess value.
   client.userMap.set(userid,speeddial[0][0],"possess");
 
@@ -93,6 +93,7 @@ let target;
   control.splice(control.indexOf(userid),1);
   client.charcall.setAnyData(client,userid,charid,control,"control");
   message.channel.send(`Stopped possessing ${client.charcall.charData(client,charid,"name").toUpperCase()}!`);
+  checkStrife(client,message,charid);
   //second, sets your current possession as your choice.
   client.userMap.set(userid,target,"possess");
 
@@ -102,4 +103,12 @@ let target;
   destination.push(userid);
   client.charcall.setAnyData(client,userid,charid,destination,"control");
   message.channel.send(`Now possessing ${client.charcall.charData(client,target,"name").toUpperCase()}!`);
+}
+function checkStrife(client,message,charid){
+  if(client.charcall.charData(client,charid,"strife"&&client.charcall.charData(client,charid,"faction")!="player")){
+    let local = client.charcall.charData(client,charid,"local");
+      if(client.strifecall.turnTest(client,message,local)){
+        client.strifecall.npcTurn(client,message,local);
+    }
+  }
 }

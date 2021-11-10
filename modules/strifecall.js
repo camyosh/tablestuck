@@ -12,7 +12,6 @@ const actionList = ["accede","accelerate","accessorize","acclaim","acclimate","a
 
 const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
 
-//Function called to pass the turn in strife
 
 function inflict(client, message, local, list, target, chance, status, attacker){
   if(log){
@@ -71,7 +70,13 @@ function passTurn(client, message, local) {
   let init = client.strifeMap.get(strifeLocal,"init");
   let i;
   let removed;
-
+  //waits for the strife timer to be done, so there are no actions left pending.
+  let endtime = client.strifeMap.get(strifeLocal,"time");
+  let curtime = Date.now();
+  if(curtime<endtime){
+    setTimeout(pass,1000,client,message,local);
+    return;
+  }
   //check if the player whos turn it is has any status effects
   //Steps for retrieving player information based on turn
   //Retrieve an array from the init array at the position equal to TURN
@@ -439,15 +444,17 @@ let sec = client.landMap.get(local[4],local[0]);
 let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1)];
 client.strifeMap.set(strifeLocal,active,"active");
 client.landMap.set(local[4],sec,local[0]);
-return;
+if(init[turn][0] == pos){
+  passTurn(client,message,local);
 }
+} else {
 //if player leaving is the last in strife, delete strife database
   userid=userid[0];
   if(players <= 1){
     client.strifeMap.delete(strifeLocal);
     client.charcall.setAnyData(client,userid,charid,list[pos][3],"vit");
     client.charcall.setAnyData(client,userid,charid,false,"strife");
-  } else {
+  }else{
     let active = client.strifeMap.get(strifeLocal,"active");
     let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
     let sec = client.landMap.get(local[4],local[0]);
@@ -460,18 +467,32 @@ return;
     client.landMap.set(local[4],sec,local[0]);
     client.charcall.setAnyData(client,userid,charid,false,"strife");
     client.charcall.setAnyData(client,userid,charid,list[pos][3],"vit");
-//makes sure the turn is passed if needed.
     if(init[turn][0] == pos){
       passTurn(client,message,local);
     }
   }
+}
+
 
   if(!client.charcall.charData(client,charid,"alive")){
 
     if(client.charcall.allData(client,userid,charid,"dreamself")=="NONE"){
-      //TODO: what happens to npcs controlled by players when they die?
+      //if the character has no dreamself, it is likely an underling, so it is removed from the room
+      //and the controller is pushed back to their default body.
+      let removed = sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1);
+      let controllers = client.charcall.charData(client,charid,"control");
+      for(let i=0;i<controllers.length;i++){
+      target = client.charcall.allData(client,controllers[i],charid,"speeddial")[0][0];
+      client.userMap.set(controllers[i],target,"possess");
+      targList = client.charcall.charData(client,target,"control");
+      targList.push(controllers[i]);
+      client.charcall.setAnyData(client,userid,target,targList,"control");
+      }
+      client.funcall.chanMsg(client,charid,`You have been shifted to your first Speed Dial option.`);
+      client.charcall.setAnyData(client,userid,charid,[],"control");
+      return;
     }
-
+    //switches the dreaming and waking self, and all those who control them.
     if(client.configMap.get(message.guild.id).options[0].selection==0){
       if(client.charcall.allData(client,userid,charid,"dreamer")){
         target = client.charcall.allData(client,userid,charid,"wakingID");
@@ -490,7 +511,7 @@ return;
     }
     client.charcall.setAnyData(client,userid,charid,[],"control");
     client.charcall.setAnyData(client,userid,target,targList,"control");
-  client.funcall.chanMsg(client,target,`You've been knocked out! You are currently awake as ${(client.charcall.allData(client,userid,charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.playerMap.get(charid,"dreamvit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
+  client.funcall.chanMsg(client,target,`You've been knocked out! You are currently awake as ${(client.charcall.allData(client,userid,charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.charcall.charData(charid,"vit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
   client.charcall.setAnyData(client,userid,charid,true,"alive");
 } else {
   let godtier = client.charcall.allData(client,userid,charid,"godtier");
@@ -669,12 +690,8 @@ function startTurn(client, message, local) {
       break;
     }
   }
-//check if player or underling
-
-
 //roll player stamina
   stamMax = client.underlings[type].stm;
-
 
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"CHARLATAN")[0]){
 
@@ -834,80 +851,23 @@ if(ping!="NONE"){
     while(!heartAttack){
 
       heartTarg=active[Math.floor(Math.random()*active.length)];
-      if(heartTarg!=init[turn][0]){
+      if(heartTarg!=init[turn][0]||active.length==1){
         heartAttack=true;
       }
 
     }
     let action = actionList[Math.floor(Math.random()*actionList.length)];
-    act(client,message,local,action,heartTarg)
+    act(client,message,local,action,heartTarg);
     }
 
-  /*}  else {
-
-    //list[init[turn][0]][5]=0;
-//if turn is underling, roll stamina based on underling document
-
-let underling = client.playerMap.get(list[init[turn][0]][1],"type");
-
-    stamroll = [Math.floor((Math.random() * client.underlings[underling].stm) + 1),Math.floor((Math.random() * client.underlings[underling].stm) + 1)];
-
-    if(stamfav==0){
-      stamina=stamroll[0];
-      stamsg=`${stamroll[0]}`
-    } else if(stamfav>0){
-      if(stamroll[0]>stamroll[1]){
-        stamina=stamroll[0];
-        stamsg=`~~${stamroll[1]}~~ ${stamroll[0]}`
-      } else {
-        stamina=stamroll[1];
-        stamsg=`~~${stamroll[0]}~~ ${stamroll[1]}`
-      }
-    } else {
-      if(stamroll[0]<stamroll[1]){
-        stamina=stamroll[0];
-        stamsg=`~~${stamroll[1]}~~ ${stamroll[0]}`
-      } else {
-        stamina=stamroll[1];
-        stamsg=`~~${stamroll[0]}~~ ${stamroll[1]}`
-      }
-    }
-
-    if(list[init[turn][0]][7].includes("FROSTBITE")){
-      stamina-=1;
-      stamsg += ` - 1`;
-    }
-    if(stunned){
-      stamina = 0;
-      stamsg =`0 (STUNNED)`;
-    }
-    list[init[turn][0]][5]=stamina;
-    client.strifeMap.set(strifeLocal,list,"list");
-
-    let i;
-    let active = client.strifeMap.get(strifeLocal,"active");
-
-    for(i=0;i<active.length;i++){
-      if(list[active[i]][0]==true){
-        let chan = client.playerMap.get(list[active[i]][1],"channel");
-        client.channels.cache.get(chan).send(` The ${client.playerMap.get(list[init[turn][0]][1],"name")} starts its turn with ${stamsg} STAMINA!${alert}`);
-      }
-    }
-
-
-    //underTurn(client,message,local,underling);
-
-    npcTurn(client,message,local);
-  }*/
-
-  if(!list[init[turn][0]][0]){
+  if(client.charcall.charData(client,list[init[turn][0]][1],"control").length<1){
     npcTurn(client,message,local);
   }
 
 }
 
 exports.pass = function(client, message, local) {
-  setTimeout(passTurn,3000,client,message,local);
+  passTurn(client,message,local);
 }
 
 exports.start = function(client, message, local) {
@@ -922,8 +882,7 @@ exports.turnTest = function(client, message, local) {
   let init = client.strifeMap.get(strifeLocal,"init");
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-
-  let pos = client.playerMap.get(charid,"pos");
+  let pos = client.charcall.charData(client,charid,"pos");
 
 
   if(init[turn][0] == pos) {
@@ -1017,16 +976,16 @@ exports.underRally = function(client, local) {
 
   for(i=0;i<occList.length;i++){
 
-    if(occList[i][0]==false&&client.charcall.charData(client,occList[i][1],"control").length===0){
+    if(occList[i][0]==false&&client.charcall.charData(client,occList[i][1],"control").length===0&&client.charcall.charData(client,occList[i][1],"alive")){
 
       let profile = [false,occList[i][1],client.charcall.charData(client,occList[i][1],"gristtype"),client.charcall.charData(client,occList[i][1],"vit"),0,0,[],[]]
-
+      client.charcall.setAnyData(client,'-',occList[i][1],true,"strife");
       let list = client.strifeMap.get(strifeLocal,"list");
       let init = client.strifeMap.get(strifeLocal,"init");
       let active = client.strifeMap.get(strifeLocal,"active");
 
       var pos = list.length;
-
+      client.charcall.setAnyData(client,'-',occList[i][1],pos,"pos");
       let initRoll = [pos, Math.floor((Math.random() * 20) + 1)];
 
       list.push(profile);
@@ -1067,7 +1026,7 @@ exports.underRally = function(client, local) {
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 //if strife database does not exist, cancel code
     if(client.strifeMap.has(strifeLocal)==false){
-      console.log("Stopped another crash!");
+      console.log("Stopped a crash from act being run without a strife!");
       return;
     }
 
@@ -1087,22 +1046,6 @@ exports.underRally = function(client, local) {
 
 //check action tags
     let aa = client.actionList[action].add;
-
-    if(aa.includes("INSTANT")){
-      let pos = client.playerMap.get(message.guild.id.concat(message.author.id),"pos");
-      let t;
-      let setTurn = 0;
-
-      for(t=0;t<init.length;t++){
-
-        if(init[t][0] == pos){
-          setTurn=t;
-        }
-
-      }
-
-      turn = setTurn;
-    }
 
     let bd = 0;
     let br = 0;
@@ -1141,17 +1084,15 @@ exports.underRally = function(client, local) {
       //retrieve target grist
     tarGrist = list[target][2];
   } catch(err) {
-    console.log(message.author.username);
+    console.log(list[target][1]);
     console.log("THIS IS THE GUY, TAKE HIM OUT");
   }
     let targName = "Target"
     let attName = "Attacker"
 //check if current turn is a player
 
-
-
-let specibus = client.playerMap.get(list[init[turn][0]][1],"spec");
-let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
+let specibus = client.charcall.charData(client,list[init[turn][0]][1],"spec");
+let equip = client.charcall.charData(client,list[init[turn][0]][1],"equip");
 
 if(specibus.length>0){
 
@@ -1160,7 +1101,7 @@ dmg = tierDmg[specibus[equip][2]];
 bdroll = tierBD[specibus[equip][2]];
 
 } else {
-  let underling = client.playerMap.get(list[init[turn][0]][1],"type");
+  let underling = client.charcall.charData(client,list[init[turn][0]][1],"type");
   dmg = client.underlings[underling].d;
   bdroll = client.underlings[underling].bd;
   grist = list[init[turn][0]][2];
@@ -1168,24 +1109,21 @@ bdroll = tierBD[specibus[equip][2]];
 }
 
 
-attName = client.playerMap.get(list[init[turn][0]][1],"name");
-//if target is player, retrieve name from database, if underling default underling name
-
-      targName = client.playerMap.get(list[target][1],"name");
+attName = client.charcall.charData(client,list[init[turn][0]][1],"name");
+targName = client.charcall.charData(client,list[target][1],"name");
 
 
     let brroll;
     let av;
-//if target is player
 
-    let armor = client.playerMap.get(list[target][1],"armor");
+    let armor = client.charcall.charData(client,list[target][1],"armor");
 
     if(armor.length>0){
       av = tierAv[armor[0][2]];
       brroll = tierBD[armor[0][2]];
     } else {
-      av = client.underlings[client.playerMap.get(list[target][1],"type")].av;
-      brroll = client.underlings[client.playerMap.get(list[target][1],"type")].bd;
+      av = client.underlings[client.charcall.charData(client,list[target][1],"type")].av;
+      brroll = client.underlings[client.charcall.charData(client,list[target][1],"type")].bd;
     }
 
     let effective = "HIT!"
@@ -1242,15 +1180,12 @@ attName = client.playerMap.get(list[init[turn][0]][1],"name");
     }
 
 } catch(err) {
-  console.log("What is this one")
+  console.log(err)
   console.log(grist);
   console.log(tarGrist);
 }
     //check for each action tag that is NONCOMBATIVE
     //PREROLLACT
-    if(log){
-      console.log(`Checking preroll modifiers`);
-    }
     let pre;
     for(pre=(aa.length - 1);pre>=0;pre--){
       switch(aa[pre]){
@@ -1285,7 +1220,6 @@ attName = client.playerMap.get(list[init[turn][0]][1],"name");
           let p;
           for(p=0;p<active.length;p++){
             if(list[active[p]][0]==true){
-              let chan = client.playerMap.get(list[active[p]][1],"channel");
               alert+=`${attName} gains ${newStam} STAMINA, they now have ${list[init[turn][0]][5]} STAMINA!\n`
             }
           }
@@ -1296,7 +1230,6 @@ attName = client.playerMap.get(list[init[turn][0]][1],"name");
             let j;
             for(j=0;j<active.length;j++){
               if(list[active[j]][0]==true){
-                let chan = client.playerMap.get(list[active[j]][1],"channel");
                 alert+=`${attName} gains ${newStam} STAMINA, they now have ${list[init[turn][0]][5]} STAMINA!\n`
               }
             }
@@ -1354,15 +1287,15 @@ attName = client.playerMap.get(list[init[turn][0]][1],"name");
             break;
             case "SCALEDMG":
               if(list[init[turn][0]][0]){
-                if(list[init[turn][0]][3]<Math.floor(client.playerMap.get(list[init[turn][0]][1],"gel")/4)){
+                if(list[init[turn][0]][3]<Math.floor(client.charcall.allData(client,"-",[init[turn][0]][1],"gel")/4)){
                   dmgLvl=3;
-                } else if(list[init[turn][0]][3]<Math.floor(client.playerMap.get(list[init[turn][0]][1],"gel")/2)) {
+                } else if(list[init[turn][0]][3]<Math.floor(client.charcall.allData(client,"-",list[init[turn][0]][1],"gel")/2)) {
                   dmgLvl=2;
                 }
               } else {
-                if(list[init[turn][0]][3]<Math.floor(client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit/4) ){
+                if(list[init[turn][0]][3]<Math.floor(client.underlings[client.charcall.charData(client,list[init[turn][0]][1],"type")].vit/4) ){
                   dmgLvl=3;
-                } else if(list[init[turn][0]][3]<Math.floor(client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit/2)) {
+                } else if(list[init[turn][0]][3]<Math.floor(client.underlings[client.charcall.charData(client,list[init[turn][0]][1],"type")].vit/2)) {
                   dmgLvl=2;
                 }
               }
@@ -1389,9 +1322,6 @@ attName = client.playerMap.get(list[init[turn][0]][1],"name");
       }
     }
     if(att == true) {
-      if(log){
-        console.log(`Checking for precombat modifiers`);
-      }
       let precon;
       for(precon=(list[init[turn][0]][7].length - 1);precon>=0;precon--){
         let removed;
@@ -1431,9 +1361,6 @@ attName = client.playerMap.get(list[init[turn][0]][1],"name");
 
 
       //check enemy tags
-      if(log){
-        console.log(`Check enemy modifiers`);
-      }
       let precont;
         for(precont=(list[target][7].length - 1);precont>=0;precont--){
           let removed;
@@ -1824,9 +1751,6 @@ if(aa.includes("RANDSTATUS")){
     let bonusRes = 0;
 
     let k;
-    if(log){
-      console.log(`Checking for bonus damage from meat`);
-    }
     for(k=0;k<list[init[turn][0]][7].length;k++){
     try{
       if(`${list[init[turn][0]][7][k].charAt(0)}${list[init[turn][0]][7][k].charAt(1)}${list[init[turn][0]][7][k].charAt(2)}${list[init[turn][0]][7][k].charAt(3)}`==`MEAT`){
@@ -2008,12 +1932,12 @@ if(aa.includes("RANDSTATUS")){
         alert+=`The pain fuels their soul, damage converted to ${damage} points of healing!\n`;
         damage=0;
         if(list[target][0]){
-          if(client.playerMap.get(list[target][1],"gel")<list[target][3]){
-          list[target][3]=client.playerMap.get(list[target][1],"gel");
+          if(client.charcall.allData(client,"-",list[target][1],"gel")<list[target][3]){
+          list[target][3]=client.charcall.allData(client,"-",list[target][1],"gel");
         }
       } else {
-        if(client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit<list[target][3]){
-          list[target][3]=client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit;
+        if(client.underlings[client.charcall.charData(client,list[init[turn][0]][1],"type")].vit<list[target][3]){
+          list[target][3]=client.underlings[client.charcall.charData(client,list[init[turn][0]][1],"type")].vit;
         }
       }
 
@@ -2025,12 +1949,12 @@ if(aa.includes("RANDSTATUS")){
       alert+=`HEALED TARGET BY ${damage} POINTS OF HEALING!\n`;
       damage=0;
       if(list[target][0]){
-        if(client.playerMap.get(list[target][1],"gel")<list[target][3]){
-        list[target][3]=client.playerMap.get(list[target][1],"gel");
+        if(client.charcall.allData(client,"-",list[target][1],"gel")<list[target][3]){
+        list[target][3]=client.charcall.allData(client,"-",list[target][1],"gel");
       }
     } else {
-      if(client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit<list[target][3]){
-        list[target][3]=client.underlings[client.playerMap.get(list[init[turn][0]][1],"type")].vit;
+      if(client.underlings[client.charcall.charData(client,list[init[turn][0]][1],"type")].vit<list[target][3]){
+        list[target][3]=client.underlings[client.charcall.charData(client,list[init[turn][0]][1],"type")].vit;
       }
     }
     }
@@ -2041,8 +1965,8 @@ if(aa.includes("RANDSTATUS")){
       list[init[turn][0]][3]+= bonusDmg;
       alert+= `VAMPIRICALLY SIPHONED ${bonusDmg} VITALITY!\n`
 
-      if(client.playerMap.get(list[init[turn][0]][1],"gel")<list[init[turn][0]][3]){
-        list[init[turn][0]][3]=client.playerMap.get(list[init[turn][0]][1],"gel");
+      if(client.charcall.allData(client,"-",list[init[turn][0]][1],"gel")<list[init[turn][0]][3]){
+        list[init[turn][0]][3]=client.charcall.allData(client,"-",list[init[turn][0]][1],"gel");
       }
 
     }
@@ -2051,9 +1975,6 @@ if(aa.includes("RANDSTATUS")){
 
 
         alert+= `**MORTAL DECAY** YOUR DAMAGE SPREADS TO ALL FOES.\n`;
-        if(log){
-          console.log(`Mortal decay`);
-        }
         for(let id=0;id<active.length;id++){
           if(active[id]!=init[turn][0]&&active[id]!=target){
             list[id][3]-= damage;
@@ -2072,9 +1993,6 @@ if(aa.includes("RANDSTATUS")){
       let id;
       let splashbd= Math.floor((Math.random() * (bdroll[1] - bdroll[0])) + bdroll[0]);
       alert+=`DEALT ${splashbd} DAMAGE TO ALL FOES.\n`
-      if(log){
-        console.log(`Splash damage ${splashbd}`);
-      }
       for(id=0;id<active.length;id++){
         if(active[id]!=init[turn][0]&&active[id]!=target){
           list[id][3]-= splashbd;
@@ -2092,9 +2010,6 @@ if(aa.includes("RANDSTATUS")){
       alert+= `TARGET BLOCKED ALL DAMAGE!\n`;
       damage=0;
       let dc;
-      if(log){
-        console.log(`Blocking damage`);
-      }
       for(dc=(list[target][7].length - 1);dc>=0;dc--){
         if(list[target][7][dc]=="BLOCK"){
           removed = list[target][7].splice(dc,1);
@@ -2123,9 +2038,9 @@ if(aa.includes("RANDSTATUS")){
     list[target][3] -= damage;
     if(absorb==true){
       let healdif = damage;
-      if(client.playerMap.get(list[init[turn][0]][1],"gel")<list[init[turn][0]][3]+damage){
-        healdif = client.playerMap.get(list[init[turn][0]][1],"gel")-list[init[turn][0]][3];
-        list[init[turn][0]][3] = client.playerMap.get(list[init[turn][0]][1],"gel");
+      if(client.charcall.allData(client,"-",list[init[turn][0]][1],"gel")<list[init[turn][0]][3]+damage){
+        healdif = client.charcall.allData(client,"-",list[init[turn][0]][1],"gel")-list[init[turn][0]][3];
+        list[init[turn][0]][3] = client.charcall.allData(client,"-",list[init[turn][0]][1],"gel");
       } else {
       list[init[turn][0]][3]+= damage;
     }
@@ -2187,20 +2102,11 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
 
-    if(log){
-      console.log(`1 Sending channel message  to ${active.length} channels`);
-    }
 
     for(i=0;i<active.length;i++){
-      if(log){
-        console.log(`Looped ${i} times`);
-      }
       if(list[active[i]][0]==true){
         client.funcall.chanMsg(client,list[active[i]][1],embed);
       }
-    }
-    if(log){
-      console.log(`finished sending to channels`);
     }
 
   } else {
@@ -2293,16 +2199,14 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     removed = list[target][7].splice(list[target][7].indexOf("DOUBLEGRIST"));
   }
 try{
-  if(log){
-    console.log(`Checking if anyone in strife is dead`);
-  }
 for(let ik=0;ik<active.length;ik++){
 if(list[active[ik]][3] < 1){
   console.log("Trying to kill the dead ")
   setTimeout(kill,1000,client,message,local,active[ik],init[turn][0]);
 }else{
   if(bounceCheck && active[ik]==target){
-    setTimeout(act,3000,client,message,local,"aggrieve",active[ik]);
+    setTimeout(act,2000,client,message,local,"aggrieve",active[ik]);
+    client.strifeMap.set(strifeLocal,Date.now()+3000,"time");
     }
   }
 }
@@ -2317,20 +2221,17 @@ if(list[active[ik]][3] < 1){
   }
 
 
-  function underTurn(client, message, local, underling) {
+/*  function underTurn(client, message, local, underling) {
 
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
     let playerpos = client.strifeMap.get(strifeLocal,"playerpos")
     let active = client.strifeMap.get(strifeLocal,"active")
-
     let list = client.strifeMap.get(strifeLocal,"list")
     let turn = client.strifeMap.get(strifeLocal,"turn")
     let init = client.strifeMap.get(strifeLocal,"init")
 
     let stamina = list[init[turn][0]][5];
-    console.log(stamina);
-    console.log(list[init[turn][0]][5]);
 //randomly decide target from list
     let target = playerpos[Math.floor((Math.random() * playerpos.length))];
 
@@ -2533,7 +2434,7 @@ if(list[active[ik]][3] < 1){
   } catch(err){
 
   }
-}
+}*/
 exports.spawn = function(client,message,underling,pregrist = false){
   let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
   let local = client.charcall.charData(client,charid,"local");
@@ -2545,7 +2446,7 @@ exports.spawn = function(client,message,underling,pregrist = false){
   return client.charcall.charData(client,sec[local[1]][local[2]][2][local[3]][4][sec[local[1]][local[2]][2][local[3]][4].length-1][1],"name");
 }
 
-  function underSpawn(client,local,underling,sessionID,npcCount,pregrist){
+  function underSpawn(client,local,underling,sessionID,npcCount,pregrist=false){
 
     let landGrist;
 
@@ -2632,19 +2533,20 @@ exports.spawn = function(client,message,underling,pregrist = false){
   }
 
   exports.dungeonSpawn = function(client, section, coords, underling, message){
-    let sessionID = message.guild.id;
-    let charid = sessionID.concat(message.author.id);
-    let npcCount = client.landMap.get(sessionID+"medium","npcCount");
-    let local = ["s" + section + "d", coords[0], coords[1], 0, charid];
+    let sessionid = message.guild.id;
+    let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+    let sburbid = client.charcall.charData(client,charid,"owner");
+    let npcCount = client.landMap.get(sessionid+"medium","npcCount");
+    let local = ["s" + section + "d", coords[0], coords[1], 0, sburbid];
 
     npcCount++;
-    let underlingSpawn = underSpawn(client, local, underling, sessionID, npcCount);
+    let underlingSpawn = underSpawn(client, local, underling, sessionid, npcCount);
 
-    client.landMap.set(sessionID+"medium",npcCount,"npcCount");
+    client.landMap.set(sessionid+"medium",npcCount,"npcCount");
     return(underlingSpawn);
   }
 
-  function lichTurn(client,message,local,underling,target) {
+/*  function lichTurn(client,message,local,underling,target) {
 
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
@@ -2685,35 +2587,35 @@ exports.spawn = function(client,message,underling,pregrist = false){
     break;
   }
 
+}*/
+exports.npcTurn = function(client, message, local) {
+  npcTurn(client,message,local);
 }
-
 function npcTurn(client, message, local){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
-
-  let playerpos;
-  try{
-    playerpos = client.strifeMap.get(strifeLocal,"playerpos")
-  } catch(err) {
-    console.log("Stopped a crash - player not found!")
+  //waits for the strife timer to be done, so there are no actions left pending.
+  let endtime = client.strifeMap.get(strifeLocal,"time");
+  let curtime = Date.now();
+  if(curtime<endtime){
+    setTimeout(npcTurn,1000,client,message,local);
     return;
   }
-  let active = client.strifeMap.get(strifeLocal,"active")
 
+  let playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+  let active = client.strifeMap.get(strifeLocal,"active")
   let list = client.strifeMap.get(strifeLocal,"list")
   let turn = client.strifeMap.get(strifeLocal,"turn")
   let init = client.strifeMap.get(strifeLocal,"init")
 
   if(!list[init[turn][0]][0]&&list[init[turn][0]][3]>0){
 
-  let faction = client.playerMap.get(list[init[turn][0]][1],"faction");
-  let spec = client.playerMap.get(list[init[turn][0]][1],"spec");
-  let equip = client.playerMap.get(list[init[turn][0]][1],"equip");
-  let type = client.playerMap.get(list[init[turn][0]][1],"type");
-
-  let prototype = client.playerMap.get(list[init[turn][0]][1],"prototype");
-
-  let prefTarg = client.playerMap.get(list[init[turn][0]][1],"prefTarg");
+  let faction = client.charcall.charData(client,list[init[turn][0]][1],"faction");
+  let spec = client.charcall.charData(client,list[init[turn][0]][1],"spec");
+  let equip = client.charcall.charData(client,list[init[turn][0]][1],"equip");
+  let type = client.charcall.charData(client,list[init[turn][0]][1],"type");
+  let prototype = client.charcall.charData(client,list[init[turn][0]][1],"prototype");
+  let prefTarg = client.charcall.charData(client,list[init[turn][0]][1],"prefTarg");
 
   let prefMove = client.underlings[type].prefMove;
 
@@ -2726,22 +2628,19 @@ function npcTurn(client, message, local){
   }else{
 
   for(let i=0;i<active.length;i++){
-    if(client.playerMap.get(list[active[i]][1],`${faction}Rep`)<0){
+    if(client.charcall.allData(client,"-",list[active[i]][1],`${faction}Rep`)<0){
       targetList.push(active[i]);
     }
   }
 }
-console.log(`targets - ${targetList}`);
 //randomly decide target from list
   let target = targetList[Math.floor((Math.random() * targetList.length))];
 
   let actionSet = [];
   let tempAct;
   if(spec.length!=0){
-    let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(spec[equip][1].charAt(0))]];
     for(let i=0;i<4;i++){
-      tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(spec[equip][1].charAt(i+4))]];
-      console.log(tempAct);
+      tempAct = client.action[client.codeCypher[i+4][client.captchaCode.indexOf(spec[equip][1].charAt(i+4))]];
       if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"){
         actionSet.push(tempAct);
       }
@@ -2749,9 +2648,8 @@ console.log(`targets - ${targetList}`);
     }
   }
   for(let j =0;j<prototype.length;j++){
-    let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(prototype[j][1].charAt(0))]];
     for(let i=0;i<4;i++){
-      tempAct = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]];
+      tempAct = client.action[client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]];
       console.log(tempAct);
       if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"){
         actionSet.push(tempAct);
@@ -2763,18 +2661,14 @@ console.log(`targets - ${targetList}`);
     tempAct=client.underlings[type].act;
 
     for(let i=0;i<tempAct.length;i++){
-      console.log(tempAct[0])
       if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("REUSE")))&&tempAct!="no action"){
         actionSet.push(tempAct[i]);
-        console.log(actionSet);
       }
     }
   //}
-  console.log(`actions - ${actionSet}`);
 
     if(actionSet.length>0&&targetList.length>0){
 
-      console.log("taking action")
 
       let action = actionSet[Math.floor((Math.random() * actionSet.length))];
       if(actionSet.includes(prefMove)){
@@ -2791,25 +2685,23 @@ console.log(`targets - ${targetList}`);
         }
       }
       list[init[turn][0]][5]-=client.actionList[action].cst;
-      list[init[turn][0]][6]+=action;
+      list[init[turn][0]][6].push(action);
       client.strifeMap.set(strifeLocal,list,"list");
 
       if(action=="arf"){
         targetList=[];
         for(let i=0;i<active.length;i++){
-          if(client.playerMap.get(list[active[i]][1],`${faction}Rep`)>=0){
+          if(client.charcall.allData(client,"-",list[active[i]][1],`${faction}Rep`)>=0){
             targetList.push(active[i]);
           }
 
         }
-        console.log(`ARF TARGETS ARE THIS ${targetList}`);
         if(targetList.length<1){
           targetList.push(init[turn][0]);
         }
         target = targetList[Math.floor((Math.random() * targetList.length))];
 
       }
-      console.log(`TAKING NPC ACTION, TARGET IS ${target}, ACTION IS ${action}`);
       setTimeout(act,1500,client,message,local,action,target);
       setTimeout(npcTurn,3000,client,message,local,action,target);
 

@@ -130,7 +130,7 @@ if(armor.length == 0){
     let turn = client.strifeMap.get(strifeLocal,"turn");
     client.strifecall.strifeList(client,local,active,list,turn,init,charid,0,"ENTERING STRIFE!");
 
-    let name = client.playerMap.get(charid,"name");
+    let name = client.charcall.charData(client,charid,"name");
 
     for(let i =0;i<active.length;i++){
 

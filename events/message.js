@@ -84,7 +84,7 @@ let charid = client.userMap.get(userid,"possess");
       message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
       return;
     }
-    if(reg&&alive&&client.charcall.charData(client,charid,"strife")&&!strifeAct.indexOf(command)==-1){
+    if(reg&&alive&&client.charcall.charData(client,charid,"strife")&&strifeAct.indexOf(command)==-1){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }
