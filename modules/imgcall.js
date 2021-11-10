@@ -552,3 +552,58 @@ return attachment;
 
 
 }
+
+exports.characterImg = async function (client, message, custom){
+
+  const canvas = client.Canvas.createCanvas(224,288);
+  const ctx = canvas.getContext('2d');
+
+  let hairReplace = [153,229,80];
+  let hairOptions = [[0,0,0],[255,255,255],[0,0,0],[255,255,255],[0,0,0]]
+
+  if(client.fs.existsSync(`./miscsprites/SPRITES/Bot/Head/HairBack/${custom[0]}.png`)){
+
+    let hairback = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/Head/HairBack/${custom[0]}.png`);
+
+    ctx.drawImage(hairback,0,0);
+
+  }
+
+  let body = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/body/BASE.png`);
+
+  let head = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/BASE.png`);
+
+  let hair = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/hair/${custom[0]}.png`);
+  let eyes = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/eyes/${custom[2]}.png`);
+  let mouth = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/mouth/${custom[3]}.png`);
+  let glasses = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/glasses/${custom[4]}.png`);
+
+  ctx.drawImage(body,0,0);
+  ctx.drawImage(head,0,0);
+  ctx.drawImage(hair,0,0);
+  ctx.drawImage(glasses,0,0);
+  ctx.drawImage(eyes,0,0);
+  ctx.drawImage(mouth,0,0);
+
+  let imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+
+  for(let j=0;j<imageData.data.length;j+=4){
+
+    if(imageData.data[j]==hairReplace[0]&&
+      imageData.data[j+1]==hairReplace[1]&&
+      imageData.data[j+2]==hairReplace[2]
+    ){
+      imageData.data[j]=hairOptions[custom[1]][0]
+        imageData.data[j+1]=hairOptions[custom[1]][1]
+        imageData.data[j+2]=hairOptions[custom[1]][2]
+    }
+
+  }
+
+  ctx.putImageData(imageData,0,0)
+
+  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), `character.png`);
+
+  message.channel.send(attachment);
+
+}

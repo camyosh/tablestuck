@@ -32,6 +32,7 @@ module.exports = (client, message) => {
   //userid is our master reference for checking who is who, unique to each person and server.
   let userid = message.guild.id.concat(message.author.id);
 
+// Custom - [Hair,Color,Eyes,Mouth,Glasses]
 
     //creates user data if they send a command for the first time.
     if(!client.userMap.has(userid)){
@@ -48,7 +49,8 @@ module.exports = (client, message) => {
         housetype:"NONE",
         charCount:0,
         channel:"NONE",
-        pesterchannel:"NONE"
+        pesterchannel:"NONE",
+        custom:[1,1,1,1,1]
       }
       //pushes the data to the database
       client.userMap.set(userid,userSetup);

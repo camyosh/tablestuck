@@ -42,6 +42,7 @@ client.landcall = landcall;
 client.imgcall = imgcall;
 client.lootcall = lootcall;
 client.tutorcall = tutorcall;
+client.fs = fs;
 
 //declare enmaps
 //tracks all player characters (waking selves, dream selves)
