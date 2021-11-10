@@ -114,8 +114,9 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
     client.sburbMap.set(sburbid,channels[0],"channel");
     client.sburbMap.set(sburbid,channels[1],"pesterchannel");
   }
-  userData.channel = channels[0];
-  userData.pesterchannel = channels[1];
+  userData.channel=channels[0];
+  userData.pesterchannel=channels[1];
+  client.userMap.set(userid,userData);
 
   await finishLandGen(client,message,sburbid,aspectChoice,gristSet,beginData[1]);
   await client.channels.cache.get(channels[0]).send(`${userData.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
@@ -451,8 +452,6 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
   client.playerMap.set(`w${sburbid}`,wakingSheet);
   client.playerMap.set(`d${sburbid}`,dreamSheet);
   client.sburbMap.set(sburbid,sburbSheet);
-  userData.channel=channels[0];
-  client.userMap.set(userid,userData);
 }
 async function finishLandGen(client,message,sburbid,aspectChoice,gristSet,def){
   //determines where all the gates on the land will be.

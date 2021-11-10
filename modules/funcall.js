@@ -123,7 +123,7 @@ exports.tick = function(client, message){
     return;
   curCount++;
   client.funcall.sleepHeal(client,charid);
-
+  let name = client.charcall.allData(client,userid,charid,"name");
   let b = client.charcall.allData(client,userid,charid,"b");
   let xp = client.charcall.allData(client,userid,charid,"xp");
   if(b>client.landMap.get(leaderAdd,"boondollarsGained")[1]){
@@ -724,18 +724,18 @@ exports.combineArgs = function(args,start) {
   return output;
 }
 
-exports.gristCacheEmbed = function(client, charid) {
+exports.gristCacheEmbed = function(client,sburbid) {
   //retrieve character's grist details
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
-  let rung = client.playerMap.get(charid,"rung");
+  let rung = client.sburbMap.get(sburbid,"rung");
   let max;
-  if(client.playerMap.get(charid,`godtier`)){
+  if(client.sburbMap.get(sburbid,`godtier`)){
     max = `♾️`
   } else {
     max = client.cache(rung);
   }
-  let grist = client.playerMap.get(charid,"grist");
-  let name = client.playerMap.get(charid,"name");
+  let grist = client.sburbMap.get(sburbid,"grist");
+  let name = client.sburbMap.get(sburbid,"name");
   let msg =``;
   let i;
 
@@ -755,7 +755,7 @@ exports.gristCacheEmbed = function(client, charid) {
 exports.chanMsg = function(client, target, msg, embed){
   if(!msg)
     return;
-    if(client.charcall.charData(client,target,"control").length<1){
+    if(!client.charcall.controlCheck(client,target)){
       return;
     } else {
       controlList = client.charcall.charData(client,target,"control");
@@ -811,25 +811,34 @@ exports.chanMsg = function(client, target, msg, embed){
 } */
 
 exports.sleepHeal = function(client,charid){
-  if(client.playerMap.has(charid,"dreamvit")){
+  userid = client.charcall.charData(client,charid,"control");
+  let target;
+  if(client.charcall.allData(client,userid,charid,"dreamer")){
+    target = client.charcall.allData(client,userid,charid,"wakingID");
+  } else {
+    target = client.charcall.allData(client,userid,charid,"dreamingID");
+  }
+ if(target=="NONE"){
+   return;
+ }
+    let vit = client.charcall.charData(client,target,"vit");
+    let gel = client.charcall.allData(client,userid,target,"gel");
 
-    let vit = client.playerMap.get(charid,"dreamvit");
-    let gel = client.playerMap.get(charid,"gel");
     if(vit<gel){
       let heal = 5;
-      if(client.traitcall.traitCheck(client,charid,"CUSHIONED")[1]){
+      if(client.traitcall.traitCheck(client,target,"CUSHIONED")[1]){
         heal*=4;
-      }else if(client.traitcall.traitCheck(client,charid,"CUSHIONED")[0]){
+      }else if(client.traitcall.traitCheck(client,target,"CUSHIONED")[0]){
         heal*=2;
       }
       if(vit+heal>gel){
-        client.playerMap.set(charid,gel,"dreamvit");
+        client.charcall.setAnyData(client,userid,target,gel,"vit");
       }else{
-        client.playerMap.set(charid,vit+heal,"dreamvit");
+        client.charcall.setAnyData(client,userid,target,vit+heal,"vit");
       }
     }
   }
-}
+
 
 exports.move = function(client,message,charid,local,target,mapCheck,msg){
 

@@ -7,19 +7,22 @@ exports.run = (client, message, args) => {
 
   //defining important variables
 
-  var userID = message.guild.id.concat(message.author.id);
-  var charid = client.userMap.get(userID,"possess");
-  var sburbID = charid.substring(1);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-    var local = client.playerMap.get(charid,"local");
+
+    var local = client.charcall.charData(client,charid,"local");
     let land = local[4];
     let sec = client.landMap.get(land,local[0]);
     let area = sec[local[1]][local[2]];
     let room = area[2][local[3]];
-    var gristCheck = client.sburbMap.get(sburbID,"grist");
-    let sdex = client.playerMap.get(charid,"sdex");
-    let registry = client.sburbMap.get(sburbID,"registry");
+    let sdex = client.charcall.charData(client,charid,"sdex");
+    let registry = client.charcall.charData(client,userid,charid,"registry");
 
+    if(registry=="NONE"){
+      message.channel.send("You don't have a registry to check!");
+      return;
+    }
   //define variables for the FOR loop
 
     let i;
@@ -94,7 +97,7 @@ exports.run = (client, message, args) => {
      let deleted = registry.splice(value,1);
      message.channel.send(`Deleted the ${deleted[0][0]} from the athenaeum!`);
 
-     client.sburbMap.set(sburbID,registry,"registry");
+     client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
    } else if(args[0]=="push"){
 
@@ -115,7 +118,7 @@ exports.run = (client, message, args) => {
      registry.unshift(temp[0]);
 
      message.channel.send(`moved the ${temp[0][0]} to the first position in the athenaeum!`);
-     client.sburbMap.set(sburbID,registry,"registry");
+     client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
    } else if(args[0]=="tier"){
      if(!quick){
@@ -151,7 +154,7 @@ exports.run = (client, message, args) => {
        return;
      }
      registry[value][2]=tier;
-     client.sburbMap.set(sburbID,registry,"registry");
+     client.charcall.setAnyData(client,userid,charid,registry,"registry");
      message.channel.send(`Scaled the ${registry[value][0]} to TIER ${tier}!`);
      return;
 
@@ -193,7 +196,7 @@ exports.run = (client, message, args) => {
 
      registry[value][0]=name;
 
-     client.sburbMap.set(sburbID,registry,"registry");
+     client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
      message.channel.send(`Changed the name of the ${oldName} to ${name}`);
      return;

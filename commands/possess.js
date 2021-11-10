@@ -58,6 +58,8 @@ let target = client.userMap.get(userid,"possess");
   let destination = client.charcall.charData(client,charid,"control");
   destination.push(userid);
   client.charcall.setAnyData(client,userid,charid,destination,"control");
+  checkDreaming(client,userid,charid);
+
 
   message.channel.send(`Stopped possessing ${client.charcall.charData(client,target,"name").toUpperCase()}!
 You have been shifted to your first Speed Dial option, ${speeddial[0][1].toUpperCase()}.`);
@@ -75,7 +77,7 @@ let target;
     message.channel.send("That target doesn't exist!")
     return;
   };
-  if(value > occList.length){
+  if(value >= occList.length){
     value = value-occList.length;
     isSpeed = true;
   }
@@ -102,13 +104,26 @@ let target;
   let destination = client.charcall.charData(client,charid,"control");
   destination.push(userid);
   client.charcall.setAnyData(client,userid,charid,destination,"control");
+  checkDreaming(client,userid,charid);
   message.channel.send(`Now possessing ${client.charcall.charData(client,target,"name").toUpperCase()}!`);
 }
 function checkStrife(client,message,charid){
-  if(client.charcall.charData(client,charid,"strife"&&client.charcall.charData(client,charid,"faction")!="player")){
+  if(client.charcall.charData(client,charid,"strife")&&client.charcall.charData(client,charid,"faction")!="player"){
     let local = client.charcall.charData(client,charid,"local");
       if(client.strifecall.turnTest(client,message,local)){
-        client.strifecall.npcTurn(client,message,local);
+        setTimeout(client.strifecall.npcTurn,1500,client,message,local);
+    }
+  }
+}
+//if the body you're pushed into doesn't have dreaming set as the body you're taking,
+//it sets it to be so, to avoid conflicts with sleeping.
+function checkDreaming(client,userid,charid){
+  let dreamer = client.charcall.allData(client,userid,charid,"dreamer");
+  if(dreamer!="NONE"){
+    let target = (dreamer?client.charcall.allData(client,userid,charid,"dreamingID"):client.charcall.allData(client,userid,charid,"wakingID"));
+    if(charid!=target){
+      dreamer = (dreamer?false:true);
+      client.charcall.setAnyData(client,userid,charid,dreamer,"dreamer");
     }
   }
 }

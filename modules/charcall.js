@@ -74,9 +74,15 @@ exports.hasData = function(client,charid,datatype){
  exports.npcCheck = function(client,charid){
    if(client.npcMap.has(charid)){
      return true;
-   } else {
-     return false;
    }
+     return false;
+ }
+ //checks if a character is being controlled by a user.
+ exports.controlCheck = function(client,charid){
+   if(client.charcall.charData(client,charid,"control").length>0){
+     return true;
+   }
+   return false;
  }
  //checks if there is an underling present in a given occList.
  exports.underlingCheck = function(occList,client) {

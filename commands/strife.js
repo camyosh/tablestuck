@@ -101,8 +101,6 @@ if(armor.length == 0){
     let list = client.strifeMap.get(strifeLocal,"list");
     let init = client.strifeMap.get(strifeLocal,"init");
     let active = client.strifeMap.get(strifeLocal,"active");
-    let players = client.strifeMap.get(strifeLocal,"players");
-    let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
 //set player position in list
     const pos = list.length;
 /*
@@ -115,14 +113,10 @@ if(armor.length == 0){
     list.push(profile);
     init.push([pos,1]);
     active.push(pos);
-    players++;
-    playerpos.push(pos);
 
     client.strifeMap.set(strifeLocal,list,"list");
     client.strifeMap.set(strifeLocal,init,"init");
     client.strifeMap.set(strifeLocal,active,"active");
-    client.strifeMap.set(strifeLocal,players,"players");
-    client.strifeMap.set(strifeLocal,playerpos,"playerpos");
     client.charcall.setAnyData(client,userid,charid,pos,"pos");
 
     client.charcall.setAnyData(client,userid,charid,true,"strife");
@@ -155,8 +149,6 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
       init:[[0,initRoll]],
       turn:0,
       active:[0],
-      players:1,
-      playerpos:[0],
       round:0,
       last:[],
       time:Date.now()

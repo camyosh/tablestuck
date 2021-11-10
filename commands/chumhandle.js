@@ -2,10 +2,12 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = charid.substring(1);
 
   let handleList = client.landMap.get(message.guild.id+"medium","handleList");
-
+  if(client.charcall.getAnyData(client,userid,charid,"chumhandle")=="NONE"&&client.charcall.getAnyData(client,userid,charid,"chumtag")=="NONE"){
+    message.channel.send("You need a chumhandle to set one in the first place!");
+    return;
+  }
   if(!args[0]){
     message.channel.send("Enter a chumhandle you want to appear when pestering other players!");
     return;

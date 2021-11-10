@@ -14,9 +14,6 @@ const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk
 
 
 function inflict(client, message, local, list, target, chance, status, attacker){
-  if(log){
-    console.log(`inflicting status effect ${status}`);
-  }
   //quickjump
     let alert = ``;
   if(!list[target][7].includes(status)){
@@ -60,29 +57,15 @@ function passTurn(client, message, local) {
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
   //chack if the strife exists in the database
-
   if(client.strifeMap.has(strifeLocal)){
 
   //Retrieve information from strife database
-
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let list = client.strifeMap.get(strifeLocal,"list");
   let init = client.strifeMap.get(strifeLocal,"init");
-  let i;
-  let removed;
-  //waits for the strife timer to be done, so there are no actions left pending.
-  let endtime = client.strifeMap.get(strifeLocal,"time");
-  let curtime = Date.now();
-  if(curtime<endtime){
-    setTimeout(pass,1000,client,message,local);
-    return;
-  }
-  //check if the player whos turn it is has any status effects
-  //Steps for retrieving player information based on turn
-  //Retrieve an array from the init array at the position equal to TURN
-  //The first value in an initiative array is the posiion of that character in the LIST array where the data can then be retrieved for the correct character
 
-  for(i=(list[init[turn][0]][7].length - 1);i>=0;i--){
+  //check if the character whos turn it is has any status effects
+  for(let i=(list[init[turn][0]][7].length - 1);i>=0;i--){
     switch(list[init[turn][0]][7][i]){
       case "TARGFAV":
       case "GRAPPLE":
@@ -94,7 +77,6 @@ function passTurn(client, message, local) {
   }
 
 //reset favorability to 0
-
   list[init[turn][0]][4]=0;
 
   client.strifeMap.set(strifeLocal,list,"list");
@@ -107,27 +89,26 @@ function passTurn(client, message, local) {
 
    msg = `${client.charcall.charData(client,list[init[turn][0]][1],"name")} passes their turn!`;
 
- //send passing turn message to every participating player's terminal channel
-
-  for(i=0;i<active.length;i++){
-    if(client.charcall.charData(client,list[active[i]][1],"control").length>0){
+ //send passing turn message to every participating character's terminal channel
+  for(let i=0;i<active.length;i++){
+    if(client.charcall.controlCheck(client,list[active[i]][1])){
       client.funcall.chanMsg(client,list[active[i]][1],msg);
     }
   }
 
-//keep passing turn until turn is passed to a player who is still alive
-
+//keep passing turn until turn is passed to a character who is still alive
   let check = false;
   var newturn;
-  let emCheck = false;
+  let endCheck = false;
 
   for(turn++;check==false;turn++){
     if(turn>=init.length){
       turn = 0;
     }
-    if(active==0){
+    //if there is only one character left, preps to end combat.
+    if(active.length<=1){
       check = true;
-      emCheck = true;
+      endCheck = true;
     }
     if(active.includes(init[turn][0])){
       newturn = turn;
@@ -135,19 +116,15 @@ function passTurn(client, message, local) {
     }
   }
 
-  //write changes and finish passing turn
-
-  if(!emCheck){
-
+  if(!endCheck){
   client.strifeMap.set(strifeLocal,newturn,"turn");
-
   //call the command to start the next character's turn
-  startTurn(client,message,local);
+  setTimeout(startTurn,1500,client,message,local);
 } else {
-
-  let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
-  for(let i=0;i<playerpos.length;i++){
-    leaveStrife(client,message,local,playerpos[i]);
+  for(let i=0;i<active.length;i++){
+    //removes every character with a controller.
+    if(client.charcall.controlCheck(client,list[active[i]][1]))
+      leaveStrife(client,message,local,active[i]);
   }
 
 }
@@ -162,19 +139,13 @@ function passTurn(client, message, local) {
 
 function kill(client,message,local,target,pos){
 try{
-  if(log){
-    console.log(`killing target`);
-  }
-
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
   let list = client.strifeMap.get(strifeLocal,"list");
   let active = client.strifeMap.get(strifeLocal,"active");
-  let players = client.strifeMap.get(strifeLocal,"players");
-  let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
   let userid = message.guild.id.concat(message.author.id);
   //sets the target to be dead, regardless of character type.
   client.charcall.setAnyData(client,userid,list[target][1],false,"alive");
-  //if the character dying is a player, set them to being dead and give kill credit.
+  //if the character dying is a player, give kill credit.
   if(client.charcall.charData(client,list[target][1],"type")=="player"){
 
   charid = client.userMap.get(userid,"possess");
@@ -188,28 +159,42 @@ try{
   }
 }
     let name = client.charcall.charData(client,list[target][1],"name");
-
-    //send death message to all participating player's terminals
+    let underlevel = [];
+    //send death message to all participating character's terminals
     for(let k=0;k<active.length;k++){
-      if(list[active[i]][1]!=list[target][1]){
-      client.funcall.chanMsg(client,list[active[i]][1],`${name} died!`);
+      //any npcs involved in killing a player gain xp, amount to be changed.
+      if(client.charcall.charData(client,list[active[k]][1],"faction")!="player"&&client.charcall.allData(client,userid,list[active[k]][1],"xp")!="NONE"){
+        underlevel.push(list[active[k]][1]);
       }
+      //don't need to filter out if a character is controlled, chanMsg does that.
+      else if(list[active[k]][1]!=list[target][1]){
+      client.funcall.chanMsg(client,list[active[k]][1],`${name} died!`);
+      }
+    }
+    underxp = Math.floor(client.charcall.allData(client,userid,list[target][1],"xp")/2/underlevel.length);
+    for(let i=0;i<underlevel.length;i++){
+      client.funcall.chanMsg(client,underlevel[i],`${name} died!\nYou gained ${underxp} XP!`);
+      giveXp(client,underlevel[i],underxp);
     }
       client.funcall.chanMsg(client,list[target][1],`***YOU DIED***`);
 
     //call the function to remove the character from strife
+    //if there were only two characters left, both are removed from strife.
     if(active.length==2){
       leaveStrife(client,message,local,target);
       message.channel.send(`Last opponent defeated!`);
       leaveStrife(client,message,local,pos);
+      //this is for if you kill yourself in strife.
     }else if(active.length<=1){
-      message.channel.send(`Last opponent defeated!`);
       leaveStrife(client,message,local,pos);
+      //in every other case,just the dead player is removed.
     } else {
       leaveStrife(client,message,local,target);
     }
+    //since leaveStrife already handles ending strife, it doesn't need to be touched here.
 //end of player kill
   }else{
+    //the only reason npcs are seperate from players here is because they need to drop grist.
     let npc;
     npc = client.charcall.charData(client,list[target][1],"type");
 
@@ -220,11 +205,15 @@ try{
     }
 
 let rewardMsg = `The **${client.charcall.charData(client,list[target][1],"name")}** has been defeated! \nYou get `
-let xp = client.underlings[npc].xp;
+let xp;
+if(client.charcall.allData(client,userid,list[target][1],"xp")!="NONE"){
+xp = client.underlings[npc].xp+client.charcall.allData(client,userid,list[target][1],"xp");
+} else {
+xp = client.underlings[npc].xp;
+}
     //figure out what all the underling drops on death
 
 switch(client.charcall.charData(client,list[target][1],"faction")){
-
     case "underling":
     let primaryType = list[target][2];
     let secondType;
@@ -268,32 +257,24 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       default:
       multiplier = 1;
     }
-    console.log(`Multiplier is: ${multiplier}`);
-    let canGrist
-    //this makes it so an underling piloted by a player won't reduce the total grist
-    for(let i=0;i<players;i++){
-     if(client.charcall.allData(client,userid,charid,"grist")!="NONE") canGrist++;
+    let players = [];
+    //this defines players as characters who are possessed and can hold grist, disregarding
+    //the currently dying npc (in case its an npc that can hold grist.)
+    for(let i=0;i<active.length;i++){
+     if(active[i]!=target&&client.charcall.controlCheck(client,list[active[i]][1])&&client.charcall.allData(client,userid,charid,"grist")!="NONE"){
+       players.push(list[active[i]][1]);
+     }
     }
-    let amount = (client.underlings[npc].drop / canGrist)*multiplier;
-    console.log(`Amount is: ${amount}`);
+    let amount = (client.underlings[npc].drop / players.length)*multiplier;
     if(client.traitcall.traitCheck(client,list[pos][1],"META")[1]){
       amount*=2;
     }
     if(list[target][7].includes("DOUBLEGRIST")){
       amount*=2;
     }
-
-    let i;
-
-    if(log){
-      console.log(`Giving ${players} players grist`);
-    }
-
-    for(let i=0;i<players;i++){
-      let charid = list[playerpos[i]][1];
-      let userid = client.charcall.charData(client,charid,"control")[0];
-      //checks if the target can hold grist. Most underlings can't, players can.
-      if(client.charcall.allData(client,userid,charid,"grist")!="NONE"){
+    for(let i=0;i<players.length;i++){
+      let charid = players[i];
+      let userid = client.charcall.charData(client,charid,"control");
       let rung = client.charcall.allData(client,userid,charid,"rung");
       let grist = client.charcall.allData(client,userid,charid,"grist");
       let godtier = client.charcall.allData(client,userid,charid,`godtier`);
@@ -320,9 +301,6 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       }
       //if rainbow grist, add to all grist types
       if(secondType=="rainbow"){
-        if(log){
-          console.log(`Adding all grist types`);
-        }
         let j;
         for(j=1;j<13;j++){
           if(!godtier&&grist[j]+Math.ceil(amount)>rungGrist[rung]){
@@ -333,42 +311,34 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
         }
 
       } else {
-
         if(!godtier&&grist[client.grist[secondType].pos]+Math.ceil(amount)>rungGrist[rung]){
           grist[client.grist[secondType].pos]=rungGrist[rung];
         } else {
           grist[client.grist[secondType].pos]+=Math.ceil(amount);
         }
-
       }
-
       rewardMsg+=`**${client.emojis.cache.get(client.grist[repgrist].emoji)} ${Math.ceil(amount*4)}, ${client.emojis.cache.get(client.grist[primaryType].emoji)} ${Math.ceil(amount*2)}, ${client.emojis.cache.get(client.grist[secondType].emoji)} ${Math.ceil(amount)}** and `;
       client.charcall.setAnyData(client,userid,charid,grist,"grist");
-    }
 
-//send message to all players currently in strife
-
-      if(!godtier&&client.charcall.allData(client,userid,charid,"xp")!="NONE"){
+    if(!godtier&&client.charcall.allData(client,userid,charid,"xp")!="NONE"){
       client.funcall.chanMsg(client,charid,`${rewardMsg}**${xp} XP**`);
       giveXp(client,charid,xp);
     } else {
       client.funcall.chanMsg(client,charid,`${rewardMsg}**0 XP**`);
     }
-
   }
-
     break;
     case "derse":
     case "prospit":
-    for(i=0;i<players;i++){
-      let charid = list[playerpos[i]][1];
+    for(i=0;i<active.length;i++){
+      let charid = list[active[i]][1];
       client.funcall.chanMsg(client,charid,`The **${client.charcall.charData(client,list[target][1],"name")}** has been defeated!`);
     }
     break;
     default:
     name = client.charcall.charData(client,list[target][1],"name");
-    for(let i=0;i<players;i++){
-      let charid = list[playerpos[i]][1];
+    for(i=0;i<active.length;i++){
+      let charid = list[active[i]][1];
       client.funcall.chanMsg(client,charid,`The **${name}** has been defeated!`);
     }
     break;
@@ -382,13 +352,13 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       }
   }
 }catch(err){
-  message.channel.send(err);
+  console.log(err);
 }
 
 }
 
 function giveXp(client,target,xp){
-  userid = client.charcall.charData(client,target,"owner")[0];
+  userid = client.charcall.charData(client,target,"control")[0];
   curXp = client.charcall.allData(client,userid,target,"xp");
   curRung = client.charcall.allData(client,userid,target,"rung");
 
@@ -430,57 +400,60 @@ function giveXp(client,target,xp){
 function leaveStrife(client,message,local,pos){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`
+  if(!client.strifeMap.has(strifeLocal)) return;
   let list = client.strifeMap.get(strifeLocal,"list");
   let init = client.strifeMap.get(strifeLocal,"init");
   var charid = list[pos][1];
   let userid = client.charcall.charData(client,charid,"control");
   let turn = client.strifeMap.get(strifeLocal,"turn");
-  let players = client.strifeMap.get(strifeLocal,"players");
+  let active = client.strifeMap.get(strifeLocal,"active");
+  let sec = client.landMap.get(local[4],local[0]);
 
 //if it's an npc without a controller leaving, it will be deleted from the room.
-if(userid=="NONE"){
-let active = client.strifeMap.get(strifeLocal,"active");
-let sec = client.landMap.get(local[4],local[0]);
+if((userid=="NONE"||userid.length<1)&&!list[pos][0]){
 let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1)];
 client.strifeMap.set(strifeLocal,active,"active");
 client.landMap.set(local[4],sec,local[0]);
 if(init[turn][0] == pos){
-  passTurn(client,message,local);
+  setTimeout(passTurn,1500,client,message,local);
 }
+return;
 } else {
-//if player leaving is the last in strife, delete strife database
-  userid=userid[0];
-  if(players <= 1){
+  players=[];
+  for(let i=0;i<active.length;i++){
+    if(client.charcall.controlCheck(client,list[active[i]][1])){
+      players.push(list[active[i]]);
+    }
+  }
+  if(players.length <= 1){
+    for(let i=0;i<active.length;i++){
+      client.charcall.setAnyData(client,userid[0],list[active[i]][1],false,"strife");
+    }
     client.strifeMap.delete(strifeLocal);
-    client.charcall.setAnyData(client,userid,charid,list[pos][3],"vit");
-    client.charcall.setAnyData(client,userid,charid,false,"strife");
+    client.charcall.setAnyData(client,userid[0],charid,list[pos][3],"vit");
+
   }else{
-    let active = client.strifeMap.get(strifeLocal,"active");
-    let playerpos = client.strifeMap.get(strifeLocal,"playerpos");
-    let sec = client.landMap.get(local[4],local[0]);
-    //remove player from list of active characters, player positions, and lower player count by 1
-    let removed = [active.splice(active.indexOf(pos),1),playerpos.splice(playerpos.indexOf(pos),1)];
-    players --;
+    //remove player from list of active characters
+    let removed = [active.splice(active.indexOf(pos),1)];
     client.strifeMap.set(strifeLocal,active,"active");
-    client.strifeMap.set(strifeLocal,players,"players");
-    client.strifeMap.set(strifeLocal,playerpos,"playerpos");
     client.landMap.set(local[4],sec,local[0]);
-    client.charcall.setAnyData(client,userid,charid,false,"strife");
-    client.charcall.setAnyData(client,userid,charid,list[pos][3],"vit");
+    client.charcall.setAnyData(client,userid[0],charid,false,"strife");
+    client.charcall.setAnyData(client,userid[0],charid,list[pos][3],"vit");
     if(init[turn][0] == pos){
-      passTurn(client,message,local);
+      setTimeout(passTurn,1500,client,message,local);
     }
   }
 }
 
 
   if(!client.charcall.charData(client,charid,"alive")){
-
-    if(client.charcall.allData(client,userid,charid,"dreamself")=="NONE"){
+    console.log(client.charcall.allData(client,userid[0],charid,"dreamingID"));
+    if(client.charcall.allData(client,userid[0],charid,"dreamingID")=="NONE"){
       //if the character has no dreamself, it is likely an underling, so it is removed from the room
       //and the controller is pushed back to their default body.
       let removed = sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1);
       let controllers = client.charcall.charData(client,charid,"control");
+      console.log(`Controllers: ${controllers}`);
       for(let i=0;i<controllers.length;i++){
       target = client.charcall.allData(client,controllers[i],charid,"speeddial")[0][0];
       client.userMap.set(controllers[i],target,"possess");
@@ -511,8 +484,7 @@ if(init[turn][0] == pos){
     }
     client.charcall.setAnyData(client,userid,charid,[],"control");
     client.charcall.setAnyData(client,userid,target,targList,"control");
-  client.funcall.chanMsg(client,target,`You've been knocked out! You are currently awake as ${(client.charcall.allData(client,userid,charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.charcall.charData(charid,"vit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
-  client.charcall.setAnyData(client,userid,charid,true,"alive");
+  client.funcall.chanMsg(client,target,`You've been knocked out! You are currently awake as ${(client.charcall.allData(client,userid,charid,"dreamer")?`your dream self`:`your waking self`)}, and your other body is at ${client.charcall.charData(client,charid,"vit")} VIT. perform various actions as your current self to heal, and >sleep when your body is healed again!`);
 } else {
   let godtier = client.charcall.allData(client,userid,charid,"godtier");
   if(godtier=="NONE") godtier = false;
@@ -590,7 +562,7 @@ if(init[turn][0] == pos){
   }
 }
 } else {
-client.funcall.chanMsg(client,charid,"Leaving Strife!");
+setTimeout(client.funcall.chanMsg,1500,client,charid,"Leaving Strife!");
 }
 }
 
@@ -838,7 +810,7 @@ if(ping!="NONE"){
     client.funcall.chanMsg(client,list[init[turn][0]][1],turnMsg,embed);
 
     for(i=0;i<active.length;i++){
-      if(list[active[i]][0]==true && active[i]!=init[turn][0]){
+      if(client.charcall.controlCheck(client,list[active[i]][0]) && active[i]!=init[turn][0]){
         client.funcall.chanMsg(client,list[active[i]][1],`${client.charcall.charData(client,list[init[turn][0]][1],"name")} starts their turn with ${stamsg} STAMINA!${alert}`);
       }
     }
@@ -861,17 +833,17 @@ if(ping!="NONE"){
     }
 
   if(client.charcall.charData(client,list[init[turn][0]][1],"control").length<1){
-    npcTurn(client,message,local);
+    setTimeout(npcTurn,1500,client,message,local);
   }
 
 }
 
 exports.pass = function(client, message, local) {
-  passTurn(client,message,local);
+  setTimeout(passTurn,1500,client,message,local);
 }
 
 exports.start = function(client, message, local) {
-  startTurn(client,message,local);
+  setTimeout(startTurn,1500,client,message,local);
 }
 
 exports.turnTest = function(client, message, local) {
@@ -883,7 +855,6 @@ exports.turnTest = function(client, message, local) {
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
   let pos = client.charcall.charData(client,charid,"pos");
-
 
   if(init[turn][0] == pos) {
     return true;
@@ -1020,12 +991,9 @@ exports.underRally = function(client, local) {
 
 
   function act(client,message,local,action,target){
-    if(log){
-      console.log(`Taking action`);
-    }
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 //if strife database does not exist, cancel code
-    if(client.strifeMap.has(strifeLocal)==false){
+    if(!client.strifeMap.has(strifeLocal)){
       console.log("Stopped a crash from act being run without a strife!");
       return;
     }
@@ -1618,9 +1586,6 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"STICKY")[0]){
 if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"IRRADIATED")[1]&&strikeCheck==20){
 
 let radioburn=false;
-if(log){
-  console.log(`inflicting irradiated set bonus`);
-}
   for(let ir=0;ir<list.length;ir++){
     if((init[turn][0]!=ir)&&(!list[ir][7].includes("BURN"))){
       if(client.traitcall.traitCheck(client,list[ir][1],"BREATH")[1]){
@@ -1659,9 +1624,6 @@ if(aa.includes("RANDSTATUS")){
 
   if(list[target][7].includes("HAUNT")||list[target][7].includes("HAUNT2")||list[target][7].includes("HAUNT3")){
     removed = statusList.splice(statusList.indexOf("HAUNT"),1);
-  }
-  if(log){
-    console.log(`Inflicting random status`);
   }
   for(rs=0;rs<list[target][7].length;rs++){
     if(statusList.includes(list[target][7][rs])){
@@ -2024,9 +1986,6 @@ if(aa.includes("RANDSTATUS")){
       list[init[turn][0]][3]-=damage;
       damage=0;
       let dc;
-      if(log){
-        console.log(`Deflecting damage`);
-      }
       for(dc=(list[target][7].length - 1);dc>=0;dc--){
         if(list[target][7][dc]=="DEFLECT"){
           removed = list[target][7].splice(dc,1);
@@ -2104,7 +2063,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
 
 
     for(i=0;i<active.length;i++){
-      if(list[active[i]][0]==true){
+      if(client.charcall.controlCheck(client,list[active[i]][0])){
         client.funcall.chanMsg(client,list[active[i]][1],embed);
       }
     }
@@ -2150,17 +2109,10 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
 
-    if(log){
-      console.log(`2 Sending channel message to ${active.length} channels`);
-    }
-
     for(i=0;i<active.length;i++){
-      if(list[active[i]][0]==true){
+      if(client.charcall.controlCheck(client,list[active[i]][0])){
         client.funcall.chanMsg(client,list[active[i]][1],embed);
       }
-    }
-    if(log){
-      console.log(`finished sending to channels`);
     }
   }
 
@@ -2179,16 +2131,10 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
-    if(log){
-      console.log(`3 Sending channel message to ${active.length} channels`);
-    }
     for(i=0;i<active.length;i++){
-      if(list[active[i]][0]==true){
+      if(client.charcall.controlCheck(client,list[active[i]][0])){
         client.funcall.chanMsg(client,list[active[i]][1],embed);
       }
-    }
-    if(log){
-      console.log(`finished sending to channels`);
     }
 
   }
@@ -2201,7 +2147,6 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
 try{
 for(let ik=0;ik<active.length;ik++){
 if(list[active[ik]][3] < 1){
-  console.log("Trying to kill the dead ")
   setTimeout(kill,1000,client,message,local,active[ik],init[turn][0]);
 }else{
   if(bounceCheck && active[ik]==target){
@@ -2594,15 +2539,8 @@ exports.npcTurn = function(client, message, local) {
 function npcTurn(client, message, local){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
-  //waits for the strife timer to be done, so there are no actions left pending.
-  let endtime = client.strifeMap.get(strifeLocal,"time");
-  let curtime = Date.now();
-  if(curtime<endtime){
-    setTimeout(npcTurn,1000,client,message,local);
-    return;
-  }
 
-  let playerpos = client.strifeMap.get(strifeLocal,"playerpos")
+ if(!client.strifeMap.has(strifeLocal))return;
   let active = client.strifeMap.get(strifeLocal,"active")
   let list = client.strifeMap.get(strifeLocal,"list")
   let turn = client.strifeMap.get(strifeLocal,"turn")
@@ -2641,7 +2579,7 @@ function npcTurn(client, message, local){
   if(spec.length!=0){
     for(let i=0;i<4;i++){
       tempAct = client.action[client.codeCypher[i+4][client.captchaCode.indexOf(spec[equip][1].charAt(i+4))]];
-      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"){
+      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"&&tempAct!="abscond"){
         actionSet.push(tempAct);
       }
 
@@ -2650,23 +2588,18 @@ function npcTurn(client, message, local){
   for(let j =0;j<prototype.length;j++){
     for(let i=0;i<4;i++){
       tempAct = client.action[client.codeCypher[i+4][client.captchaCode.indexOf(prototype[j][1].charAt(i+4))]];
-      console.log(tempAct);
-      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"){
+      if(client.actionList[tempAct].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct)||(client.actionList[tempAct].aa.includes("REUSE")))&&tempAct!="no action"&&tempAct!="abscond"){
         actionSet.push(tempAct);
       }
     }
   }
 
-  //if (actionSet.length==0) {
     tempAct=client.underlings[type].act;
-
     for(let i=0;i<tempAct.length;i++){
-      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("REUSE")))&&tempAct!="no action"){
+      if(client.actionList[tempAct[i]].cst<=list[init[turn][0]][5]&&(!list[init[turn][0]][6].includes(tempAct[i])||(client.actionList[tempAct[i]].aa.includes("REUSE")))&&tempAct[i]!="no action"&&tempAct[i]!="abscond"){
         actionSet.push(tempAct[i]);
       }
     }
-  //}
-
     if(actionSet.length>0&&targetList.length>0){
 
 
@@ -2702,8 +2635,9 @@ function npcTurn(client, message, local){
         target = targetList[Math.floor((Math.random() * targetList.length))];
 
       }
-      setTimeout(act,1500,client,message,local,action,target);
-      setTimeout(npcTurn,3000,client,message,local,action,target);
+      setTimeout(act,1500,client,message,local,action,target)
+        setTimeout(npcTurn,3000,client,message,local);
+
 
     }else{
       setTimeout(passTurn,1500,client,message,local);

@@ -17,8 +17,6 @@ exports.run = (client, message, args) => {
 
   let time = client.strifeMap.get(strifeLocal,"time");
 
-  console.log(Date.now()-time);
-
   if(Date.now()-time<120000&&!client.funcall.dmcheck(client,message)){
     message.channel.send("You need to wait until 30 seconds have passed since the last action taken to force-pass the turn!");
     return;
@@ -27,14 +25,7 @@ exports.run = (client, message, args) => {
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let init = client.strifeMap.get(strifeLocal,"init");
 
-  if(client.charcall.charData(client,list[init[turn][0]][1],"type")!="player"){
 
     client.strifecall.pass(client,message,local);
-
-  } else {
-
-    client.strifecall.leaveStrife(client,message,local,init[turn][0]);
-
-  }
 
 }
