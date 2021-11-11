@@ -12,9 +12,7 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = charid.substring(1);
-
-  var local = client.playerMap.get(charid,"local");
+  var local = client.charcall.charData(client,charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
 
   //check for computer with sburb installed in room or inventory
@@ -32,17 +30,17 @@ exports.run = (client, message, args) => {
 
   //if no client player is connected cancel
 
-  if(client.sburbMap.get(sburbid,"client") == "NA") {
+  if(client.charcall.allData(client,userid,charid,"client") == "NA"||client.charcall.allData(client,userid,charid,"client") == "NONE") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
   //retrieve clients charid
-  let clientId = client.sburbMap.get(sburbid,"client");
+  let targsburb = client.charcall.allData(client,userid,charid,"client");
   //checks if amount spent is greater than amount of grist player has
-  let buildSpent = client.landMap.get(clientId,"spent");
-  let grist = client.sburbMap.get(clientId,"grist");
+  let buildSpent = client.landMap.get(targsburb,"spent");
+  let grist = client.sburbMap.get(targsburb,"grist");
   let gate = 0;
-  let curGate = client.landMap.get(clientId,"gate");
+  let curGate = client.landMap.get(targsburb,"gate");
   //convert grist amount to number
   if(!args[0]){
     message.channel.send(`Your client ${(curGate>0?`has access to gate number ${curGate}`:`hasn't reached a gate yet`)}. \nYou have expended ${buildSpent} grist on the house so far, and need to expend ${gateReq[curGate]-buildSpent} more to reach the next gate!`);
@@ -76,8 +74,8 @@ exports.run = (client, message, args) => {
     }
   }
 
-  client.sburbMap.set(clientId,grist,"grist");
-  client.landMap.set(clientId,buildSpent,"spent");
+  client.sburbMap.set(targsburb,grist,"grist");
+  client.landMap.set(targsburb,buildSpent,"spent");
 
   //if player can now reach next gate, send message
 
@@ -85,7 +83,7 @@ exports.run = (client, message, args) => {
 
   if(gate>curGate){
 
-  client.landMap.set(clientId,gate,"gate");
+  client.landMap.set(targsburb,gate,"gate");
   message.channel.send(`Expended ${value} BUILD GRIST to build house. The CLIENT PLAYER'S house now reaches GATE ${gate}`);
 } else {
   message.channel.send(`Expended ${value} BUILD GRIST to build house.`);

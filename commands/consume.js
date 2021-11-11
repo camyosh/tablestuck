@@ -4,9 +4,8 @@ exports.run = (client,message,args) =>{
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = charid.substring(1);
 
-  let sdex = client.playerMap.get(charid,"sdex");
+  let sdex = client.charcall.charData(client,charid,"sdex");
 
   let dogCheck = client.traitcall.traitCheck(client,charid,"DOG");
 
@@ -23,7 +22,7 @@ exports.run = (client,message,args) =>{
     return;
   }
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let pos;
   let strifeLocal;
   let list;
@@ -38,7 +37,7 @@ exports.run = (client,message,args) =>{
 
   if(strifeCheck==true){
 
-    pos = client.playerMap.get(charid,"pos");
+    pos = client.charcall.charData(client,charid,"pos");
     strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
     turn = client.strifeMap.get(strifeLocal,"turn");
     list = client.strifeMap.get(strifeLocal,"list");
@@ -67,7 +66,7 @@ return;
   let msg,msg2;
   msg = `You consume the ${sdex[selectDex][0]}!`
 if(strifeCheck){
-  msg2 = `${client.playerMap.get(list[init[turn][0]][1],"name")} consumes a ${sdex[selectDex][0]}!`;
+  msg2 = `${client.charcall.charData(client,list[init[turn][0]][1],"name")} consumes a ${sdex[selectDex][0]}!`;
 }
   if(client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")){
     if(strifeCheck==false){
@@ -100,10 +99,10 @@ if(strifeCheck){
     if(strifeCheck==true){
       vit = list[pos][3]
     } else {
-      vit = client.playerMap.get(charid,"vit");
+      vit = client.charcall.charData(client,charid,"vit");
     }
 
-    let gel = client.sburbMap.get(sburbid,"gel");
+    let gel = client.charcall.allData(client,userid,charid,"gel");
     let heal = tier*.03;
 
     if(client.traitcall.traitCheck(client,charid,"FOOD")[1]){
@@ -120,9 +119,7 @@ if(strifeCheck){
       list[pos][3]=vit;
 
     } else{
-
-      client.playerMap.set(charid,vit,"vit");
-
+      client.charcall.setAnyData(client,userid,charid,vit,"vit");
     }
 
     msg+=`\nYou heal ${Math.ceil(gel*heal)} VITALITY, you now have ${vit} / ${gel} VITALITY!`;
@@ -137,7 +134,7 @@ if(strifeCheck){
   message.channel.send(msg);
   if(strifeCheck){
   for(let i=0;i<active.length;i++){
-    if(list[active[i]][0]==true&&list[active[i]][1]!=charid){
+    if(client.charcall.controlCheck(client,list[active[i]][1])&&list[active[i]][1]!=charid){
       client.funcall.chanMsg(client,list[active[i]][1],msg2);
     }
   }
@@ -150,6 +147,6 @@ if(strifeCheck){
   } else {
     sdex[selectDex][3]--;
   }
-  client.playerMap.set(charid, sdex, "sdex");
+  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 
 }

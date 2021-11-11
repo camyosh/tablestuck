@@ -1363,7 +1363,7 @@ exports.carSpawn = function(client,local,lunar,sessionID){
     faction: lunarList[0][lunar],
     vit:client.underlings[typeList[type]].vit,
     gel:client.underlings[typeList[type]].vit,
-    grist: "diamond",
+    gristtype: "diamond",
     strife:false,
     pos:0,
     alive:true,

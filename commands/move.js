@@ -3,10 +3,10 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner");
-  var occset = [true,charid];
+
+  var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
   let msg = ``;
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let mapCheck = true;
   let sec = client.landMap.get(local[4],local[0])
 
@@ -60,7 +60,6 @@ exports.run = (client, message, args) => {
     }
 
   } else {
-    console.log(local);
     if(value >= sec[local[1]][local[2]][2].length || value < 0){
       message.channel.send(`That is not a valid room! Check the list of room's with ${client.auth.prefix}move`);
       return;
@@ -93,7 +92,6 @@ exports.run = (client, message, args) => {
       return;
     }
   }
-  console.log("Calling move function");
   let move = client.funcall.move(client,message,charid,local,target,mapCheck,msg);
 
 }

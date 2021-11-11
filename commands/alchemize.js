@@ -15,19 +15,16 @@ exports.run = (client, message, args) => {
   var charid = client.userMap.get(userid,"possess");
 
 
-  var local = client.playerMap.get(charid,"local");
+  var local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
   var gristCheck = client.charcall.allData(client,userid,charid,"grist");
-  let sdex = client.playerMap.get(charid,"sdex");
+  let sdex = client.charcall.charData(client,charid,"sdex");
   let registry = client.charcall.allData(client,userid,charid,"registry");
-//underings have "grist" defined as their grist type, not an array of active grist.
-//until changed, this will catch them and prevent them from alchemizing.
-try{
- const test = gristCheck[2];
-}catch(err){
+//this will catch underlings and prevent them from alchemizing.
+if(gristCheck=="NONE"){
   message.channel.send("Sorry, you dont seem to have any grist to alchemize with!");
   return;
 }
@@ -146,15 +143,15 @@ try{
   msg = `Expended ${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1} ${client.emojis.cache.get(client.grist[gristType].emoji)} ${cost2} to ALCHEMIZE **${newItem[0].toUpperCase()} x${quantity}!**`
 
 sdex.unshift(newItem);
-if(sdex.length > client.playerMap.get(charid,"cards")){
+if(sdex.length > client.charcall.charData(client,charid,"cards")){
   let dropItem = sdex.pop();
   sec[local[1]][local[2]][2][local[3]][5].push(dropItem);
   msg += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
 }
 
   client.landMap.set(land,sec,local[0]);
-  client.playerMap.set(charid,sdex,"sdex");
-  client.sburbMap.set(sburbID,gristCheck,"grist");
+  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+  client.charcall.setAnyData(client,userid,charid,gristCheck,"grist");
 
   client.funcall.tick(client,message);
 

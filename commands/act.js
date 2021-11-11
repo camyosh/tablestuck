@@ -343,7 +343,7 @@ return;
 
   if(cost > list[pos][5]){
     if(client.traitcall.traitCheck(client,charid,"DOOM")[0]){
-      let maxvit = client.charcall.allData(charid,"gel");
+      let maxvit = client.charcall.allData(client,userid,charid,"gel");
       let doomcost= Math.floor(cost-list[pos][5])*.1*maxvit;
       if(list[pos][3]-doomcost<=0){
         message.channel.send(`You don't have enough STAMINA to afford that action, or enough VITALITY to sacrifice for it! That action costs ${cost} STAMINA and you have ${list[pos][5]} STAMINA!`);

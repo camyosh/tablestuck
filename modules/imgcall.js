@@ -112,8 +112,6 @@ ctx.font = applyText(canvas,ctx,name,16,8,"FONTSTUCK",130)
 name = splitText(canvas,ctx,name,18)
 ctx.fillText(name,x+20,y+196-(Math.floor(14-ctx.measureText(name).emHeightAscent+ctx.measureText(name).emHeightDescent)/2));
 
-console.log(item[1]);
-console.log(item);
 
 let gristType = client.codeCypher[1][client.captchaCode.indexOf(item[1].charAt(1))];
 
@@ -269,8 +267,7 @@ exports.inspect = async function (client,message,args,type,item){
   middleText(canvas,ctx,trait2,x+204,142,x+313,169,16,8,"FONTSTUCK");
 
   //draw trait descriptions
-  console.log(trait1);
-  console.log(trait2);
+
   middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait1].trait,18),x+16,y+180,x+161,y+227,18,12,"Courier Standard Bold");
 
   middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait2].trait,18),x+170,y+180,x+315,y+227,18,12,"Courier Standard Bold");

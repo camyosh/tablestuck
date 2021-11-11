@@ -5,11 +5,10 @@ const strifecall = require("../modules/strifecall.js");
 exports.run = (client, message, args) => {
   //check for computer with sburb installed
 
-  var userID = message.guild.id.concat(message.author.id);
-  var charid = client.userMap.get(userID,"possess");
-  var sburbid = charid.substring(1);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  var local = client.playerMap.get(charid,"local");
+  var local = client.charcall.charData(client,charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   let compCheck = client.traitcall.compTest(client,message,charid,room);
   if(compCheck[0]==false){
@@ -23,16 +22,16 @@ exports.run = (client, message, args) => {
 
   //check if connected to a client
 
-  if(client.sburbMap.get(sburbid,"client") == "NA") {
+  if(client.charcall.charData(client,userid,charid,"client") == "NA"||client.charcall.charData(client,userid,charid,"client") == "NONE") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
 
 //retrieve client charid
 
-  let clientId = client.sburbMap.get(sburbid,"client");
+  let targsburb = client.charcall.allData(client,userid,charid,"client");
 
-  message.channel.send(funcall.gristCacheEmbed(client, clientId));
+  message.channel.send(client.funcall.gristCacheEmbed(client,targsburb));
   client.tutorcall.progressCheck(client,message,20);
   return;
 }

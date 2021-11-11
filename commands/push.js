@@ -1,15 +1,14 @@
 exports.run = (client, message, args) => {
 
+  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+
   if(!client.charcall.charData(client,charid,"strife")){
     message.channel.send("You are not currently in Strife!")
     return;
   }
+  let local = client.charcall.charData(client,charid,"local");
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-
-  let local = client.playerMap.get(charid,"local");
-
-  if(client.strifecall.turnTest(client,message,local)==true){
+  if(client.strifecall.turnTest(client,message,local)){
     message.channel.send("It is already your turn!");
     return;
   }
@@ -17,8 +16,6 @@ exports.run = (client, message, args) => {
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
   let time = client.strifeMap.get(strifeLocal,"time");
-
-  console.log(Date.now()-time);
 
   if(Date.now()-time<120000&&!client.funcall.dmcheck(client,message)){
     message.channel.send("You need to wait until 30 seconds have passed since the last action taken to force-pass the turn!");
@@ -28,14 +25,7 @@ exports.run = (client, message, args) => {
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let init = client.strifeMap.get(strifeLocal,"init");
 
-  if(!client.playerMap.has(list[init[turn][0]][1])||client.playerMap.get(list[init[turn][0]][1],"type")!="player"){
 
     client.strifecall.pass(client,message,local);
-
-  } else {
-
-    client.strifecall.leaveStrife(client,message,local,init[turn][0]);
-
-  }
 
 }

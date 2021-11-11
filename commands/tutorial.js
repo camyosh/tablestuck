@@ -3,13 +3,18 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner");
+
+if(client.charcall.npcCheck(client,charid)){
+  message.channel.send("Only players can use and progress the tutorial!");
+  return;
+}
 
 let defaultTutor = [true];
 let tutorRef = require("../tutorRef.json");
 for(let m=0;m<tutorRef.content.length-1;m++){
   defaultTutor.push(false);
 }
+
 let progress = client.userMap.get(userid,"tutor");
 if(!args[0]){
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});

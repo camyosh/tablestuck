@@ -50,6 +50,10 @@ module.exports = (client, message) => {
         charCount:0,
         channel:"NONE",
         pesterchannel:"NONE",
+<<<<<<< HEAD
+=======
+        ping:message.author.id,
+>>>>>>> 1e5adc861bb5c52ca27291505690a99e493ece3d
         custom:[1,1,1,1,1]
       }
       //pushes the data to the database
@@ -79,11 +83,13 @@ let charid = client.userMap.get(userid,"possess");
       return;
     }
     //revive has to be allowed for dead players in the case of Godtiering.
-    if(reg&&!alive&&(preReg.indexOf(command)==-1||command!="revive")){
+    if(reg&&!alive&&preReg.indexOf(command)==-1){
+      if(command!="revive"&&command!="sleep"&&command!="possess"){
       message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
       return;
+      }
     }
-    if(reg&&alive&&client.charcall.charData(client,charid,"strife")&&!strifeAct.indexOf(command)==-1){
+    if(reg&&alive&&client.charcall.charData(client,charid,"strife")&&strifeAct.indexOf(command)==-1){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }

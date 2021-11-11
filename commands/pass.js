@@ -10,7 +10,7 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
 
   if(strifecall.turnTest(client,message,local)==false){
     message.channel.send("It is not your turn!");
