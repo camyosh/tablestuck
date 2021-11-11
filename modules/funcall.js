@@ -325,24 +325,7 @@ exports.regTest = function(client, message, target) {
     return false;
   }
 }
-//test if potential client is registered
-exports.clientTest = function(client, message, target) {
 
-  try {
-    if(client.playerMap.get(message.guild.id.concat(target),"alive")==false){
-
-      return false;
-    }
-    else{
-
-      return true;
-    }
-  }
-  catch(err){
-
-    return false;
-  }
-}
 /*
 
 exports.accessSpreasdsheet = async function(client, message, charSheet) {

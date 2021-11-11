@@ -4,7 +4,7 @@ exports.run = (client, message, args) => {
   var charid = client.userMap.get(userid,"possess");
 
   let handleList = client.landMap.get(message.guild.id+"medium","handleList");
-  if(client.charcall.getAnyData(client,userid,charid,"chumhandle")=="NONE"&&client.charcall.getAnyData(client,userid,charid,"chumtag")=="NONE"){
+  if(client.charcall.allData(client,userid,charid,"chumhandle")=="NONE"&&client.charcall.allData(client,userid,charid,"chumtag")=="NONE"){
     message.channel.send("You need a chumhandle to set one in the first place!");
     return;
   }

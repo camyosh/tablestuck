@@ -3,8 +3,8 @@ exports.run = (client, message, args) => {
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
 
-  let chumroll = client.charcall.getAnyData(client,userid,charid,"chumroll");
-  if(chumroll="NONE"){
+  let chumroll = client.charcall.allData(client,userid,charid,"chumroll");
+  if(chumroll=="NONE"){
     message.channel.send("You need a chumroll to check up on your chums!");
     return;
   }

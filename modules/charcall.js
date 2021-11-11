@@ -51,11 +51,33 @@ exports.setAnyData = function(client,userid,charid,data,key){
 exports.charData = function(client,charid,datatype){
   if(client.playerMap.has(charid)){
     return client.playerMap.get(charid,datatype);
-  } else if(client.npcMap.has(charid)) {
+  } else if(client.npcMap.has(charid)){
     return client.npcMap.get(charid,datatype);
   } else {
     return "NONE";
   }
+}
+//changes a sburbid to a charid, or keeps it as a charid for npcs.
+exports.charGet = function(client,checkid){
+  if(client.sburbMap.has(checkid)){
+    if(client.sburbMap.get(checkid,"dreamer")){
+      return client.sburbMap.get(checkid,"dreamingID");
+    } else{
+      return client.sburbMap.get(checkid,"wakingID");
+    }
+  } else if (client.npcMap.has(checkid)){
+    return checkid;
+  }
+  return "NONE";
+}
+//changes a charid to a sburbid, or keeps it as a charid for npcs.
+exports.sburbGet = function(client,checkid){
+ if(client.playerMap.has(checkid)){
+   return client.playerMap.get(checkid,"owner");
+ } else if(client.npcMap.has(checkid)){
+   return checkid;
+ }
+ return "NONE";
 }
 //checks if a character has a given datatype
 exports.hasData = function(client,charid,datatype){
@@ -69,6 +91,7 @@ exports.hasData = function(client,charid,datatype){
       return true;
     }
   }
+  return false;
 }
 //returns a bool based on if the charid belongs to an NPC or not.
  exports.npcCheck = function(client,charid){

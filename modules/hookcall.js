@@ -21,16 +21,16 @@ exports.pogChamp = async function(client,message,chan){
 
 }
 
-exports.pesterProf = async function(client,message,sburbid){
-  const channel = client.channels.cache.get(client.sburbMap.get(sburbid,"pesterchannel"));
+exports.pesterProf = async function(client,message,userid,charid){
+  const channel = client.channels.cache.get(client.charcall.setAnyData(client,userid,charid,"pesterchannel"));
 
 	try {
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
 
 		await webhook.send('Updated Pesterchum profile!', {
-			username: `[${client.sburbMap.get(sburbid,"chumtag")}] ${client.sburbMap.get(sburbid,"chumhandle")}`,
-			avatarURL: client.sburbMap.get(sburbid,"chumpic")
+			username: `[${client.charcall.allData(client,userid,charid,"chumtag")}] ${client.charcall.allData(client,userid,charid,"chumhandle")}`,
+			avatarURL: client.charcall.allData(client,userid,charid,"chumpic")
 		});
 	} catch (error) {
 		console.error('Error trying to send: ', error);
