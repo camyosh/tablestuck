@@ -867,8 +867,8 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
   }
   }
-
-  if(targSec[target[1]][target[2]][2][target[3]][3]==false){
+//for now, NPCs won't reveal new tiles.
+  if(!client.charcall.npcCheck(client,charid)&&targSec[target[1]][target[2]][2][target[3]][3]==false){
     client.funcall.actionCheck(client,message,"tile")
     targSec[target[1]][target[2]][2][target[3]][3]=true;
   }

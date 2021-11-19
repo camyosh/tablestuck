@@ -1,6 +1,3 @@
-const funcall = require("../modules/funcall.js");
-//simple ping command to check if the bot is online.
-const strifecall = require("../modules/strifecall.js");
 
 //declare variables for how much BD and AV player gets from trinket
 const tierBD = [[1,2],[1,4],[1,6],[1,8],[1,10],[1,12],[2,16],[2,20],[2,24],[3,30],[3,36],[4,40],[5,50],[6,60],[7,70],[8,80],[10,100]];
@@ -8,13 +5,11 @@ const tierAv = [1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
 const tList = ["MELEE","RANGED","MAGIC","NA"];
 
 exports.run = (client, message, args) => {
-
-
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner");
-  var trinket = client.playerMap.get(charid,"trinket");
-  let name = client.playerMap.get(charid,"name");
+
+  var trinket = client.charcall.charData(client,charid,"trinket");
+  let name = client.charcall.charData(client,charid,"name");
 
 //if no arguments, display currently equipped trinket
 
@@ -74,7 +69,7 @@ exports.run = (client, message, args) => {
 
     //defining player location to place ejected trinket in
 
-    let local = client.playerMap.get(charid,"local");
+    let local = client.charcall.charData(client,charid,"local");
     let land = local[4];
     let sec = client.landMap.get(land,local[0]);
     let area = sec[local[1]][local[2]];
@@ -89,7 +84,7 @@ exports.run = (client, message, args) => {
     room[5].push(dropItem);
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
-    client.playerMap.set(charid,trinket,"trinket");
+    client.charcall.setAnyData(client,userid,charid,trinket,"trinket");
 
     message.channel.send("Ejecting TRINKET!")
     client.funcall.tick(client,message);
@@ -103,7 +98,7 @@ exports.run = (client, message, args) => {
       return;
     }
 
-    let sdex = client.playerMap.get(charid,"sdex");
+    let sdex = client.charcall.charData(client,charid,"sdex");
 
     //if no second argument, cancel
 
@@ -146,8 +141,8 @@ exports.run = (client, message, args) => {
       let equipItem = sdex.splice(selectDex,1)[0];
       trinket.push(equipItem);
 
-      client.playerMap.set(charid,sdex,"sdex");
-      client.playerMap.set(charid,trinket,"trinket");
+      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+      client.charcall.setAnyData(client,userid,charid,trinket,"trinket");
 
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
       client.funcall.tick(client,message);

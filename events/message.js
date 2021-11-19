@@ -17,7 +17,7 @@ module.exports = (client, message) => {
     freeAct = ["register","leaderboard","stats","scratch","help","initialize","trait","heal","consume","act","strife","switch","specibus","sylladex","captcha","eject","alchemize","armor","trinket","equip","list","inspect","pass","quickalch","grist","ath","say","rename","use","allocate","push"];
   }
   //list of all commands accepted pre-registry.
-  var preReg =["register","help","ping","initialize","scratch","leaderboard","config"];
+  var preReg =["register","help","ping","initialize","scratch","leaderboard","config","name"];
   //list of all commands that can be taken in strife
   var strifeAct =["act","armor","bio","check","chumcheck","chumroll","config","consume","debug","givegrist","giveitem","help","initialize","leaderboard","list","pass","pester","ping","possess","push","say","scratch","spawn","specibus","stats","strife","switch","sylladex","tutorial","trinket","trait"];
   //standard argument/command name definition
@@ -50,10 +50,7 @@ module.exports = (client, message) => {
         charCount:0,
         channel:"NONE",
         pesterchannel:"NONE",
-<<<<<<< HEAD
-=======
         ping:message.author.id,
->>>>>>> 1e5adc861bb5c52ca27291505690a99e493ece3d
         custom:[1,1,1,1,1]
       }
       //pushes the data to the database

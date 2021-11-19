@@ -182,7 +182,7 @@ exports.run = (client, message, args) => {
             vit:100,
             gel:100,
             strife:false,
-            grist:"diamond",
+            gristtype:"diamond",
             pos:0,
             alive:true,
             local:["h",0,0,value[1],clientid],
@@ -212,7 +212,7 @@ exports.run = (client, message, args) => {
           }
           client.npcMap.set(spriteID,spriteSheet);
 
-          clientSec[0][0][2][value[1]][4].push([0,spriteID]);
+          clientSec[0][0][2][value[1]][4].push([false,spriteID]);
 
         }
 

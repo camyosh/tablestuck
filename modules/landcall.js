@@ -1130,7 +1130,7 @@ exports.drawMap = async function(client,message,mini) {
 
 var userid = message.guild.id.concat(message.author.id);
 var charid = client.userMap.get(userid,"possess");
-var local = client.playerMap.get(charid,`local`);
+var local = client.charcall.charData(client,charid,`local`);
 var input = client.landMap.get(local[4],local[0]);
 var aspect;
 
@@ -1220,16 +1220,15 @@ for(i=0;i<11;i++){
   ctx.drawImage(numbers,32*(i+1),0,32,32,5,5+(32*(i+2)),32.8,31);
     for(j=0;j<11;j++){
             //comment out this if check to turn off fog of war on the main map
-
-      if(client.configMap.get(message.guild.id).options[5].selection==0&&!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
+      let tile = 0;
+      if(i==local[1]&& j==local[2]){
+        tile = 2;
+      }
+      if(tile!=2&&client.configMap.get(message.guild.id).options[5].selection==0&&!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
       //if(false){
          ctx.drawImage(tiles,0,32,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
 
       } else {
-        let tile = 0;
-        if(i==local[1]&& j==local[2]){
-          tile = 2;
-        }
        //str=`${client.emojis.cache.get("760188336245309512")}`;
        switch(input[i][j][0]){
          case 0:
@@ -1341,7 +1340,7 @@ exports.carSpawn = function(client,local,lunar,sessionID){
 
   let picList = [["https://media.discordapp.net/attachments/808757312520585227/814739963824439296/dersite_short.png","https://media.discordapp.net/attachments/808757312520585227/814739982748221480/dersite_normal.png","https://media.discordapp.net/attachments/808757312520585227/814740004618240050/dersite_tall.png","https://media.discordapp.net/attachments/808757312520585227/814740019902021652/dersite_beefy.png"],["https://media.discordapp.net/attachments/808757312520585227/814740073681518612/prospitian_short.png","https://media.discordapp.net/attachments/808757312520585227/814740091306115112/prospitian_normal.png","https://media.discordapp.net/attachments/808757312520585227/814740144933830666/prospitian_tall.png","https://media.discordapp.net/attachments/808757312520585227/814740171705548861/prospitian_beefy.png"]];
   let typeList = ["stout carapacian","medium carapacian","tall carapacian","large carapacian"];
-  let lunarList = [["derse","prospit"],["dersite","prospitian"]];
+  let lunarList = [["derse","prospit"],["DERSITE","PROSPITIAN"]];
   let repList = [[1000000,-1000000],[-1000000,1000000]]
 
   let num = Math.floor(Math.random()*4);

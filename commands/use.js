@@ -6,14 +6,13 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner")
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  let sdex = client.playerMap.get(charid,"sdex");
+  let sdex = client.charcall.charData(client,charid,"sdex");
 
   selectDex = parseInt(args[0], 10) - 1;
   if(isNaN(selectDex)){
@@ -52,7 +51,7 @@ exports.run = (client, message, args) => {
       room[5][selectRoom][4].push(targetItem);
       sec[local[1]][local[2]][2][local[3]] = room;
       client.landMap.set(land,sec,local[0]);
-      client.playerMap.set(charid,sdex,"sdex");
+      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
       return;
     }
     //else if(client.traitList[client.captchaCode.indexOf(roomCode.charAt(2))] == "COMPUTER" || client.traitList[client.captchaCode.indexOf(roomCode.charAt(3))] == "COMPUTER"){
@@ -66,7 +65,7 @@ exports.run = (client, message, args) => {
       room[5][selectRoom][4].push(targetItem);
       sec[local[1]][local[2]][2][local[3]] = room;
       client.landMap.set(land,sec,local[0]);
-      client.playerMap.set(charid,sdex,"sdex");
+      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
       return;
     } else {
       message.channel.send("You can only install SBURB DISCS onto a computer!");
@@ -84,7 +83,7 @@ exports.run = (client, message, args) => {
             room[5][selectRoom][4].push(targetItem);
             sec[local[1]][local[2]][2][local[3]] = room;
             client.landMap.set(land,sec,local[0]);
-            client.playerMap.set(charid,sdex,"sdex");
+            client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
             return;
 
           } else {
@@ -106,7 +105,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,46);
-                client.playerMap.set(charid,sdex,"sdex");
+                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
                 return;
               } else if(room[5][selectRoom][4][0][4].length == 1){
                 sdex[selectDex][0]="CARVED TOTEM";
@@ -117,7 +116,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 if(client.userMap.get(userid,"tutor")[32]){
                   client.tutorcall.progressCheck(client,message,46);
                 }
-                client.playerMap.set(charid,sdex,"sdex");
+                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
                 return;
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
@@ -126,7 +125,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,46);
-                client.playerMap.set(charid,sdex,"sdex");
+                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
                 return;
               }
               break;
@@ -140,7 +139,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
               sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
               message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,46);
-              client.playerMap.set(charid,sdex,"sdex");
+              client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
               return;
             } else if(room[5][selectRoom][4][0][4].length == 1){
               if(room[5][selectRoom][4][1][4].length == 1){
@@ -150,7 +149,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0],"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,46);
-                client.playerMap.set(charid,sdex,"sdex");
+                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
                 return;
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
@@ -159,7 +158,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"))
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,46);
-                client.playerMap.set(charid,sdex,"sdex");
+                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
                 return;
               }
             } else {
@@ -171,7 +170,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0],"||"),room[5][selectRoom][4][1][4][0],"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,46);
-                client.playerMap.set(charid,sdex,"sdex");
+                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
                 return;
               } else{
                 sdex[selectDex][0]="CARVED TOTEM";
@@ -181,7 +180,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
                 sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"),funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"));
                 message.channel.send("Carved the CRUXITE DOWEL into a CARVED TOTEM");
                 client.tutorcall.progressCheck(client,message,46);
-                client.playerMap.set(charid,sdex,"sdex");
+                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
                 return;
               }
             }
@@ -194,7 +193,11 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
       } else if(room[5][selectRoom][0] == "ALCHEMITER") {
           if(selectCode == "########"){
 
-            let registry = client.sburbMap.get(sburbid,"registry");
+            let registry = client.charcall.allData(client,userid,charid,"registry");
+            if(registry=="NONE"){
+              message.channel.send("You need a registry to do alchemy!");
+              return;
+            }
 
             let item = sdex[selectDex][4][0];
 
@@ -219,7 +222,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
             registry.unshift(item);
 
-            client.sburbMap.set(sburbid,registry,"registry");
+            client.client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
             message.channel.send("Registered totem to the alchemy athenaeum!");
             client.tutorcall.progressCheck(client,message,30);
@@ -245,7 +248,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
             room[5][selectRoom][4].push(targetItem);
             sec[local[1]][local[2]][2][local[3]] = room;
             client.landMap.set(land,sec,local[0]);
-            client.playerMap.set(charid,sdex,"sdex");
+            client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
             return;
           } else {
             message.channel.send("Before you can use the PUNCH DESIGNIX, you must first load a CAPTCHALOGUE CARD into it!")
@@ -290,56 +293,57 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
       cards += sdex[selectDex][3];
 
       let targetItem = sdex.splice(selectDex,1);
-      client.playerMap.set(charid,sdex,"sdex");
-      client.playerMap.set(charid,cards,"cards");
+      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+    client.charcall.setAnyData(client,userid,charid,cards,"cards");
       return;
     } else if(sdex[selectDex][1].charAt(0) == "/"){
 
 
 
       if(sdex[selectDex][0]=="CRUXITE ARTIFACT"){
-        let enterCheck = client.landMap.get(sburbid,"enter");
-
+        let enterCheck = client.landMap.get(local[4],"enter");
+        if(client.charcall.npcCheck(client,charid)){
+          message.channel.send("Only players can enter the medium!");
+          return;
+        }
+        if(local[4]!=client.charcall.charData(client,charid,"owner")){
+          message.channel.send("You can only enter the medium in your own house!");
+          return;
+        }
         if(enterCheck){
           message.channel.send("You've already entered the medium!");
           return;
         }
 
-        let landName = client.landMap.get(sburbid,"name");
+        let landName = client.landMap.get(local[4],"name");
 
         let mediumPrototype = client.landMap.get(message.guild.id+"medium","prototype");
 
-        let spriteProto = client.playerMap.get(`n${sburbid}`,"prototype");
+        let spriteProto = client.charcall.charData(client,`n${local[4]}`,"prototype");
 
         for(let i=0;i<spriteProto.length;i++){
           mediumPrototype.push(spriteProto[i]);
         }
 
-        console.log(`Spriteproto = ${spriteProto}\nMedium Porto = ${mediumPrototype}`);
-
         client.landMap.set(message.guild.id+"medium",mediumPrototype,"prototype");
-
-        client.landMap.set(sburbid,true,"enter");
+        client.landMap.set(local[4],true,"enter");
         message.channel.send(`Entered the Land of ${landName[0]} and ${landName[1]}`);
         let targetItem = sdex.splice(selectDex,1);
-        client.playerMap.set(charid,sdex,"sdex");
+        client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
         client.tutorcall.progressCheck(client,message,32);
-
         return;
-
-
 
       }
       if(sdex[selectDex][0]=="STRIFE CARD"){
 
         message.channel.send(`Added ${sdex[selectDex][3]} STRIFE CARDS to your STRIFE SPECIBUS`);
 
-        let cards = client.playerMap.get(charid,"scards");
+        let cards = client.charcall.charData(client,charid,"scards");
         cards += sdex[selectDex][3];
 
         let targetItem = sdex.splice(selectDex,1);
-        client.playerMap.set(charid,sdex,"sdex");
-        client.playerMap.set(charid,cards,"scards");
+        client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+        client.charcall.setAnyData(client,userid,charid,cards,"scards");
         return;
       }
       if(sdex[selectDex][0]=="BOONDOLLARS"){
@@ -367,40 +371,43 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
           }
         }
 
-        let b = client.playerMap.get(charid,"b");
+        let b = client.charcall.allData(client,userid,charid,"b");
         b+= newBoon;
         let targetItem = sdex.splice(selectDex,1);
-        client.playerMap.set(charid,b,"b");
-        client.playerMap.set(charid,sdex,"sdex");
+        client.charcall.setAnyData(client,userid,charid,b,"b");
+        client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 
         boonMsg+=`\nAdded ${newBoon} BOONDOLLARS to PORKHOLLOW! You now have ${b} BOONDOLLARS!`
         message.channel.send(boonMsg);
 
       } else if(sdex[selectDex][0]=="RAINBOW GRIST"){
 
-        let grist = client.playerMap.get(charid,"grist");
-
+        let grist = client.charcall.allData(client,userid,charid,"grist");
+        if(grist =="NONE"){
+          message.channel.send("You need grist to use Rainbow Grist!");
+          return;
+        }
         for(let i=0;i<12;i++){
           grist[i+1]+=sdex[selectDex][3];
         }
 
         message.channel.send(`Added ${sdex[selectDex][3]} grist of all PRIMARY grist types!`);
-        client.playerMap.set(charid,grist,"grist");
+        client.charcall.setAnyData(client,userid,charid,grist,"grist");
         let targetItem = sdex.splice(selectDex,1);
-        client.playerMap.set(charid,sdex,"sdex");
+      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 
       } else if(sdex[selectDex][0]=="STRIFE SPECIBUS"){
 
-        let port = client.playerMap.get(charid,"port");
+        let port = client.charcall.charData(client,charid,"port");
 
         console.log(`Portfolio count is currently ${port}, adding ${sdex[selectDex][3]}`);
 
         port+=sdex[selectDex][3];
 
         message.channel.send(`Added ${sdex[selectDex][3]} STRIFE PORTFOLIO`);
-        client.playerMap.set(charid,port,"port");
+        client.charcall.setAnyData(client,userid,charid,port,"port");
         let targetItem = sdex.splice(selectDex,1);
-        client.playerMap.set(charid,sdex,"sdex");
+      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 
 
       }

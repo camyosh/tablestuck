@@ -10,11 +10,10 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-  var sburbid = client.playerMap.get(charid,"owner")
 
-  var occset = [true,charid];
+  var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
@@ -32,6 +31,12 @@ exports.run = (client, message, args) => {
     let gristSpent = client.landMap.get(local[4],"spent");
     let gate = client.landMap.get(local[4],"gate");
     let enter = client.landMap.get(local[4],"enter");
+    let gristRemaining;
+    if(gate+1>=8){
+      gristRemaining = "MAX GATE REACHED!";
+    } else {
+      gristRemaining = gateReq[gate+1]-gristSpent;
+    }
 
     if(!enter){
       message.channel.send("Enter? Enter what? You have no idea what you could possibly be trying to 'enter', it's not like there's any floating spirographs above your house or anything, that would be absurd.");
@@ -45,10 +50,10 @@ exports.run = (client, message, args) => {
       }
 
       gateSend = new client.Discord.MessageEmbed()
-      .setTitle(`${client.playerMap.get(local[4],"name").toUpperCase()}'S GATES`)
+      .setTitle(`${client.sburbMap.get(local[4],"name").toUpperCase()}'S GATES`)
       .setColor("#29b5d3")
       .addField("**Gate Reached**",gate)
-      .addField("**Grist to next Gate**",gateReq[gate+1]-gristSpent)
+      .addField("**Grist to next Gate**",gristRemaining)
       .addField("**Gates**",msg)
 
       message.channel.send(gateSend);
@@ -112,14 +117,14 @@ exports.run = (client, message, args) => {
     break;
     case 3:
 
-    target = ["h",0,0,0,sburbid];
+    target = ["h",0,0,0,local[4]];
     mapCheck=false;
     msg+=`You enter the RETURN NODE and are transported to a `
 
     break;
     case 6:
 
-    let server = client.playerMap.get(local[4],"server");
+    let server = client.sburbMap.get(local[4],"server");
     let serverid =message.guild.id.concat(server);
 
     if(!client.landMap.has(serverid)||!client.landMap.get(serverid,"enter")){

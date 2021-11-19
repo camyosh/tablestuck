@@ -5,6 +5,10 @@ exports.run = function(client, message, args) {
 
 
   if(client.charcall.allData(client,userid,charid,"revived")){
+    if(client.charcall.allData(client,userid,charid,"revived")=="NONE"){
+      message.channel.send("It doesn't seem like you can sleep!");
+      return;
+    }
     let s = client.charcall.allData(client,userid,charid,"sleepTimer");
     let t = Date.now();
     if(t-s>300000){

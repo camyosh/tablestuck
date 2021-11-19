@@ -1,12 +1,17 @@
 exports.run = async function(client, message, args){
 
-  var charid = message.guild.id.concat(message.author.id);
-  let chumroll = client.playerMap.get(charid,"chumroll");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  let chumroll = client.charcall.allData(client,userid,charid,"chumroll");
+  if(chumroll=="NONE"){
+    message.channel.send("You have no chums to pester!");
+    return;
+  }
   let tagList = [];
 
   for(let i=0;i<chumroll.length;i++){
-    if(client.playerMap.has(chumroll[i],"chumtag")){
-      tagList.push(client.playerMap.get(chumroll[i],"chumtag"));
+    if(client.charcall.allData(client,userid,chumroll[i],"chumtag")){
+      tagList.push(client.charcall.allData(client,userid,chumroll[i],"chumtag"));
     }else{
       tagList.push(i);
     }

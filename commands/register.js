@@ -246,8 +246,8 @@ function charSetup(userData,sburbid,channelCheck){
   userData.possess = `w${sburbid}`;
   //adds both waking and sleeping selves to the speeddial, for faster DM possession.
   if(!channelCheck){
-    userData.speeddial.push([`w${sburbid}`,`${userData.name}`]);
-    userData.speeddial.push([`d${sburbid}`,`${userData.name}'s Dream Self`]);
+    userData.speeddial.push(`w${sburbid}`);
+    userData.speeddial.push(`d${sburbid}`);
   }
 }
 function createGristSet(client,message){

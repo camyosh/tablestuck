@@ -23,7 +23,7 @@ if(!args[0]){
       msg += `**[${i+1}]** **${client.charcall.charData(client,occList[i][1],"name").toUpperCase()}**\n\n`;
   }
   for(let j=0;j<speeddial.length;j++){
-    msg2 += `**[${i+1}] ${speeddial[j][1].toUpperCase()}**\n\n`;
+    msg2 += `**[${i+1}] ${client.charcall.charData(client,speeddial[j],"name").toUpperCase()}**\n\n`;
     i++;
   }
   possessList = new client.Discord.MessageEmbed()
@@ -41,7 +41,7 @@ if(args[0]=="cancel"){
 
 let target = client.userMap.get(userid,"possess");
 
-  if(target==speeddial[0][0]){
+  if(target==speeddial[0]){
     message.channel.send("You're already controlling your default character!");
     return;
   }
@@ -51,7 +51,7 @@ let target = client.userMap.get(userid,"possess");
   client.charcall.setAnyData(client,userid,target,control,"control");
   checkStrife(client,message,target);
   //second, sets your default body to your current possess value.
-  client.userMap.set(userid,speeddial[0][0],"possess");
+  client.userMap.set(userid,speeddial[0],"possess");
 
   //last, adds you to the body's control list.
   charid = client.userMap.get(userid,"possess");
@@ -62,7 +62,7 @@ let target = client.userMap.get(userid,"possess");
 
 
   message.channel.send(`Stopped possessing ${client.charcall.charData(client,target,"name").toUpperCase()}!
-You have been shifted to your first Speed Dial option, ${speeddial[0][1].toUpperCase()}.`);
+You have been shifted to your first Speed Dial option, ${client.charcall.charData(client,speeddial[0],"name").toUpperCase()}.`);
   return;
 }
 let isSpeed = false;
@@ -82,7 +82,7 @@ let target;
     isSpeed = true;
   }
   if(isSpeed){
-    target = speeddial[value][0];
+    target = speeddial[value];
   } else {
     target = occList[value][1];
   }

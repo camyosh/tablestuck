@@ -400,7 +400,6 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
   const canvas = client.Canvas.createCanvas(1056,600);
   const ctx = canvas.getContext('2d');
 
-
   //list light, list dark, card fg, card bg, card shade
   let cards = sdex.length;
   let scheme = ["#992445","#0c6137","#992ae1","#484848","#245cb2"];
@@ -477,6 +476,7 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
         let gristType = client.codeCypher[1][client.captchaCode.indexOf(sdex[j][1].charAt(1))];
         let tier = sdex[j][2];
+        console.log(sdex[j]);
 
         if(client.traitcall.itemTrait(client,sdex[j],"SHITTY")){
 
@@ -490,7 +490,8 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
         let cost = tierCost[tier];
         let cost2 = tierCost[tier-1];
-
+        console.log(cost);
+        console.log(tier);
         if(tier-1<0){
           cost2=0;
         }

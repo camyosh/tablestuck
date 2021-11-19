@@ -50,9 +50,17 @@ exports.setAnyData = function(client,userid,charid,data,key){
 //finds data only related to the charid.
 exports.charData = function(client,charid,datatype){
   if(client.playerMap.has(charid)){
+    if(client.playerMap.get(charid).hasOwnProperty(datatype)){
     return client.playerMap.get(charid,datatype);
+  }else{
+    return "NONE";
+  }
   } else if(client.npcMap.has(charid)){
+    if(client.npcMap.get(charid).hasOwnProperty(datatype)){
     return client.npcMap.get(charid,datatype);
+  }else{
+    return "NONE";
+  }
   } else {
     return "NONE";
   }
@@ -112,7 +120,8 @@ exports.hasData = function(client,charid,datatype){
    check = false;
    if(occList.length>0){
      for(i=0;i<occList.length;i++){
-       if(occList[i][0]==false&&client.charcall.charData(client,occList[i][0],"control").length===0){
+       console.log(client.charcall.charData(client,occList[i][0],"control"));
+       if(occList[i][0]==false&&client.charcall.charData(client,occList[i][0],"control")=="NONE"){
          check=true;
        }
      }

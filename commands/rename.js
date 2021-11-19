@@ -4,15 +4,15 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  let sdex = client.playerMap.get(charid,"sdex");
-  let cards = client.playerMap.get(charid,"cards");
-  let registry = client.playerMap.get(charid,"registry");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  let sdex = client.charcall.charData(client,charid,"sdex");
+  let cards = client.charcall.charData(client,charid,"cards");
+  let registry = client.charcall.allData(client,userid,charid,"registry");
 
   selectDex = parseInt(args[0], 10) - 1;
   if(isNaN(selectDex)){
-
-    message.channel.send("That is not a valid argument!");
+    message.channel.send("That is not a valid argument! Select an item to rename!");
     return;
   }
   if(selectDex >= cards || selectDex< 0 || selectDex >= sdex.length){
@@ -22,6 +22,7 @@ exports.run = (client, message, args) => {
 
   if(!args[1]){
     message.channel.send("You must enter a name after selecting an item!");
+    return;
   }
 
   let selectItem = sdex[selectDex];
@@ -45,18 +46,17 @@ exports.run = (client, message, args) => {
 
   sdex[selectDex][0]=name;
 
-  client.playerMap.set(charid,sdex,"sdex");
+  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 
   function checkCode(checkItem){
     return checkItem[1] == selectItem[1];
   }
-
+ if(registry!="NONE"){
   let regPos = registry.findIndex(checkCode);
-
   if(regPos>-1){
     registry[regPos][0]=name;
-    client.playerMap.set(charid,registry,"registry");
+    client.charcall.setAnyData(client,userid,charid,registry,"registry");
   }
-
+}
   message.channel.send(`Successfully changed the name of ${oldName} to ${name}`);
 }

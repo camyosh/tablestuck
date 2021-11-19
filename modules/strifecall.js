@@ -455,7 +455,7 @@ return;
       let controllers = client.charcall.charData(client,charid,"control");
       console.log(`Controllers: ${controllers}`);
       for(let i=0;i<controllers.length;i++){
-      target = client.charcall.allData(client,controllers[i],charid,"speeddial")[0][0];
+      target = client.charcall.allData(client,controllers[i],charid,"speeddial")[0];
       client.userMap.set(controllers[i],target,"possess");
       targList = client.charcall.charData(client,target,"control");
       targList.push(controllers[i]);
@@ -548,8 +548,8 @@ return;
   }
   msg += ` You should try to find them, and ${client.auth.prefix}revive them!`;
   for(let i=0;i<sburbidArray.length;i++){
-    destination = sburbidArray[i].wakingID;
-    altdestination = sburbidArray[i].dreamingID;
+    destination = client.sburbMap.get(sburbidArray[i],"wakingID");
+    altdestination = client.sburbMap.get(sburbidArray[i],"wakingID");
     if(destination!=charid&&altdestination!=charid){
       client.funcall.chanMsg(client,destination,msg);
     }
@@ -2415,7 +2415,7 @@ exports.spawn = function(client,message,underling,pregrist = false){
 
     let undername = ``;
     let prototype = [];
-    let protoCount = Math.ceil(Math.random()*3);
+    let protoCount = Math.floor(Math.random()*4);
     if(sessionProto.length<protoCount){
       prototype = sessionProto;
     } else {

@@ -12,15 +12,20 @@ exports.run = (client, message, args) => {
 
 //defining important variables
 
-  var charid = message.guild.id.concat(message.author.id);
-  var local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  var playerGrist = client.playerMap.get(charid,"grist");
-  let sdex = client.playerMap.get(charid,"sdex");
-  let registry = client.playerMap.get(charid,"registry");
+  var playerGrist = client.charcall.charData(client,charid,"grist");
+  let sdex = client.charcall.charData(client,charid,"sdex");
+  let registry = client.charcall.charData(client,charid,"registry");
+  if(playerGrist=="NONE"){
+    message.channel.send("You can't alchemize without any grist!");
+    return;
+  }
 
 //define variables for the FOR loop
 
@@ -65,7 +70,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
 
     registry.unshift(item1);
-    client.playerMap.set(charid,registry,"registry");
+    client.charcall.setAnyData(client,userid,charid,registry,"registry");
     message.channel.send(`Registered the ${item1[0]} to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;
@@ -125,7 +130,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
 
     registry.unshift(newItem);
-    client.playerMap.set(charid,registry,"registry");
+    client.charcall.setAnyData(client,userid,charid,registry,"registry");
     message.channel.send(`Registered the resulting item to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;
@@ -176,7 +181,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
 
     registry.unshift(newItem);
-    client.playerMap.set(charid,registry,"registry");
+    client.charcall.setAnyData(client,userid,charid,registry,"registry");
     message.channel.send(`Registered the resulting item to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;

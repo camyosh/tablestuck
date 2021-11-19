@@ -86,8 +86,7 @@ exports.run = (client, message, args) => {
     message.channel.send("you can't go that way!");
     return;
   } else if(target[0].length>1&&target[0].charAt(local[0].length-1)=="d"){
-    if(sec[target[1]][target[2]][2][0][3]==false && client.charcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)&& !client.funcall.dmcheck(client,message)){
-
+    if(sec[target[1]][target[2]][2][0][3]==false && client.charcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)){
       message.channel.send("You can't continue on until the Underlings have been defeated!");
       return;
     }

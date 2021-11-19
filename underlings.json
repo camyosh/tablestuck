@@ -126,7 +126,8 @@
     "stats":[0,0,0,0,0,0],
     "prefMove":"none",
     "xp":6000,
-    "drop":14000
+    "drop":14000,
+    "img":""
   },
   "player":{
     "stm":8,

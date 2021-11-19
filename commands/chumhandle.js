@@ -8,8 +8,9 @@ exports.run = (client, message, args) => {
     message.channel.send("You need a chumhandle to set one in the first place!");
     return;
   }
+  var sburbid = client.charcall.sburbGet(client,charid);
   if(!args[0]){
-    message.channel.send("Enter a chumhandle you want to appear when pestering other players!");
+    message.channel.send(`Enter a your chumhandle and chumtag, like this: ${client.auth.prefix}chumhandle ghostlyTrickster GT`);
     return;
   }
 
@@ -57,6 +58,6 @@ exports.run = (client, message, args) => {
   client.sburbMap.set(sburbid,args[0],"chumhandle");
   client.sburbMap.set(sburbid,ab,"chumtag")
 
-  client.hookcall.pesterProf(client,message,sburbid);
+  client.hookcall.pesterProf(client,message,userid,charid);
 
 }

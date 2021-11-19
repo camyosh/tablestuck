@@ -14,7 +14,7 @@ exports.traitCheck = function(client,target,traitName){
   let checklist = [];
   if(prototype!="NONE"&&prototype.length>0){
     for(let i=0;i<prototype.length;i++){
-      checklist.push(prototype[i]);
+      checklist.push(prototype[i][1]);
     }
   }
   if(specibus.length != 0) checklist.push(specibus[equip][1]);
