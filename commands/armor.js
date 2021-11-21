@@ -34,13 +34,13 @@ exports.run = (client, message, args) => {
 
       msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 1 -** ${trait2}`;
 
-      inspectItem = new client.Discord.MessageEmbed()
+      inspectItem = new client.MessageEmbed()
       .setTitle(`**NO ARMOR EQUIPPED**`)
       .addField(`**ITEM INFORMATION**`,msg)
       .addField(`**ITEM TRAITS**`,msg1)
       .addField(`**PROTECTION**`,`**AV -** 1 **BR -** 1d2`);
 
-      message.channel.send(inspectItem);
+      message.channel.send({embeds: [inspectItem]});
 
     } else {
 
@@ -58,13 +58,13 @@ exports.run = (client, message, args) => {
 
       msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 2 -** ${trait2}`;
 
-      inspectItem = new client.Discord.MessageEmbed()
+      inspectItem = new client.MessageEmbed()
       .setTitle(`**${armor[0][0]}**`)
       .addField(`**ITEM INFORMATION**`,msg)
       .addField(`**ITEM TRAITS**`,msg1)
       .addField(`**PROTECTION**`,`**AV -** ${tierAv[armor[0][2]]} **BR -** ${tierBD[armor[0][2]][0]}d${tierBD[armor[0][2]][1]}`);
 
-      message.channel.send(inspectItem);
+      message.channel.send({embeds: [inspectItem]});
 
     }
     client.tutorcall.progressCheck(client,message,24);

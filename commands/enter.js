@@ -49,14 +49,14 @@ exports.run = (client, message, args) => {
         msg+=`**[${gate >= i ? i : "X"}] ${client.emojis.cache.get('736006488086282261')} GATE ${i}**\n\n`;
       }
 
-      gateSend = new client.Discord.MessageEmbed()
+      gateSend = new client.MessageEmbed()
       .setTitle(`${client.sburbMap.get(local[4],"name").toUpperCase()}'S GATES`)
       .setColor("#29b5d3")
       .addField("**Gate Reached**",gate)
       .addField("**Grist to next Gate**",gristRemaining)
       .addField("**Gates**",msg)
 
-      message.channel.send(gateSend);
+      message.channel.send({embeds: [gateSend]});
 
       return;
     }

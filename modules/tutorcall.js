@@ -109,8 +109,9 @@ ctx.font = "28px Courier Standard Bold";
 ctx.fillStyle = "#ffffff";
 ctx.fillText(msg,320,40);
 
-const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
-await client.channels.cache.get(channelid).send(attachment);
+const attachment = new client.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
+console.log(attachment);
+await client.channels.cache.get(channelid).send({files:[attachment]});
 if(bypass){
   return;
 }

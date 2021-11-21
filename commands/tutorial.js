@@ -35,9 +35,9 @@ if(!args[0]){
 
     ctx.fillText(msg,Math.floor(i/15)*300+20,(i%15)*30+40);
   }
-  const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
+  const attachment = new client.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
   message.channel.send(`Here, you can see your progress through the Tutorial.\n-Replay any message you've unlocked with ${client.auth.prefix}tutorial [number].\n-Reset your tutorial progress with ${client.auth.prefix}tutorial reset.\n-Turn the tutorial on or off with ${client.auth.prefix}tutorial switch.`)
-  message.channel.send(attachment);
+  message.channel.send({files: [attachment]});
 return;
 }
 

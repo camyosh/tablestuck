@@ -93,7 +93,7 @@ if(curCount!="NONE"&&curCount>=client.limit&&client.limit!=0){
   let items = client.charcall.allData(client,userid,charid,"itemsCaptchalogued");
 
   message.channel.send("That was your last action in the tournament, here's your final stats:");
-  let stats = new client.Discord.MessageEmbed()
+  let stats = new client.MessageEmbed()
   .setTitle(`**HERE'S HOW YOU DID**`)
   .addField(`**EXPERIENCE GAINED**`,`${xp}`,true)
   .addField(`**BOONDOLLARS GAINED**`,`${b}`,true)
@@ -104,7 +104,7 @@ if(curCount!="NONE"&&curCount>=client.limit&&client.limit!=0){
   .addField(`**PLAYERS DEFEATED**`,`${players}`,true)
   .addField(`**BOSSES DEFEATED**`,`${bosses}`,true)
 
-  message.channel.send(stats);
+  message.channel.send({embed:[stats]});
   //enter stat stuff here
 }
   //client.playerMap.set(charid,curCount,"act")
@@ -143,7 +143,7 @@ exports.tick = function(client, message){
     let items = client.playerMap.get(charid,"itemsCaptchalogued");
 
     message.channel.send("That was your last action in the tournament, here's your final stats:");
-    let stats = new client.Discord.MessageEmbed()
+    let stats = new client.MessageEmbed()
     .setTitle(`**HERE'S HOW YOU DID**`)
     .addField(`**EXPERIENCE GAINED**`,`${xp}`,true)
     .addField(`**BOONDOLLARS GAINED**`,`${b}`,true)
@@ -154,7 +154,7 @@ exports.tick = function(client, message){
     .addField(`**PLAYERS DEFEATED**`,`${players}`,true)
     .addField(`**BOSSES DEFEATED**`,`${bosses}`,true)
 
-    message.channel.send(stats);
+    message.channel.send({embed:[stats]});
     //enter stat stuff here
   }
 
@@ -678,13 +678,13 @@ exports.xpGive = function(client, message, xp, target){
 
     client.playerMap.set(target, newXp,"xp");
 
-    let congrats = new client.Discord.MessageEmbed()
+    let congrats = new client.MessageEmbed()
     .setTitle(`${name} ASCENDED THEIR ECHELADDER!`)
     .addField("RUNG",`${curRung} + ${i - curRung}`,true)
     .addField("GEL VISCOSITY",`${client.emojis.cache.get('721452682115809454')} ${curGel} + ${gvGain}`)
     .addField("GRIST CACHE", `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache(i) - curCache}`)
     .setThumbnail(target.avatarURL());
-    message.channel.send(congrats);
+    message.channel.send({embeds:[congrats]});
   }
 }
 
@@ -728,7 +728,7 @@ exports.gristCacheEmbed = function(client,sburbid) {
   for(i=0;i<gristTypes.length;i++){
     msg += `${client.emojis.cache.get(client.grist[gristTypes[i]].emoji)} **${gristTypes[i].toUpperCase()} - ${grist[i]}**\n\n`
   }
-  cachePrint = new client.Discord.MessageEmbed()
+  cachePrint = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S GRIST**`)
   .addField(`**GRIST CAP**`,`**${max}**`)
   .addField("**GRIST CACHE**",msg);
@@ -744,7 +744,11 @@ exports.chanMsg = function(client, target, msg, embed){
       controlList = client.charcall.charData(client,target,"control");
       for(let i=0;i<controlList.length;i++){
         if(embed!=undefined){
-        client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send(msg,embed);
+          if(msg=="NONE"){
+            client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send({embeds:[embed]});
+          } else {
+            client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send(msg,{embeds:[embed]});
+          }
         }else{
         client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send(msg);
       }
@@ -915,7 +919,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
 
     if(mapCheck){
       var miniMap = await client.landcall.drawMap(client,message,true);
-      listEmbed = new client.Discord.MessageEmbed()
+      listEmbed = new client.MessageEmbed()
       .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
       .addField(`**ALERTS**`,msg)
       .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
@@ -927,7 +931,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
       .setThumbnail(`attachment://landmap.png`)
       //message.channel.send({files:[miniMap],embed: listEmbed});
     } else {
-      listEmbed = new client.Discord.MessageEmbed()
+      listEmbed = new client.MessageEmbed()
       .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
       .addField(`**ALERTS**`,msg)
       .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
@@ -937,7 +941,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
       .setImage(`attachment://actionlist.png`)
     }
 
-    client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send(listEmbed)
+    client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed]})
 
   }
 

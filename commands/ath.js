@@ -61,7 +61,7 @@ exports.run = (client, message, args) => {
 
        const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,[],"alchemy athenaeum");
 
-         message.channel.send(attachment);
+         message.channel.send({files: [attachment]});
        }
 
        dexCheck();
@@ -77,7 +77,7 @@ exports.run = (client, message, args) => {
      async function itemInspect(){
      const attachment = await client.imgcall.inspect(client,message,args,4,registry[value]);
 
-       message.channel.send("Inspecting item",attachment);
+       message.channel.send({content: "Inspecting item", files: [attachment]});
      }
      itemInspect()
 

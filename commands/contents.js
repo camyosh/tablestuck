@@ -49,7 +49,7 @@ exports.run = (client, message, args) => {
     async function itemInspect(){
       const attachment = await client.imgcall.inspect(client,message,args,0,dex[value][4][subValue]);
 
-      message.channel.send("Inspecting item",attachment);
+      message.channel.send({content: "Inspecting item", files: [attachment]});
     }
     itemInspect()
     return;
@@ -58,7 +58,7 @@ exports.run = (client, message, args) => {
   // View a page of items
   async function dexCheck() {
     const attachment = await client.imgcall.sdexCheck(client,message,page,args,2,dex[value][4],dex[value][4].length,dex[value][0]);
-    message.channel.send(attachment);
+    message.channel.send({files: [attachment]});
     client.tutorcall.progressCheck(client,message,12);
   }
 

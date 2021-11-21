@@ -1,7 +1,7 @@
 
 exports.pogChamp = async function(client,message,chan){
 
-  const embed = new client.Discord.MessageEmbed()
+  const embed = new client.MessageEmbed()
   .setTitle(`POGCHAMP!`)
   .addField(`**POGCHAMP SAYS**`,`POGGERS!`)
   .setImage(`https://freepngimg.com/thumb/mouth/92712-ear-head-twitch-pogchamp-emote-free-download-png-hq-thumb.png`)

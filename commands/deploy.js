@@ -94,7 +94,7 @@ exports.run = (client, message, args) => {
 
       const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,defCost,"phernalia registry");
 
-        message.channel.send(attachment);
+        message.channel.send({files: [attachment]});
         client.tutorcall.progressCheck(client,message,19);
       }
 
@@ -111,10 +111,10 @@ exports.run = (client, message, args) => {
       msg += `**[${i+1}] ${clientSec[0][0][2][i][2]}**\n\n`
 
     }
-    roomDirect = new client.Discord.MessageEmbed()
+    roomDirect = new client.MessageEmbed()
     .setTitle(`**CLIENT HOUSE DIRECTORY**`)
     .addField("**ROOMS**",msg);
-    message.channel.send(roomDirect);
+    message.channel.send({embeds: [roomDirect]});
     return;
   }
 

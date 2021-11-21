@@ -56,7 +56,7 @@ if(gristCheck=="NONE"){
      async function dexCheck(){
      const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,[],"alchemy athenaeum");
 
-       message.channel.send(attachment);
+       message.channel.send({files: [attachment]});
        client.tutorcall.progressCheck(client,message,26);
      }
 

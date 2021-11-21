@@ -140,8 +140,8 @@ targonline = client.traitcall.compTest(client,message,tarcarid,targroom);
 }
 
   if(!args[0]||pageturn){
-    let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'pestercord.png');
-    message.channel.send(attachment);
+    let attachment = new client.MessageAttachment(canvas.toBuffer(), 'pestercord.png');
+    message.channel.send({files: [attachment]});
       client.tutorcall.progressCheck(client,message,10);
     return;
   }
@@ -171,11 +171,11 @@ targonline = client.traitcall.compTest(client,message,tarcarid,targroom);
           msg+=`${client.charcall.charData(client,targcarid,"name")}*\n\n`;
       }
 
-      chumPrint = new client.Discord.MessageEmbed()
+      chumPrint = new client.MessageEmbed()
       .setTitle(`**SESSION CHUMHANDLES**`)
       .addField(`**PAGE**`,`**${page+1} / ${Math.ceil(handleList.length/10)}**`)
       .addField(`**CHUMHANDLE**`,msg)
-      message.channel.send(chumPrint);
+      message.channel.send({embeds: [chumPrint]});
       return;
     }
 

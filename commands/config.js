@@ -25,11 +25,11 @@ for(let j=0;j<configList.options[i].choices.length;j++){
 }
 }
 
-  configPrint = new client.Discord.MessageEmbed()
+  configPrint = new client.MessageEmbed()
   .setTitle("**GAME CONFIGURATION**")
   .addField("**INSTRUCTIONS:**",`options preceeded with an arrow are the current selections. \nDo ${client.auth.prefix}config [option name] [new choice] to change any of the settings, like \"${client.auth.prefix}config death 2\".\n\nYou can also do ${client.auth.prefix}config reset to reset your config to default settings.\n\n**options with a \* after them may only have effect before the game begins, so set them before initalizing!**`)
   .addField("**OPTIONS:**",msg)
-  message.channel.send(configPrint);
+  message.channel.send({embeds: [configPrint]});
   return;
   }
 if(args[0].toLowerCase()==="reset"){

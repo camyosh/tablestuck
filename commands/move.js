@@ -16,7 +16,7 @@ exports.run = (client, message, args) => {
 
       msg += `**[${i+1}] ${sec[local[1]][local[2]][2][i][2]}**\n\n`
     }
-    roomDirect = new client.Discord.MessageEmbed()
+    roomDirect = new client.MessageEmbed()
     .setTitle(`**AREA DIRECTORY**`)
     .addField("**HELP**","Select a room number below to move to that room in this area, or select a direction (North, South, East or West) to move to the surrounding area!")
     .addField("**ROOMS**",msg);

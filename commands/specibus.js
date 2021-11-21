@@ -35,14 +35,14 @@ exports.run = (client, message, args) => {
     eq = `**[${equip+1}] EMPTY**\n\n`
   }
 
-  specibusPrint = new client.Discord.MessageEmbed()
+  specibusPrint = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S STRIFE SPECIBUS**`)
   .setColor("#00e371")
   .addField(`**STRIFE CARDS**`,`**x${scards}**`,true)
   .addField(`**KIND ABSTRATUS**`,`**${kinds}**`,true)
   .addField(`**CURRENTLY EQUIPPED**`,eq)
   .addField("**SPECIBUS**",msg);
-  message.channel.send(specibusPrint);
+  message.channel.send({embeds:[specibusPrint]});
   client.tutorcall.progressCheck(client,message,22);
 
 
@@ -113,7 +113,7 @@ if(value >= spec.length || value < 0) {
 async function itemInspect(){
 const attachment = await client.imgcall.inspect(client,message,args,1,spec[value]);
 
-  message.channel.send("Inspecting item",attachment);
+  message.channel.send("Inspecting item",{files: [attachment]});
 }
 itemInspect()
 

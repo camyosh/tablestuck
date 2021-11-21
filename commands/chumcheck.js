@@ -27,7 +27,7 @@ if(!args[0]){
   }
 targId = chumroll[value];
 
-listPrint = new client.Discord.MessageEmbed()
+listPrint = new client.MessageEmbed()
 .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
 .addField(`**NAME**`,`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,true)
 .addField(`**TYPE**`,`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,true)
@@ -39,9 +39,9 @@ listPrint = new client.Discord.MessageEmbed()
 .setImage(client.charcall.getAnyData(client,userid,targId,"img"));
 
 
-  message.channel.send(listPrint).catch(error => {
+  message.channel.send({embeds: [listPrint]}).catch(error => {
 
-    listPrint = new client.Discord.MessageEmbed()
+    listPrint = new client.MessageEmbed()
     .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
     .addField(`**NAME**`,`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,true)
     .addField(`**TYPE**`,`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,true)
@@ -49,7 +49,7 @@ listPrint = new client.Discord.MessageEmbed()
     .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.getAnyData(client,userid,targId,"gel")}`,true)
     .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.charcall.getAnyData(client,userid,targId,"b")}`,true)
     .addField(`**RUNG**`,`${client.charcall.getAnyData(client,userid,targId,"rung")}`,true)
-    message.channel.send(listPrint);
+    message.channel.send({embeds: [listPrint]});
   })
 
 }

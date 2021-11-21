@@ -134,8 +134,8 @@ let hairChoice = Math.floor(Math.random()*hairOptions.length);
 
     ctx.putImageData(imageData,0,0)
 
-let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), `character.png`);
+let attachment = new client.messageAttachment(canvas.toBuffer(), `character.png`);
 
-message.channel.send(attachment);
+message.channel.send({files: [attachment]});
 
 }

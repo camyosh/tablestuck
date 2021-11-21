@@ -77,13 +77,13 @@ exports.run = (client,message,args) =>{
       msg= "EMPTY";
     }
 
-    listPrint = new client.Discord.MessageEmbed()
+    listPrint = new client.MessageEmbed()
     .setTitle(`**ROOM OCCUPANTS**`)
     .addField(`**AREA TYPE**`,`**${typeList[area[0]]}**`,true)
     .addField(`**ROOM**`,`**${room[2]}**`,true)
     .addField(`**PAGE**`,`**${page+1}**`,true)
     .addField(`**CURRENT OCCUPANTS**`,msg)
-    message.channel.send(listPrint);
+    message.channel.send({embeds:[listPrint]});
     return;
   }
 }

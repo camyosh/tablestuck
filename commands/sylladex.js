@@ -27,7 +27,7 @@ exports.run = (client, message, args) => {
 
     const attachment = await client.imgcall.sdexCheck(client,message,page,args,0,dex,cards,"sylladex");
 
-      message.channel.send(attachment);
+      message.channel.send({files: [attachment]});
       client.tutorcall.progressCheck(client,message,7);
     }
 
@@ -70,7 +70,7 @@ if(value >= dex.length || value < 0) {
 async function itemInspect(){
 const attachment = await client.imgcall.inspect(client,message,args,0,dex[value]);
 
-  message.channel.send("Inspecting item",attachment);
+  message.channel.send("Inspecting item",{files: [attachment]});
 }
 itemInspect()
 }

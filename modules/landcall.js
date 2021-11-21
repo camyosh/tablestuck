@@ -1263,7 +1263,7 @@ for(i=0;i<11;i++){
   }
 }
 
-let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'landmap.png');
+let attachment = new client.MessageAttachment(canvas.toBuffer(), 'landmap.png');
 //message.channel.send(attachment);
 return attachment;
 } else {
@@ -1317,7 +1317,7 @@ for(i=-1;i<2;i++){
     }
   }
   }
-  attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'landmap.png');
+  attachment = new client.MessageAttachment(canvas.toBuffer(), 'landmap.png');
 return attachment;
 }
 }

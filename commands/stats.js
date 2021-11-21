@@ -22,7 +22,7 @@ exports.run = (client, message, args) => {
     } else {
       xpToRung = (rungReq[rung+1])-xp;
     }
-  let stats = new client.Discord.MessageEmbed()
+  let stats = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S** Stats`)
   .addField(`**Gel Viscosity**`,`${client.emojis.cache.get('735664168400584715')} ${gel}`,true)
   .addField(`**Vitality**`,`${vit}`,true)
@@ -40,6 +40,6 @@ exports.run = (client, message, args) => {
   .addField(`**PLAYERS DEFEATED**`,client.charcall.allData(client,userid,charid,"playersDefeated"),true)
   .addField(`**BOSSES DEFEATED**`,client.charcall.allData(client,userid,charid,"bossesDefeated"),true)
 
-  message.channel.send(stats);
+  message.channel.send({embeds:[stats]});
 
 }

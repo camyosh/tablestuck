@@ -26,13 +26,13 @@ if(!args[0]){
     msg2 += `**[${i+1}] ${client.charcall.charData(client,speeddial[j],"name").toUpperCase()}**\n\n`;
     i++;
   }
-  possessList = new client.Discord.MessageEmbed()
+  possessList = new client.MessageEmbed()
   .setTitle("**POSSESS LIST**")
   .addField(`**CURRENT OCCUPANTS:**`,msg)
   .addField(`**SPEED DIAL:**`,msg2)
   .addField(`**CURRENTLY POSSESSING:**`,`**${client.charcall.charData(client,client.userMap.get(userid,"possess"),"name")}**\nTo stop possessing, do ${client.auth.prefix}possess cancel`)
 
-  message.channel.send(possessList);
+  message.channel.send({embeds:[possessList]});
 
   return;
 }

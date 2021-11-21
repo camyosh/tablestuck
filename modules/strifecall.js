@@ -386,13 +386,13 @@ function giveXp(client,target,xp){
     client.charcall.setAnyData(client,userid,target,i,"rung");
     client.charcall.setAnyData(client,userid,target,newBoon,"b");
 
-    let congrats = new client.Discord.MessageEmbed()
+    let congrats = new client.MessageEmbed()
     .setTitle(`**${name}** climbed their ECHELADDER!`)
     .addField(`**RUNG**`,`${curRung} + ${i - curRung}`,true)
     .addField(`**GEL VISCOSITY**`,`${client.emojis.cache.get('735664168400584715')} ${curGv} + ${rungGel[i] - curGv}`, true)
     .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${newBoon - curBoon}`,true);
 
-    client.funcall.chanMsg(client,target,congrats);
+    client.funcall.chanMsg(client,target,"NONE",congrats);
 
   }
 }
@@ -2048,7 +2048,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
       alert=`NONE`;
     }
 
-    let embed = new client.Discord.MessageEmbed()
+    let embed = new client.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
     .addField('CST', costMsg, true)
     .addField('DMG', `${(dmg * dmgLvl)}`, true)
@@ -2064,7 +2064,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
 
     for(i=0;i<active.length;i++){
       if(client.charcall.controlCheck(client,list[active[i]][0])){
-        client.funcall.chanMsg(client,list[active[i]][1],embed);
+        client.funcall.chanMsg(client,list[active[i]][1],"NONE",embed);
       }
     }
 
@@ -2097,7 +2097,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
       alert=`NONE`;
     }
 
-    let embed = new client.Discord.MessageEmbed()
+    let embed = new client.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
     .addField('CST', costMsg, true)
     .addField('DMG', `${(dmg * dmgLvl)}`, true)
@@ -2111,7 +2111,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
 
     for(i=0;i<active.length;i++){
       if(client.charcall.controlCheck(client,list[active[i]][0])){
-        client.funcall.chanMsg(client,list[active[i]][1],embed);
+        client.funcall.chanMsg(client,list[active[i]][1],"NONE",embed);
       }
     }
   }
@@ -2123,7 +2123,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
       alert=`NONE`;
     }
 
-    let embed = new client.Discord.MessageEmbed()
+    let embed = new client.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
     .addField('CST', costMsg, true)
     .addField('DMG', `${(dmg * dmgLvl)}`, true)
@@ -2133,7 +2133,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     .setImage(client.actionList[action].img);
     for(i=0;i<active.length;i++){
       if(client.charcall.controlCheck(client,list[active[i]][0])){
-        client.funcall.chanMsg(client,list[active[i]][1],embed);
+        client.funcall.chanMsg(client,list[active[i]][1],"NONE",embed);
       }
     }
 
@@ -2667,7 +2667,7 @@ function strifeList(client,local,active,list,turn,init,charid,page,title){
     }
   }
 
-  let embed = new client.Discord.MessageEmbed()
+  let embed = new client.MessageEmbed()
   .setTitle(`**${title}**`)
   .addField(`PAGE`,`${page+1}/${pageMax}`)
   .addField(`**CHARACTERS IN STRIFE**`,msg)
@@ -2679,6 +2679,6 @@ function strifeList(client,local,active,list,turn,init,charid,page,title){
 exports.strifeList = function(client,local,active,list,turn,init,charid,page,title){
 
 let embed =strifeList(client,local,active,list,turn,init,charid,page,title);
-client.funcall.chanMsg(client,charid,embed);
+client.funcall.chanMsg(client,charid,"NONE",embed);
 
 }

@@ -26,12 +26,12 @@ exports.run = (client, message, args) => {
 
       msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 1 -** ${trait2}`;
 
-      inspectItem = new client.Discord.MessageEmbed()
+      inspectItem = new client.MessageEmbed()
       .setTitle(`**NO TRINKET EQUIPPED**`)
       .addField(`**ITEM INFORMATION**`,msg)
       .addField(`**ITEM TRAITS**`,msg1)
 
-      message.channel.send(inspectItem);
+      message.channel.send({embeds:[inspectItem]});
 
     } else {
 
@@ -44,12 +44,12 @@ exports.run = (client, message, args) => {
 
       msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 2 -** ${trait2}`;
 
-      inspectItem = new client.Discord.MessageEmbed()
+      inspectItem = new client.MessageEmbed()
       .setTitle(`**${trinket[0][0]}**`)
       .addField(`**ITEM INFORMATION**`,msg)
       .addField(`**ITEM TRAITS**`,msg1)
 
-      message.channel.send(inspectItem);
+      message.channel.send({embeds:[inspectItem]});
 
     }
 

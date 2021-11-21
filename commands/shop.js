@@ -18,7 +18,7 @@ let page = 0;
 async function dexCheck(){
 const attachment = await client.imgcall.sdexCheck(client,message,page,args,3,dex,dex.length,room[2]);
 
-  message.channel.send(attachment);
+  message.channel.send({files: [attachment]});
 }
 
 if(area[0]==4){

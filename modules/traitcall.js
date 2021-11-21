@@ -378,8 +378,8 @@ ctx.fillText(client.actionList[actions[i]].dmg,975,325+(120*i));
 ctx.fillText(client.actionList[actions[i]].aa,903,385+(120*i));
 
 }
-let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'captchacard.png');
-message.channel.send(attachment);
+let attachment = new client.MessageAttachment(canvas.toBuffer(), 'captchacard.png');
+message.channel.send({file:[attachment]});
 
 
 

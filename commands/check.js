@@ -26,7 +26,7 @@ if(args[0]){
 targId = occList[value][1];
 }
 
-  listPrint = new client.Discord.MessageEmbed()
+  listPrint = new client.MessageEmbed()
   .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
   .addField(`**NAME**`,`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,true)
   .addField(`**TYPE**`,`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,true)
@@ -37,7 +37,6 @@ targId = occList[value][1];
   .addField(`**BIO**`,`${client.charcall.allData(client,userid,targId,"bio")}`)
   .setImage(client.charcall.allData(client,userid,targId,"img"));
   client.tutorcall.progressCheck(client,message,16);
-
-  message.channel.send(listPrint)
+  message.channel.send({embeds: [listPrint]});
 
 }

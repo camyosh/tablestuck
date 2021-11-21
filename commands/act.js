@@ -285,8 +285,8 @@ for(i=0;i<action.length;i++){
   ctx.fillText(client.actionList[action[i]].dmg*damage,410+m,175+(130*j));
 }
 
-let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
-message.channel.send(attachment);
+let attachment = new client.messageAttachment(canvas.toBuffer(), 'actionlist.png');
+message.channel.send({files: [attachment]});
 client.tutorcall.progressCheck(client,message,34);
 return;
   }

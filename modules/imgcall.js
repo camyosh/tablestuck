@@ -86,7 +86,7 @@ exports.sdexCheck = async function (client, message,page, args, type, sdex, card
 
 //send message
 
-  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
 
 return attachment;
 
@@ -334,7 +334,7 @@ for(let j=0;j<4;j++){
 
 }
 
-  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'inspect.png');
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), 'inspect.png');
 
 return attachment;
 
@@ -543,7 +543,7 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
 //send message
 
-  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
 
 return attachment;
 
@@ -600,7 +600,7 @@ exports.characterImg = async function (client, message, custom){
 
   ctx.putImageData(imageData,0,0)
 
-  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), `character.png`);
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), `character.png`);
 
   message.channel.send(attachment);
 

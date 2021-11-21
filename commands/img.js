@@ -58,7 +58,7 @@ ctx.strokeRect(0,0,canvas.width,canvas.height);
 ctx.fillStyle = tempcolor;
 ctx.fillText(msg.toUpperCase(),10,28);
 
-const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'weaponattack.png');
-message.channel.send(attachment);
+const attachment = new client.MessageAttachment(canvas.toBuffer(), 'weaponattack.png');
+message.channel.send({files: [attachment]});
 return;
 }

@@ -1,7 +1,8 @@
 //declare requirments
 
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const { Client, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
+const intents = new Intents(32767);
+const client = new Client({intents: intents});
 const Enmap = require('enmap');
 const fs = require('fs');
 const Canvas = require("canvas");
@@ -147,7 +148,8 @@ client.userMap = userMap;
 client.sburbMap = sburbMap;
 client.npcMap = npcMap;
 client.grist = grist;
-client.Discord = Discord;
+client.MessageEmbed = MessageEmbed
+client.MessageAttachment = MessageAttachment
 client.registry = registry;
 client.actionList = actionList;
 client.weaponkinds = require("./weaponkinds.json");

@@ -27,7 +27,7 @@ let bosses = client.landMap.get(leaderAdd,"bossesDefeated");
 let items = client.landMap.get(leaderAdd,"itemsCaptchalogued");
 
 
-let stats = new client.Discord.MessageEmbed()
+let stats = new client.MessageEmbed()
 .setTitle(`**SESSION LEADERBOARD**`)
 .addField(`**EXPERIENCE GAINED**`,`${exp[0]} **-** ${exp[1]}`,true)
 .addField(`**BOONDOLLARS GAINED**`,`${boon[0]} **-** ${boon[1]}`,true)
@@ -38,6 +38,6 @@ let stats = new client.Discord.MessageEmbed()
 .addField(`**PLAYERS DEFEATED**`,`${players[0]} **-** ${players[1]}`,true)
 .addField(`**BOSSES DEFEATED**`,`${bosses[0]} **-** ${bosses[1]}`,true)
 
-message.channel.send(stats);
+message.channel.send({embeds: [stats]});
 
 }

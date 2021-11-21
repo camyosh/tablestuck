@@ -70,7 +70,7 @@ clientid = client.charcall.charGet(client,clientsburb);
 
     const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,defCost,"phernalia registry");
 
-      message.channel.send(attachment);
+      message.channel.send({files: [attachment]});
     }
 
     dexCheck();
