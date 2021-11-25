@@ -925,11 +925,10 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
       .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
       .addField(`**PAGE**`,`**1**`,true)
       .addField(`**CURRENT OCCUPANTS** (>list)`,list)
-      .attachFiles(attachment)
       .setImage(`attachment://actionlist.png`)
-      .attachFiles(miniMap)
       .setThumbnail(`attachment://landmap.png`)
-      //message.channel.send({files:[miniMap],embed: listEmbed});
+      client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed], files:[attachment,miniMap]})
+
     } else {
       listEmbed = new client.MessageEmbed()
       .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
@@ -937,11 +936,11 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
       .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
       .addField(`**PAGE**`,`**1**`,true)
       .addField(`**CURRENT OCCUPANTS** (>list)`,list)
-      .attachFiles(attachment)
       .setImage(`attachment://actionlist.png`)
+      client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed], files:[attachment]})
     }
 
-    client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed]})
+
 
   }
 

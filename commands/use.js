@@ -222,7 +222,7 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
 
             registry.unshift(item);
 
-            client.client.charcall.setAnyData(client,userid,charid,registry,"registry");
+            client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
             message.channel.send("Registered totem to the alchemy athenaeum!");
             client.tutorcall.progressCheck(client,message,30);

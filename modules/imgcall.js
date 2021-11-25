@@ -476,7 +476,6 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
         let gristType = client.codeCypher[1][client.captchaCode.indexOf(sdex[j][1].charAt(1))];
         let tier = sdex[j][2];
-        console.log(sdex[j]);
 
         if(client.traitcall.itemTrait(client,sdex[j],"SHITTY")){
 

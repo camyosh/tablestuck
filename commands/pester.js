@@ -10,8 +10,9 @@ exports.run = async function(client, message, args){
   let tagList = [];
 
   for(let i=0;i<chumroll.length;i++){
-    if(client.charcall.allData(client,userid,chumroll[i],"chumtag")){
-      tagList.push(client.charcall.allData(client,userid,chumroll[i],"chumtag"));
+    getTag = client.charcall.charGet(client,chumroll[i]);
+    if(client.charcall.allData(client,userid,getTag,"chumtag")!="NONE"){
+      tagList.push(client.charcall.allData(client,userid,getTag,"chumtag"));
     }else{
       tagList.push(i);
     }
@@ -43,14 +44,12 @@ exports.run = async function(client, message, args){
   let i;
 
   for(i=1;i<args.length;i++){
-    console.log(i);
-    console.log(args.length);
     msg+=`${args[i]} `;
   }
 
   try{
-
-    client.hookcall.pester(client,message,charid,chumroll[value],msg);
+    getTag = client.charcall.charGet(client,chumroll[value]);
+    client.hookcall.pester(client,message,charid,getTag,msg);
     client.tutorcall.progressCheck(client,message,11);
   }catch(err){
     message.channel.send("Failed to send message!");

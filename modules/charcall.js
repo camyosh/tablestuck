@@ -1,6 +1,5 @@
 //finds data anywhere, defaulting to userdata
 exports.allData = function(client,userid,charid,datatype){
-
   if(client.playerMap.has(charid)){
     let sburbid = client.playerMap.get(charid,"owner");
     if(client.playerMap.get(charid).hasOwnProperty(datatype)){
@@ -12,7 +11,7 @@ exports.allData = function(client,userid,charid,datatype){
     } else{
       return "NONE";
     }
-  } else {
+  } else if(client.npcMap.has(charid)){
     if(client.npcMap.get(charid).hasOwnProperty(datatype)){
       return client.npcMap.get(charid,datatype);
     } else if(client.userMap.get(userid).hasOwnProperty(datatype)){
@@ -20,6 +19,8 @@ exports.allData = function(client,userid,charid,datatype){
     } else {
     return "NONE";
     }
+  } else {
+    return "NONE";
   }
 }
 //sets data in an already existing location
@@ -120,7 +121,6 @@ exports.hasData = function(client,charid,datatype){
    check = false;
    if(occList.length>0){
      for(i=0;i<occList.length;i++){
-       console.log(client.charcall.charData(client,occList[i][0],"control"));
        if(occList[i][0]==false&&client.charcall.charData(client,occList[i][0],"control")=="NONE"){
          check=true;
        }

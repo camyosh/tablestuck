@@ -27,8 +27,8 @@ exports.pesterProf = async function(client,message,userid,charid){
 	try {
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
-
-		await webhook.send('Updated Pesterchum profile!', {
+		await webhook.send({
+      content: 'Updated Pesterchum profile!',
 			username: `[${client.charcall.allData(client,userid,charid,"chumtag")}] ${client.charcall.allData(client,userid,charid,"chumhandle")}`,
 			avatarURL: client.charcall.allData(client,userid,charid,"chumpic")
 		});
@@ -46,11 +46,11 @@ try{
 
 		let webhooks = await channel.fetchWebhooks();
 		let webhook = webhooks.first();
-
-		await webhook.send(msg, {
-			username: `[${client.charcall.allData(client,userid[0],charid,"chumtag")}] ${client.charcall.allData(client,userid[0],charid,"chumhandle")}`,
-			avatarURL: client.charcall.allData(client,userid[0],charid,"chumpic"),
-		});
+	await	webhook.send({
+    content: msg,
+    username: `[${client.charcall.allData(client,userid,charid,"chumtag")}] ${client.charcall.allData(client,userid,charid,"chumhandle")}`,
+    avatarURL: client.charcall.allData(client,userid,charid,"chumpic")
+  });
   }
     message.react(`✅`);
 	} catch (error) {

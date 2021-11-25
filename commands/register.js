@@ -119,7 +119,7 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
   client.userMap.set(userid,userData);
 
   await finishLandGen(client,message,sburbid,aspectChoice,gristSet,beginData[1]);
-  await client.channels.cache.get(channels[0]).send(`${userData.name} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
+  await client.channels.cache.get(channels[0]).send(`${message.guild.members.cache.get(userData.ping)} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
   await tutorStart(client,message);
 
   console.log(`End time is ${Date.now() - startTime}`);
@@ -507,6 +507,9 @@ async function generateChannels(client,message,userid,sburbid,channels){
          {
            id: message.author.id,
            allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+     },{
+       id: client.user.id,
+       allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
      },{
        id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
        deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'], //Deny permissions

@@ -17,7 +17,7 @@ exports.run = (client, message, args) => {
     let area = sec[local[1]][local[2]];
     let room = area[2][local[3]];
     let sdex = client.charcall.charData(client,charid,"sdex");
-    let registry = client.charcall.charData(client,userid,charid,"registry");
+    let registry = client.charcall.allData(client,userid,charid,"registry");
 
     if(registry=="NONE"){
       message.channel.send("You don't have a registry to check!");

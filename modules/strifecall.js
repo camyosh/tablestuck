@@ -1082,7 +1082,7 @@ targName = client.charcall.charData(client,list[target][1],"name");
 
 
     let brroll;
-    let av;
+    let av = 0;
 
     let armor = client.charcall.charData(client,list[target][1],"armor");
 
@@ -1093,7 +1093,6 @@ targName = client.charcall.charData(client,list[target][1],"name");
       av = client.underlings[client.charcall.charData(client,list[target][1],"type")].av;
       brroll = client.underlings[client.charcall.charData(client,list[target][1],"type")].bd;
     }
-
     let effective = "HIT!"
 
     try{
@@ -2047,20 +2046,18 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     if(alert.length==0){
       alert=`NONE`;
     }
-
     let embed = new client.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
     .addField('CST', costMsg, true)
     .addField('DMG', `${(dmg * dmgLvl)}`, true)
     .addField("ADDITIONAL ACTION", client.actionList[action].aa )
     .addField("STRIKE",strikeMsg,true)
-    .addField("TARGET AV",av,true)
+    .addField("TARGET AV",av.toString(),true)
     .addField("HIT",`${effective}`)
     .addField("DAMAGE", damagemsg, true)
     .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
-
 
     for(i=0;i<active.length;i++){
       if(client.charcall.controlCheck(client,list[active[i]][0])){
@@ -2103,16 +2100,14 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     .addField('DMG', `${(dmg * dmgLvl)}`, true)
     .addField("ADDITIONAL ACTION", client.actionList[action].aa )
     .addField("STRIKE",strikeMsg,true)
-    .addField("TARGET AV",av,true)
+    .addField("TARGET AV",av.toString(),true)
     .addField("HIT",`${`MISS!`}`)
     .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
-
+    console.log(embed);
     for(i=0;i<active.length;i++){
-      if(client.charcall.controlCheck(client,list[active[i]][0])){
         client.funcall.chanMsg(client,list[active[i]][1],"NONE",embed);
-      }
     }
   }
 

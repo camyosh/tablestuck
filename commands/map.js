@@ -12,7 +12,7 @@ if(local[0]==`h`){
 async function sendMap(){
 var attachment = await client.landcall.drawMap(client,message,false);
 
-message.channel.send(attachment);
+message.channel.send({files: [attachment]});
 }
 sendMap();
 }

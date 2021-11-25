@@ -123,14 +123,14 @@ let targonline = [false,false];
 for(let i=pagenumber*10;i<chumroll.length&&i<(pagenumber+1)*10;i++){
   let targcarid = client.charcall.charGet(client,chumroll[i]);
   let tag = client.charcall.allData(client,userid,targcarid,"chumtag");
-ctx.font = applyText(canvas,`[${tag}]${client.client.charcall.allData(client,userid,targcarid,"chumhandle")}`);
+ctx.font = applyText(canvas,`[${tag}]${client.charcall.allData(client,userid,targcarid,"chumhandle")}`);
 
-ctx.fillText(`[${tag}]${client.client.charcall.charcall.allData(client,userid,targcarid,"chumhandle")}`,50,203+((i-(pagenumber*10))*40));
+ctx.fillText(`[${tag}]${client.charcall.allData(client,userid,targcarid,"chumhandle")}`,50,203+((i-(pagenumber*10))*40));
 
-  targlocal = client.client.charcall.charData(client,targcarid,"local");
+  targlocal = client.charcall.charData(client,targcarid,"local");
   targroom = client.landMap.get(targlocal[4],targlocal[0])[targlocal[1]][targlocal[2]][2][targlocal[3]];
 
-targonline = client.traitcall.compTest(client,message,tarcarid,targroom);
+targonline = client.traitcall.compTest(client,message,targcarid,targroom);
   if(targonline[0]){
     ctx.drawImage(online,15,179+((i-(pagenumber*10))*40),32,32);
   } else {

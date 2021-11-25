@@ -36,7 +36,7 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.mentions.members.first().id);
   var charid = client.userMap.get(userid,"possess");
- if (!client.charcall.hasData(client,charid,"grist")){
+ if (client.charcall.allData(client,userid,charid,"grist")=="NONE"){
    message.channel.send("This character can't carry grist!");
    return;
  }
@@ -45,7 +45,7 @@ exports.run = (client, message, args) => {
 
   grist[select]+=value;
 
-    client.sburbMap.set(sburbid,grist,"grist");
+    client.charcall.setAnyData(client,userid,charid,grist,"grist");
 
     message.channel.send(`Gave player ${value} ${gristTypes[select]} grist!`);
 }

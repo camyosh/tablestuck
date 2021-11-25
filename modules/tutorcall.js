@@ -110,7 +110,6 @@ ctx.fillStyle = "#ffffff";
 ctx.fillText(msg,320,40);
 
 const attachment = new client.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
-console.log(attachment);
 await client.channels.cache.get(channelid).send({files:[attachment]});
 if(bypass){
   return;
