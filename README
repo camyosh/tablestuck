@@ -1,22 +1,14 @@
 TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
-
+[FOR WINDOWS]
 1- Download and install [Node.js](https://nodejs.org)
-
   When the Node.js installation asks if you want to install tools necessary to compile native modules, please make sure that the box is checked!
   If you don't do this, you will need to install python and Visual Studio c++ manually.
 
-2- Create a folder for the bot
-  Download this repository and put it in a folder inside that folder.
-  ->Bot folder/
-    ->This repository as a folder/
-      ->bot.js, other folders and files...
+2- Download or make a clone of this repository
+  cloning the repository makes it eaiser to update the bot as we change it, but simply downloading the files lets you run it without setting up git.
 
-3- Create a text file called auth.json and paste the following into it --
-  {
-    "token": "YOUR DISCORD BOT TOKEN HERE",
-    "prefix": ">",
-    "admin": "YOUR DISCORD ID HERE"
-  }
+3- Edit the auth-template.json file
+  the auth.json file will be created when you first run your bot, and requires your bot token and chosen prefix for commands before running properly.
 
   The bot has a TOURNAMENT MODE. If client.limit in bot.js is 0, it is disabled, but if it is a number greater than 0, it is enabled.
   If the bot is in TOURNAMENT MODE, auth.json will need an extra section called "list" with a list of discord IDs allowed in your tournament:
@@ -29,12 +21,7 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
         "DISCORD ID"
     ]
   }
-
-4- Replace the information in the token and admin spaces with your own information to connect this program to your own discord bot
-
-5- Create an empty folder called "data" in the same folder as auth.json
-
-6- Open the command terminal on your computer in the bot's folder and type the following --
+4- Open the command terminal on your computer in the bot's folder and type the following --
   npm install discord.js
   npm install enmap
   npm install canvas
