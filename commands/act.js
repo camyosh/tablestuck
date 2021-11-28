@@ -27,6 +27,10 @@ exports.run = (client, message, args) => {
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let init = client.strifeMap.get(strifeLocal,"init");
 
+if(pos!=init[turn][0]){
+  message.channel.send("It's not your turn!");
+  return;
+}
 //as long as the character has a weapon equipped, it overrides the default damage.
   if(spec.length>0){
     damage=tierDmg[spec[equip][2]];

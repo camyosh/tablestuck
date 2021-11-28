@@ -17,7 +17,7 @@ exports.run = (client, message, args) => {
   let currentInv = client.charcall.charData(client,charid,"sdex");
   let targetItem;
 
-  if(local[0]!="h"&&landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)){
+  if(local[0]!="h"&&local[0]!="pm"&&local[0]!="dm"&&client.charcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)){
     message.channel.send("You can't captchalogue items while there are Underlings here!");
     return;
   }

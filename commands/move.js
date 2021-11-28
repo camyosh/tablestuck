@@ -3,7 +3,6 @@ exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");
-
   var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
   let msg = ``;
   let local = client.charcall.charData(client,charid,"local");

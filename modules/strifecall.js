@@ -452,6 +452,7 @@ return;
       //if the character has no dreamself, it is likely an underling, so it is removed from the room
       //and the controller is pushed back to their default body.
       let removed = sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1);
+      client.landMap.set(local[4],sec,local[0]);
       let controllers = client.charcall.charData(client,charid,"control");
       console.log(`Controllers: ${controllers}`);
       for(let i=0;i<controllers.length;i++){

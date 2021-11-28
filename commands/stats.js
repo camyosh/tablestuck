@@ -25,11 +25,11 @@ exports.run = (client, message, args) => {
   let stats = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S** Stats`)
   .addField(`**Gel Viscosity**`,`${client.emojis.cache.get('735664168400584715')} ${gel}`,true)
-  .addField(`**Vitality**`,`${vit}`,true)
+  .addField(`**Vitality**`,vit.toString(),true)
   .addField(`**Boondollars**`,`${client.emojis.cache.get('735664076180422758')} ${b}`,true)
-  .addField(`**Rung**`,rung,true)
-  .addField(`**Experience**`,xp,true)
-  .addField(`**XP to next Rung**`,xpToRung,true);
+  .addField(`**Rung**`,rung.toString(),true)
+  .addField(`**Experience**`,xp.toString(),true)
+  .addField(`**XP to next Rung**`,xpToRung.toString(),true);
   if (client.limit != 0) {
     stats.addField(`**ACTIONS LEFT**`,client.limit - client.sburbMap.get(sburbid,"act"),true)
   }
