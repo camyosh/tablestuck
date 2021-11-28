@@ -1,6 +1,6 @@
 
 
-exports.progressCheck = async function(client,message,step,bypass = false){
+exports.progressCheck = async function(client,message,step,affix=false,bypass = false){
   /*
   every player has an array of bools that say if they've passed certain stages of the tutorial.
     this means that progress can be made in any order, though the guide will try to lead the player along a certain route.
@@ -66,7 +66,21 @@ exports.progressCheck = async function(client,message,step,bypass = false){
   if(!progress[0]||client.charcall.npcCheck(client,charid)){
     return;
   }
+  //if the step is done and a message is affixed, sends the message without the tutorial attached.
   if(progress[step]&&!bypass){
+    if(affix){
+      switch (affix[0]){
+        case "text":
+        await client.channels.cache.get(channelid).send({content: affix[1]});
+        break;
+        case "img":
+        await client.channels.cache.get(channelid).send({files:[affix[1]]});
+        break;
+        case "embed":
+        await client.channels.cache.get(channelid).send({embeds: [affix[1]]});
+        break;
+      }
+    }
     return;
   }
 let tutorRef = require("../tutorRef.json");
@@ -110,7 +124,22 @@ ctx.fillStyle = "#ffffff";
 ctx.fillText(msg,320,40);
 
 const attachment = new client.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
+if(!affix){
 await client.channels.cache.get(channelid).send({files:[attachment]});
+} else {
+  switch (affix[0]){
+    case "text":
+    await client.channels.cache.get(channelid).send({content: affix[1],files:[attachment]});
+    break;
+    case "img":
+    await client.channels.cache.get(channelid).send({files:[affix[1],attachment]});
+    break;
+    case "embed":
+    await client.channels.cache.get(channelid).send({embeds:[affix[1]]});
+    await client.channels.cache.get(channelid).send({files:[attachment]});
+    break;
+  }
+}
 if(bypass){
   return;
 }

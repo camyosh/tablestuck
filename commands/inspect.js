@@ -34,9 +34,7 @@ exports.run = (client, message, args) => {
     async function dexCheck(){
 
     const attachment = await client.imgcall.sdexCheck(client,message,page,args,3,dex,dex.length,room[2]);
-
-      message.channel.send({files: [attachment]});
-      client.tutorcall.progressCheck(client,message,3);
+      client.tutorcall.progressCheck(client,message,3,["img",attachment]);
     }
 
     dexCheck();
@@ -98,8 +96,7 @@ exports.run = (client, message, args) => {
   async function itemInspect(){
   const attachment = await client.imgcall.inspect(client,message,args,3,dex[value]);
 
-    message.channel.send({content: "Inspecting item", files: [attachment]});
-    client.tutorcall.progressCheck(client,message,4);
+    client.tutorcall.progressCheck(client,message,4,["img",attachment]);
   }
   itemInspect()
 

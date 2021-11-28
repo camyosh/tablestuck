@@ -290,8 +290,7 @@ for(i=0;i<action.length;i++){
 }
 
 let attachment = new client.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
-message.channel.send({files: [attachment]});
-client.tutorcall.progressCheck(client,message,34);
+client.tutorcall.progressCheck(client,message,34,["img",attachment]);
 return;
   }
 

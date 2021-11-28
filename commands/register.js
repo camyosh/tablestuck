@@ -106,7 +106,6 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
   var moonData = await dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom);
   await createSheets(client,message,userid,sburbid,userData,armorsets,beginData[0],moonData,towerLocal,channels,chumData,repDef);
   //beginData = [randnum,def]
-  var dateObj = new Date();
   //creates channels if the player doesn't have any.
   if(!channelCheck){
     channels = await generateChannels(client,message,userid,sburbid,channels);
@@ -119,9 +118,7 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
   client.userMap.set(userid,userData);
 
   await finishLandGen(client,message,sburbid,aspectChoice,gristSet,beginData[1]);
-  await client.channels.cache.get(channels[0]).send(`${message.guild.members.cache.get(userData.ping)} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
-  await tutorStart(client,message);
-
+  await tutorStart(client,message,userData,channels);
   console.log(`End time is ${Date.now() - startTime}`);
 
 
@@ -546,6 +543,8 @@ async function generateChannels(client,message,userid,sburbid,channels){
 
 return channels;
 }
-async function tutorStart(client,message){
-  await client.tutorcall.progressCheck(client,message,1);
+async function tutorStart(client,message,userData,channels){
+  var dateObj = new Date();
+  intromessage = `${message.guild.members.cache.get(userData.ping)} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`;
+  client.tutorcall.progressCheck(client,message,1,["text",intromessage]);
 }

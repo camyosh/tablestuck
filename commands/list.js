@@ -8,8 +8,6 @@ exports.run = (client,message,args) =>{
 
   let local = client.charcall.charData(client,charid,"local");
 
-  client.tutorcall.progressCheck(client,message,2);
-
   let page = 0;
   let pageMax = 1;
   let pageTurn = false;
@@ -83,7 +81,7 @@ exports.run = (client,message,args) =>{
     .addField(`**ROOM**`,`**${room[2]}**`,true)
     .addField(`**PAGE**`,`**${page+1}**`,true)
     .addField(`**CURRENT OCCUPANTS**`,msg)
-    message.channel.send({embeds:[listPrint]});
+      client.tutorcall.progressCheck(client,message,2,["embed",listPrint]);
     return;
   }
 }

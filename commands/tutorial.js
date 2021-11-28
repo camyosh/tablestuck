@@ -36,8 +36,7 @@ if(!args[0]){
     ctx.fillText(msg,Math.floor(i/15)*300+20,(i%15)*30+40);
   }
   const attachment = new client.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
-  message.channel.send(`Here, you can see your progress through the Tutorial.\n-Replay any message you've unlocked with ${client.auth.prefix}tutorial [number].\n-Reset your tutorial progress with ${client.auth.prefix}tutorial reset.\n-Turn the tutorial on or off with ${client.auth.prefix}tutorial switch.`)
-  message.channel.send({files: [attachment]});
+  message.channel.send({content: `Here, you can see your progress through the Tutorial.\n-Replay any message you've unlocked with ${client.auth.prefix}tutorial [number].\n-Reset your tutorial progress with ${client.auth.prefix}tutorial reset.\n-Turn the tutorial on or off with ${client.auth.prefix}tutorial switch.`,files: [attachment]});
 return;
 }
 
@@ -58,7 +57,7 @@ if(args[0]=="switch"){
   return;
 }
 if(args[0]=="test"){
-  client.tutorcall.progressCheck(client,message,args[1],true);
+  client.tutorcall.progressCheck(client,message,args[1],false,true);
   return;
 }
 value = parseInt(args[0], 10);
@@ -74,5 +73,5 @@ if(!progress[value]){
   message.channel.send("You don't have that tutorial unlocked yet!");
   return;
 }
-client.tutorcall.progressCheck(client,message,value,true);
+client.tutorcall.progressCheck(client,message,value,false,true);
 }
