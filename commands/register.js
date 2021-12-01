@@ -290,16 +290,15 @@ function dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,
     var derseList = client.landMap.get(message.guild.id+"medium","derseList");
 
     var roomIndex = -1;
-
   //if the player already exists on a moon, it'll keep them there.
     if(prospitList.includes(sburbid)){
       lunarSway = "pm";
       repDef=[10,-10];
-      roomIndex = prospitList.indexOf(sburbid);
+      roomIndex = prospitList.indexOf(sburbid)+1;
     }else if(derseList.includes(sburbid)){
       lunarSway = "dm";
       repDef=[-10,10];
-      roomIndex = derseList.indexOf(sburbid);
+      roomIndex = derseList.indexOf(sburbid)+1;
     }
   //if the player isn't on either moon, it puts them on the one with less people, or a
   //random one if they are both equal.

@@ -59,9 +59,6 @@ newName = newName.split(" ").join("");
 client.charcall.setAnyData(client,userid,occ[spritePos][1],prototype,"prototype");
 client.charcall.setAnyData(client,userid,occ[spritePos][1],newName,"name")
 client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-let sessionProto = client.landMap.get(message.guild.id+"medium",`prototype`);
-    sessionProto.push(targetItem);
-  client.landMap.set(message.guild.id+"medium",sessionProto,`prototype`);
 message.channel.send(`You prototyped the SPRITE with the ${targetItem[0].toUpperCase()}, it is now ${newName}!`);
 client.funcall.tick(client,message);
 }

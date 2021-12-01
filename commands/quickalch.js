@@ -19,9 +19,9 @@ exports.run = (client, message, args) => {
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  var playerGrist = client.charcall.charData(client,charid,"grist");
+  var playerGrist = client.charcall.allData(client,userid,charid,"grist");
   let sdex = client.charcall.charData(client,charid,"sdex");
-  let registry = client.charcall.charData(client,charid,"registry");
+  let registry = client.charcall.allData(client,userid,charid,"registry");
   if(playerGrist=="NONE"){
     message.channel.send("You can't alchemize without any grist!");
     return;
@@ -68,7 +68,6 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
       message.channel.send("You can't alchemize that!");
       return;
     }
-
     registry.unshift(item1);
     client.charcall.setAnyData(client,userid,charid,registry,"registry");
     message.channel.send(`Registered the ${item1[0]} to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);

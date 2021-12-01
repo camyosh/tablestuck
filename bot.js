@@ -32,6 +32,7 @@ const landcall =require("./modules/landcall.js");
 const imgcall =require("./modules/imgcall.js");
 const lootcall =require("./modules/lootcall.js");
 const tutorcall =require("./modules/tutorcall.js");
+const diocall =require("./modules/diocall.js");
 
 //makes all modules passable through client
 client.charcall = charcall;
@@ -43,6 +44,7 @@ client.landcall = landcall;
 client.imgcall = imgcall;
 client.lootcall = lootcall;
 client.tutorcall = tutorcall;
+client.diocall = diocall;
 client.fs = fs;
 
 //declare enmaps
