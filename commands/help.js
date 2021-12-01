@@ -297,7 +297,7 @@ exports.run = (client, message, args) => {
             strifeSend = new client.MessageEmbed()
             .setTitle("STRIFE HELP MENU")
             .addField("HEAL COMMAND",msg);
-              message.channel.send({embeds: [strifeSend]});
+              message.channel.send(msg);
 
           break;
 
@@ -340,7 +340,7 @@ exports.run = (client, message, args) => {
           .addField("**INSTRUCTIONS**",`Welcome to the >HELP menu! From here, you can access information on any of the commands listed bellow.
           \nThis menu, as well as every other menu in TABLESTUCK can be interacted with using the numbers next to each listing. For example, if you want to see information on the ">deploy" command, you can do so by typing ">help 9 2". The first argument "help" being the parent command, and the second argument "9" being the listing selection for the first >help menu to access the sburb command menu, and the third argument "2" being the listing selection.`)
           .addField("**COMMANDS**",msg);
-          message.channel.send(sburbSend);
+          message.channel.send({embeds: [sburbSend]});
           return;
         }
 
