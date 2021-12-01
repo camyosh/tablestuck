@@ -24,21 +24,21 @@ exports.run = (client, message, args) => {
     }
   let stats = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S** Stats`)
-  .addField(`**Gel Viscosity**`,`${client.emojis.cache.get('735664168400584715')} ${gel}`,true)
+  .addField(`**Gel Viscosity**`,`${client.emojis.cache.get('735664168400584715')} ${gel.toString()}`,true)
   .addField(`**Vitality**`,vit.toString(),true)
-  .addField(`**Boondollars**`,`${client.emojis.cache.get('735664076180422758')} ${b}`,true)
+  .addField(`**Boondollars**`,`${client.emojis.cache.get('735664076180422758')} ${b.toString()}`,true)
   .addField(`**Rung**`,rung.toString(),true)
   .addField(`**Experience**`,xp.toString(),true)
   .addField(`**XP to next Rung**`,xpToRung.toString(),true);
   if (client.limit != 0) {
-    stats.addField(`**ACTIONS LEFT**`,client.limit - client.sburbMap.get(sburbid,"act"),true)
+    stats.addField(`**ACTIONS LEFT**`,(client.limit - client.sburbMap.get(sburbid,"act")).toString(),true)
   }
-  stats.addField(`**TILES DISCOVERED**`,client.charcall.allData(client,userid,charid,"tilesDiscovered"),true)
-  .addField(`**ITEMS ALCHEMIZED**`,client.charcall.allData(client,userid,charid,"itemsAlchemized"),true)
-  .addField(`**ITEMS CAPTCHALOGUED**`,client.charcall.allData(client,userid,charid,"itemsCaptchalogued"),true)
-  .addField(`**UNDERLNGS DEFEATED**`,client.charcall.allData(client,userid,charid,"underlingsDefeated"),true)
-  .addField(`**PLAYERS DEFEATED**`,client.charcall.allData(client,userid,charid,"playersDefeated"),true)
-  .addField(`**BOSSES DEFEATED**`,client.charcall.allData(client,userid,charid,"bossesDefeated"),true)
+  stats.addField(`**TILES DISCOVERED**`,client.charcall.allData(client,userid,charid,"tilesDiscovered").toString(),true)
+  .addField(`**ITEMS ALCHEMIZED**`,client.charcall.allData(client,userid,charid,"itemsAlchemized").toString(),true)
+  .addField(`**ITEMS CAPTCHALOGUED**`,client.charcall.allData(client,userid,charid,"itemsCaptchalogued").toString(),true)
+  .addField(`**UNDERLNGS DEFEATED**`,client.charcall.allData(client,userid,charid,"underlingsDefeated").toString(),true)
+  .addField(`**PLAYERS DEFEATED**`,client.charcall.allData(client,userid,charid,"playersDefeated").toString(),true)
+  .addField(`**BOSSES DEFEATED**`,client.charcall.allData(client,userid,charid,"bossesDefeated").toString(),true)
 
   message.channel.send({embeds:[stats]});
 

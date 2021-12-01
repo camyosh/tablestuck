@@ -54,8 +54,7 @@ exports.run = (client, message, args) => {
     .addField(`HELP`,`These are all your active traits and the bonuses they give you! These traits are determined by your equipped WEAPON, ARMOR, and TRINKET.\n\nIf you have at least 3 of the same trait equipped, you also get the SET BONUS listed alongside the trait.\n\n If you'd like to see details on traits you don't have, do ${client.auth.prefix}trait [trait name]`)
     .addField(`TRAITS`,msg);
 
-    message.channel.send({embeds:[embed]});
-    client.tutorcall.progressCheck(client,message,25);
+    client.tutorcall.progressCheck(client,message,25,["embed",embed]);
     return;
 
   }

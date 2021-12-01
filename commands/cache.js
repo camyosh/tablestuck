@@ -22,7 +22,7 @@ exports.run = (client, message, args) => {
 
   //check if connected to a client
 
-  if(client.charcall.charData(client,userid,charid,"client") == "NA"||client.charcall.charData(client,userid,charid,"client") == "NONE") {
+  if(client.charcall.allData(client,userid,charid,"client") == "NA"||client.charcall.allData(client,userid,charid,"client") == "NONE") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
@@ -31,7 +31,6 @@ exports.run = (client, message, args) => {
 
   let targsburb = client.charcall.allData(client,userid,charid,"client");
 
-  message.channel.send(client.funcall.gristCacheEmbed(client,targsburb));
-  client.tutorcall.progressCheck(client,message,20);
+  client.tutorcall.progressCheck(client,message,20,["embed",client.funcall.gristCacheEmbed(client,targsburb)]);
   return;
 }

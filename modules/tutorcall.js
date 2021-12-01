@@ -60,14 +60,10 @@ exports.progressCheck = async function(client,message,step,affix=false,bypass = 
   */
   userid = message.guild.id.concat(message.author.id);
   charid = client.userMap.get(userid,"possess");
-  channelid = client.charcall.allData(client,userid,charid,"channel");
+  channelid = client.userMap.get(userid,"channel");
   progress = client.charcall.allData(client,userid,charid,"tutor");
-  //if the tutorial is disabled, exits the program.
-  if(!progress[0]||client.charcall.npcCheck(client,charid)){
-    return;
-  }
   //if the step is done and a message is affixed, sends the message without the tutorial attached.
-  if(progress[step]&&!bypass){
+  if(!progress[0]||client.charcall.npcCheck(client,charid)||progress[step]&&!bypass){
     if(affix){
       switch (affix[0]){
         case "text":
@@ -116,6 +112,7 @@ let msg = ``;
 
 
 msg = splitText(canvas,ctx,msg,32);
+msg = msg.replaceAll(`>`,`${client.auth.prefix}`);
 ctx.fillStyle = "#000000";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 ctx.drawImage(sprite,0,0,300,500);

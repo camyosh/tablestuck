@@ -88,13 +88,12 @@ exports.run = (client, message, args) => {
     room[5].push(dropItem);
     mess += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
 }
-message.channel.send(mess);
 sec[local[1]][local[2]][2][local[3]] = room;
 client.landMap.set(land,sec,local[0]);
 client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
-funcall.actionCheck(client,message,"item");
+client.funcall.actionCheck(client,message,"item");
 client.funcall.tick(client,message);
-client.tutorcall.progressCheck(client,message,5);
+client.tutorcall.progressCheck(client,message,5,["text",mess]);
 if(args[0]&&args[1]){
 client.tutorcall.progressCheck(client,message,13);
 }

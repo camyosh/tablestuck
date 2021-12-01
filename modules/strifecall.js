@@ -346,9 +346,9 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
 //call function to remove the dead target from strife
       leaveStrife(client,message,local,target);
       if(active.length<=1){
-        message.channel.send(`Last opponent defeated!`);
-        leaveStrife(client,message,local,pos);
-        client.tutorcall.progressCheck(client,message,37);
+        client.tutorcall.progressCheck(client,message,37,["text",`Last opponent defeated, leaving Strife!`]);
+        leaveStrife(client,message,local,pos,false);
+
       }
   }
 }catch(err){
@@ -397,7 +397,7 @@ function giveXp(client,target,xp){
   }
 }
 
-function leaveStrife(client,message,local,pos){
+function leaveStrife(client,message,local,pos,leavemsg = true){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`
   if(!client.strifeMap.has(strifeLocal)) return;
@@ -563,7 +563,9 @@ return;
   }
 }
 } else {
-setTimeout(client.funcall.chanMsg,1500,client,charid,"Leaving Strife!");
+  if(leavemsg){
+    setTimeout(client.funcall.chanMsg,1500,client,charid,"Leaving Strife!");
+  }
 }
 }
 

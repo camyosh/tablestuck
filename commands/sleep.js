@@ -55,6 +55,5 @@ exports.run = function(client, message, args) {
 
     client.charcall.setAnyData(client,userid,charid,controlList,"control");
     client.charcall.setAnyData(client,userid,target,targList,"control");
-    message.channel.send("You fall asleep, or are you waking up?");
-    client.tutorcall.progressCheck(client,message,39);
+    client.tutorcall.progressCheck(client,message,39,["text","You fall asleep, or are you waking up?"]);
 }

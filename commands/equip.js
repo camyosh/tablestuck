@@ -59,7 +59,6 @@ exports.run = (client, message, args) => {
   client.charcall.setAnyData(client,userid,charid,spec,"spec");
   client.funcall.tick(client,message);
 
-  message.channel.send(`Successfully EQUIPPED the ${equipItem[0]} to your STRIFE SPECIBUS`);
-  client.tutorcall.progressCheck(client,message,23);
+  client.tutorcall.progressCheck(client,message,23,["text",`Successfully EQUIPPED the ${equipItem[0]} to your STRIFE SPECIBUS`]);
 
 }

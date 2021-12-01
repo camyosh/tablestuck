@@ -46,7 +46,7 @@ if(args[0]=="reset"){
   return;
 }
 if(args[0]=="start"){
-  client.tutorcall.progressCheck(client,message,1,true);
+  client.tutorcall.progressCheck(client,message,1,false,true);
   return;
 }
 if(args[0]=="switch"){

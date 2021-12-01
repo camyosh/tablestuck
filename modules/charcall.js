@@ -91,12 +91,12 @@ exports.sburbGet = function(client,checkid){
 //checks if a character has a given datatype
 exports.hasData = function(client,charid,datatype){
   if(client.playerMap.has(charid)){
-    if(client.playerMap.get.hasOwnProperty(datatype)){
+    if(client.playerMap.get(charid).hasOwnProperty(datatype)){
       return true;
     }
   }
   if(client.npcMap.has(charid)){
-    if(client.npcMap.get.hasOwnProperty(datatype)){
+    if(client.npcMap.get(charid).hasOwnProperty(datatype)){
       return true;
     }
   }

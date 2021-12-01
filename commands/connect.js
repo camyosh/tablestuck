@@ -55,8 +55,7 @@ exports.run = (client, message, args) => {
     }
   }
   msg+=`You can now do ${client.auth.prefix}connect break to reset your server and client.`;
-  message.channel.send(msg);
-    client.tutorcall.progressCheck(client,message,18);
+    client.tutorcall.progressCheck(client,message,18,["text",msg]);
     return;
   }
 

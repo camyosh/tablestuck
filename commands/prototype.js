@@ -11,8 +11,7 @@ exports.run = (client, message, args) => {
   let occ = sec[local[1]][local[2]][2][local[3]][4]
 
   if(!args[0]){
-    message.channel.send("You need to choose an item from your SYLLADEX to prototype the SPRITE with!");
-    client.tutorcall.progressCheck(client,message,28);
+    client.tutorcall.progressCheck(client,message,28,["text","You need to choose an item from your SYLLADEX to prototype the SPRITE with!"]);
     return;
   }
 

@@ -43,8 +43,7 @@ exports.run = (client, message, args) => {
   let curGate = client.landMap.get(targsburb,"gate");
   //convert grist amount to number
   if(!args[0]){
-    message.channel.send(`Your client ${(curGate>0?`has access to gate number ${curGate}`:`hasn't reached a gate yet`)}. \nYou have expended ${buildSpent} grist on the house so far, and need to expend ${gateReq[curGate]-buildSpent} more to reach the next gate!`);
-    client.tutorcall.progressCheck(client,message,21);
+    client.tutorcall.progressCheck(client,message,21,["text",`Your client ${(curGate>0?`has access to gate number ${curGate}`:`hasn't reached a gate yet`)}. \nYou have expended ${buildSpent} grist on the house so far, and need to expend ${gateReq[curGate]-buildSpent} more to reach the next gate!`]);
     return;
   }
   value = parseInt(args[0], 10);

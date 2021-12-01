@@ -7,7 +7,7 @@ exports.run = (client, message, args) => {
   var charid = client.userMap.get(userid,"possess");
   if(client.charcall.allData(client,userid,charid,"grist")!="NONE"){
   var sburbid = client.playerMap.get(charid,"owner")
-  message.channel.send(client.funcall.gristCacheEmbed(client, sburbid));
+  message.channel.send({embeds: [client.funcall.gristCacheEmbed(client, sburbid)]});
 } else {
   message.channel.send("This character doesn't have any grist to check!");
 }

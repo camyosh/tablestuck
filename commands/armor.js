@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
   var charid = client.userMap.get(userid,"possess");
   var armor = client.charcall.charData(client,charid,"armor");
   let name = client.charcall.charData(client,charid,"name");
-
+  let inspectItem;
 //if no arguments, display currently equipped armor
 
   if(!args[0]){
@@ -40,7 +40,6 @@ exports.run = (client, message, args) => {
       .addField(`**ITEM TRAITS**`,msg1)
       .addField(`**PROTECTION**`,`**AV -** 1 **BR -** 1d2`);
 
-      message.channel.send({embeds: [inspectItem]});
 
     } else {
 
@@ -64,10 +63,9 @@ exports.run = (client, message, args) => {
       .addField(`**ITEM TRAITS**`,msg1)
       .addField(`**PROTECTION**`,`**AV -** ${tierAv[armor[0][2]]} **BR -** ${tierBD[armor[0][2]][0]}d${tierBD[armor[0][2]][1]}`);
 
-      message.channel.send({embeds: [inspectItem]});
 
     }
-    client.tutorcall.progressCheck(client,message,24);
+    client.tutorcall.progressCheck(client,message,24,["embed",inspectItem]);
     //if first argument is eject, eject armor
 
   } else if(args[0]=="eject"){

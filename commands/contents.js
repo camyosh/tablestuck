@@ -58,8 +58,7 @@ exports.run = (client, message, args) => {
   // View a page of items
   async function dexCheck() {
     const attachment = await client.imgcall.sdexCheck(client,message,page,args,2,dex[value][4],dex[value][4].length,dex[value][0]);
-    message.channel.send({files: [attachment]});
-    client.tutorcall.progressCheck(client,message,12);
+    client.tutorcall.progressCheck(client,message,12,["img",attachment]);
   }
 
   dexCheck();

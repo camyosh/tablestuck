@@ -19,8 +19,7 @@ var charid = client.userMap.get(userid,"possess");
   }
   output = output.slice(0,-1);
 
-message.channel.send(`Saving Bio, players can see it using the ${client.auth.prefix}check command on you! Note, if the bio is too long, it won't appear!`);
 client.charcall.setAnyData(client,userid,charid,output,"bio");
-client.tutorcall.progressCheck(client,message,17);
+client.tutorcall.progressCheck(client,message,17,["text",`Saving Bio, players can see it using the ${client.auth.prefix}check command on you! Note, if the bio is too long, it won't appear!`]);
 
 }

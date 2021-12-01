@@ -141,8 +141,7 @@ targonline = client.traitcall.compTest(client,message,targcarid,targroom);
 
   if(!args[0]||pageturn){
     let attachment = new client.MessageAttachment(canvas.toBuffer(), 'pestercord.png');
-    message.channel.send({files: [attachment]});
-      client.tutorcall.progressCheck(client,message,10);
+      client.tutorcall.progressCheck(client,message,10,["img",attachment]);
     return;
   }
 

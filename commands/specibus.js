@@ -42,8 +42,7 @@ exports.run = (client, message, args) => {
   .addField(`**KIND ABSTRATUS**`,`**${kinds}**`,true)
   .addField(`**CURRENTLY EQUIPPED**`,eq)
   .addField("**SPECIBUS**",msg);
-  message.channel.send({embeds:[specibusPrint]});
-  client.tutorcall.progressCheck(client,message,22);
+  client.tutorcall.progressCheck(client,message,22,["embed",specibusPrint]);
 
 
   return;
@@ -113,7 +112,7 @@ if(value >= spec.length || value < 0) {
 async function itemInspect(){
 const attachment = await client.imgcall.inspect(client,message,args,1,spec[value]);
 
-  message.channel.send("Inspecting item",{files: [attachment]});
+  message.channel.send({files: [attachment]});
 }
 itemInspect()
 

@@ -36,7 +36,6 @@ targId = occList[value][1];
   .addField(`**RUNG**`,`${client.charcall.allData(client,userid,targId,"rung")}`,true)
   .addField(`**BIO**`,`${client.charcall.allData(client,userid,targId,"bio")}`)
   .setImage(client.charcall.allData(client,userid,targId,"img"));
-  client.tutorcall.progressCheck(client,message,16);
-  message.channel.send({embeds: [listPrint]});
+  client.tutorcall.progressCheck(client,message,16,["embed",listPrint]);
 
 }

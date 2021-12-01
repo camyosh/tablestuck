@@ -489,8 +489,6 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
         let cost = tierCost[tier];
         let cost2 = tierCost[tier-1];
-        console.log(cost);
-        console.log(tier);
         if(tier-1<0){
           cost2=0;
         }

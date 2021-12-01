@@ -56,7 +56,6 @@ exports.run = (client, message, args) => {
   sec[local[1]][local[2]][2][local[3]] = room;
   client.landMap.set(land,sec,local[0]);
   client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-  message.channel.send(`Ejected the ${dropItem[0]}!`);
   client.funcall.tick(client,message);
-  client.tutorcall.progressCheck(client,message,6);
+  client.tutorcall.progressCheck(client,message,6,["text",`Ejected the ${dropItem[0]}!`]);
 }

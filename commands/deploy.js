@@ -94,8 +94,7 @@ exports.run = (client, message, args) => {
 
       const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,defCost,"phernalia registry");
 
-        message.channel.send({files: [attachment]});
-        client.tutorcall.progressCheck(client,message,19);
+        client.tutorcall.progressCheck(client,message,19,["img",attachment]);
       }
 
       dexCheck();
