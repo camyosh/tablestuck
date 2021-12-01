@@ -435,7 +435,14 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
     consortRep:10,
     bio:"This player has not set their BIO!",
     img:"https://media.discordapp.net/attachments/408119077840617493/808458446374436914/human_base.png",
-    registry:[],
+    registry:[[
+            "CAPTCHALOGUE CARD",
+            "11111111",
+            1,
+            1,
+            [
+            ]
+        ]],
     timeOfReg:Date.now(),
     dreamer:false,
     revived:false,
