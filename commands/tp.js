@@ -8,6 +8,19 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  let local = client.charcall.charData(client,charid,"local");
+  let sec = client.landMap.get(local[4],local[0]);
+  var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
+  if(args[0]=="home"){
+    if(!occset[0]){
+      message.channel.send("NPC's don't have a home to teleport to!");
+      return;
+    }
+  client.funcall.move(client,message,charid,local,["h",0,0,0,local[4]],false,`Teleporting home!\nEntering a `);
+  return;
+  }
+
+
   if(!message.mentions.members.first()){
     message.channel.send("You must @ a player to teleport to them!");
     return;
@@ -20,9 +33,7 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  let local = client.charcall.charData(client,charid,"local");
-  let sec = client.landMap.get(local[4],local[0]);
-  var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
+
   let target = client.charcall.charData(client,targetid,"local");
   let mapCheck = true;
 

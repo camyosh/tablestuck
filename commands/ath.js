@@ -158,7 +158,7 @@ exports.run = (client, message, args) => {
      message.channel.send(`Scaled the ${registry[value][0]} to TIER ${tier}!`);
      return;
 
-   } else if(args[0]=="name"){
+   } else if(args[0]=="rename"){
      if(!args[1]){
        message.channel.send(`Select an item in the ATHENAEUM to change the NAME of that item. \n${client.auth.prefix}athenaeum name [item] [desired name]`);
        return;

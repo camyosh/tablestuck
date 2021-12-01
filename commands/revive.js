@@ -93,7 +93,7 @@ for(let i=0;i<occList.length;i++){
     } else {
       altself = client.charcall.allData(client,userid,charid,"wakingID");
     }
-    let dreamlocal = client.charcall.charDara(client,altself,"local");
+    let dreamlocal = client.charcall.charData(client,altself,"local");
     let dreamsec = client.landMap.get(dreamlocal[4],dreamlocal[0]);
     let dreamoccList = dreamsec[dreamlocal[1]][dreamlocal[2]][2][dreamlocal[3]][4];
     for(let i=0;i<dreamoccList.length;i++){

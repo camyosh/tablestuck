@@ -18,7 +18,6 @@ exports.dialogue = async function(client,message,msg){
         buildmsg = "";
       } else {
       buildmsg += msg.charAt(k);
-      console.log(`k = ${k},msglength = ${ctx.measureText(buildmsg).width}`);
       if(msg.charAt(k)==` `&&ctx.measureText(buildmsg).width>=width){
         var msg1 = msg.substring(0,k);
         var msg2 = msg.substring(k+1);

@@ -75,7 +75,7 @@ empty =[];
     //if it is the 4th section, the denizen lair is created, and the entrance is placed in the middle.
     denizenCheck = true;
     let temp=empty.splice(60,1);
-    section[temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DENIZEN LAIR ENTRANCE",false,[[]],[]]]];
+    section[temp[0][0]][temp[0][1]]=[1,1,[[[],[],"DENIZEN LAIR ENTRANCE",false,[],[]]]];
     dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
   }
  //sections 1 and 2 have 6 dungeons, section 3 has 3 dungeons, and section 4 has only 1 denizen dungeon.

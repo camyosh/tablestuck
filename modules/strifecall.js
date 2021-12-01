@@ -197,10 +197,11 @@ try{
     //the only reason npcs are seperate from players here is because they need to drop grist.
     let npc;
     npc = client.charcall.charData(client,list[target][1],"type");
+    faction = client.charcall.charData(client,list[target][1],"faction");
 
     if(npc=="unicorn"||npc=="kraken"||npc=="hecatoncheires"||npc=="denizen"){
       client.funcall.actionCheck(client,message,"boss");
-    }else if (npc=="underling") {
+    }else if (faction=="underling") {
       client.funcall.actionCheck(client,message,"underling");
     }
 
