@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  var playerGrist = client.charcall.charData(client,charid,"grist");
+  var playerGrist = client.charcall.allData(client,userid,charid,"grist");
   let sdex = client.charcall.charData(client,charid,"sdex");
   let registry = client.charcall.charData(client,charid,"registry");
   if(playerGrist=="NONE"){

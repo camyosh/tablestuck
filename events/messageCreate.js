@@ -103,5 +103,7 @@ let charid = client.userMap.get(userid,"possess");
     client.user.setActivity("Tablestuck Development");
   }
   // Run the command
+
+  console.log(command);
   cmd.run(client, message, args);
 };

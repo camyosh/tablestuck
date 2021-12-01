@@ -2127,7 +2127,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     .addField('DMG', `${(dmg * dmgLvl)}`, true)
     .addField("ADDITIONAL ACTION", client.actionList[action].aa )
     .addField("ADDITIONAL ALERTS", alert)
-    .setColor(client.actionList[action].col)
+    //.setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
     for(i=0;i<active.length;i++){
       if(client.charcall.controlCheck(client,list[active[i]][0])){
