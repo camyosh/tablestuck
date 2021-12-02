@@ -119,7 +119,7 @@ empty =[];
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[4,2,[[client.funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[4,2,[[client.funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,client.landcall.consortSpawn(client,message,[sec,temp[0][0],temp[0][1],0],["shopkeep"],1),[]],[[],[],"ROOM 2",false,[],[]]]];
 
   }
   //Creates the Land Constructs (9 per section)
@@ -1402,4 +1402,68 @@ exports.carSpawn = function(client,local,lunar,sessionID){
 }
 client.landMap.set(sessionID+"medium",npcCount,"npcCount");
 return occ;
+}
+
+exports.consortSpawn = function(client,message,coords,type,count){
+
+let sessionid = message.guild.id;
+let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
+let sburbid = client.charcall.charData(client,charid,"owner");
+let npcCount = client.landMap.get(sessionid+"medium","npcCount");
+let occ = [];
+let local = coords.push(sburbid);
+let gristSet = client.landMap.get(sburbid,"grist");
+
+  for(let i=0;i<count;i++){
+  let finalGrist = gristSet[Math.floor(Math.random()*4)];
+    npcCount++;
+    switch(type[i]){
+      case "shopkeep":
+        let consortSet = {
+          name: `Shopkeep Consort`,
+          control:[],
+          type: "shopkeep",
+          faction: "consort",
+          vit:client.underlings["shopkeep"].vit,
+          gel:client.underlings["shopkeep"].vit,
+          gristtype: finalGrist,
+          strife:false,
+          pos:0,
+          alive:true,
+          local:local,
+          sdex:[],
+          equip:0,
+          trinket:[],
+          armor:[],
+          spec:[],
+          equip:0,
+          scards:1,
+          kinds:[],
+          port:1,
+          modus:"STACK",
+          cards:4,
+          prototype:[],
+          prospitRep:0,
+          derseRep:0,
+          underlingRep:-1,
+          playerRep:1,
+          consortRep:1,
+          prefTarg:[],
+          xp:0,
+          rung:0,
+          b:0,
+          bio:`A friendly shopkeeper!`,
+          dialogue:["Buy my stuff.","Look at all these funny things I found! I bet you want all of them. Hope you brought your boons!","Nak."]
+        }
+        let id = `n${sessionid}/${npcCount}`;
+        client.npcMap.set(id,consortSet);
+        let occSet = [false,id];
+        occ.push(occSet)
+      break;
+    }
+
+
+  }
+  client.landMap.set(sessionid+"medium",npcCount,"npcCount");
+  return occ;
 }

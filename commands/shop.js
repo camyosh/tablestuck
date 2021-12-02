@@ -16,9 +16,17 @@ exports.run = (client, message, args) => {
 let page = 0;
 
 async function dexCheck(){
+let files = []
 const attachment = await client.imgcall.sdexCheck(client,message,page,args,3,dex,dex.length,room[2]);
+files.push(attachment);
+for(let i=0;i<room[4].length;i++){
+  if(client.charcall.hasData(client,room[4][i][1],"dialogue")){
+    let dialist = client.charcall.charData(client,room[4][i][1],"dialogue");
+    files.push(await client.diocall.dialogue(client,message,dialist[Math.floor(Math.random()*dialist.length)]));
 
-  message.channel.send({files: [attachment]});
+  }
+}
+  message.channel.send({files: files});
 }
 
 if(area[0]==4){

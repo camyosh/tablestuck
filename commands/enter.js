@@ -81,11 +81,11 @@ exports.run = (client, message, args) => {
     let clientCheck = false;
 
     let sburbClient = client.sburbMap.get(local[4],"client");
-    let clientid = message.guild.id.concat(sburbClient);
 
-    if(client.landMap.has(clientid)){
 
-      clientGates = client.landMap.get(clientid,"gates");
+    if(client.landMap.has(sburbClient)){
+
+      clientGates = client.landMap.get(sburbClient,"gates");
       clientCheck = true;
 
     }
@@ -101,14 +101,14 @@ exports.run = (client, message, args) => {
     }else{
       //even gates lead to player's client's land
 
-      if(!clientCheck||client.landMap.get(clientid,"enter")==false){
+      if(!clientCheck||client.landMap.get(sburbClient,"enter")==false){
         message.channel.send("That gate doesn't lead anywhere!");
         return;
       }
 
       target[1]=clientGates[Math.floor(value/2)][0]
       target[2]=clientGates[Math.floor(value/2)][1]
-      target[4]=clientid;
+      target[4]=sburbClient;
 
     }
 

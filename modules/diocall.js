@@ -4,9 +4,7 @@ exports.dialogue = async function(client,message,msg){
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1000,300);
   const ctx = canvas.getContext('2d');
-  var userid = message.guild.id.concat(message.author.id);
-  var charid = client.userMap.get(userid,"possess");
-
+  let lines = 1;
   function splitText(canvas,ctx,msg,width){
 
     let i = 0;
@@ -16,6 +14,7 @@ exports.dialogue = async function(client,message,msg){
       if(msg.charAt(k)==`\n`){
         i = 0;
         buildmsg = "";
+        lines++;
       } else {
       buildmsg += msg.charAt(k);
       if(msg.charAt(k)==` `&&ctx.measureText(buildmsg).width>=width){
@@ -23,6 +22,7 @@ exports.dialogue = async function(client,message,msg){
         var msg2 = msg.substring(k+1);
         msg = msg1+`\n`+msg2;
         buildmsg = "";
+        lines++;
         i=0;
       }
       }
@@ -34,7 +34,7 @@ exports.dialogue = async function(client,message,msg){
   ctx.textBaseline = "middle";
   ctx.font = "bold 20px FONTSTUCK";
   ctx.lineWidth = 10;
-  msg = splitText(canvas,ctx,msg,660);
+  msg = splitText(canvas,ctx,msg,610);
 
 
 const dioProfile = await client.Canvas.loadImage(`./miscsprites/morshu.png`);
@@ -51,8 +51,9 @@ const dioProfile = await client.Canvas.loadImage(`./miscsprites/morshu.png`);
   //ctx.linewidth = 2;
   //ctx.strokeRect(15,15,170,270);
   ctx.fillStyle = "#ffffff";
-  ctx.fillText(msg.toUpperCase(),255,35);
+  ctx.textAlign = "center";
+  ctx.fillText(msg.toUpperCase(),622,155-(12*(lines)));
 
   let attachment = new client.MessageAttachment(canvas.toBuffer(), 'dialogue.png');
-  message.channel.send({files: [attachment]})
+  return attachment;
 }

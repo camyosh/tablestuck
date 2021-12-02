@@ -81,7 +81,7 @@ let charid = client.userMap.get(userid,"possess");
     }
     //revive has to be allowed for dead players in the case of Godtiering.
     if(reg&&!alive&&preReg.indexOf(command)==-1){
-      if(command!="revive"&&command!="sleep"&&command!="possess"){
+      if(command!="revive"&&command!="possess"){
       message.channel.send("It seems you are dead! Depending on your game, you might be revived, or you might be gone for good. Have fun!");
       return;
       }
