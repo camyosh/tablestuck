@@ -1453,6 +1453,7 @@ let gristSet = client.landMap.get(sburbid,"grist");
           rung:0,
           b:0,
           bio:`A friendly shopkeeper!`,
+          img:`https://cdn.discordapp.com/attachments/653038622135549952/917120918466224138/Salamander.png`,
           dialogue:["Buy my stuff.","Look at all these funny things I found! I bet you want all of them. Hope you brought your boons!","Nak."]
         }
         let id = `n${sessionid}/${npcCount}`;

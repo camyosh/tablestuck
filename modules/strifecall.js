@@ -1256,7 +1256,7 @@ targName = client.charcall.charData(client,list[target][1],"name");
             break;
             case "SCALEDMG":
               if(list[init[turn][0]][0]){
-                if(list[init[turn][0]][3]<Math.floor(client.charcall.allData(client,"-",[init[turn][0]][1],"gel")/4)){
+                if(list[init[turn][0]][3]<Math.floor(client.charcall.allData(client,"-",list[init[turn][0]][1],"gel")/4)){
                   dmgLvl=3;
                 } else if(list[init[turn][0]][3]<Math.floor(client.charcall.allData(client,"-",list[init[turn][0]][1],"gel")/2)) {
                   dmgLvl=2;
@@ -2639,8 +2639,10 @@ function npcTurn(client, message, local){
       setTimeout(passTurn,1500,client,message,local);
     }
 }else{
+  if(list[init[turn][0]][3]<=0){
   setTimeout(passTurn,1500,client,message,local);
-  console.log("The robot revolution is beginning, AI attempted to take a player's turn for them")
+  }
+  console.log("The robot revolution is beginning, AI attempted to take a player's turn for them (or an NPC died from thorns on their turn)")
 }
 
 }
