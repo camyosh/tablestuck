@@ -43,7 +43,7 @@ var channelCheck;
 
 //checks if the user has any charcter, player or NPC, under their control.
 if(userData.possess=="NONE"){
-  aspectChoice = chooseAspect(args[0]);
+  aspectChoice = chooseAspect(args[0],client,message);
   if(!aspectChoice) return;
 }
 //checks to see if the currently possessed creature is an NPC, not a player.
@@ -57,7 +57,7 @@ else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
     return;
 }else{
   //only pre-existing players reach this point.
-  aspectChoice = chooseAspect(args[1]);
+  aspectChoice = chooseAspect(args[1],client,message);
   if(!aspectChoice) return;
   //stores channel data for the pre-existing player
   channels[0] = client.sburbMap.get(sburbid,"channel");
@@ -166,7 +166,7 @@ function clearConnections(client,sburbid){
   }
 }
 
-function chooseAspect(input){
+function chooseAspect(input,client,message){
   //sets up some variables and arrays for choosing your aspect. will eventually
   //be replaced by user data editing program.
 

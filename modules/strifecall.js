@@ -197,11 +197,10 @@ try{
     //the only reason npcs are seperate from players here is because they need to drop grist.
     let npc;
     npc = client.charcall.charData(client,list[target][1],"type");
-    faction = client.charcall.charData(client,list[target][1],"faction");
 
     if(npc=="unicorn"||npc=="kraken"||npc=="hecatoncheires"||npc=="denizen"){
       client.funcall.actionCheck(client,message,"boss");
-    }else if (faction=="underling") {
+    }else if (npc=="underling") {
       client.funcall.actionCheck(client,message,"underling");
     }
 
@@ -448,12 +447,14 @@ return;
 
 
   if(!client.charcall.charData(client,charid,"alive")){
+    console.log(client.charcall.allData(client,userid[0],charid,"dreamingID"));
     if(client.charcall.allData(client,userid[0],charid,"dreamingID")=="NONE"){
       //if the character has no dreamself, it is likely an underling, so it is removed from the room
       //and the controller is pushed back to their default body.
       let removed = sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === list[pos][1]),1);
       client.landMap.set(local[4],sec,local[0]);
       let controllers = client.charcall.charData(client,charid,"control");
+      console.log(`Controllers: ${controllers}`);
       for(let i=0;i<controllers.length;i++){
       target = client.charcall.allData(client,controllers[i],charid,"speeddial")[0];
       client.userMap.set(controllers[i],target,"possess");
@@ -1255,8 +1256,8 @@ targName = client.charcall.charData(client,list[target][1],"name");
             }
             break;
             case "SCALEDMG":
-              if(list[init[turn][0]][0]){
-                if(list[init[turn][0]][3]<Math.floor(client.charcall.allData(client,"-",[init[turn][0]][1],"gel")/4)){
+              if(list[init[turn][0]][1]){
+                if(list[init[turn][0]][3]<Math.floor(client.charcall.allData(client,"-",list[init[turn][0]][1],"gel")/4)){
                   dmgLvl=3;
                 } else if(list[init[turn][0]][3]<Math.floor(client.charcall.allData(client,"-",list[init[turn][0]][1],"gel")/2)) {
                   dmgLvl=2;
@@ -2107,6 +2108,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
+    console.log(embed);
     for(i=0;i<active.length;i++){
         client.funcall.chanMsg(client,list[active[i]][1],"NONE",embed);
     }

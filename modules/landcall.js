@@ -1412,10 +1412,8 @@ let sburbid = client.charcall.charData(client,charid,"owner");
 let npcCount = client.landMap.get(sessionid+"medium","npcCount");
 let occ = [];
 let local = coords.push(sburbid);
-let gristSet = client.landMap.get(sburbid,"grist");
 
   for(let i=0;i<count;i++){
-  let finalGrist = gristSet[Math.floor(Math.random()*4)];
     npcCount++;
     switch(type[i]){
       case "shopkeep":
@@ -1426,7 +1424,7 @@ let gristSet = client.landMap.get(sburbid,"grist");
           faction: "consort",
           vit:client.underlings["shopkeep"].vit,
           gel:client.underlings["shopkeep"].vit,
-          gristtype: finalGrist,
+          gristtype: "diamond",
           strife:false,
           pos:0,
           alive:true,
