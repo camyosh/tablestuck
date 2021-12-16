@@ -1,7 +1,7 @@
 
 exports.pogChamp = async function(client,message,chan){
 
-  const embed = new client.Discord.MessageEmbed()
+  const embed = new client.MessageEmbed()
   .setTitle(`POGCHAMP!`)
   .addField(`**POGCHAMP SAYS**`,`POGGERS!`)
   .setImage(`https://freepngimg.com/thumb/mouth/92712-ear-head-twitch-pogchamp-emote-free-download-png-hq-thumb.png`)
@@ -21,16 +21,16 @@ exports.pogChamp = async function(client,message,chan){
 
 }
 
-exports.pesterProf = async function(client,message,charid){
-  const channel = client.channels.cache.get(client.playerMap.get(charid,"pesterchannel"));
+exports.pesterProf = async function(client,message,userid,charid){
+  const channel = client.channels.cache.get(client.charcall.allData(client,userid,charid,"pesterchannel"));
 
 	try {
 		const webhooks = await channel.fetchWebhooks();
 		const webhook = webhooks.first();
-
-		await webhook.send('Updated Pesterchum profile!', {
-			username: `[${client.playerMap.get(charid,"chumtag")}] ${client.playerMap.get(charid,"chumhandle")}`,
-			avatarURL: client.playerMap.get(charid,"chumpic")
+		await webhook.send({
+      content: 'Updated Pesterchum profile!',
+			username: `[${client.charcall.allData(client,userid,charid,"chumtag")}] ${client.charcall.allData(client,userid,charid,"chumhandle")}`,
+			avatarURL: client.charcall.allData(client,userid,charid,"chumpic")
 		});
 	} catch (error) {
 		console.error('Error trying to send: ', error);
@@ -38,16 +38,20 @@ exports.pesterProf = async function(client,message,charid){
 }
 
 exports.pester = async function(client,message,charid,target,msg){
-  const channel = client.channels.cache.get(client.playerMap.get(target,"pesterchannel"));
+  controllers = client.charcall.charData(client,target,"control");
+  userid = client.charcall.charData(client,charid,"control");
+try{
+  for(let i=0;i<controllers.length;i++){
+  let channel = client.channels.cache.get(client.charcall.allData(client,controllers[i],target,"pesterchannel"));
 
-	try {
-		const webhooks = await channel.fetchWebhooks();
-		const webhook = webhooks.first();
-
-		await webhook.send(msg, {
-			username: `[${client.playerMap.get(charid,"chumtag")}] ${client.playerMap.get(charid,"chumhandle")}`,
-			avatarURL: client.playerMap.get(charid,"chumpic"),
-		});
+		let webhooks = await channel.fetchWebhooks();
+		let webhook = webhooks.first();
+	await	webhook.send({
+    content: msg,
+    username: `[${client.charcall.allData(client,userid,charid,"chumtag")}] ${client.charcall.allData(client,userid,charid,"chumhandle")}`,
+    avatarURL: client.charcall.allData(client,userid,charid,"chumpic")
+  });
+  }
     message.react(`✅`);
 	} catch (error) {
 		console.error('Error trying to send: ', error);

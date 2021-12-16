@@ -1,6 +1,6 @@
 
 
-exports.progressCheck = async function(client,message,step,bypass = false){
+exports.progressCheck = async function(client,message,step,affix=false,bypass = false){
   /*
   every player has an array of bools that say if they've passed certain stages of the tutorial.
     this means that progress can be made in any order, though the guide will try to lead the player along a certain route.
@@ -58,21 +58,32 @@ exports.progressCheck = async function(client,message,step,bypass = false){
     ------------
 
   */
-  charid = message.guild.id.concat(message.author.id);
-  channelid = client.playerMap.get(charid,"channel");
-  progress = client.playerMap.get(charid,"tutor");
-
-  if(!progress[0]){
-    return;
-  }
-  if(progress[step]&&!bypass){
+  userid = message.guild.id.concat(message.author.id);
+  charid = client.userMap.get(userid,"possess");
+  channelid = client.userMap.get(userid,"channel");
+  progress = client.charcall.allData(client,userid,charid,"tutor");
+  //if the step is done and a message is affixed, sends the message without the tutorial attached.
+  if(!progress[0]||client.charcall.npcCheck(client,charid)||progress[step]&&!bypass){
+    if(affix){
+      switch (affix[0]){
+        case "text":
+        await client.channels.cache.get(channelid).send({content: affix[1]});
+        break;
+        case "img":
+        await client.channels.cache.get(channelid).send({files:[affix[1]]});
+        break;
+        case "embed":
+        await client.channels.cache.get(channelid).send({embeds: [affix[1]]});
+        break;
+      }
+    }
     return;
   }
 let tutorRef = require("../tutorRef.json");
 let msg = ``;
   msg = tutorRef.content[step];
   progress[step]=true;
-  client.playerMap.set(charid,progress,"tutor");
+  client.userMap.set(userid,progress,"tutor");
 
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1000,500);
@@ -101,6 +112,7 @@ let msg = ``;
 
 
 msg = splitText(canvas,ctx,msg,32);
+msg = msg.replaceAll(`>`,`${client.auth.prefix}`);
 ctx.fillStyle = "#000000";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 ctx.drawImage(sprite,0,0,300,500);
@@ -108,18 +120,33 @@ ctx.font = "28px Courier Standard Bold";
 ctx.fillStyle = "#ffffff";
 ctx.fillText(msg,320,40);
 
-const attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
-client.channels.cache.get(channelid).send(attachment);
+const attachment = new client.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
+if(!affix){
+await client.channels.cache.get(channelid).send({files:[attachment]});
+} else {
+  switch (affix[0]){
+    case "text":
+    await client.channels.cache.get(channelid).send({content: affix[1],files:[attachment]});
+    break;
+    case "img":
+    await client.channels.cache.get(channelid).send({files:[affix[1],attachment]});
+    break;
+    case "embed":
+    await client.channels.cache.get(channelid).send({embeds:[affix[1]]});
+    await client.channels.cache.get(channelid).send({files:[attachment]});
+    break;
+  }
+}
 if(bypass){
   return;
 }
 if(progress[44]){
-  setTimeout(function(){client.tutorcall.progressCheck(client,message,45);},2000);
+client.tutorcall.progressCheck(client,message,45);
 }
 if(!progress[47]&&progress[38]&&progress[41]&&progress[46]){
-  setTimeout(function(){client.tutorcall.progressCheck(client,message,47);},2000);
+client.tutorcall.progressCheck(client,message,47);
 }
 if(progress[48]){
-  client.playerMap.set(charid,true,"tutcomplete");
+client.userMap.set(userid,true,"tutcomplete");
 }
 }

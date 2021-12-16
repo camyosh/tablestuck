@@ -6,26 +6,26 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
 //defining the costs to alchemize the item based on the tier
 
   const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
 
 //defining important variables
 
-  var charid = message.guild.id.concat(message.author.id);
-  var local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  var playerGrist = client.playerMap.get(charid,"grist");
-  let sdex = client.playerMap.get(charid,"sdex");
-  let registry = client.playerMap.get(charid,"registry");
+  var playerGrist = client.charcall.allData(client,userid,charid,"grist");
+  let sdex = client.charcall.charData(client,charid,"sdex");
+  let registry = client.charcall.allData(client,userid,charid,"registry");
+  if(playerGrist=="NONE"){
+    message.channel.send("You can't alchemize without any grist!");
+    return;
+  }
 
 //define variables for the FOR loop
 
@@ -68,9 +68,8 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
       message.channel.send("You can't alchemize that!");
       return;
     }
-
     registry.unshift(item1);
-    client.playerMap.set(charid,registry,"registry");
+    client.charcall.setAnyData(client,userid,charid,registry,"registry");
     message.channel.send(`Registered the ${item1[0]} to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;
@@ -78,8 +77,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
   }
 
   if(!args[0]||!args[1]||!args[2]){
-    message.channel.send(`To use the Instant Alchemiter, you need to select an item from your sylladex, select an alchemy type (&& or ||), and select a second item from your sylladex. For example, ${client.auth.prefix}quickalch 1 && 2. If you want to just reproduce a single item, just select the first item.`);
-    client.tutorcall.progressCheck(client,message,48);
+    client.tutorcall.progressCheck(client,message,48,["text",`To use the Instant Alchemiter, you need to select an item from your sylladex, select an alchemy type (&& or ||), and select a second item from your sylladex. For example, ${client.auth.prefix}quickalch 1 && 2. If you want to just reproduce a single item, just select the first item.`]);
     return;
   }
 
@@ -130,7 +128,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
 
     registry.unshift(newItem);
-    client.playerMap.set(charid,registry,"registry");
+    client.charcall.setAnyData(client,userid,charid,registry,"registry");
     message.channel.send(`Registered the resulting item to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;
@@ -181,7 +179,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
 
     registry.unshift(newItem);
-    client.playerMap.set(charid,registry,"registry");
+    client.charcall.setAnyData(client,userid,charid,registry,"registry");
     message.channel.send(`Registered the resulting item to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;
@@ -222,8 +220,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
 
 }else{
-    message.channel.send("To QUICK ALCHEMIZE, you must be in a room with an INSTANT ALCHEMITER");
-    client.tutorcall.progressCheck(client,message,42);
+    client.tutorcall.progressCheck(client,message,42,["text","To QUICK ALCHEMIZE, you must be in a room with an INSTANT ALCHEMITER."]);
     return;
   }
 

@@ -6,16 +6,12 @@ const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,655
 
 exports.run = (client, message, args) => {
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
-  var charid = message.guild.id.concat(message.author.id);
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
 //retrieve player location and check for computer
 
-  var local = client.playerMap.get(charid,"local");
+  var local = client.charcall.charData(client,charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   const phernalia = ["cruxtruder","totem lathe","alchemiter","pre-punched card","punch designix","instant alchemiter","transportalizer"]
 
@@ -32,20 +28,20 @@ exports.run = (client, message, args) => {
 
   //check if connected to a client
 
-  if(client.playerMap.get(charid,"client") == "NA") {
+  if(client.charcall.allData(client,userid,charid,"client") == "NA"||client.charcall.allData(client,userid,charid,"client")=="NONE") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
 
-  let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
-
+  let clientid = client.charcall.allData(client,userid,charid,"client");
+  let targcharid = client.charcall.charGet(client,clientid);
 //retrieve client information
 
-  let clientLocal = client.playerMap.get(clientId,"local");
-  let clientSec = client.landMap.get(clientId,"h");
-  let gristLand = client.landMap.get(clientId,"grist")[0];
-  let deployCheck = client.playerMap.get(clientId,"deploy");
-  let gristCheck = client.playerMap.get(clientId,"grist");
+
+  let clientSec = client.landMap.get(clientid,"h");
+  let gristLand = client.landMap.get(clientid,"grist")[0];
+  let deployCheck = client.charcall.allData(client,userid,targcharid,"deploy");
+  let gristCheck = client.charcall.allData(client,userid,targcharid,"grist");
 
   //let defaultRegistry = [client.registry["cruxtruder"].item,client.registry["totem lathe"].item,client.registry["alchemiter"].item,client.registry["pre-punched card"].item,client.registry["punch designix"].item,client.registry["instant alchemiter"].item]
 
@@ -54,7 +50,7 @@ exports.run = (client, message, args) => {
     defaultRegistry.push(client.registry[phernalia[i]].item)
   }
 
-  let clientRegistry = client.playerMap.get(clientId,"registry");
+  let clientRegistry = client.charcall.allData(client,userid,targcharid,"registry");
 
   let registry = defaultRegistry.concat(clientRegistry);
 
@@ -98,8 +94,7 @@ exports.run = (client, message, args) => {
 
       const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,defCost,"phernalia registry");
 
-        message.channel.send(attachment);
-        client.tutorcall.progressCheck(client,message,19);
+        client.tutorcall.progressCheck(client,message,19,["img",attachment]);
       }
 
       dexCheck();
@@ -115,10 +110,10 @@ exports.run = (client, message, args) => {
       msg += `**[${i+1}] ${clientSec[0][0][2][i][2]}**\n\n`
 
     }
-    roomDirect = new client.Discord.MessageEmbed()
+    roomDirect = new client.MessageEmbed()
     .setTitle(`**CLIENT HOUSE DIRECTORY**`)
     .addField("**ROOMS**",msg);
-    message.channel.send(roomDirect);
+    message.channel.send({embeds: [roomDirect]});
     return;
   }
 
@@ -176,20 +171,20 @@ exports.run = (client, message, args) => {
 
         if(value[0]==0){
 
-          let spriteID = `n${clientId}`;
+          let spriteID = `n${clientid}`;
 
           var spriteSheet = {
             name: `KERNELSPRITE`,
-            possess:[],
+            control:[],
             type: "sprite",
             faction: "player",
             vit:100,
             gel:100,
             strife:false,
-            grist:"diamond",
+            gristtype:"diamond",
             pos:0,
             alive:true,
-            local:["h",0,0,value[1],clientId],
+            local:["h",0,0,value[1],clientid],
             sdex:[],
             equip:0,
             trinket:[],
@@ -211,17 +206,17 @@ exports.run = (client, message, args) => {
             xp:0,
             rung:0,
             b:0,
-            bio:`${client.playerMap.get(clientId,"name").toUpperCase()}'S SPRITE`,
+            bio:`${client.charcall.charData(client,targcharid,"name").toUpperCase()}'S SPRITE`,
             img:"https://media.discordapp.net/attachments/808210897008984087/808224784856514560/Kernelsprite-gray.gif"
           }
-          client.playerMap.set(spriteID,spriteSheet);
+          client.npcMap.set(spriteID,spriteSheet);
 
-          clientSec[0][0][2][value[1]][4].push([0,spriteID]);
+          clientSec[0][0][2][value[1]][4].push([false,spriteID]);
 
         }
 
         deployCheck[value[0]]=true;
-        client.playerMap.set(clientId,deployCheck,"deploy");
+        client.charcall.setAnyData(client,userid,targcharid,deployCheck,"deploy");
       }
     }
 
@@ -247,7 +242,7 @@ exports.run = (client, message, args) => {
       }
 
       var transSet = {
-        local:["h",0,0,value[1],clientId],
+        local:["h",0,0,value[1],clientid],
         target:""
       }
 
@@ -261,16 +256,16 @@ exports.run = (client, message, args) => {
     }
 
   clientSec[0][0][2][value[1]][5].push(registry[value[0]]);
-  client.landMap.set(clientId,clientSec,"h");
-  client.playerMap.set(clientId,gristCheck,"grist");
+  client.landMap.set(clientid,clientSec,"h");
+  client.charcall.setAnyData(client,userid,targcharid,gristCheck,"grist");
   client.funcall.tick(client,message);
 
   let deployedItem = registry[value[0]][0].toUpperCase();
   message.channel.send(`Deployed the ${deployedItem}`);
 
   let alertClientList = ["CRUXTRUDER","TOTEM LATHE","ALCHEMITER","PRE-PUNCHED CARD","PUNCH DESIGNIX","INSTANT ALCHEMIZER","TRANSPORTALIZER"];
-  if(alertClientList.includes(deployedItem)&&client.playerMap.get(clientId,"local")[0]=="h"){
-    client.funcall.chanMsg(client,clientId,`There's a THUD as something is deployed in your ${clientSec[0][0][2][value[1]][2]}!`);
+  if(alertClientList.includes(deployedItem)&&client.charcall.charData(client,targcharid,"local")[0]=="h"){
+    client.funcall.chanMsg(client,targcharid,`There's a THUD as something is deployed in your ${clientSec[0][0][2][value[1]][2]}!`);
   }
 
 

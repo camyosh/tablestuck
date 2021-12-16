@@ -66,7 +66,7 @@ for(i=0;i<2;i++){
     bossesDefeated:["NONE",0],
     itemsCaptchalogued:["NONE",0]
 }
-client.playerMap.set("leaderboard",leaderboard);
+client.landMap.set(message.guild.id+"mediumlead",leaderboard);
 
 defaultConfig = require("../config.json");
 if(!client.configMap.has(message.guild.id)){

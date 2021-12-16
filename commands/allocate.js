@@ -6,20 +6,15 @@ const strifecall = require("../modules/strifecall.js");
 exports.run = (client, message, args) => {
 
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
   //declare important variables
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  let sdex = client.charcall.charData(client,charid,"sdex");
+  let cards = client.charcall.charData(client,charid,"cards");
 
-  let sdex = client.playerMap.get(charid,"sdex");
-  let cards = client.playerMap.get(charid,"cards");
-
-  let kinds = client.playerMap.get(charid,"kinds");
-  let port = client.playerMap.get(charid,"port");
+  let kinds = client.charcall.charData(client,charid,"kinds");
+  let port = client.charcall.charData(client,charid,"port");
 
   //check if the list kinds is already greater than or equal to the amount of specibi a player has in their portfolio
 
@@ -71,6 +66,6 @@ exports.run = (client, message, args) => {
 
   kinds.push(weaponkind);
 
-  client.playerMap.set(charid,kinds,"kinds");
+  client.charcall.setAnyData(client,userid,charid,kinds,"kinds");
   message.channel.send(`Successfully allocated specibus to ${weaponkind}!`)
 }

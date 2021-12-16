@@ -62,8 +62,8 @@ exports.run = async function(client, message, args) {
 
   ctx.putImageData(imageData,0,0);
 
-    let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+    let attachment = new client.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
 
-    message.channel.send(attachment);
+    message.channel.send({files: [attachment]});
 
 }

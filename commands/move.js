@@ -1,15 +1,11 @@
 
 exports.run = (client, message, args) => {
 
-  if(client.strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  var occset = [true,charid];
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
   let msg = ``;
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let mapCheck = true;
   let sec = client.landMap.get(local[4],local[0])
 
@@ -19,12 +15,11 @@ exports.run = (client, message, args) => {
 
       msg += `**[${i+1}] ${sec[local[1]][local[2]][2][i][2]}**\n\n`
     }
-    roomDirect = new client.Discord.MessageEmbed()
+    roomDirect = new client.MessageEmbed()
     .setTitle(`**AREA DIRECTORY**`)
     .addField("**HELP**","Select a room number below to move to that room in this area, or select a direction (North, South, East or West) to move to the surrounding area!")
     .addField("**ROOMS**",msg);
-    message.channel.send(roomDirect);
-    client.tutorcall.progressCheck(client,message,8);
+    client.tutorcall.progressCheck(client,message,8,["embed",roomDirect]);
     return;
   }
 
@@ -63,7 +58,6 @@ exports.run = (client, message, args) => {
     }
 
   } else {
-    console.log(local);
     if(value >= sec[local[1]][local[2]][2].length || value < 0){
       message.channel.send(`That is not a valid room! Check the list of room's with ${client.auth.prefix}move`);
       return;
@@ -74,7 +68,7 @@ exports.run = (client, message, args) => {
       if(local[4]==charid){
         msg+=`You move within your house and enter the `;
       } else {
-        msg+=`You move within ${client.playerMap.get(local[4],"name").toUpperCase()}'s house and enter the `
+        msg+=`You move within ${client.sburbMap.get(local[4],"name").toUpperCase()}'s house and enter the `
       }
     } else {
     msg+=`You move between rooms and enter the `;
@@ -90,13 +84,11 @@ exports.run = (client, message, args) => {
     message.channel.send("you can't go that way!");
     return;
   } else if(target[0].length>1&&target[0].charAt(local[0].length-1)=="d"){
-    if(sec[target[1]][target[2]][2][0][3]==false && client.landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)&& !client.funcall.dmcheck(client,message)){
-
+    if(sec[target[1]][target[2]][2][0][3]==false && client.charcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)){
       message.channel.send("You can't continue on until the Underlings have been defeated!");
       return;
     }
   }
-  console.log("Calling move function");
   let move = client.funcall.move(client,message,charid,local,target,mapCheck,msg);
 
 }

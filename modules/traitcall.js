@@ -6,58 +6,30 @@ exports.traitCheck = function(client,target,traitName){
   let check = [false,false];
 
   let traitCount = 0;
-  let specibus = client.playerMap.get(target,"spec");
-  let equip = client.playerMap.get(target,"equip");
-  let armor = client.playerMap.get(target,"armor");
-  let trinket = client.playerMap.get(target,"trinket");
-  //Check weapon first\
-  let prototype = [];
-  if(client.playerMap.has(target,"prototype")){
-    prototype = client.playerMap.get(target,"prototype");
-    for(i=0;i<prototype.length;i++){
-      if(client.traitList[client.captchaCode.indexOf(prototype[i][1].charAt(2))]==traitName){
+  let specibus = client.charcall.charData(client,target,"spec");
+  let equip = client.charcall.charData(client,target,"equip");
+  let armor = client.charcall.charData(client,target,"armor");
+  let trinket = client.charcall.charData(client,target,"trinket");
+  let prototype = client.charcall.charData(client,target,"prototype");
+  let checklist = [];
+  if(prototype!="NONE"&&prototype.length>0){
+    for(let i=0;i<prototype.length;i++){
+      checklist.push(prototype[i][1]);
+    }
+  }
+  if(specibus.length != 0) checklist.push(specibus[equip][1]);
+  if(armor.length!=0) checklist.push(armor[0][1]);
+  if(trinket.length!=0) checklist.push(trinket[0][1]);
+
+    while(checklist.length>0){
+      capcode = checklist.pop();
+      if(client.traitList[client.captchaCode.indexOf(capcode.charAt(2))]==traitName){
         traitCount++;
       }
-      if(client.traitList2[client.captchaCode.indexOf(prototype[i][1].charAt(3))]==traitName){
+      if(client.traitList2[client.captchaCode.indexOf(capcode.charAt(3))]==traitName){
         traitCount++;
       }
     }
-  }
-
-  if(specibus.length != 0){
-
-    if(client.traitList[client.captchaCode.indexOf(specibus[equip][1].charAt(2))]==traitName){
-      traitCount++;
-    }
-    if(client.traitList2[client.captchaCode.indexOf(specibus[equip][1].charAt(3))]==traitName){
-      traitCount++;
-    }
-  }
-
-  //Check armor
-
-  if(armor.length!=0){
-    if(client.traitList[client.captchaCode.indexOf(armor[0][1].charAt(2))]==traitName){
-      traitCount++;
-    }
-    if(client.traitList2[client.captchaCode.indexOf(armor[0][1].charAt(3))]==traitName){
-      traitCount++;
-    }
-  }
-
-  //Check Equipment
-console.log(trinket);
-console.log(trinket.length)
-  if(trinket.length!=0){
-    console.log(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))]);
-    console.log("Testing");
-    if(client.traitList[client.captchaCode.indexOf(trinket[0][1].charAt(2))]==traitName){
-      traitCount++;
-    }
-    if(client.traitList2[client.captchaCode.indexOf(trinket[0][1].charAt(3))]==traitName){
-      traitCount++;
-    }
-  }
 
   if(traitCount > 0){
 
@@ -72,6 +44,7 @@ console.log(trinket.length)
   return check;
 
 }catch(err){
+  console.log(err);
   return [false,false];
 }
 
@@ -89,10 +62,10 @@ exports.itemTrait = function(client,item,trait){
 
 //check if player has a computer in rooms
 exports.compTest = function(client, message, charid, room) {
-  let currentInv = client.playerMap.get(charid,"sdex");
-  let specibus = client.playerMap.get(charid,"spec");
-  let armor = client.playerMap.get(charid,"armor");
-  let trinket = client.playerMap.get(charid,"trinket")
+  let currentInv = client.charcall.charData(client,charid,"sdex");
+  let specibus = client.charcall.charData(client,charid,"spec");
+  let armor = client.charcall.charData(client,charid,"armor");
+  let trinket = client.charcall.charData(client,charid,"trinket")
 
     let i;
     //if first value in array is true, it means there is a computer, if both are true, it means the computer has sburbed installed
@@ -405,8 +378,8 @@ ctx.fillText(client.actionList[actions[i]].dmg,975,325+(120*i));
 ctx.fillText(client.actionList[actions[i]].aa,903,385+(120*i));
 
 }
-let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'captchacard.png');
-message.channel.send(attachment);
+let attachment = new client.MessageAttachment(canvas.toBuffer(), 'captchacard.png');
+message.channel.send({file:[attachment]});
 
 
 

@@ -1,15 +1,13 @@
 
 exports.run = (client, message, args) => {
 
-  if(client.strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  let local = client.playerMap.get(charid,"local");
 
-  if((!client.playerMap.get(charid,"godtier")&&!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"ROCKET")[1]&&!client.traitcall.traitCheck(client,charid,"SPACE")[0]&&local[0]!="p"&&local[0]!="pm"&&local[0]!="d"&&local[0]!="dm")){
+  let local = client.charcall.charData(client,charid,"local");
+
+  if(((!client.charcall.allData(client,userid,charid,"godtier")||client.charcall.allData(client,userid,charid,"godtier")=="NONE")&&!client.funcall.dmcheck(client,message)&&!client.traitcall.traitCheck(client,charid,"ROCKET")[1]&&!client.traitcall.traitCheck(client,charid,"SPACE")[0]&&local[0]!="p"&&local[0]!="pm"&&local[0]!="d"&&local[0]!="dm")){
     message.channel.send("You close your eyes and believe as hard as you can in the idea that maybe with a little bit of magic and a little bit of pixie dust you might be able to fly... you open your eyes to find your feet still planeted firmly on the ground as you remember that magic most definitely is not real.");
     return;
   }

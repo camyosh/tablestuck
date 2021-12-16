@@ -4,20 +4,15 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
   //define variables to determine required grist to reach each gate
 
   const gateReq = [100,200,400,800,1600,3200,6400,12800];
 
   //retrieve player location
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  var local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var local = client.charcall.charData(client,charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
 
   //check for computer with sburb installed in room or inventory
@@ -35,21 +30,20 @@ exports.run = (client, message, args) => {
 
   //if no client player is connected cancel
 
-  if(client.playerMap.get(charid,"client") == "NA") {
+  if(client.charcall.allData(client,userid,charid,"client") == "NA"||client.charcall.allData(client,userid,charid,"client") == "NONE") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
   //retrieve clients charid
-  let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
+  let targsburb = client.charcall.allData(client,userid,charid,"client");
   //checks if amount spent is greater than amount of grist player has
-  let buildSpent = client.landMap.get(clientId,"spent");
-  let grist = client.playerMap.get(clientId,"grist");
+  let buildSpent = client.landMap.get(targsburb,"spent");
+  let grist = client.sburbMap.get(targsburb,"grist");
   let gate = 0;
-  let curGate = client.landMap.get(clientId,"gate");
+  let curGate = client.landMap.get(targsburb,"gate");
   //convert grist amount to number
   if(!args[0]){
-    message.channel.send(`Your client ${(curGate>0?`has access to gate number ${curGate}`:`hasn't reached a gate yet`)}. \nYou have expended ${buildSpent} grist on the house so far, and need to expend ${gateReq[curGate]-buildSpent} more to reach the next gate!`);
-    client.tutorcall.progressCheck(client,message,21);
+    client.tutorcall.progressCheck(client,message,21,["text",`Your client ${(curGate>0?`has access to gate number ${curGate}`:`hasn't reached a gate yet`)}. \nYou have expended ${buildSpent} grist on the house so far, and need to expend ${gateReq[curGate]-buildSpent} more to reach the next gate!`]);
     return;
   }
   value = parseInt(args[0], 10);
@@ -79,8 +73,8 @@ exports.run = (client, message, args) => {
     }
   }
 
-  client.playerMap.set(clientId,grist,"grist");
-  client.landMap.set(clientId,buildSpent,"spent");
+  client.sburbMap.set(targsburb,grist,"grist");
+  client.landMap.set(targsburb,buildSpent,"spent");
 
   //if player can now reach next gate, send message
 
@@ -88,7 +82,7 @@ exports.run = (client, message, args) => {
 
   if(gate>curGate){
 
-  client.landMap.set(clientId,gate,"gate");
+  client.landMap.set(targsburb,gate,"gate");
   message.channel.send(`Expended ${value} BUILD GRIST to build house. The CLIENT PLAYER'S house now reaches GATE ${gate}`);
 } else {
   message.channel.send(`Expended ${value} BUILD GRIST to build house.`);

@@ -4,22 +4,17 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 //retrieve player information like location and sylladex
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  let sdex = client.playerMap.get(charid,"sdex");
-  let cards = client.playerMap.get(charid,"cards")
+  let sdex = client.charcall.charData(client,charid,"sdex");
+  let cards = client.charcall.charData(client,charid,"cards")
 
 //convert argument to number
 
@@ -49,7 +44,7 @@ exports.run = (client, message, args) => {
 //drop captcha card
 
     cards-=1;
-    client.playerMap.set(charid,cards,"cards");
+    client.charcall.setAnyData(client,userid,charid,cards,"cards");
     dropItem=["CAPTCHALOGUE CARD","11111111",1,1,[]];
   } else {
     dropItem=sdex.splice(selectDex,1)[0];
@@ -60,8 +55,7 @@ exports.run = (client, message, args) => {
   room[5].push(dropItem);
   sec[local[1]][local[2]][2][local[3]] = room;
   client.landMap.set(land,sec,local[0]);
-  client.playerMap.set(charid,sdex,"sdex");
-  message.channel.send(`Ejected the ${dropItem[0]}!`);
+  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
   client.funcall.tick(client,message);
-  client.tutorcall.progressCheck(client,message,6);
+  client.tutorcall.progressCheck(client,message,6,["text",`Ejected the ${dropItem[0]}!`]);
 }

@@ -3,15 +3,14 @@ const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
+  var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
 
-  if(strifecall.strifeTest(client, message, message.author) == false){
-    message.channel.send("You're not in Strife!");
+  if(!client.charcall.charData(client,charid,"strife")){
+    message.channel.send("You are not currently in Strife!")
     return;
   }
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
 
   if(strifecall.turnTest(client,message,local)==false){
     message.channel.send("It is not your turn!");

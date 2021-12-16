@@ -8,15 +8,12 @@ const gateName = ["FIRST","SECOND","THIRD","FOURTH","FIFTH","SIXTH","SEVENTH"];
 
 exports.run = (client, message, args) => {
 
-  if(client.strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  var occset = [true,charid];
+  var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
@@ -34,6 +31,12 @@ exports.run = (client, message, args) => {
     let gristSpent = client.landMap.get(local[4],"spent");
     let gate = client.landMap.get(local[4],"gate");
     let enter = client.landMap.get(local[4],"enter");
+    let gristRemaining;
+    if(gate+1>=8){
+      gristRemaining = "MAX GATE REACHED!";
+    } else {
+      gristRemaining = gateReq[gate+1]-gristSpent;
+    }
 
     if(!enter){
       message.channel.send("Enter? Enter what? You have no idea what you could possibly be trying to 'enter', it's not like there's any floating spirographs above your house or anything, that would be absurd.");
@@ -46,14 +49,14 @@ exports.run = (client, message, args) => {
         msg+=`**[${gate >= i ? i : "X"}] ${client.emojis.cache.get('736006488086282261')} GATE ${i}**\n\n`;
       }
 
-      gateSend = new client.Discord.MessageEmbed()
-      .setTitle(`${client.playerMap.get(local[4],"name").toUpperCase()}'S GATES`)
+      gateSend = new client.MessageEmbed()
+      .setTitle(`${client.sburbMap.get(local[4],"name").toUpperCase()}'S GATES`)
       .setColor("#29b5d3")
-      .addField("**Gate Reached**",gate)
-      .addField("**Grist to next Gate**",gateReq[gate+1]-gristSpent)
+      .addField("**Gate Reached**",gate.toString())
+      .addField("**Grist to next Gate**",gristRemaining.toString())
       .addField("**Gates**",msg)
 
-      message.channel.send(gateSend);
+      message.channel.send({embeds: [gateSend]});
 
       return;
     }
@@ -77,12 +80,12 @@ exports.run = (client, message, args) => {
     let clientGates;
     let clientCheck = false;
 
-    let sburbClient = client.playerMap.get(local[4],"client");
-    let clientid =message.guild.id.concat(sburbClient);
+    let sburbClient = client.sburbMap.get(local[4],"client");
 
-    if(client.landMap.has(clientid)){
 
-      clientGates = client.landMap.get(clientid,"gates");
+    if(client.landMap.has(sburbClient)){
+
+      clientGates = client.landMap.get(sburbClient,"gates");
       clientCheck = true;
 
     }
@@ -98,14 +101,14 @@ exports.run = (client, message, args) => {
     }else{
       //even gates lead to player's client's land
 
-      if(!clientCheck||client.landMap.get(clientid,"enter")==false){
+      if(!clientCheck||client.landMap.get(sburbClient,"enter")==false){
         message.channel.send("That gate doesn't lead anywhere!");
         return;
       }
 
       target[1]=clientGates[Math.floor(value/2)][0]
       target[2]=clientGates[Math.floor(value/2)][1]
-      target[4]=clientid;
+      target[4]=sburbClient;
 
     }
 
@@ -114,14 +117,14 @@ exports.run = (client, message, args) => {
     break;
     case 3:
 
-    target = ["h",0,0,0,charid];
+    target = ["h",0,0,0,local[4]];
     mapCheck=false;
     msg+=`You enter the RETURN NODE and are transported to a `
 
     break;
     case 6:
 
-    let server = client.playerMap.get(local[4],"server");
+    let server = client.sburbMap.get(local[4],"server");
     let serverid =message.guild.id.concat(server);
 
     if(!client.landMap.has(serverid)||!client.landMap.get(serverid,"enter")){

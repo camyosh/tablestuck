@@ -9,11 +9,11 @@ const tList = ["MELEE","RANGED","MAGIC","NA"];
 
 exports.run = (client, message, args) => {
 
-
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  var armor = client.playerMap.get(charid,"armor");
-  let name = client.playerMap.get(charid,"name");
-
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var armor = client.charcall.charData(client,charid,"armor");
+  let name = client.charcall.charData(client,charid,"name");
+  let inspectItem;
 //if no arguments, display currently equipped armor
 
   if(!args[0]){
@@ -34,13 +34,12 @@ exports.run = (client, message, args) => {
 
       msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 1 -** ${trait2}`;
 
-      inspectItem = new client.Discord.MessageEmbed()
+      inspectItem = new client.MessageEmbed()
       .setTitle(`**NO ARMOR EQUIPPED**`)
       .addField(`**ITEM INFORMATION**`,msg)
       .addField(`**ITEM TRAITS**`,msg1)
       .addField(`**PROTECTION**`,`**AV -** 1 **BR -** 1d2`);
 
-      message.channel.send(inspectItem);
 
     } else {
 
@@ -58,21 +57,20 @@ exports.run = (client, message, args) => {
 
       msg1 = `**TRAIT 1 -** ${trait1}\n\n**TRAIT 2 -** ${trait2}`;
 
-      inspectItem = new client.Discord.MessageEmbed()
+      inspectItem = new client.MessageEmbed()
       .setTitle(`**${armor[0][0]}**`)
       .addField(`**ITEM INFORMATION**`,msg)
       .addField(`**ITEM TRAITS**`,msg1)
       .addField(`**PROTECTION**`,`**AV -** ${tierAv[armor[0][2]]} **BR -** ${tierBD[armor[0][2]][0]}d${tierBD[armor[0][2]][1]}`);
 
-      message.channel.send(inspectItem);
 
     }
-    client.tutorcall.progressCheck(client,message,24);
+    client.tutorcall.progressCheck(client,message,24,["embed",inspectItem]);
     //if first argument is eject, eject armor
 
   } else if(args[0]=="eject"){
 
-    if(client.strifecall.strifeTest(client, message, message.author) == true){
+    if(client.charcall.charData(client,charid,"strife")){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }
@@ -84,7 +82,7 @@ exports.run = (client, message, args) => {
 
     //defining player location to place ejected armor in
 
-    let local = client.playerMap.get(charid,"local");
+    let local = client.charcall.charData(client,charid,"local");
     let land = local[4];
     let sec = client.landMap.get(land,local[0]);
     let area = sec[local[1]][local[2]];
@@ -99,22 +97,20 @@ exports.run = (client, message, args) => {
     room[5].push(dropItem);
     sec[local[1]][local[2]][2][local[3]] = room;
     client.landMap.set(land,sec,local[0]);
-    client.playerMap.set(charid,armor,"armor");
-
+    client.charcall.setAnyData(client,userid,charid,armor,"armor");
+    message.channel.send("Ejecting Armor!");
     client.funcall.tick(client,message);
-
-    message.channel.send("Ejecting Armor!")
 
 //if first argument is equip, equip selected armor
 
   } else if(args[0]=="equip"){
 
-    if(client.strifecall.strifeTest(client, message, message.author) == true){
+    if(client.charcall.charData(client,charid,"strife")){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }
 
-    let sdex = client.playerMap.get(charid,"sdex");
+    let sdex = client.charcall.charData(client,charid,"sdex");
 
     //if no second argument, cancel
 
@@ -157,12 +153,10 @@ exports.run = (client, message, args) => {
       let equipItem = sdex.splice(selectDex,1)[0];
       armor.push(equipItem);
 
-      client.playerMap.set(charid,sdex,"sdex");
-      client.playerMap.set(charid,armor,"armor");
-
-      client.funcall.tick(client,message);
-
+      client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+      client.charcall.setAnyData(client,userid,charid,armor,"armor");
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
+      client.funcall.tick(client,message);
 
   } else {
     message.channel.send(`That is not a valid argument! Valid arguments for ${client.auth.prefix}armor are eject and equip!`)

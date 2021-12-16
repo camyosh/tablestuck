@@ -1,16 +1,15 @@
-const funcall = require("../modules/funcall.js");
-//simple ping command to check if the bot is online.
-const strifecall = require("../modules/strifecall.js");
 
+//simple ping command to check if the bot is online.
 
 exports.run = (client, message, args) => {
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-  var charid = message.guild.id.concat(message.author.id);
-
-  message.channel.send(funcall.gristCacheEmbed(client, charid));
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  if(client.charcall.allData(client,userid,charid,"grist")!="NONE"){
+  var sburbid = client.playerMap.get(charid,"owner")
+  message.channel.send({embeds: [client.funcall.gristCacheEmbed(client, sburbid)]});
+} else {
+  message.channel.send("This character doesn't have any grist to check!");
+}
   return;
 }

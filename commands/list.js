@@ -3,16 +3,16 @@ const typeList = ["EMPTY","DUNGEON","CONSTRUCT","RETURN NODE","VILLAGE","HOUSE",
 
 exports.run = (client,message,args) =>{
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  let local = client.playerMap.get(charid,"local");
-
-  client.tutorcall.progressCheck(client,message,2);
+  let local = client.charcall.charData(client,charid,"local");
 
   let page = 0;
   let pageMax = 1;
   let pageTurn = false;
-  let inStrife = client.strifecall.strifeTest(client, message, message.author);
+  let inStrife = client.charcall.charData(client,charid,"strife");
+
 
   // Variables for in strife
   let strifeLocal;
@@ -34,7 +34,7 @@ exports.run = (client,message,args) =>{
     turn = client.strifeMap.get(strifeLocal,"turn");
     init = client.strifeMap.get(strifeLocal,"init");
     active = client.strifeMap.get(strifeLocal,"active");
-    
+
     pageMax = Math.ceil(active.length/10);
   } else {
     // The same for out of strife
@@ -53,7 +53,7 @@ exports.run = (client,message,args) =>{
       message.channel.send("That is not a valid page number!");
       return;
     }
-  
+
     if(page > pageMax-1 || page < 0) {
       message.channel.send("That is not a valid page number!");
       return;
@@ -66,22 +66,22 @@ exports.run = (client,message,args) =>{
   } else {
     let i;
     let msg = ``;
-  
+
     for(i=0+(page*10);i<((page+1)*10)&&i<occList.length;i++){
-      msg+=`**[${i+1}] ${client.playerMap.get(occList[i][1],"name").toUpperCase()}** \n *${client.playerMap.get(occList[i][1],"type")}*\n\n`
+      msg+=`**[${i+1}] ${client.charcall.charData(client,occList[i][1],"name").toUpperCase()}** \n *${client.charcall.charData(client,occList[i][1],"type")}*\n\n`
     }
-  
+
     if(occList.length==0){
       msg= "EMPTY";
     }
-  
-    listPrint = new client.Discord.MessageEmbed()
+
+    listPrint = new client.MessageEmbed()
     .setTitle(`**ROOM OCCUPANTS**`)
     .addField(`**AREA TYPE**`,`**${typeList[area[0]]}**`,true)
     .addField(`**ROOM**`,`**${room[2]}**`,true)
     .addField(`**PAGE**`,`**${page+1}**`,true)
     .addField(`**CURRENT OCCUPANTS**`,msg)
-    message.channel.send(listPrint);
+      client.tutorcall.progressCheck(client,message,2,["embed",listPrint]);
     return;
   }
 }

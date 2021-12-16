@@ -1,13 +1,10 @@
 exports.run = (client, message, args) => {
 
-  if(client.strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
@@ -19,9 +16,17 @@ exports.run = (client, message, args) => {
 let page = 0;
 
 async function dexCheck(){
+let files = []
 const attachment = await client.imgcall.sdexCheck(client,message,page,args,3,dex,dex.length,room[2]);
+files.push(attachment);
+for(let i=0;i<room[4].length;i++){
+  if(client.charcall.hasData(client,room[4][i][1],"dialogue")){
+    let dialist = client.charcall.charData(client,room[4][i][1],"dialogue");
+    files.push(await client.diocall.dialogue(client,message,dialist[Math.floor(Math.random()*dialist.length)]));
 
-  message.channel.send(attachment);
+  }
+}
+  message.channel.send({files: files});
 }
 
 if(area[0]==4){

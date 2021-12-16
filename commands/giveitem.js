@@ -17,7 +17,9 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  var charid = message.guild.id.concat(message.mentions.members.first().id);
+  var userid = message.guild.id.concat(message.mentions.members.first().id);
+  var charid = client.userMap.get(userid,"possess");
+
   var code = args[0];
 
   if(!code.length==8){
@@ -40,13 +42,13 @@ exports.run = (client, message, args) => {
     message.channel.send("That is not a valid tier!");
     return;
   }
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
 
-  let currentInv = client.playerMap.get(charid,"sdex");
+  let currentInv = client.charcall.charData(client,charid,"sdex");
   let itemName = "CUSTOM ITEM";
   let quantity = parseInt(args[2], 10);
   if (isNaN(quantity)) {
@@ -66,7 +68,7 @@ exports.run = (client, message, args) => {
 
   currentInv.unshift(item);
   let mess = `CAPTCHALOGUED the ${item[0]}.`
-  if(currentInv.length > client.playerMap.get(charid,"cards")){
+  if(currentInv.length > client.charcall.charData(client,charid,"cards")){
     let dropItem = currentInv.pop();
     room[5].push(dropItem);
     mess += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
@@ -74,5 +76,5 @@ exports.run = (client, message, args) => {
 message.channel.send(mess);
 sec[local[1]][local[2]][2][local[3]] = room;
 client.landMap.set(land,sec,local[0]);
-client.playerMap.set(charid,currentInv,"sdex");
+client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
 }

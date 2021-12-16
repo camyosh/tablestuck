@@ -1,452 +1,433 @@
-const funcall = require("../modules/funcall.js");
-//const { GoogleSpreadsheet } = require('google-spreadsheet');
-const landcall = require("../modules/landcall.js");
-//Command usage: >register @target
-//This command creates a character sheet in the player database as well as a new land in the location database
-const strifecall = require("../modules/strifecall.js");
-
 exports.run = async function(client, message, args){
 
-const tourneyList = client.auth.list;
-/*  if(!args[0]||!message.mentions.members.first()){
-    message.channel.send("You have to ping a user");
-    return;
-  }*/
+//First, there's a series of checks to see if the function should be run at all.
+//This way, processing messages can be sent properly even when the bot is busy.
 
+//T1 checks: see if they can register at all.
+
+//lists valid tourney players who can register, if applicable.
+const tourneyList = client.auth.list;
+//if the tournament is live, only valid players can register.
   if(client.limit != 0 && !tourneyList.includes(message.author.id)){
 message.channel.send("You have not signed up for the tournament!");
 return;
   }
-
-  let channel = ``;
-  let pesterchannel = ``;
-  let channelCheck = false;
-  var gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"]
-
-//checks to see if the command user is Cam, as we don't want anyone else registering players for the tournament
-
-if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
-  message.channel.send("Sorry, someone else is registering, wait a few seconds!");
-  return;
-} else {
-  client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
-}
-console.log(client.landMap.get(message.guild.id+"medium","registerTimer")-Date.now());
-
-  let charid = message.guild.id.concat(message.author.id);
-
+//checks to see if the medium exists, aka the session has been initialized.
 if(!client.landMap.has(message.guild.id+"medium")){
-
-  /*
-let castlegen = [[0,0],[0,0]];
-
-for(i=0;i<2;i++){
-  for(j=0;j<2;j++){
-  castlegen[i][j]=Math.floor(Math.random()*2)+(Math.floor(Math.random()*4)*3);
-}
-}
-  let dreamMoon = client.landcall.moonGen(client,castlegen[0],castlegen[1]);
-
-//chumhandle [charid,chumhandle]
-
-  var medium = {
-    playerList:[],
-    npcCount:0,
-    prototype:[],
-    prospitList:[],
-    derseList:[],
-    dmList:[],
-    handleList:[],
-    castleLocal: castlegen[0],
-    towerLocal: castlegen[1],
-    transLocal:dreamMoon[dreamMoon.length-1],
-    p:dreamMoon[0],
-    pm:dreamMoon[2],
-    d:dreamMoon[1],
-    dm:dreamMoon[3],
-    pmd:dreamMoon[4],
-    pmd1:dreamMoon[5],
-    pmd2:dreamMoon[6],
-    dmd:dreamMoon[7],
-    dmd1:dreamMoon[8],
-    dmd2:dreamMoon[9],
-    pc:dreamMoon[10],
-    dc:dreamMoon[11],
-    transList:[],
-    transCount:0
-  }
-
-  client.landMap.set(message.guild.id+"medium", medium);
-
-  */
-
   message.channel.send(`A session for this server has not been initialized! Do ${client.auth.prefix}initialize to fix this.`);
   return;
 }
 
+//gets the data for the user. userid is only used here in the pure form, of guildid concatted with author id.
+var userid = `${message.guild.id}${message.author.id}`;
+var userData = client.userMap.get(userid);
 
-let aspectChoice;
- let aspects = ["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","DOOM","VOID","SPACE","MIND","HOPE"]
-  if(client.playerMap.has(charid)){
-    /*if(client.playerMap.get(charid,"timeOfReg") + 300000 > Date.now()){
-      message.channel.send("You have to wait at least 5 minutes before registering again!");
-      return;
-    }*/
+/*sburbid is for the sburbMap key. for players, it will be the same as userid, but
+dm's who might make multiple player sheets will have different sburbid's for each
+character. Each time a DM makes a character, the number of character is added on
+to the end of the sburbid.
+**FOR THE MOMENT, charCount IS NEVER INCREASED. TO BE CHANGED LATER.***/
 
-    if (client.limit != 0) {
-      message.channel.send("You can not re-register during a tournament!");
-      return;
-    }
-    if(args[0].toLowerCase()!="confirm"){
-      message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);
-      return;
-    }
-    if(!args[1]){
-      aspectChoice="random";
-    } else {
-      if(!aspects.includes(args[1].toUpperCase())){
-        message.channel.send("Sorry, that aspect doesn't exist! Re-register with a valid aspect, or none at all to get a random one!");
-        return;
-      } else {
-        aspectChoice=args[1].toUpperCase();
-      }
-    }
-    channel = client.playerMap.get(charid,"channel");
-    pesterchannel = client.playerMap.get(charid,"pesterchannel");
+//since the game is built for re-registering for easy testing, mulitple characters
+//cannot be made at this time.
+var sburbid;
+if(userData.charCount>0){
+ sburbid = `${userid}${userData.charCount}`;
+} else {
+ sburbid = userid;
+}
+var channels = [``,``];
+var aspectChoice;
+var channelCheck;
+//T2: checks if the player has registered before and acts accordingly.
 
-    channelCheck = true;
-
+//checks if the user has any charcter, player or NPC, under their control.
+if(userData.possess=="NONE"){
+  aspectChoice = chooseAspect(args[0],client,message);
+  if(!aspectChoice) return;
+}
+//checks to see if the currently possessed creature is an NPC, not a player.
+else if(!client.playerMap.has(userData.possess)){
+message.channel.send("You can't re-register while controlling an NPC! possess a player and try again.");
+return;
+}
+//if someone is possessing a player, it won't let them re-register unless they confirm it.
+else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
+    message.channel.send(`Be careful, if you re-register now, all of your data will be deleted! If you're sure about this, do ${client.auth.prefix}register confirm.`);
+    return;
+}else{
+  //only pre-existing players reach this point.
+  aspectChoice = chooseAspect(args[1],client,message);
+  if(!aspectChoice) return;
+  //stores channel data for the pre-existing player
+  channels[0] = client.sburbMap.get(sburbid,"channel");
+  channels[1] = client.sburbMap.get(sburbid,"pesterchannel");
+  channelCheck = true;
+  //checks if the channel still exists, and determines if new ones need to be made.
     try{
-      client.channels.cache.get(channel).send(`Re-registering`);
+      await client.channels.cache.get(channels[0]).send(`Re-registering`);
     }catch(err){
       channelCheck=false;
     }
-let target;
-    if(client.playerMap.get(charid,"client")!="NA"&&client.playerMap.get(charid,"client")!=message.author.id){
-      target = message.guild.id.concat(client.playerMap.get(charid,"client"));
-      client.playerMap.set(target,"NA","server");
-      client.funcall.chanMsg(client,target,`Your server has re-registerd, leaving you without a server!`);
-    }
-    if(client.playerMap.get(charid,"server")!="NA"&&client.playerMap.get(charid,"server")!=message.author.id){
-      target = message.guild.id.concat(client.playerMap.get(charid,"server"));
-      client.playerMap.set(target,"NA","client");
-      client.funcall.chanMsg(client,target,`Your client has re-registerd, leaving you without a client!`);
-    }
-  } else {
+  await clearConnections(client,sburbid);
+}
+await register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels);
+}
+//---- Start of Execution ----------------------------------------------------------------------------------------------------
+async function register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels){
+  //initializes some basic variables needed for registration.
+    var chumhandle = ``;
+    var chumtag = ``;
+    var lunarSway;
+    var repDef = [0,0];
+    //list of possible armors a player might start with.
+    const armorsets = [["CLOTHES", "sQ//m9Kn", 1, 1, []], ["CLOTHES", "sd//1UGt", 1, 1, []], ["CLOTHES", "s4//1jKQ", 1, 1, []], ["CLOTHES", "s5//MEF3", 1, 1, []], ["CLOTHES", "sI//llDd", 1, 1, []], ["CLOTHES", "sh//jXDH", 1, 1, []], ["CLOTHES", "sK//dTnZ", 1, 1, []], ["CLOTHES", "sj//ZVxB", 1, 1, []], ["CLOTHES", "sY//t9oW", 1, 1, []], ["CLOTHES", "sl//RSD8", 1, 1, []], ["CLOTHES", "sO//jCtu", 1, 1, []], ["CLOTHES", "sD//2ydM", 1, 1, []]];
+    //gets the location of the dream tower.
+    var towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
 
-  if(!args[0]){
+  //startTime is used to keep track of how long resgistration takes, for debugging purposes.
+  var startTime = Date.now();
+  console.log(`Start time is ${Date.now()-startTime}`);
+
+    //manages the Registration Timer, so that people don't register too quickly.
+    /*if (Date.now()-client.landMap.get(message.guild.id+"medium","registerTimer")<10000){
+      message.channel.send("Sorry, someone else is registering, wait a few seconds!");
+      return;
+    } else {
+      client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
+    }*/
+
+  await createTutorial(client,message,userid,userData);
+  var chumData = await chumCheck(client,message,userid,sburbid,chumhandle,chumtag);
+  await charSetup(userData,sburbid,channelCheck);
+  var gristSet= await createGristSet(client,message)
+  var defBedroom = client.funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
+  var beginData = await beginWorld(client,userData,defBedroom,armorsets,gristSet);
+  var moonData = await dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom);
+  await createSheets(client,message,userid,sburbid,userData,armorsets,beginData[0],moonData,towerLocal,channels,chumData,repDef);
+  //beginData = [randnum,def]
+  //creates channels if the player doesn't have any.
+  if(!channelCheck){
+    channels = await generateChannels(client,message,userid,sburbid,channels);
+  }else{
+    client.sburbMap.set(sburbid,channels[0],"channel");
+    client.sburbMap.set(sburbid,channels[1],"pesterchannel");
+  }
+  userData.channel=channels[0];
+  userData.pesterchannel=channels[1];
+  client.userMap.set(userid,userData);
+
+  await finishLandGen(client,message,sburbid,aspectChoice,gristSet,beginData[1]);
+  await tutorStart(client,message,userData,channels);
+  console.log(`End time is ${Date.now() - startTime}`);
+
+
+}
+//------- Start of Function Definitions -------------------------------------------------------
+function createTutorial(client,message,userid,userData){
+  //if the user doesn't already have tutorial data, it'll be created here.
+  if(userData.tutor.length>1) {
+    return;
+}
+  //this checks the tutorial config to see if it starts enabled or not. the first value in
+  //the tutor array toggles if the tutorial is on or off.
+  if(client.configMap.get(message.guild.id).options[2].selection==0){
+    defaultTutor = [true];
+  } else {
+    defaultTutor = [false];
+  }
+
+  //for the number of steps in the tutorial, this generates a new bool set to false.
+  var tutorRef = require("../tutorRef.json");
+  for(var m=0;m<tutorRef.content.length;m++){
+    defaultTutor.push(false);
+  }
+
+  //pushes the tutor list to the userData object. This has to be done here, because if done in
+  //message.js, it can't access the configMap above (there's no confirmation that initialization
+  //has occured yet).
+  userData.tutor = defaultTutor;
+}
+
+function clearConnections(client,sburbid){
+  //target will be the sburbid of the player's client and/or server for this function.
+  var target;
+
+  //checks if you had a server or client, and resets their client or server (you) to N/A.
+  if(client.sburbMap.get(sburbid,"client")!="NA"&&client.sburbMap.get(sburbid,"client")!=sburbid){
+    target = client.sburbMap.get(sburbid,"client");
+    client.sburbMap.set(target,"NA","server");
+    client.funcall.chanMsg(client,target,`Your server has re-registerd, leaving you without a server!`);
+  }
+  if(client.sburbMap.get(sburbid,"server")!="NA"&&client.sburbMap.get(sburbid,"server")!=sburbid){
+      target = client.sburbMap.get(sburbid,"server");
+    client.sburbMap.set(target,"NA","client");
+    client.funcall.chanMsg(client,target,`Your client has re-registerd, leaving you without a client!`);
+  }
+}
+
+function chooseAspect(input,client,message){
+  //sets up some variables and arrays for choosing your aspect. will eventually
+  //be replaced by user data editing program.
+
+ //either args[0] or args[1] is passed to this function based on when it's called.
+  if(!input){
     aspectChoice="random";
   } else {
-    if(!aspects.includes(args[0].toUpperCase())){
+    //checks if the given aspect is valid.
+    if(!client.aspects.includes(input.toUpperCase())){
       message.channel.send("Sorry, that aspect doesn't exist! Re-register with a valid aspect, or none at all to get a random one!");
       return;
     } else {
-      aspectChoice=args[0].toUpperCase();
+    aspectChoice=input.toUpperCase();
     }
   }
+  return aspectChoice;
 }
-console.log(aspectChoice);
-let startTime = Date.now();
-  console.log(`Start time is ${startTime}`);
 
-//checks to see if the command user mentioned a target
+function chumCheck(client,message,userid,sburbid,chumhandle,chumtag){
+  //gets a list of every player and their chumhandle registered to the medium.
+    var playerList = client.landMap.get(message.guild.id+"medium","playerList");
+    var handleList = client.landMap.get(message.guild.id+"medium","handleList");
 
-
-
-  //declaring who the target to be registered is and their charid (The server id + the user id)
-
-  let target = message.author;
-  var occset = [true,charid];
-
-  //console.log(`Retrieving player and handle list - ${Date.now() - startTime}`);
-
-  let playerList = client.landMap.get(message.guild.id+"medium","playerList");
-  let handleList = client.landMap.get(message.guild.id+"medium","handleList");
-
-  //console.log(`Retrieved player and handle list - ${Date.now() - startTime}`);
-/*
-  let chumhandle = message.author.username;
-
-  if(!playerList.includes(charid)){
-    playerList.push(charid);
-    handleList.push([charid,chumhandle]);
-
-    client.landMap.set(message.guild.id+"medium",playerList,"playerList");
-    client.landMap.set(message.guild.id+"medium",handleList,"handleList");
-
-
-  }else{
-    let h;
-    for(h=0;h<handleList.length;h++){
-      if(handleList[h][0]==charid){
-        chumhandle = handleList[h][1];
+  //sets the chumhandle for the character.
+    chumhandle = client.userMap.get(userid,"name").split(" ").join("");
+  //sets the chumtag for the character, defaulted to the first two varters of their name.
+    chumtag = chumhandle.substring(0,2).toUpperCase();
+    var tagCount = 0;
+    var handleCount = 0;
+    var index="NA";
+    for(i=0;i<handleList.length;i++){
+      //counts every case where the new chumhandle matches an existing one.
+      if(handleList[i][1].substring(0,chumhandle.length).toLowerCase()==chumhandle.toLowerCase()&&handleList[i][0]!=sburbid){
+        handleCount++;
+      }
+      //counts every case where the new chumtag matches an existing one.
+      if(handleList[i][2].substring(0,chumtag.length).toUpperCase()==chumtag&&handleList[i][0]!=sburbid){
+      tagCount++;
+      }
+      //catches the index of the character when it comes by.
+      if(handleList[i][0]==sburbid){
+        index = i;
       }
     }
-  }
-*/
-
-  let chumhandle = message.author.username.split(" ").join("");
-
-  let ab = chumhandle.substring(0,2).toUpperCase();
-
-  let abCount = 0;
-  let handleCount = 0;
-  let index="NA";
-
-  //console.log(`Checking every chumhandle to see if there are duplicates of the default chumhandle using a for() loop - ${Date.now() - startTime}`);
-
-  for(i=0;i<handleList.length;i++){
-    if(handleList[i][1].substring(0,chumhandle.length).toLowerCase()==chumhandle.toLowerCase()&&handleList[i][0]!=charid){
-      handleCount++;
+    //adds a number to the end of the chumhandle to avoid duplicates.
+    if(handleCount>0){
+      chumhandle+=handleCount;
     }
-    if(handleList[i].length<3){
-      handleList[i].push(`${i}`);
+    //adds a number to the end of the chumtag to avoid duplicates.
+    if(tagCount>0){
+      chumtag+=tagCount;
     }
-    if(handleList[i][2].substring(0,ab.length).toUpperCase()==ab&&handleList[i][0]!=charid){
-    abCount++;
+
+    //adds the character to the handlelist if they don't exist, or updates it if they do.
+    if(index=="NA"){
+      handleList.push([sburbid,chumhandle,chumtag]);
+    }else{
+      handleList[index]=[sburbid,chumhandle,chumtag];
     }
-    if(handleList[i][0]==charid){
-      index = i;
+
+  //adds the character to the playerlist if they don't exist on it.
+    if(!playerList.includes(sburbid)){
+      playerList.push(sburbid);
     }
+
+  //updates the data to the database
+    client.landMap.set(message.guild.id+"medium",playerList,"playerList");
+    client.landMap.set(message.guild.id+"medium",handleList,"handleList");
+    return[chumhandle,chumtag];
+}
+function charSetup(userData,sburbid,channelCheck){
+  //userData.possess is the character the user is controlling, which will start as the
+  //user's waking self.
+  userData.possess = `w${sburbid}`;
+  //adds both waking and sleeping selves to the speeddial, for faster DM possession.
+  if(!channelCheck){
+    userData.speeddial.push(`w${sburbid}`);
+    userData.speeddial.push(`d${sburbid}`);
   }
-
-  //console.log(`Finished for() loop - ${Date.now() - startTime}`);
-
-  if(handleCount>0){
-    chumhandle+=handleCount;
-  }
-  if(abCount>0){
-    ab+=abCount;
-  }
-
-  if(index=="NA"){
-    handleList.push([charid,chumhandle,ab]);
-  }else{
-    handleList[index]=[charid,chumhandle,ab];
-  }
-
-  if(!playerList.includes(charid)){
-    playerList.push(charid);
-  }
-
-  //console.log(`Setting playerList and handleList - ${Date.now() - startTime}`);
-
-  client.landMap.set(message.guild.id+"medium",playerList,"playerList");
-  client.landMap.set(message.guild.id+"medium",handleList,"handleList");
-
-
+}
+function createGristSet(client,message){
+  /*randomizes the grist for the land, based on which grists have or haven't been used
+  yet in the medium. This way, 3 planets will have exactly 1 occurance of each grist
+  type.*/
   var gristSet = [];
   var sessionGrist = client.landMap.get(message.guild.id+"medium","gristCounter");
-  for(let i=0;i<4;i++){
+  for(var i=0;i<4;i++){
     gristSet.push(sessionGrist.splice(Math.floor(Math.random()*sessionGrist.length),1)[0]);
+    //refills the grist list if all 12 are used up
     if(sessionGrist.length<1){
       sessionGrist = ["uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"];
     }
   }
   client.landMap.set(message.guild.id+"medium",sessionGrist,"gristCounter");
+  return gristSet;
+}
+function beginWorld(client,userData,defBedroom,armorsets,gristSet){
+  //lays out occset, the chunk of data that tells the game that there is a player (true)
+  //with the charid given in a room. This will start in the Bedroom.
+    var occset = [true,userData.possess];
 
+ //picks a random number 0-11 for the armor the player starts with.
+  var randnum = Math.floor((Math.random() * 12));
 
-  let randnum = Math.floor((Math.random() * 12));
-
-  const defBedroom = funcall.preItem(client,"bedroom",7,[["GLASSES","vh//QaFS",1,1,[]]],gristSet);
-
-  const armorsets = [["CLOTHES", "sQ//m9Kn", 1, 1, []], ["CLOTHES", "sd//1UGt", 1, 1, []], ["CLOTHES", "s4//1jKQ", 1, 1, []], ["CLOTHES", "s5//MEF3", 1, 1, []], ["CLOTHES", "sI//llDd", 1, 1, []], ["CLOTHES", "sh//jXDH", 1, 1, []], ["CLOTHES", "sK//dTnZ", 1, 1, []], ["CLOTHES", "sj//ZVxB", 1, 1, []], ["CLOTHES", "sY//t9oW", 1, 1, []], ["CLOTHES", "sl//RSD8", 1, 1, []], ["CLOTHES", "sO//jCtu", 1, 1, []], ["CLOTHES", "sD//2ydM", 1, 1, []]];
-
-  //console.log(`Generating player bedroom - ${Date.now() - startTime}`);
-
+//builds the room array. defBedroom had to be defined earlier, so that occset can be insterted now.
+//preItem stocks a room based on it's loot table and the land's grist type.
   const def = [[[5,7,[
      [[],[],"BEDROOM",false,[occset],defBedroom],
-     [[],[],"LIVING ROOM",false,[],funcall.preItem(client,"living",7,[],gristSet)],
-     [[],[],"STUDY",false,[],funcall.preItem(client,"study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]],gristSet)],
-     [[],[],"KITCHEN",false,[],funcall.preItem(client,"kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
-     [[],[],"BATHROOM",false,[],funcall.preItem(client,"bathroom",4,[],gristSet)],
-     [[],[],"YARD",false,[],funcall.preItem(client,"yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
-     [[],[],"SHED",false,[],funcall.preItem(client,"shed",8,[],gristSet)]
+     [[],[],"LIVING ROOM",false,[],client.funcall.preItem(client,"living",7,[],gristSet)],
+     [[],[],"STUDY",false,[],client.funcall.preItem(client,"study",7,[["COMPUTER","yc2x2Esb",1,1,[]],["DESK","yO3wlREq",1,1,[ ["CAPTCHALOGUE CARD","11111111",1,4,[]] ]]],gristSet)],
+     [[],[],"KITCHEN",false,[],client.funcall.preItem(client,"kitchen",5,[["FRIDGE","yT3r7TKE",1,1,[["FRUIT GUSHERS","0L5upepo",1,2,[]],["STEAK","0k6tac2a",1,2,[]],["BREAD","0u4vNX4a",1,2,[]],["ICE","0x8rHRe5",1,4,[]],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
+     [[],[],"BATHROOM",false,[],client.funcall.preItem(client,"bathroom",4,[],gristSet)],
+     [[],[],"YARD",false,[],client.funcall.preItem(client,"yard",4,[["MAILBOX","yT3SpVgY",0,1,[["SBURB DISC","/QjGOZb7",1,1,[],"https://media.discordapp.net/attachments/808757312520585227/809997088665370634/SBURB_DISC.png"],["CAPTCHALOGUE CARD","11111111",1,2,[]]]]],gristSet)],
+     [[],[],"SHED",false,[],client.funcall.preItem(client,"shed",8,[],gristSet)]
    ]]]];
-
-   //console.log(`Finished generating player bedroom - ${Date.now() - startTime}`);
-
-/*
-  async function regImport() {
-    var doc = new GoogleSpreadsheet(args[0]);
-    await doc.useServiceAccountAuth(client.creds);
-    const info = await doc.loadInfo();
-    var sheet = doc.sheetsByIndex[1];
-    const list = ["L5","J7","W7","H10","S10","W16","W19","W22","W25","W28","W31"];
-
-    await sheet.loadCells(list); // loads a range of cells
-
-    importsheet = [sheet.getCellByA1(list[0]).value,sheet.getCellByA1(list[1]).value,sheet.getCellByA1(list[2]).value,sheet.getCellByA1(list[3]).value,sheet.getCellByA1(list[4]).value,sheet.getCellByA1(list[5]).value,sheet.getCellByA1(list[6]).value,sheet.getCellByA1(list[7]).value,sheet.getCellByA1(list[8]).value,sheet.getCellByA1(list[9]).value,sheet.getCellByA1(list[10]).value]
-
-
-    //declaring the basic character sheet
-
-  var charSheet = {
-    name: importsheet[0],
-    ping: target.id,
-    channel: message.channel.id,
-    sheet: args[0],
-    handle: `${importsheet[1]} ${importsheet[2]}`,
-    class: importsheet[3],
-    aspect: importsheet[4],
-    act:0,
-    strife:false,
-    pos:0,
-    server:"NA",
-    client:"NA",
-    alive:true,
-    local:["h",0,0,0,charid],
-    deploy:[false,false,false,false,false],
-    xp: 0,
-    rung: 0,
-    b: 0,
-    bank: 0,
-    vit: 100,
-    gel: 100,
-    stats:[importsheet[5],importsheet[6],importsheet[7],importsheet[8],importsheet[9],importsheet[10]],
-    grist:[20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    port: 1,
-    kinds:[],
-    spec:[],
-    modus: "STACK",
-    cards:4,
-    scards:2,
-    sdex:[],
-    equip:0,
-    armor:[armorsets[randnum]]
-  };
-
-client.playerMap.set(charid,charSheet)
+   return [randnum,def];
 }
+function dreamPlace(client,message,userData,sburbid,lunarSway,repDef,towerLocal,defBedroom){
+  //gets the list of players in the dream moon towers
+    var prospitList = client.landMap.get(message.guild.id+"medium","prospitList");
+    var derseList = client.landMap.get(message.guild.id+"medium","derseList");
 
-regImport();
-  //declaring the basic land sheet
-*/
-  //random item - funcall.preItem()
-
-  //console.log(`Retrieving prospitList and derseList - ${Date.now() - startTime}`);
-
-  let prospitList = client.landMap.get(message.guild.id+"medium","prospitList");
-  let derseList = client.landMap.get(message.guild.id+"medium","derseList");
-
-  //console.log(`Finsished retrieving prospitList and Derselist - ${Date.now() - startTime}`);
-
-  let lunarSway;
-  let repDef=[0,0];
-
-  if(prospitList.length==derseList.length){
-    if(!Math.floor(Math.random()*2)){
+    var roomIndex = -1;
+  //if the player already exists on a moon, it'll keep them there.
+    if(prospitList.includes(sburbid)){
+      lunarSway = "pm";
+      repDef=[10,-10];
+      roomIndex = prospitList.indexOf(sburbid)+1;
+    }else if(derseList.includes(sburbid)){
+      lunarSway = "dm";
+      repDef=[-10,10];
+      roomIndex = derseList.indexOf(sburbid)+1;
+    }
+  //if the player isn't on either moon, it puts them on the one with less people, or a
+  //random one if they are both equal.
+    else if(prospitList.length==derseList.length){
+      if(!Math.floor(Math.random()*2)){
+        lunarSway="dm";
+        repDef=[-10,10]
+        derseList.push(sburbid);
+      } else {
+        lunarSway="pm";
+        repDef=[10,-10]
+        prospitList.push(sburbid);
+      }
+    }else if(prospitList.length>derseList.length){
       lunarSway="dm";
       repDef=[-10,10]
-      derseList.push(charid);
-    } else {
+      derseList.push(sburbid);
+    }else{
       lunarSway="pm";
-
       repDef=[10,-10]
-      prospitList.push(charid);
+      prospitList.push(sburbid);
     }
-  }else if(prospitList.length>derseList.length){
-    lunarSway="dm";
-    repDef=[-10,10]
-    derseList.push(charid);
-  }else{
-    lunarSway="pm";
-    repDef=[10,-10]
-    prospitList.push(charid);
+  //pushes the player lists back into the medium database.
+    client.landMap.set(message.guild.id+"medium",prospitList,"prospitList");
+    client.landMap.set(message.guild.id+"medium",derseList,"derseList");
+
+    var moonMap = client.landMap.get(message.guild.id+"medium",lunarSway);
+   //if the character had a room before, this puts them there. Otherwise, it's added on to the end.
+   var towerRoom;
+  if(roomIndex==-1){
+    towerRoom = moonMap[towerLocal[0]][towerLocal[1]][2].length;
+    moonMap[towerLocal[0]][towerLocal[1]][2].push([[],[],`${userData.name.toUpperCase()}'S DREAM TOWER`,false,[
+      [true,`d${sburbid}`]],defBedroom]);
+  } else {
+    towerRoom = roomIndex;
+    moonMap[towerLocal[0]][towerLocal[1]][2][roomIndex] = [[],[],`${userData.name.toUpperCase()}'S DREAM TOWER`,false,[
+      [true,`d${sburbid}`]],defBedroom];
   }
-
-  //console.log(`Setting prospitList and derseList - ${Date.now() - startTime}`);
-
-  client.landMap.set(message.guild.id+"medium",prospitList,"prospitList");
-  client.landMap.set(message.guild.id+"medium",derseList,"derseList");
-
-  //console.log(`Finished setting prospitList and derseList, retrieving moonMap and towerLocal - ${Date.now() - startTime}`);
-
-  let moonMap = client.landMap.get(message.guild.id+"medium",lunarSway);
-  let towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
-
-  //console.log(`Retrieved moonMap and towerLocal - ${Date.now() - startTime}`);
-
-  let towerRoom = moonMap[towerLocal[0]][towerLocal[1]][2].length;
-
-  moonMap[towerLocal[0]][towerLocal[1]][2].push([[],[],`${message.author.username.toUpperCase()}'S DREAM TOWER`,false,[
-    [true,charid]],defBedroom]);
-
-    //console.log(`Setting moonMap - ${Date.now() - startTime}`);
-
-  client.landMap.set(message.guild.id+"medium",moonMap,lunarSway);
-
-  //console.log(`Set moonMap - ${Date.now() - startTime}`);
-
-
-  //console.log(`Creating character sheet - ${Date.now() - startTime}`);
-
-if(client.configMap.get(message.guild.id).options[2].selection==0){
-  defaultTutor = [true];
-} else {
-  defaultTutor = [false];
+  //pushes the new data to the moon again.
+    client.landMap.set(message.guild.id+"medium",moonMap,lunarSway);
+    return [towerRoom,lunarSway];
 }
-let tutorRef = require("../tutorRef.json");
-for(let m=0;m<tutorRef.content.length;m++){
-  defaultTutor.push(false);
-}
-  var charSheet = {
-    control:charid,
-    possess:[],
-    name: message.author.username,
-    ping: message.author.id,
-    channel: channel,
+function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,moonData,towerLocal,channels,chumData,repDef){
+    var wakingSheet = {
+      control:[userid],
+      owner:sburbid,
+      name: `${userData.name}`,
+      faction:"player",
+      type:"player",
+      strife:false,
+      pos:0,
+      alive:true,
+      local:["h",0,0,0,sburbid],
+      b: 0,
+      vit: 100,
+      port: 1,
+      kinds:[],
+      spec:[],
+      modus: "STACK",
+      cards:4,
+      scards:2,
+      sdex:[],
+      equip:0,
+      trinket:[],
+      armor:[armorsets[randnum]],
+      prototype:[],
+      prefTarg:[],
+      partyID:"NONE",
+      ai: false
+    };
+  var dreamSheet = {
+    control:[],
+    owner:sburbid,
+    name: `${userData.name}'s Dream Self`,
     faction:"player",
     type:"player",
-    act:0,
-    lunarSway:lunarSway,
     strife:false,
     pos:0,
+    alive:true,
+    local:[moonData[1],towerLocal[0],towerLocal[1],moonData[0],message.guild.id+"medium"],
+    b: 0,
+    vit: 100,
+    port: 1,
+    kinds:[],
+    spec:[],
+    modus: "STACK",
+    cards:4,
+    scards:2,
+    sdex:[],
+    equip:0,
+    trinket:[],
+    armor:[],
+    prototype:[],
+    prefTarg:[],
+    partyID:"NONE",
+    ai: false
+  };
+  var sburbSheet = {
+    name: userData.name,
+    ping: message.author.id,
+    channel: channels[0],
+    class:userData.class,
+    aspect:userData.aspect,
+    landID:sburbid,
+    wakingID:`w${sburbid}`,
+    dreamingID:`d${sburbid}`,
+    lunarSway:moonData[0],
     server:"NA",
     client:"NA",
-    alive:true,
-    local:["h",0,0,0,charid],
-    dreamlocal:[lunarSway,towerLocal[0],towerLocal[1],towerRoom,message.guild.id+"medium"],
     deploy:[false,false,false,false,false,false,false,false,false,false],
+    act: 0,
     xp: 0,
     rung: 0,
-    b: 0,
     bank: 0,
-    vit: 100,
-    dreamvit: 100,
+    mailbox: [],
     gel: 100,
     grist:[20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-    port: 1,
-    dreamport: 1,
-    kinds:[],
-    dreamkinds:[],
-    spec:[],
-    dreamspec:[],
-    modus: "STACK",
-    dreammodus: "STACK",
-    cards:4,
-    dreamcards:4,
-    scards:2,
-    dreamscards:2,
-    sdex:[],
-    dreamsdex:[],
-    equip:0,
-    dreamequip:0,
-    trinket:[],
-    dreamtrinket:[],
-    armor:[armorsets[randnum]],
-    dreamarmor:[],
     itemsAlchemized:0,
     underlingsDefeated:0,
     tilesDiscovered:0,
     playersDefeated:0,
     bossesDefeated:0,
     itemsCaptchalogued:0,
-    chumhandle:chumhandle,
-    chumtag:ab,
+    chumhandle:chumData[0],
+    chumtag:chumData[1],
     chumpic:message.author.avatarURL(),
     chumroll:[],
-    pesterchannel:pesterchannel,
+    pesterchannel:channels[1],
+    block:[],
     prospitRep:repDef[0],
     derseRep:repDef[1],
     underlingRep:-1,
@@ -454,39 +435,93 @@ for(let m=0;m<tutorRef.content.length;m++){
     consortRep:10,
     bio:"This player has not set their BIO!",
     img:"https://media.discordapp.net/attachments/408119077840617493/808458446374436914/human_base.png",
-    registry:[],
+    registry:[[
+            "CAPTCHALOGUE CARD",
+            "11111111",
+            1,
+            1,
+            [
+            ]
+        ]],
     timeOfReg:Date.now(),
     dreamer:false,
     revived:false,
-    tutor:defaultTutor,
-    tutcomplete:false,
     godtier:false,
-    sleepTimer:0
-  };
+    sleepTimer:0,
+    spriteID:""
+  }
+  //pushes all playerdata to the proper databases.
+  client.playerMap.set(`w${sburbid}`,wakingSheet);
+  client.playerMap.set(`d${sburbid}`,dreamSheet);
+  client.sburbMap.set(sburbid,sburbSheet);
+}
+async function finishLandGen(client,message,sburbid,aspectChoice,gristSet,def){
+  //determines where all the gates on the land will be.
+  var gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 
-client.playerMap.set(charid,charSheet);
+  //sets the land's aspect based on registration choice (TO BE REMOVED)
+  var aspect;
+  if(aspectChoice === "random"){
+  aspect = client.aspects[Math.floor((Math.random() * 11))];
+  } else {
+  aspect = aspectChoice;
+  }
+  //makes all 4 lands and saves them to variables.
+  var s1 = await client.landcall.landGen(client,0,gategen[0],message,aspect,gristSet);
+  var s2 = await client.landcall.landGen(client,1,gategen[1],message,aspect,gristSet);
+  var s3 = await client.landcall.landGen(client,2,gategen[2],message,aspect,gristSet);
+  var s4 = await client.landcall.landGen(client,3,gategen[3],message,aspect,gristSet);
 
-let dateObj = new Date();
-console.log();
-if(!channelCheck){
-  async function generateChannels(){
+  //defines all the data for the player's land
+  var land = {
+      name: [client.resources.landFirst[Math.floor(Math.random()*client.resources.landFirst.length)],client.resources.landSecond[Math.floor(Math.random()*client.resources.landSecond.length)]],
+      aspect: aspect,
+      grist: gristSet,
+      enter:false,
+      spent: 0,
+      floors: 0,
+      gate: 0,
+      gates:gategen,
+      h:def,
+      s1:s1[0],
+      s1d:s1[1],
+      s2:s2[0],
+      s2d:s2[1],
+      s3:s3[0],
+      s3d:s3[1],
+      s4:s4[0],
+      s4d:s4[1]
+  }
+  console.log(`The Land of ${land.name[0]} and ${land.name[1]} -- LO${land.name[0].substring(0,1).toUpperCase()}A${land.name[1].substring(0,1).toUpperCase()}`);
+  //adds the charaacter sheet and land sheet to the database
 
-    var categoryList = [["827298639994421248","827298674547097657"],["827335332789878814","827335362124316712"]]
-
-    let category = [];
-    let catCheck=false;
-
-    for(let i=0;i<categoryList.length&&!catCheck;i++){
-
-      //message.channel.send(client.channels.cache.get(categoryList[i][0]).children.size);
-
-    }
-    let chan,pesterchan;
-    if(client.configMap.get(message.guild.id).options[1].selection==2){
-      channel = message.channel.id;
-      pesterchannel = message.channel.id;
-    } else {
-    chan = await message.guild.channels.create(`${message.author.username}-terminal`, {
+  //pushes the land to the database defined by the sburbid.
+  client.landMap.set(sburbid,land);
+}
+async function generateChannels(client,message,userid,sburbid,channels){
+  var chan,pesterchan;
+  if(client.configMap.get(message.guild.id).options[1].selection==2){
+    channels[0] = message.channel.id;
+    channels[1] = message.channel.id;
+  } else {
+  chan = await message.guild.channels.create(`${client.sburbMap.get(sburbid,"name")}-terminal`, {
+      type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
+      permissionOverwrites: [
+         {
+           id: message.author.id,
+           allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+     },{
+       id: client.user.id,
+       allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
+     },{
+       id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
+       deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'], //Deny permissions
+     }
+   ]//,
+   //parent:"827335332789878814"
+    })
+    if(client.configMap.get(message.guild.id).options[1].selection==1){
+    pesterchan = await message.guild.channels.create(`${client.sburbMap.get(sburbid,"name")}-pester`, {
         type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
         permissionOverwrites: [
            {
@@ -494,104 +529,28 @@ if(!channelCheck){
              allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
        },{
          id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
-         deny: ['VIEW_CHANNEL', 'SEND_MESSAGES'], //Deny permissions
+         deny: ['VIEW_CHANNEL'], //Deny permissions
        }
      ]//,
-     //parent:"827335332789878814"
-      })
+     //parent:"827335362124316712"
+   })
+ }
+      channels[0] = chan.id;
       if(client.configMap.get(message.guild.id).options[1].selection==1){
-      pesterchan = await message.guild.channels.create(`${message.author.username}-pester`, {
-          type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
-          permissionOverwrites: [
-             {
-               id: message.author.id,
-               allow: [`VIEW_CHANNEL`, 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY']
-         },{
-           id: message.guild.roles.everyone, //To make it be seen by a certain role, user an ID instead
-           deny: ['VIEW_CHANNEL'], //Deny permissions
-         }
-       ]//,
-       //parent:"827335362124316712"
-     })
-   }
-        channel = chan.id;
-        if(client.configMap.get(message.guild.id).options[1].selection==1){
-        pesterchannel = pesterchan.id;
-      } else {
-        pesterchannel = chan.id;
-      }
+      channels[1] = pesterchan.id;
+    } else {
+      channels[1] = chan.id;
     }
-        client.hookcall.hookGen(client,pesterchannel);
-
-        client.playerMap.set(charid,channel,"channel");
-        client.playerMap.set(charid,pesterchannel,"pesterchannel");
-
-        client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
   }
+  //makes a webhook for pesterchum stuff.
+      client.hookcall.hookGen(client,channels[1]);
+      client.sburbMap.set(sburbid,channels[0],"channel");
+      client.sburbMap.set(sburbid,channels[1],"pesterchannel");
 
-  generateChannels();
-
-}else{
-  client.playerMap.set(charid,channel,"channel");
-  client.playerMap.set(charid,pesterchannel,"pesterchannel");
-    client.channels.cache.get(channel).send(`${message.author} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`);
+return channels;
 }
-setTimeout(function(){client.tutorcall.progressCheck(client,message,1)},4000);
-
-//console.log(`Finished setting character sheet - ${Date.now() - startTime}`);
-
-
-//create pesterchum webhook
-
-//console.log(`Calling Hookcheck - ${Date.now() - startTime}`);
-
-//client.hookcall.hookCheck(client,message);
-
-//console.log(`hookCheck has resolved - ${Date.now() - startTime}`);
-
-
-let gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
-
-
-//var gristSet = [gristTypes.splice(Math.floor((Math.random() * 12)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 11)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 10)+1),1)[0],gristTypes.splice(Math.floor((Math.random() * 9)+1),1)[0]]
-let aspect;
-if(aspectChoice === "random"){
-aspect = aspects[Math.floor((Math.random() * 11))];
-} else {
-aspect = aspectChoice;
-}
-//console.log(`Generating all of the lands - ${Date.now() - startTime}`);
-var s1 = await landcall.landGen(client,0,gategen[0],message,aspect,gristSet);
-var s2 = await landcall.landGen(client,1,gategen[1],message,aspect,gristSet);
-var s3 = await landcall.landGen(client,2,gategen[2],message,aspect,gristSet);
-var s4 = await landcall.landGen(client,3,gategen[3],message,aspect,gristSet);
-
-//console.log(`Lands have been generated - ${Date.now() - startTime}`);
-
-var land = {
-    name: [client.resources.landFirst[Math.floor(Math.random()*client.resources.landFirst.length)],client.resources.landSecond[Math.floor(Math.random()*client.resources.landSecond.length)]],
-    aspect: aspect,
-    grist: gristSet,
-    enter:false,
-    spent: 0,
-    floors: 0,
-    gate: 0,
-    gates:gategen,
-    h:def,
-    s1:s1[0],
-    s1d:s1[1],
-    s2:s2[0],
-    s2d:s2[1],
-    s3:s3[0],
-    s3d:s3[1],
-    s4:s4[0],
-    s4d:s4[1]
-}
-console.log(`The Land of ${land.name[0]} and ${land.name[1]} -- LO${land.name[0].substring(0,1).toUpperCase()}A${land.name[1].substring(0,1).toUpperCase()}`);
-//adds the charaacter sheet and land sheet to the database
-
-client.landMap.set(charid,land);
-
-  console.log(`End time is ${Date.now() - startTime}`);
-
+async function tutorStart(client,message,userData,channels){
+  var dateObj = new Date();
+  intromessage = `${message.guild.members.cache.get(userData.ping)} stands in their bedroom. Today is ${ dateObj.toLocaleDateString('en-US')} (probably), and you're ready to play around with Pestercord! The tutorial should be sufficient to lead you through all the essentials of the game, but don't be afraid to ask for help!`;
+  client.tutorcall.progressCheck(client,message,1,["text",intromessage]);
 }

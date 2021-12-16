@@ -7,21 +7,18 @@ const typeList = ["EMPTY","DUNGEON","CONSTRUCT","RETURN NODE","VILLAGE","HOUSE",
 
 exports.run = (client, message, args) => {
 
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  let local = client.playerMap.get(charid,"local");
+
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
   let occList = room[4];
   let dex = room[5];
-  const tList = ["MELEE","RANGED","MAGIC","NA"];
 //sec[local[1]][local[2]][2][local[3]][5] DEX
 
   if(!args[0] || args[0] == "page"){
@@ -37,9 +34,7 @@ exports.run = (client, message, args) => {
     async function dexCheck(){
 
     const attachment = await client.imgcall.sdexCheck(client,message,page,args,3,dex,dex.length,room[2]);
-
-      message.channel.send(attachment);
-      client.tutorcall.progressCheck(client,message,3);
+      client.tutorcall.progressCheck(client,message,3,["img",attachment]);
     }
 
     dexCheck();
@@ -101,8 +96,7 @@ exports.run = (client, message, args) => {
   async function itemInspect(){
   const attachment = await client.imgcall.inspect(client,message,args,3,dex[value]);
 
-    message.channel.send("Inspecting item",attachment);
-    client.tutorcall.progressCheck(client,message,4);
+    client.tutorcall.progressCheck(client,message,4,["img",attachment]);
   }
   itemInspect()
 

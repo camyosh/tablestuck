@@ -800,7 +800,7 @@
     "cst"  : 1,
     "dmg" : 0,
     "aa": "Escape combat",
-    "add":["ABSCOND","INSTANT"],
+    "add":["ABSCOND"],
     "col": "0xff3779",
     "img" : "https://cdn.discordapp.com/attachments/701168146559533087/701638940624421135/ABSCOND.png",
     "BD"  : false,

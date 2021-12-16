@@ -3,17 +3,12 @@ const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
-
-
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
   //check for computer with sburb installed
 
-  var charid = message.guild.id.concat(message.author.id);
-  var local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+
+  var local = client.charcall.charData(client,charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
   let compCheck = client.traitcall.compTest(client,message,charid,room);
   if(compCheck[0]==false){
@@ -27,16 +22,15 @@ exports.run = (client, message, args) => {
 
   //check if connected to a client
 
-  if(client.playerMap.get(charid,"client") == "NA") {
+  if(client.charcall.allData(client,userid,charid,"client") == "NA"||client.charcall.allData(client,userid,charid,"client") == "NONE") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
 
 //retrieve client charid
 
-  let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
+  let targsburb = client.charcall.allData(client,userid,charid,"client");
 
-  message.channel.send(funcall.gristCacheEmbed(client, clientId));
-  client.tutorcall.progressCheck(client,message,20);
+  client.tutorcall.progressCheck(client,message,20,["embed",client.funcall.gristCacheEmbed(client,targsburb)]);
   return;
 }

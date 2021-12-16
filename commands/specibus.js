@@ -4,14 +4,15 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  let spec = client.playerMap.get(charid,"spec");
-  let kinds = client.playerMap.get(charid,"kinds");
-  let scards = client.playerMap.get(charid,"scards");
-  let name = client.playerMap.get(charid,"name");
-  let equip = client.playerMap.get(charid,"equip");
-  const tList = ["MELEE","RANGED","MAGIC","NA"];
+  let spec = client.charcall.charData(client,charid,"spec");
+  let kinds = client.charcall.charData(client,charid,"kinds");
+  let scards = client.charcall.charData(client,charid,"scards");
+  let name = client.charcall.charData(client,charid,"name");
+  let equip = client.charcall.charData(client,charid,"equip");
+
 
   let msg = ``;
 
@@ -34,15 +35,14 @@ exports.run = (client, message, args) => {
     eq = `**[${equip+1}] EMPTY**\n\n`
   }
 
-  specibusPrint = new client.Discord.MessageEmbed()
+  specibusPrint = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S STRIFE SPECIBUS**`)
   .setColor("#00e371")
   .addField(`**STRIFE CARDS**`,`**x${scards}**`,true)
   .addField(`**KIND ABSTRATUS**`,`**${kinds}**`,true)
   .addField(`**CURRENTLY EQUIPPED**`,eq)
   .addField("**SPECIBUS**",msg);
-  message.channel.send(specibusPrint);
-  client.tutorcall.progressCheck(client,message,22);
+  client.tutorcall.progressCheck(client,message,22,["embed",specibusPrint]);
 
 
   return;
@@ -52,12 +52,12 @@ exports.run = (client, message, args) => {
 
 if(args[0]=="eject") {
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
+  if(client.charcall.charData(client,charid,"strife")){
     message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
     return;
   }
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
@@ -83,7 +83,7 @@ if(args[0]=="eject") {
     }
     //decrease card count, place strife card in house
     scards-=1;
-    client.playerMap.set(charid,scards,"scards");
+    client.charcall.setAnyData(client,userid,charid,scards,"scards");
     dropItem=["STRIFE CARD","////////",1,1,[]];
   } else {
     dropItem=spec.splice(selectDex,1)[0];
@@ -91,8 +91,8 @@ if(args[0]=="eject") {
   room[5].push(dropItem);
   sec[local[1]][local[2]][2][local[3]] = room;
   client.landMap.set(land,sec,local[0]);
-  client.playerMap.set(charid,spec,"spec");
-  client.playerMap.set(charid,0,"equip");
+  client.charcall.setAnyData(client,userid,charid,spec,"spec");
+  client.charcall.setAnyData(client,userid,charid,0,"equip");
   message.channel.send(`Ejected the ${dropItem[0]}!`);
   client.funcall.tick(client,message);
 
@@ -112,7 +112,7 @@ if(value >= spec.length || value < 0) {
 async function itemInspect(){
 const attachment = await client.imgcall.inspect(client,message,args,1,spec[value]);
 
-  message.channel.send("Inspecting item",attachment);
+  message.channel.send({files: [attachment]});
 }
 itemInspect()
 

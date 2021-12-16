@@ -1,9 +1,5 @@
 exports.run = (client, message, args) => {
 
-    if(client.strifecall.strifeTest(client, message, message.author) == true){
-      message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-      return;
-    }
 
   //defining the costs to alchemize the item based on the tier
 
@@ -11,16 +7,22 @@ exports.run = (client, message, args) => {
 
   //defining important variables
 
-    var charid = message.guild.id.concat(message.author.id);
-    var local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+
+
+    var local = client.charcall.charData(client,charid,"local");
     let land = local[4];
     let sec = client.landMap.get(land,local[0]);
     let area = sec[local[1]][local[2]];
     let room = area[2][local[3]];
-    var gristCheck = client.playerMap.get(charid,"grist");
-    let sdex = client.playerMap.get(charid,"sdex");
-    let registry = client.playerMap.get(charid,"registry");
+    let sdex = client.charcall.charData(client,charid,"sdex");
+    let registry = client.charcall.allData(client,userid,charid,"registry");
 
+    if(registry=="NONE"){
+      message.channel.send("You don't have a registry to check!");
+      return;
+    }
   //define variables for the FOR loop
 
     let i;
@@ -59,7 +61,7 @@ exports.run = (client, message, args) => {
 
        const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,[],"alchemy athenaeum");
 
-         message.channel.send(attachment);
+         message.channel.send({files: [attachment]});
        }
 
        dexCheck();
@@ -75,7 +77,7 @@ exports.run = (client, message, args) => {
      async function itemInspect(){
      const attachment = await client.imgcall.inspect(client,message,args,4,registry[value]);
 
-       message.channel.send("Inspecting item",attachment);
+       message.channel.send({content: "Inspecting item", files: [attachment]});
      }
      itemInspect()
 
@@ -95,7 +97,7 @@ exports.run = (client, message, args) => {
      let deleted = registry.splice(value,1);
      message.channel.send(`Deleted the ${deleted[0][0]} from the athenaeum!`);
 
-     client.playerMap.set(charid,registry,"registry");
+     client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
    } else if(args[0]=="push"){
 
@@ -116,7 +118,7 @@ exports.run = (client, message, args) => {
      registry.unshift(temp[0]);
 
      message.channel.send(`moved the ${temp[0][0]} to the first position in the athenaeum!`);
-     client.playerMap.set(charid,registry,"registry");
+     client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
    } else if(args[0]=="tier"){
      if(!quick){
@@ -152,11 +154,11 @@ exports.run = (client, message, args) => {
        return;
      }
      registry[value][2]=tier;
-     client.playerMap.set(charid,registry,"registry");
+     client.charcall.setAnyData(client,userid,charid,registry,"registry");
      message.channel.send(`Scaled the ${registry[value][0]} to TIER ${tier}!`);
      return;
 
-   } else if(args[0]=="name"){
+   } else if(args[0]=="rename"){
      if(!args[1]){
        message.channel.send(`Select an item in the ATHENAEUM to change the NAME of that item. \n${client.auth.prefix}athenaeum name [item] [desired name]`);
        return;
@@ -194,7 +196,7 @@ exports.run = (client, message, args) => {
 
      registry[value][0]=name;
 
-     client.playerMap.set(charid,registry,"registry");
+     client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
      message.channel.send(`Changed the name of the ${oldName} to ${name}`);
      return;

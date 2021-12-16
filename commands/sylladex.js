@@ -4,13 +4,13 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  let dex = client.playerMap.get(charid,"sdex");
-  let modus = client.playerMap.get(charid,"modus");
-  let cards = client.playerMap.get(charid,"cards");
-  let name = client.playerMap.get(charid,"name");
-  const tList = ["MELEE","RANGED","MAGIC","NA"];
+  let dex = client.charcall.charData(client,charid,"sdex");
+  let modus = client.charcall.charData(client,charid,"modus");
+  let cards = client.charcall.charData(client,charid,"cards");
+  let name = client.charcall.charData(client,charid,"name");
 
   let msg = ``;
   if(!args[0] || args[0] == "page"){
@@ -27,8 +27,7 @@ exports.run = (client, message, args) => {
 
     const attachment = await client.imgcall.sdexCheck(client,message,page,args,0,dex,cards,"sylladex");
 
-      message.channel.send(attachment);
-      client.tutorcall.progressCheck(client,message,7);
+      client.tutorcall.progressCheck(client,message,7,["img",attachment]);
     }
 
     dexCheck();
@@ -70,7 +69,7 @@ if(value >= dex.length || value < 0) {
 async function itemInspect(){
 const attachment = await client.imgcall.inspect(client,message,args,0,dex[value]);
 
-  message.channel.send("Inspecting item",attachment);
+  message.channel.send({files: [attachment]});
 }
 itemInspect()
 }

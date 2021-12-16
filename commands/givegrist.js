@@ -34,14 +34,18 @@ exports.run = (client, message, args) => {
     return;
   }
 
-
-  var charid = message.guild.id.concat(message.mentions.members.first().id);
-  let grist = client.playerMap.get(charid,"grist");
+  var userid = message.guild.id.concat(message.mentions.members.first().id);
+  var charid = client.userMap.get(userid,"possess");
+ if (client.charcall.allData(client,userid,charid,"grist")=="NONE"){
+   message.channel.send("This character can't carry grist!");
+   return;
+ }
+  let grist = client.charcall.allData(client,userid,charid,"grist");
 
 
   grist[select]+=value;
 
-    client.playerMap.set(charid,grist,"grist");
+    client.charcall.setAnyData(client,userid,charid,grist,"grist");
 
     message.channel.send(`Gave player ${value} ${gristTypes[select]} grist!`);
 }

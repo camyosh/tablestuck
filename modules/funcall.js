@@ -33,84 +33,67 @@ try{
 }
 }
 
-
+//TODO: make experience and boondollars gained actually track what they say
 exports.actionCheck = function(client, message, score){
 try{
-  let charid = message.guild.id.concat(message.author.id);
-  let curCount = client.playerMap.get(charid,"act");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  let curCount = client.charcall.allData(client,userid,charid,"act");
+  let name = client.charcall.allData(client,userid,charid,"name");
+  let leaderAdd = message.guild.id+"mediumlead";
+  let key = "";
 //curCount++;
 switch(score){
   case "alchemized":
-    increase = client.playerMap.get(charid,"itemsAlchemized");
-    increase++;
-    client.playerMap.set(charid,increase,"itemsAlchemized");
-    if(increase>client.playerMap.get("leaderboard","itemsAlchemized")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"itemsAlchemized");
-    }
+    key = "itemsAlchemized"
     break;
   case "tile":
-    increase = client.playerMap.get(charid,"tilesDiscovered");
-    increase++;
-    client.playerMap.set(charid,increase,"tilesDiscovered");
-
-    if(increase>client.playerMap.get("leaderboard","tilesDiscovered")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"tilesDiscovered");
-    }
+    key = "tilesDiscovered"
     break;
   case "underling":
-    increase = client.playerMap.get(charid,"underlingsDefeated");
-    increase++;
-    client.playerMap.set(charid,increase,"underlingsDefeated");
-    if(increase>client.playerMap.get("leaderboard","underlingsDefeated")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"underlingsDefeated");
-    }
+    key = "underlingsDefeated"
     break;
   case "player":
-    increase = client.playerMap.get(charid,"playersDefeated");
-    increase++;
-    client.playerMap.set(charid,increase,"playersDefeated");
-    if(increase>client.playerMap.get("leaderboard","playersDefeated")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"playersDefeated");
-    }
+    key = "playersDefeated"
     break;
   case "boss":
-    increase = client.playerMap.get(charid,"bossesDefeated");
-    increase++;
-    client.playerMap.set(charid,increase,"bossesDefeated");
-    if(increase>client.playerMap.get("leaderboard","bossesDefeated")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"bossesDefeated");
-    }
+    key = "bossesDefeated"
     break;
   case "item":
-    increase = client.playerMap.get(charid,"itemsCaptchalogued");
-    increase++;
-    client.playerMap.set(charid,increase,"itemsCaptchalogued");
-    if(increase>client.playerMap.get("leaderboard","itemsCaptchalogued")[1]){
-      client.playerMap.set("leaderboard",[message.author.username,increase],"itemsCaptchalogued");
-    }
+    key = "itemsCaptchalogued"
     break;
 }
-
-let b = client.playerMap.get(charid,"b");
-let xp = client.playerMap.get(charid,"xp");
-if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
-  client.playerMap.set("leaderboard",[message.author.username,b],"boondollarsGained");
+//if the target doesn't have a score for the action being incremented, return.
+if(client.charcall.allData(client,userid,charid,key)=="NONE"){
+  return;
 }
-if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
-  client.playerMap.set("leaderboard",[message.author.username,xp],"experienceGained");
+increase = client.charcall.allData(client,userid,charid,key);
+increase++;
+client.charcall.setAnyData(client,userid,charid,increase,key);
+if(increase>client.landMap.get(leaderAdd,key)[1]){
+  client.landMap.set(leaderAdd,[name,increase],key);
 }
 
-if(curCount>=client.limit&&client.limit!=0){
+let b = client.charcall.allData(client,userid,charid,"b");
+let xp = client.charcall.allData(client,userid,charid,"xp");
+if(b>client.landMap.get(leaderAdd,"boondollarsGained")[1]){
+  client.landMap.set(leaderAdd,[name,b],"boondollarsGained");
+}
+if(xp>client.landMap.get(leaderAdd,"experienceGained")[1]){
+  client.landMap.set(leaderAdd,[name,xp],"experienceGained");
+}
 
-  let tiles = client.playerMap.get(charid,"tilesDiscovered");
-  let alchemized = client.playerMap.get(charid,"itemsAlchemized");
-  let underlings =  client.playerMap.get(charid,"underlingsDefeated");
-  let players =  client.playerMap.get(charid,"playersDefeated");
-  let bosses = client.playerMap.get(charid,"bossesDefeated");
-  let items = client.playerMap.get(charid,"itemsCaptchalogued");
+if(curCount!="NONE"&&curCount>=client.limit&&client.limit!=0){
+
+  let tiles = client.charcall.allData(client,userid,charid,"tilesDiscovered");
+  let alchemized = client.charcall.allData(client,userid,charid,"itemsAlchemized");
+  let underlings =  client.charcall.allData(client,userid,charid,"underlingsDefeated");
+  let players =  client.charcall.allData(client,userid,charid,"playersDefeated");
+  let bosses = client.charcall.allData(client,userid,charid,"bossesDefeated");
+  let items = client.charcall.allData(client,userid,charid,"itemsCaptchalogued");
 
   message.channel.send("That was your last action in the tournament, here's your final stats:");
-  let stats = new client.Discord.MessageEmbed()
+  let stats = new client.MessageEmbed()
   .setTitle(`**HERE'S HOW YOU DID**`)
   .addField(`**EXPERIENCE GAINED**`,`${xp}`,true)
   .addField(`**BOONDOLLARS GAINED**`,`${b}`,true)
@@ -121,7 +104,7 @@ if(curCount>=client.limit&&client.limit!=0){
   .addField(`**PLAYERS DEFEATED**`,`${players}`,true)
   .addField(`**BOSSES DEFEATED**`,`${bosses}`,true)
 
-  message.channel.send(stats);
+  message.channel.send({embed:[stats]});
   //enter stat stuff here
 }
   //client.playerMap.set(charid,curCount,"act")
@@ -131,18 +114,23 @@ if(curCount>=client.limit&&client.limit!=0){
 
 exports.tick = function(client, message){
 
-  let charid = message.guild.id.concat(message.author.id);
-  let curCount = client.playerMap.get(charid,"act");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  let curCount = client.charcall.allData(client,userid,charid,"act");
+  let leaderAdd = message.guild.id+"mediumlead";
+  //anything without an action counter gets bounced here
+  if(curCount=="NONE")
+    return;
   curCount++;
   client.funcall.sleepHeal(client,charid);
-
-  let b = client.playerMap.get(charid,"b");
-  let xp = client.playerMap.get(charid,"xp");
-  if(b>client.playerMap.get("leaderboard","boondollarsGained")[1]){
-    client.playerMap.set("leaderboard",[message.author.username,b],"boondollarsGained");
+  let name = client.charcall.allData(client,userid,charid,"name");
+  let b = client.charcall.allData(client,userid,charid,"b");
+  let xp = client.charcall.allData(client,userid,charid,"xp");
+  if(b>client.landMap.get(leaderAdd,"boondollarsGained")[1]){
+    client.landMap.set(leaderAdd,[name,b],"boondollarsGained");
   }
-  if(xp>client.playerMap.get("leaderboard","experienceGained")[1]){
-    client.playerMap.set("leaderboard",[message.author.username,xp],"experienceGained");
+  if(xp>client.landMap.get(leaderAdd,"experienceGained")[1]){
+    client.landMap.set(leaderAdd,[name,xp],"experienceGained");
   }
 
   if(curCount==client.limit&&client.limit!=0){
@@ -155,7 +143,7 @@ exports.tick = function(client, message){
     let items = client.playerMap.get(charid,"itemsCaptchalogued");
 
     message.channel.send("That was your last action in the tournament, here's your final stats:");
-    let stats = new client.Discord.MessageEmbed()
+    let stats = new client.MessageEmbed()
     .setTitle(`**HERE'S HOW YOU DID**`)
     .addField(`**EXPERIENCE GAINED**`,`${xp}`,true)
     .addField(`**BOONDOLLARS GAINED**`,`${b}`,true)
@@ -166,7 +154,7 @@ exports.tick = function(client, message){
     .addField(`**PLAYERS DEFEATED**`,`${players}`,true)
     .addField(`**BOSSES DEFEATED**`,`${bosses}`,true)
 
-    message.channel.send(stats);
+    message.channel.send({embed:[stats]});
     //enter stat stuff here
   }
 
@@ -337,24 +325,7 @@ exports.regTest = function(client, message, target) {
     return false;
   }
 }
-//test if potential client is registered
-exports.clientTest = function(client, message, target) {
 
-  try {
-    if(client.playerMap.get(message.guild.id.concat(target),"alive")==false){
-
-      return false;
-    }
-    else{
-
-      return true;
-    }
-  }
-  catch(err){
-
-    return false;
-  }
-}
 /*
 
 exports.accessSpreasdsheet = async function(client, message, charSheet) {
@@ -439,7 +410,6 @@ exports.alchemize = function(client, item1, item2, type){
 
     }
 
-    console.log(coderes);
 
   }
   if(code1[0]==code2[0]){
@@ -692,29 +662,29 @@ exports.xpGive = function(client, message, xp, target){
 
   client.message.send(`${name} got ${xp} XP and now has ${newXp} XP!`);
 
-  if(newXp >= client.xpReq[curRung+1]){
+  if(newXp >= client.xpReq(curRung+1)){
 
     let stats = client.playerMap.get(target,"stats");
     let curVit = client.playerMap.get(target,"vit");
-    let curCache = client.cache[curRung];
+    let curCache = client.cache(curRung);
 
     let gvGain = 0;
     let i;
 
-    for(i = curRung; newXp >= client.xpReq[i+1]; i++){
-      gvGain += (client.gvGet[i+1] + (stats[1]*(client.gvGet[i+1] / 5)));
+    for(i = curRung; newXp >= client.xpReq(i+1); i++){
+      gvGain += (client.gvGet(i+1) + (stats[1]*(client.gvGet(i+1) / 5)));
     }
     let newVit = curVit+gvGain;
 
     client.playerMap.set(target, newXp,"xp");
 
-    let congrats = new client.Discord.MessageEmbed()
+    let congrats = new client.MessageEmbed()
     .setTitle(`${name} ASCENDED THEIR ECHELADDER!`)
     .addField("RUNG",`${curRung} + ${i - curRung}`,true)
     .addField("GEL VISCOSITY",`${client.emojis.cache.get('721452682115809454')} ${curGel} + ${gvGain}`)
-    .addField("GRIST CACHE", `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache[i] - curCache}`)
+    .addField("GRIST CACHE", `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache(i) - curCache}`)
     .setThumbnail(target.avatarURL());
-    message.channel.send(congrats);
+    message.channel.send({embeds:[congrats]});
   }
 }
 
@@ -737,18 +707,18 @@ exports.combineArgs = function(args,start) {
   return output;
 }
 
-exports.gristCacheEmbed = function(client, charid) {
+exports.gristCacheEmbed = function(client,sburbid) {
   //retrieve character's grist details
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
-  let rung = client.playerMap.get(charid,"rung");
+  let rung = client.sburbMap.get(sburbid,"rung");
   let max;
-  if(client.playerMap.get(charid,`godtier`)){
+  if(client.sburbMap.get(sburbid,`godtier`)){
     max = `♾️`
   } else {
-    max = client.cache[rung];
+    max = client.cache(rung);
   }
-  let grist = client.playerMap.get(charid,"grist");
-  let name = client.playerMap.get(charid,"name");
+  let grist = client.sburbMap.get(sburbid,"grist");
+  let name = client.sburbMap.get(sburbid,"name");
   let msg =``;
   let i;
 
@@ -758,7 +728,7 @@ exports.gristCacheEmbed = function(client, charid) {
   for(i=0;i<gristTypes.length;i++){
     msg += `${client.emojis.cache.get(client.grist[gristTypes[i]].emoji)} **${gristTypes[i].toUpperCase()} - ${grist[i]}**\n\n`
   }
-  cachePrint = new client.Discord.MessageEmbed()
+  cachePrint = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S GRIST**`)
   .addField(`**GRIST CAP**`,`**${max}**`)
   .addField("**GRIST CACHE**",msg);
@@ -768,12 +738,39 @@ exports.gristCacheEmbed = function(client, charid) {
 exports.chanMsg = function(client, target, msg, embed){
   if(!msg)
     return;
-try{
-  if(client.playerMap.has(target,"channel")){
+    if(!client.charcall.controlCheck(client,target)){
+      return;
+    } else {
+      controlList = client.charcall.charData(client,target,"control");
+      for(let i=0;i<controlList.length;i++){
+        if(embed!=undefined){
+          if(msg=="NONE"){
+            client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send({embeds:[embed]});
+          } else {
+            client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send(msg,{embeds:[embed]});
+          }
+        }else{
+        client.channels.cache.get(client.charcall.allData(client,controlList[i],target,"channel")).send(msg);
+      }
+      }
+    }
+  }
+/*try{
+
+  let charid;
+  if(client.sburbMap.get(target,"dreamer")){
+    charid = client.sburbMap.get(target,"dreamingID");
+  }else{
+    charid = client.sburbMap.get(target,"wakingID");
+  }
+
+
+
+  if(client.sburbMap.has(target,"channel")){
     if(embed!=undefined){
-    client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg,embed);
+    client.channels.cache.get(client.sburbMap.get(target,"channel")).send(msg,embed);
     }else{
-    client.channels.cache.get(client.playerMap.get(target,"channel")).send(msg);
+    client.channels.cache.get(client.sburbMap.get(target,"channel")).send(msg);
   }
   }
 }catch(err){
@@ -781,7 +778,14 @@ try{
   console.log(err);
 }
 
-  let possess = client.playerMap.get(target,"possess");
+  let charid;
+  if(client.sburbMap.get(target,"dreamer")){
+    charid = client.sburbMap.get(target,"dreamingID");
+  }else{
+    charid = client.sburbMap.get(target,"wakingID");
+  }
+
+  let possess = client.playerMap.get(charid,"control");
 
   for(let i=0;i<possess.length;i++){
     if(embed!=undefined){
@@ -791,35 +795,43 @@ try{
   }
   }
 
-}
+} */
 
 exports.sleepHeal = function(client,charid){
-  if(client.playerMap.has(charid,"dreamvit")){
+  userid = client.charcall.charData(client,charid,"control");
+  let target;
+  if(client.charcall.allData(client,userid,charid,"dreamer")){
+    target = client.charcall.allData(client,userid,charid,"wakingID");
+  } else {
+    target = client.charcall.allData(client,userid,charid,"dreamingID");
+  }
+ if(target=="NONE"){
+   return;
+ }
+    let vit = client.charcall.charData(client,target,"vit");
+    let gel = client.charcall.allData(client,userid,target,"gel");
 
-    let vit = client.playerMap.get(charid,"dreamvit");
-    let gel = client.playerMap.get(charid,"gel");
     if(vit<gel){
       let heal = 5;
-      if(client.traitcall.traitCheck(client,charid,"CUSHIONED")[1]){
+      if(client.traitcall.traitCheck(client,target,"CUSHIONED")[1]){
         heal*=4;
-      }else if(client.traitcall.traitCheck(client,charid,"CUSHIONED")[0]){
+      }else if(client.traitcall.traitCheck(client,target,"CUSHIONED")[0]){
         heal*=2;
       }
       if(vit+heal>gel){
-        client.playerMap.set(charid,gel,"dreamvit");
+        client.charcall.setAnyData(client,userid,target,gel,"vit");
       }else{
-        client.playerMap.set(charid,vit+heal,"dreamvit");
+        client.charcall.setAnyData(client,userid,target,vit+heal,"vit");
       }
     }
   }
-}
+
 
 exports.move = function(client,message,charid,local,target,mapCheck,msg){
 
   let targSec = client.landMap.get(target[4],target[0]);
-
-  let occset = [true,charid];
-
+  var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
+  var userid = message.guild.id.concat(message.author.id);
   if(local[0]==target[0]&&local[4]==target[4]){
 
     targSec[local[1]][local[2]][2][local[3]][4].splice(targSec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
@@ -859,14 +871,14 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
   }
   }
-
-  if(targSec[target[1]][target[2]][2][target[3]][3]==false){
+//for now, NPCs won't reveal new tiles.
+  if(!client.charcall.npcCheck(client,charid)&&targSec[target[1]][target[2]][2][target[3]][3]==false){
     client.funcall.actionCheck(client,message,"tile")
     targSec[target[1]][target[2]][2][target[3]][3]=true;
   }
 
   client.funcall.tick(client,message);
-  client.playerMap.set(charid,target,"local");
+  client.charcall.setAnyData(client,userid,charid,target,"local");
   client.landMap.set(target[4],targSec,target[0]);
 
   let occNew = targSec[target[1]][target[2]][2][target[3]][4];
@@ -875,9 +887,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
 
   if(occNew.length > 1){
     let occCheck = [false,false];
-    console.log("Occnew");
     for(let i=0;i<occNew.length;i++){
-      console.log(i);
       if(occNew[i][0]==false){
         occCheck[0]=true;
       } else if(!occNew[i][1]==charid){
@@ -893,7 +903,8 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
   }
 
   async function moveEmbed(){
-
+    var userid = message.guild.id.concat(message.author.id);
+    var charid = client.userMap.get(userid,"possess");
     dex = targSec[target[1]][target[2]][2][target[3]][5];
     var attachment = await client.imgcall.sdexCheck(client,message,0,false,3,dex,dex.length,`${targSec[target[1]][target[2]][2][target[3]][2]} (>inspect)`);
     let occList = targSec[target[1]][target[2]][2][target[3]][4];
@@ -901,48 +912,46 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     let i;
     let list = ``;
     for(let i=0;i<10&&i<occList.length;i++){
-      list+=`**[${i+1}] ${client.playerMap.get(occList[i][1],"name").toUpperCase()}** \n *${client.playerMap.get(occList[i][1],"type")}*\n\n`
+      list+=`**[${i+1}] ${client.charcall.charData(client,occList[i][1],"name").toUpperCase()}** \n *${client.charcall.charData(client,occList[i][1],"type")}*\n\n`
     }
 
     var listEmbed;
 
     if(mapCheck){
       var miniMap = await client.landcall.drawMap(client,message,true);
-      listEmbed = new client.Discord.MessageEmbed()
+      listEmbed = new client.MessageEmbed()
       .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
       .addField(`**ALERTS**`,msg)
       .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
       .addField(`**PAGE**`,`**1**`,true)
       .addField(`**CURRENT OCCUPANTS** (>list)`,list)
-      .attachFiles(attachment)
       .setImage(`attachment://actionlist.png`)
-      .attachFiles(miniMap)
       .setThumbnail(`attachment://landmap.png`)
-      //message.channel.send({files:[miniMap],embed: listEmbed});
+      client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed], files:[attachment,miniMap]})
+
     } else {
-      listEmbed = new client.Discord.MessageEmbed()
+      listEmbed = new client.MessageEmbed()
       .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
       .addField(`**ALERTS**`,msg)
       .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
       .addField(`**PAGE**`,`**1**`,true)
       .addField(`**CURRENT OCCUPANTS** (>list)`,list)
-      .attachFiles(attachment)
       .setImage(`attachment://actionlist.png`)
+      client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed], files:[attachment]})
     }
 
-    if(client.playerMap.has(charid,"channel")){
-      client.channels.cache.get(client.playerMap.get(charid,"channel")).send(listEmbed)
-    }
+
 
   }
 
-  let name = client.playerMap.get(charid,"name");
+  let name = client.charcall.charData(client,charid,"name");
 
   for(let i=0;i<occNew.length;i++){
     try{
-      if(occNew[i][1]!=charid && client.playerMap.has(occNew[i][1],"channel") && dreamCheck(client,occNew[i][1],target)){
-        client.channels.cache.get(client.playerMap.get(occNew[i][1],"channel")).send(`**${name.toUpperCase()}** has entered the room!`);
-      }
+      if(occNew[i][1]!=charid){
+      client.funcall.chanMsg(client,occNew[i][1],`**${name.toUpperCase()}** has entered the room!`)
+    }
+
     }catch(err){
       console.log(err);
     }
@@ -955,7 +964,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
 }
 function dreamCheck(client,target,local){
 
-  let targLocal = client.playerMap.get(target,"local");
+  let targLocal = client.charcall.charData(client,target,"local");
 
   if(targLocal[0]===local[0]&&targLocal[1]===local[1]&&targLocal[2]===local[2]&&targLocal[3]===local[3]&&targLocal[4]===local[4]){
     return true;
@@ -964,7 +973,5 @@ function dreamCheck(client,target,local){
   }
 }
 exports.dreamCheck =  function(client,target,local){
-
   return dreamCheck(client,target,local);
-
 }

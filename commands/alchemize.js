@@ -1,15 +1,9 @@
 const funcall = require("../modules/funcall.js");
-
 const strifecall = require("../modules/strifecall.js");
 
 //command to alchemize an item from a totem in the alchemiter
 
 exports.run = (client, message, args) => {
-
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
 
 //defining the costs to alchemize the item based on the tier
 
@@ -17,19 +11,24 @@ exports.run = (client, message, args) => {
 
 //defining important variables
 
-  var charid = message.guild.id.concat(message.author.id);
-  var local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+
+
+  var local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  var gristCheck = client.playerMap.get(charid,"grist");
-  let sdex = client.playerMap.get(charid,"sdex");
-  let registry = client.playerMap.get(charid,"registry");
-
+  var gristCheck = client.charcall.allData(client,userid,charid,"grist");
+  let sdex = client.charcall.charData(client,charid,"sdex");
+  let registry = client.charcall.allData(client,userid,charid,"registry");
+//this will catch underlings and prevent them from alchemizing.
+if(gristCheck=="NONE"){
+  message.channel.send("Sorry, you dont seem to have any grist to alchemize with!");
+  return;
+}
 //define variables for the FOR loop
-
-  let i;
   let alchemiter = false;
   let item;
   let cost1;
@@ -37,16 +36,13 @@ exports.run = (client, message, args) => {
   let grist;
 
 //Check every item in the room to find alchemiter, if there is check for any cruxite artifact
-
-
-  for(i=0;i<room[5].length;i++){
+  for(let i=0;i<room[5].length;i++){
     if(room[5][i][1].charAt(0) == "/"&&(room[5][i][0]=="ALCHEMITER"||room[5][i][0]=="INSTANT ALCHEMITER")){
       alchemiter=true;
     }
   }
 
  if(alchemiter==true||client.traitcall.traitCheck(client,charid,"COMPUTER")[1]){
-
    if(!args[0] || args[0] == "page"){
      let page = 0;
      if (args[1]&&args[0] == "page") {
@@ -58,11 +54,9 @@ exports.run = (client, message, args) => {
      }
 
      async function dexCheck(){
-
      const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,[],"alchemy athenaeum");
 
-       message.channel.send(attachment);
-       client.tutorcall.progressCheck(client,message,26);
+       client.tutorcall.progressCheck(client,message,26,["img",attachment]);
      }
 
      dexCheck();
@@ -148,25 +142,23 @@ exports.run = (client, message, args) => {
   msg = `Expended ${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1} ${client.emojis.cache.get(client.grist[gristType].emoji)} ${cost2} to ALCHEMIZE **${newItem[0].toUpperCase()} x${quantity}!**`
 
 sdex.unshift(newItem);
-if(sdex.length > client.playerMap.get(charid,"cards")){
+if(sdex.length > client.charcall.charData(client,charid,"cards")){
   let dropItem = sdex.pop();
   sec[local[1]][local[2]][2][local[3]][5].push(dropItem);
   msg += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
 }
 
   client.landMap.set(land,sec,local[0]);
-  client.playerMap.set(charid,sdex,"sdex");
-  client.playerMap.set(charid,gristCheck,"grist");
+  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+  client.charcall.setAnyData(client,userid,charid,gristCheck,"grist");
 
   client.funcall.tick(client,message);
 
-  message.channel.send(msg)
   client.funcall.actionCheck(client,message,"alchemized");
-  client.tutorcall.progressCheck(client,message,31);
+  client.tutorcall.progressCheck(client,message,31,["text",msg]);
 
   }else{
-    message.channel.send("To ALCHEMIZE, you must be in a room with an ALCHEMITER");
-    client.tutorcall.progressCheck(client,message,26);
+    client.tutorcall.progressCheck(client,message,26,["text","To ALCHEMIZE, you must be in a room with an ALCHEMITER"]);
     return;
   }
 

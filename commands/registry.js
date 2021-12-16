@@ -2,13 +2,10 @@ const phernalia = ["cruxtruder","totem lathe","alchemiter","pre-punched card","p
 
 exports.run = async function(client, message, args) {
 
-  var charid = message.guild.id.concat(message.author.id);
-
-//retrieve player location and check for computer
-
-  var local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  var local = client.charcall.charData(client,charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
-
   let defaultRegistry = [client.registry["cruxtruder"].item,client.registry["totem lathe"].item,client.registry["alchemiter"].item,client.registry["pre-punched card"].item,client.registry["punch designix"].item,client.registry["instant alchemiter"].item]
 
   let compCheck = client.traitcall.compTest(client,message,charid,room);
@@ -21,22 +18,19 @@ exports.run = async function(client, message, args) {
     message.channel.send("It seems that you have a computer, but you don't have SBURB installed on it!");
     return;
   }
-
-  if(client.playerMap.get(charid,"client") == "NA") {
+clientsburb = client.charcall.allData(client,userid,charid,"client");
+clientid = client.charcall.charGet(client,clientsburb);
+  if(clientid == "NA"||clientid == "NONE") {
     message.channel.send("You aren't connected to a client!");
     return;
   }
-
-  let clientId = message.guild.id.concat(client.playerMap.get(charid,"client"));
-
 //retrieve client information
-
-  let clientLocal = client.playerMap.get(clientId,"local");
-  let clientSec = client.landMap.get(clientId,"h");
-  let gristType = client.landMap.get(clientId,"grist")[0];
-  let deployCheck = client.playerMap.get(clientId,"deploy");
-  let gristCheck = client.playerMap.get(clientId,"grist");
-  let clientRegistry = client.playerMap.get(clientId,"registry");
+  let clientLocal = client.charcall.charData(client,clientid,"local");
+  let clientSec = client.landMap.get(clientsburb,"h");
+  let gristType = client.landMap.get(clientsburb,"grist")[0];
+  let deployCheck = client.charcall.allData(client,userid,clientid,"deploy");
+  let gristCheck = client.charcall.allData(client,userid,clientid,"grist");
+  let clientRegistry = client.charcall.allData(client,userid,clientid,"registry");
 
   let registry = defaultRegistry.concat(clientRegistry);
 
@@ -76,7 +70,7 @@ exports.run = async function(client, message, args) {
 
     const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,defCost,"phernalia registry");
 
-      message.channel.send(attachment);
+      message.channel.send({files: [attachment]});
     }
 
     dexCheck();

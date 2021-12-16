@@ -1,8 +1,4 @@
 exports.run = (client, message, args) => {
-  if (client.strifecall.strifeTest(client, message, message.author) == true) {
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
 
   if (!args[0]) {
     message.channel.send("Choose an item from the room to view its contents!");
@@ -15,8 +11,10 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  let charid = message.guild.id.concat(message.author.id);
-  let local = client.playerMap.get(charid, "local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land, local[0]);
   let area = sec[local[1]][local[2]];
@@ -42,7 +40,7 @@ exports.run = (client, message, args) => {
       message.channel.send("That is not a valid argument!");
       return;
     }
-    
+
     if(subValue >= dex.length || subValue < 0) {
       message.channel.send("That is not a valid argument!")
       return;
@@ -50,8 +48,8 @@ exports.run = (client, message, args) => {
 
     async function itemInspect(){
       const attachment = await client.imgcall.inspect(client,message,args,0,dex[value][4][subValue]);
-    
-      message.channel.send("Inspecting item",attachment);
+
+      message.channel.send({content: "Inspecting item", files: [attachment]});
     }
     itemInspect()
     return;
@@ -60,8 +58,7 @@ exports.run = (client, message, args) => {
   // View a page of items
   async function dexCheck() {
     const attachment = await client.imgcall.sdexCheck(client,message,page,args,2,dex[value][4],dex[value][4].length,dex[value][0]);
-    message.channel.send(attachment);
-    client.tutorcall.progressCheck(client,message,12);
+    client.tutorcall.progressCheck(client,message,12,["img",attachment]);
   }
 
   dexCheck();

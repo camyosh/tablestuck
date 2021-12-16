@@ -1,13 +1,18 @@
 exports.run = (client, message, args) => {
 
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  let chumroll = client.playerMap.get(charid,"chumroll");
-
+  let chumroll = client.charcall.allData(client,userid,charid,"chumroll");
+  if(chumroll=="NONE"){
+    message.channel.send("You need a chumroll to check up on your chums!");
+    return;
+  }
   let targId = charid;
 
 if(!args[0]){
   message.channel.send(`Select a chum from your ${client.auth.prefix}chumroll`);
+  return;
 }
 
   let value = parseInt(args[0], 10) - 1;
@@ -22,29 +27,29 @@ if(!args[0]){
   }
 targId = chumroll[value];
 
-  listPrint = new client.Discord.MessageEmbed()
-  .setTitle(`**CHECKING ${client.playerMap.get(targId,"name").toUpperCase()}**`)
-  .addField(`**NAME**`,`**${client.playerMap.get(targId,"name").toUpperCase()}**`,true)
-  .addField(`**TYPE**`,`**${client.playerMap.get(targId,"type").toUpperCase()}**`,true)
-  .addField(`**FACTION**`,`**${client.playerMap.get(targId,"faction").toUpperCase()}**`,true)
-  .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.playerMap.get(targId,"vit")} / ${client.playerMap.get(targId,"gel")}`,true)
-  .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.playerMap.get(targId,"b")}`,true)
-  .addField(`**RUNG**`,`${client.playerMap.get(targId,"rung")}`,true)
-  .addField(`**BIO**`,`${client.playerMap.get(targId,"bio")}`)
-  .setImage(client.playerMap.get(targId,"img"))
+listPrint = new client.MessageEmbed()
+.setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
+.addField(`**NAME**`,`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,true)
+.addField(`**TYPE**`,`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,true)
+.addField(`**FACTION**`,`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,true)
+.addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.getAnyData(client,userid,targId,"gel")}`,true)
+.addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.charcall.getAnyData(client,userid,targId,"b")}`,true)
+.addField(`**RUNG**`,`${client.charcall.getAnyData(client,userid,targId,"rung")}`,true)
+.addField(`**BIO**`,`${client.charcall.getAnyData(client,userid,targId,"bio")}`)
+.setImage(client.charcall.getAnyData(client,userid,targId,"img"));
 
 
-  message.channel.send(listPrint).catch(error => {
+  message.channel.send({embeds: [listPrint]}).catch(error => {
 
-    listPrint = new client.Discord.MessageEmbed()
-    .setTitle(`**CHECKING ${client.playerMap.get(targId,"name").toUpperCase()}**`)
-    .addField(`**NAME**`,`**${client.playerMap.get(targId,"name").toUpperCase()}**`,true)
-    .addField(`**TYPE**`,`**${client.playerMap.get(targId,"type").toUpperCase()}**`,true)
-    .addField(`**FACTION**`,`**${client.playerMap.get(targId,"faction").toUpperCase()}**`,true)
-    .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.playerMap.get(targId,"vit")} / ${client.playerMap.get(targId,"gel")}`,true)
-    .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.playerMap.get(targId,"b")}`,true)
-    .addField(`**RUNG**`,`${client.playerMap.get(targId,"rung")}`,true)
-    message.channel.send(listPrint);
+    listPrint = new client.MessageEmbed()
+    .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
+    .addField(`**NAME**`,`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,true)
+    .addField(`**TYPE**`,`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,true)
+    .addField(`**FACTION**`,`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,true)
+    .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.getAnyData(client,userid,targId,"gel")}`,true)
+    .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.charcall.getAnyData(client,userid,targId,"b")}`,true)
+    .addField(`**RUNG**`,`${client.charcall.getAnyData(client,userid,targId,"rung")}`,true)
+    message.channel.send({embeds: [listPrint]});
   })
 
 }

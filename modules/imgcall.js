@@ -86,7 +86,7 @@ exports.sdexCheck = async function (client, message,page, args, type, sdex, card
 
 //send message
 
-  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
 
 return attachment;
 
@@ -112,8 +112,6 @@ ctx.font = applyText(canvas,ctx,name,16,8,"FONTSTUCK",130)
 name = splitText(canvas,ctx,name,18)
 ctx.fillText(name,x+20,y+196-(Math.floor(14-ctx.measureText(name).emHeightAscent+ctx.measureText(name).emHeightDescent)/2));
 
-console.log(item[1]);
-console.log(item);
 
 let gristType = client.codeCypher[1][client.captchaCode.indexOf(item[1].charAt(1))];
 
@@ -219,9 +217,7 @@ exports.inspect = async function (client,message,args,type,item){
 
   let trait1 = client.traitList[client.captchaCode.indexOf(item[1].charAt(2))]
   let trait2 = client.traitList2[client.captchaCode.indexOf(item[1].charAt(3))]
-
-  let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(item[1].charAt(0))]];
-  let action =[client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(item[1].charAt(4))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(item[1].charAt(5))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(item[1].charAt(6))]],client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(item[1].charAt(7))]]];
+  let action =[client.action[client.codeCypher[4][client.captchaCode.indexOf(item[1].charAt(4))]],client.action[client.codeCypher[5][client.captchaCode.indexOf(item[1].charAt(5))]],client.action[client.codeCypher[6][client.captchaCode.indexOf(item[1].charAt(6))]],client.action[client.codeCypher[7][client.captchaCode.indexOf(item[1].charAt(7))]]];
 
   const cardSheet = await client.Canvas.loadImage(`./miscsprites/CAPTCHACARD.png`);
   const gristSheet = await client.Canvas.loadImage(`./miscsprites/GRISTSPRITES.png`);
@@ -271,8 +267,7 @@ exports.inspect = async function (client,message,args,type,item){
   middleText(canvas,ctx,trait2,x+204,142,x+313,169,16,8,"FONTSTUCK");
 
   //draw trait descriptions
-  console.log(trait1);
-  console.log(trait2);
+
   middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait1].trait,18),x+16,y+180,x+161,y+227,18,12,"Courier Standard Bold");
 
   middleText(canvas,ctx,splitText(canvas,ctx,client.traitDesc[trait2].trait,18),x+170,y+180,x+315,y+227,18,12,"Courier Standard Bold");
@@ -339,7 +334,7 @@ for(let j=0;j<4;j++){
 
 }
 
-  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'inspect.png');
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), 'inspect.png');
 
 return attachment;
 
@@ -404,7 +399,6 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1056,600);
   const ctx = canvas.getContext('2d');
-
 
   //list light, list dark, card fg, card bg, card shade
   let cards = sdex.length;
@@ -495,7 +489,6 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
         let cost = tierCost[tier];
         let cost2 = tierCost[tier-1];
-
         if(tier-1<0){
           cost2=0;
         }
@@ -547,10 +540,65 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
 //send message
 
-  let attachment = new client.Discord.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
 
 return attachment;
 
 
+
+}
+
+exports.characterImg = async function (client, message, custom){
+
+  const canvas = client.Canvas.createCanvas(224,288);
+  const ctx = canvas.getContext('2d');
+
+  let hairReplace = [153,229,80];
+  let hairOptions = [[0,0,0],[255,255,255],[0,0,0],[255,255,255],[0,0,0]]
+
+  if(client.fs.existsSync(`./miscsprites/SPRITES/Bot/Head/HairBack/${custom[0]}.png`)){
+
+    let hairback = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/Head/HairBack/${custom[0]}.png`);
+
+    ctx.drawImage(hairback,0,0);
+
+  }
+
+  let body = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/body/BASE.png`);
+
+  let head = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/BASE.png`);
+
+  let hair = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/hair/${custom[0]}.png`);
+  let eyes = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/eyes/${custom[2]}.png`);
+  let mouth = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/mouth/${custom[3]}.png`);
+  let glasses = await client.Canvas.loadImage(`./miscsprites/SPRITES/Bot/head/glasses/${custom[4]}.png`);
+
+  ctx.drawImage(body,0,0);
+  ctx.drawImage(head,0,0);
+  ctx.drawImage(hair,0,0);
+  ctx.drawImage(glasses,0,0);
+  ctx.drawImage(eyes,0,0);
+  ctx.drawImage(mouth,0,0);
+
+  let imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+
+  for(let j=0;j<imageData.data.length;j+=4){
+
+    if(imageData.data[j]==hairReplace[0]&&
+      imageData.data[j+1]==hairReplace[1]&&
+      imageData.data[j+2]==hairReplace[2]
+    ){
+      imageData.data[j]=hairOptions[custom[1]][0]
+        imageData.data[j+1]=hairOptions[custom[1]][1]
+        imageData.data[j+2]=hairOptions[custom[1]][2]
+    }
+
+  }
+
+  ctx.putImageData(imageData,0,0)
+
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), `character.png`);
+
+  message.channel.send(attachment);
 
 }

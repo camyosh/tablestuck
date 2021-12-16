@@ -4,26 +4,20 @@ const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
 //get player location and room inventory
 
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
-  let currentInv = client.playerMap.get(charid,"sdex");
+  let currentInv = client.charcall.charData(client,charid,"sdex");
   let targetItem;
 
-  console.log(local[0]);
-
-  if(local[0]!="h"&&landcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)){
+  if(local[0]!="h"&&local[0]!="pm"&&local[0]!="dm"&&client.charcall.underlingCheck(sec[local[1]][local[2]][2][local[3]][4],client)){
     message.channel.send("You can't captchalogue items while there are Underlings here!");
     return;
   }
@@ -89,18 +83,17 @@ exports.run = (client, message, args) => {
 
   currentInv.unshift(targetItem);
   let mess = `CAPTCHALOGUED the ${targetItem[0]} from the ${room[2]}.`
-  if(currentInv.length > client.playerMap.get(charid,"cards")){
+  if(currentInv.length > client.charcall.charData(client,charid,"cards")){
     let dropItem = currentInv.pop();
     room[5].push(dropItem);
     mess += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
 }
-message.channel.send(mess);
 sec[local[1]][local[2]][2][local[3]] = room;
 client.landMap.set(land,sec,local[0]);
-client.playerMap.set(charid,currentInv,"sdex");
-funcall.actionCheck(client,message,"item");
+client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
+client.funcall.actionCheck(client,message,"item");
 client.funcall.tick(client,message);
-client.tutorcall.progressCheck(client,message,5);
+client.tutorcall.progressCheck(client,message,5,["text",mess]);
 if(args[0]&&args[1]){
 client.tutorcall.progressCheck(client,message,13);
 }

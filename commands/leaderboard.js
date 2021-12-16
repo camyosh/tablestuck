@@ -1,5 +1,6 @@
 exports.run = (client, message, args) => {
 
+let leaderAdd = message.guild.id+"mediumlead";
 
 if(args[0]=="reset"&&client.funcall.dmcheck(client,message)){
   var leaderboard = {
@@ -12,19 +13,21 @@ if(args[0]=="reset"&&client.funcall.dmcheck(client,message)){
     bossesDefeated:["NONE",0],
     itemsCaptchalogued:["NONE",0]
 }
-client.playerMap.set("leaderboard",leaderboard);
+client.landMap.set(leaderAdd,leaderboard);
+message.channel.send("Leaderboard reset!");
+return;
 }
-let exp = client.playerMap.get("leaderboard","experienceGained");
-let boon = client.playerMap.get("leaderboard","boondollarsGained");
-let tiles = client.playerMap.get("leaderboard","tilesDiscovered");
-let alchemized = client.playerMap.get("leaderboard","itemsAlchemized");
-let underlings =  client.playerMap.get("leaderboard","underlingsDefeated");
-let players =  client.playerMap.get("leaderboard","playersDefeated");
-let bosses = client.playerMap.get("leaderboard","bossesDefeated");
-let items = client.playerMap.get("leaderboard","itemsCaptchalogued");
+let exp = client.landMap.get(leaderAdd,"experienceGained");
+let boon = client.landMap.get(leaderAdd,"boondollarsGained");
+let tiles = client.landMap.get(leaderAdd,"tilesDiscovered");
+let alchemized = client.landMap.get(leaderAdd,"itemsAlchemized");
+let underlings =  client.landMap.get(leaderAdd,"underlingsDefeated");
+let players =  client.landMap.get(leaderAdd,"playersDefeated");
+let bosses = client.landMap.get(leaderAdd,"bossesDefeated");
+let items = client.landMap.get(leaderAdd,"itemsCaptchalogued");
 
 
-let stats = new client.Discord.MessageEmbed()
+let stats = new client.MessageEmbed()
 .setTitle(`**SESSION LEADERBOARD**`)
 .addField(`**EXPERIENCE GAINED**`,`${exp[0]} **-** ${exp[1]}`,true)
 .addField(`**BOONDOLLARS GAINED**`,`${boon[0]} **-** ${boon[1]}`,true)
@@ -35,6 +38,6 @@ let stats = new client.Discord.MessageEmbed()
 .addField(`**PLAYERS DEFEATED**`,`${players[0]} **-** ${players[1]}`,true)
 .addField(`**BOSSES DEFEATED**`,`${bosses[0]} **-** ${bosses[1]}`,true)
 
-message.channel.send(stats);
+message.channel.send({embeds: [stats]});
 
 }

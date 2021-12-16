@@ -3,28 +3,18 @@ const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 
 exports.run = (client, message, args) => {
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
 
-  if(strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-
-  let local = client.playerMap.get(charid,"local");
+  let local = client.charcall.charData(client,charid,"local");
   let enter = client.landMap.get(local[4],"enter");
-  let gel = client.playerMap.get(charid,"gel");
+  let gel = client.charcall.allData(client,userid,charid,"gel");
 
-  if(local[0]=="h"){
-    if(enter==true){
-      if(client.playerMap.get(charid,"tutcomplete")){
-        message.channel.send("Your Sprite believes in you now, you don't need any little crutch like >heal! You'll be fine.");
-        return;
-      }
-      message.channel.send("You are fully healed by your sprite!");
+  if(local[0]=="h"||client.funcall.dmcheck(client,message)){
+    if(enter==true||client.funcall.dmcheck(client,message)){
       client.funcall.tick(client,message);
-      client.playerMap.set(charid,gel,"vit");
-      client.tutorcall.progressCheck(client,message,38);
+      client.charcall.setAnyData(client,userid,charid,gel,"vit");
+      client.tutorcall.progressCheck(client,message,38,["text","You are fully healed by a sprite!"]);
     } else {
       message.channel.send("You don't have a sprite to heal you!");
     }

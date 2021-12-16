@@ -1,21 +1,15 @@
 exports.run = (client, message, args) => {
 
-
-  if(client.strifecall.strifeTest(client, message, message.author) == true){
-    message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
-    return;
-  }
-
-  var charid = client.playerMap.get(message.guild.id.concat(message.author.id),"control");
-  let local = client.playerMap.get(charid,"local");
+  var userid = message.guild.id.concat(message.author.id);
+  var charid = client.userMap.get(userid,"possess");
+  let local = client.charcall.charData(client,charid,"local");
   let land = local[4];
   let sec = client.landMap.get(land,local[0]);
   let area = sec[local[1]][local[2]];
   let room = area[2][local[3]];
   let occList = room[4];
   let dex = room[5];
-  const tList = ["MELEE","RANGED","MAGIC","NA"];
-  var occset = [true,charid];
+  var occset = [!client.charcall.npcCheck(client,charid),charid];
 
 
 if(!args[0]){
@@ -84,8 +78,6 @@ if(args[0]=="set"){
     return;
   }
 
-  console.log(message.guild.id+dex[value][1].substring(4))
-
   let target = client.transMap.get(message.guild.id+dex[value][1].substring(4),"target");
 
   if(target.length==0){
@@ -109,7 +101,7 @@ if(args[0]=="set"){
 
   client.landMap.set(targetLand,targetSec,targetLocal[0]);
   client.landMap.set(land,sec,local[0]);
-  client.playerMap.set(charid,targetLocal,"local");
+  client.charcall.setAnyData(client,userid,charid,targetLocal,"local");
 
   message.channel.send("Transportalizing!");
 
