@@ -1,16 +1,21 @@
+If you have any issues with your instalation or operation of this discord bot, feel free
+to come by our discord server and ask for help! https://discord.gg/PmrHugDvRs
+
 TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
+
 [FOR WINDOWS]
-1- Download and install Node.js (https://nodejs.org)
+1 - Download and install Node.js (https://nodejs.org)
   When the Node.js installation asks if you want to install tools necessary to compile native modules, please make sure that the box is checked!
   If you don't do this, you will need to install python and Visual Studio c++ manually.
+(1b)- If the nodejs fails at any point (specifically during the Visual Studio part), run the installation wizard again and click the repair function.
 
 [FOR LINUX] https://nodejs.org/en/download/package-manager/
 
-2- Download or make a clone of this repository
-  cloning the repository makes it eaiser to update the bot as we change it, but simply downloading the files lets you run it without setting up git.
+2 - Download or make a clone of this repository
+  cloning the repository makes it easier to update the bot as we change it, but simply downloading the files lets you run it without setting up git.
 
-3- Edit the auth-template.json file
-  the auth.json file will be created when you first run your bot, and requires your bot token and chosen prefix for commands before running properly.
+3 - Edit the auth-template.json file
+  this is turned into the auth.json file when you first run your bot, and requires your bot token and chosen prefix for commands before running properly.
 
   The bot has a TOURNAMENT MODE. If client.limit in bot.js is 0, it is disabled, but if it is a number greater than 0, it is enabled.
   If the bot is in TOURNAMENT MODE, auth.json will need an extra section called "list" with a list of discord IDs allowed in your tournament:
@@ -23,20 +28,16 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
         "DISCORD ID"
     ]
   }
-4- Open the command terminal on your computer in the bot's folder and type the following --
+
+4 - [FOR WINDOWS] run GTK.bat. This will install a graphics library which the bot uses for image generation.
+    If you already have a GTK folder in your C:\ Directory (main hard drive), make sure to delete it there first
+    before running this.
+
+5 - Open the command terminal on your computer in the bot's folder and type the following --
   npm install --only=prod
   This should create a folder called node_modules and a file called package-lock.json
-  After that, the folder should be something like this --
-  ->Bot folder/
-    ->data/
-    ->node_modules/
-    ->This repository as a folder/
-      ->bot.js, other folders and files...
-    ->auth.json
-    ->package.json
-    ->package-lock.json
 
-5- Run the file "run.bat" (or "run.sh" on linux or mac) to start the bot
+6 - Run the file "run.bat" (or "run.sh" on linux or mac) to start the bot
   If you have nodemon or forever installed, you can use runrepeat.bat (runrepeat.sh) or runforever.bat (runforever.sh) to run the bot with those
 
 --this code is not the finished version of the bot and will continue to be updated regularly on github--
