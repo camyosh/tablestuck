@@ -1,4 +1,4 @@
-If you have any issues with your instalation or operation of this discord bot, feel free
+If you have any issues with your installation or operation of this discord bot, feel free
 to come by our discord server and ask for help! https://discord.gg/PmrHugDvRs
 
 TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
@@ -37,7 +37,10 @@ TO RUN THE TABLESTUCK BOT, YOU FIRST NEED TO FOLLOW THESE STEPS --
   npm install --only=prod
   This should create a folder called node_modules and a file called package-lock.json
 
-6 - Run the file "run.bat" (or "run.sh" on linux or mac) to start the bot
+6 - On your Discord Bot's Developer Portal page, go to the Bot tab and make sure that all 3 Privileged Gateway Intents are enabled.
+  This will make sure the new permissions system that lets the bot read messages functions properly.
+
+7 - Run the file "run.bat" (or "run.sh" on linux or mac) to start the bot
   If you have nodemon or forever installed, you can use runrepeat.bat (runrepeat.sh) or runforever.bat (runforever.sh) to run the bot with those
 
 --this code is not the finished version of the bot and will continue to be updated regularly on github--
