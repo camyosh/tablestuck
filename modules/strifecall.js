@@ -347,7 +347,7 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       leaveStrife(client,message,local,target);
       if(active.length<=1){
         client.tutorcall.progressCheck(client,message,37,["text",`Last opponent defeated, leaving Strife!`]);
-        leaveStrife(client,message,local,pos,false);
+        leaveStrife(client,message,local,0,false);
 
       }
   }
@@ -447,7 +447,6 @@ return;
 
 
   if(!client.charcall.charData(client,charid,"alive")){
-    console.log(client.charcall.allData(client,userid[0],charid,"dreamingID"));
     if(client.charcall.allData(client,userid[0],charid,"dreamingID")=="NONE"){
       //if the character has no dreamself, it is likely an underling, so it is removed from the room
       //and the controller is pushed back to their default body.
@@ -2108,7 +2107,6 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     .addField("ADDITIONAL ALERTS", alert)
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
-    console.log(embed);
     for(i=0;i<active.length;i++){
         client.funcall.chanMsg(client,list[active[i]][1],"NONE",embed);
     }
@@ -2641,10 +2639,8 @@ function npcTurn(client, message, local){
       setTimeout(passTurn,1500,client,message,local);
     }
 }else{
-  if(list[init[turn][0]][3]<=0){
-  setTimeout(passTurn,1500,client,message,local);
-  }
-  console.log("The robot revolution is beginning, AI attempted to take a player's turn for them (or an NPC died from thorns on their turn)")
+  console.log("A dead NPC tried to take a turn, or an unpossessed player had their turn passed!");
+    setTimeout(passTurn,1500,client,message,local);
 }
 
 }
