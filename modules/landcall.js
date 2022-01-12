@@ -119,7 +119,7 @@ empty =[];
   for(let i=0;i<3;i++){
     let temp=empty.splice(Math.floor(Math.random()*length)-1+(40*(j-1)),1);
     length--;
-    section[temp[0][0]][temp[0][1]]=[4,2,[[client.funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,client.landcall.consortSpawn(client,message,[sec,temp[0][0],temp[0][1],0],["shopkeep"],1),[]],[[],[],"ROOM 2",false,[],[]]]];
+    section[temp[0][0]][temp[0][1]]=[4,2,[[client.funcall.preItem(client,1,7,[],gristSet),[],"ROOM 1",false,client.landcall.consortSpawn(client,message,[`s${sec+1}`,temp[0][0],temp[0][1],0],["shopkeep"],1),[]],[[],[],"ROOM 2",false,[],[]]]];
 
   }
   //Creates the Land Constructs (9 per section)
@@ -1389,7 +1389,8 @@ exports.carSpawn = function(client,local,lunar,sessionID){
     rung:0,
     b:0,
     bio:`A ${lunarList[1][lunar]} ${typeList[type]}`,
-    img:picList[lunar][type]
+    img:picList[lunar][type],
+    questData:[]
   }
 
   let id = `n${sessionID}/${npcCount}`;
@@ -1411,7 +1412,10 @@ let charid = client.userMap.get(message.guild.id.concat(message.author.id),"poss
 let sburbid = client.charcall.charData(client,charid,"owner");
 let npcCount = client.landMap.get(sessionid+"medium","npcCount");
 let occ = [];
-let local = coords.push(sburbid);
+console.log(coords);
+console.log(sburbid);
+coords.push(sburbid);
+console.log(coords);
 
   for(let i=0;i<count;i++){
     npcCount++;
@@ -1428,7 +1432,7 @@ let local = coords.push(sburbid);
           strife:false,
           pos:0,
           alive:true,
-          local:local,
+          local:coords,
           sdex:[],
           equip:0,
           trinket:[],
@@ -1452,7 +1456,19 @@ let local = coords.push(sburbid);
           b:0,
           bio:`A friendly shopkeeper!`,
           img:`https://cdn.discordapp.com/attachments/653038622135549952/917120918466224138/Salamander.png`,
-          dialogue:["Buy my stuff.","Look at all these funny things I found! I bet you want all of them. Hope you brought your boons!","Nak."]
+          dialogue:["Buy my stuff.","Look at all these funny things I found! I bet you want all of them. Hope you brought your boons!","Nak."],
+          questData:[
+                      [
+                      `${npcCount}01`,
+                      `Kill 4 Basilisks`,
+                      [`Shopkeep Consort asked you to protect his village from basilisks.`,`Return to the Shopkeep Consort (${coords[2]},${coords[1]}) to claim your prize!`],
+                      [`Help! Big Lizards filled our city! Kill them!`,`Thank you! Have these candies I found!`],
+                      4,
+                      "kill",
+                      413,
+                      0
+                    ]
+                  ]
         }
         let id = `n${sessionid}/${npcCount}`;
         client.npcMap.set(id,consortSet);

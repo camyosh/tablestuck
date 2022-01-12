@@ -422,6 +422,8 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
     playersDefeated:0,
     bossesDefeated:0,
     itemsCaptchalogued:0,
+    questsCompleted:0,
+    questProgress:[],
     chumhandle:chumData[0],
     chumtag:chumData[1],
     chumpic:message.author.avatarURL(),

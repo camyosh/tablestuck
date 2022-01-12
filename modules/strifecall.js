@@ -2456,7 +2456,8 @@ exports.spawn = function(client,message,underling,pregrist = false){
       rung:0,
       b:0,
       bio:`A ${grist} ${underling}`,
-      img:client.underlings[underling].img
+      img:client.underlings[underling].img,
+      questData:[]
     }
     //rep [prospit,derse,underling,player]
 

@@ -916,31 +916,32 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     }
 
     var listEmbed;
-
+    var files = [attachment];
+    listEmbed = new client.MessageEmbed()
+      .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
+      .addField(`**ALERTS**`,msg)
+      .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
+      .addField(`**PAGE**`,`**1**`,true)
+      .addField(`**CURRENT OCCUPANTS** (>list)`,list)
+      .setImage(`attachment://actionlist.png`);
     if(mapCheck){
-      var miniMap = await client.landcall.drawMap(client,message,true);
-      listEmbed = new client.MessageEmbed()
-      .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
-      .addField(`**ALERTS**`,msg)
-      .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
-      .addField(`**PAGE**`,`**1**`,true)
-      .addField(`**CURRENT OCCUPANTS** (>list)`,list)
-      .setImage(`attachment://actionlist.png`)
-      .setThumbnail(`attachment://landmap.png`)
-      client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed], files:[attachment,miniMap]})
-
-    } else {
-      listEmbed = new client.MessageEmbed()
-      .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
-      .addField(`**ALERTS**`,msg)
-      .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
-      .addField(`**PAGE**`,`**1**`,true)
-      .addField(`**CURRENT OCCUPANTS** (>list)`,list)
-      .setImage(`attachment://actionlist.png`)
-      client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed], files:[attachment]})
+      miniMap = await client.landcall.drawMap(client,message,true);
+      files.push(miniMap);
+      listEmbed.setThumbnail(`attachment://landmap.png`);
     }
+      client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[listEmbed], files:files});
 
-
+      let checkQuest = client.questcall.checkQuest(client,userid,charid,occList);
+      if(checkQuest[0]>0){
+        let qfiles = [];
+        let qattachement;
+        for(let i=0;i<checkQuest[0];i++){
+          qattachment = await client.diocall.dialogue(client,checkQuest[1][i]);
+          qattachment.name = `dialogue${i}.png`
+          qfiles.push(qattachment);
+        }
+        client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({files:qfiles});
+      }
 
   }
 

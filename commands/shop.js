@@ -22,7 +22,7 @@ files.push(attachment);
 for(let i=0;i<room[4].length;i++){
   if(client.charcall.hasData(client,room[4][i][1],"dialogue")){
     let dialist = client.charcall.charData(client,room[4][i][1],"dialogue");
-    files.push(await client.diocall.dialogue(client,message,dialist[Math.floor(Math.random()*dialist.length)]));
+    files.push(await client.diocall.dialogue(client,dialist[Math.floor(Math.random()*dialist.length)]));
 
   }
 }

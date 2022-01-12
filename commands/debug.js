@@ -5,7 +5,7 @@ if(!client.funcall.dmcheck(client,message)){
   return;
 }
 
-let debugOptions = [["enter","enters your medium and builds you up to your max."],["god","toggles godtier(DISABLED)"]]
+let debugOptions = [["enter","enters your medium and builds you up to your max."],["god","toggles godtier(DISABLED)"],["quest","completes all current quests"]];
 if(!args[0]){
   let msg =`This is a quick command for various debug functions that don't fit in config. Accepted arguments:`;
   for(let i=0;i<debugOptions.length;i++){
@@ -39,6 +39,20 @@ if(args[0].toLowerCase()==="god"){
   message.channel.send(`Player ${client.sburbMap.get(sburbid,"godtier")?`granted Godtier!`:`mortalized again!`}`);
   return;
 
+}
+if(args[0].toLowerCase()==="quest"){
+  if(client.charcall.allData(client,userid,charid,"questProgress")!="NONE"){
+    questProgress=client.charcall.allData(client,userid,charid,"questProgress");
+    for(let i=0;i<questProgress.length;i++){
+    questProgress[i][3]=questProgress[i][4];
+    questProgress[i][6]=true;
+    }
+    client.charcall.setAnyData(client,userid,charid,questProgress,"questProgress");
+    message.channel.send("All quests set to be Complete!");
+    return;
+  }
+  message.channel.send("This creature can't do quests.");
+  return;
 }
 
   let msg=`Sorry, that's not a valid debug command. Accepted arguments:`;

@@ -1,5 +1,5 @@
 
-exports.dialogue = async function(client,message,msg){
+exports.dialogue = async function(client,msg){
   client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1000,300);
