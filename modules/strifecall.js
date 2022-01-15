@@ -203,6 +203,7 @@ try{
     }else if (npc=="underling") {
       client.funcall.actionCheck(client,message,"underling");
     }
+    client.questcall.stepQuest(client,userid,charid,`kill${npc}`);
 
 let rewardMsg = `The **${client.charcall.charData(client,list[target][1],"name")}** has been defeated! \nYou get `
 let xp;

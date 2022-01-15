@@ -940,7 +940,17 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
           qattachment.name = `dialogue${i}.png`
           qfiles.push(qattachment);
         }
-        client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({files:qfiles});
+        if(checkQuest[2]>0){
+          let curBoon = client.charcall.allData(client,userid,charid,"b");
+          let embed = new client.MessageEmbed()
+          .setTitle(`**${client.charcall.charData(client,charid,"name")}** gained BOONDOLLARS!`)
+          .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${checkQuest[2]}= **${curBoon+checkQuest[2]}**`,true);
+          client.charcall.setAnyData(client,userid,charid,curBoon+checkQuest[2],"b");
+          console.log(embed);
+          client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[embed], files:qfiles});
+        }else{
+          client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({files:qfiles});
+        }
       }
 
   }

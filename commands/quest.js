@@ -67,9 +67,9 @@ exports.run = (client, message, args) => {
       ctx.font = "bold 12px FONTSTUCK";
       ctx.strokeRect(0,50*i,canvas.width,50+50*i);
       ctx.textAlign = "left";
-      ctx.fillText(`${i}) ${questProgress[i-1][1]}`,15,28+50*i);
+      ctx.fillText(`${i}) ${questProgress[i-1].title}`,15,28+50*i);
       ctx.textAlign = "right";
-      ctx.fillText(`${questProgress[i-1][3]}/${questProgress[i-1][4]}`,385,28+50*i);
+      ctx.fillText(`${questProgress[i-1].progress}/${questProgress[i-1].goal}`,385,28+50*i);
       }
     }
 
@@ -98,10 +98,10 @@ exports.run = (client, message, args) => {
     ctx.fillStyle = "#ffffff";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(`${questProgress[select-1][1]}:`,200,28);
+    ctx.fillText(`${questProgress[select-1].title}:`,200,28);
     ctx.strokeRect(0,50,canvas.width,200);
     ctx.font = "bold 20px Courier Standard Bold";
-    msg = questProgress[select-1][2][(questProgress[select-1][6]?1:0)]
+    msg = questProgress[select-1].desc[(questProgress[select-1].completed?1:0)]
       msg = splitText(canvas,ctx,msg,300);
     ctx.fillText(`${msg}`,200,150-20*lines);
     let attachment = new client.MessageAttachment(canvas.toBuffer(), 'dialogue.png');
@@ -116,18 +116,25 @@ exports.run = (client, message, args) => {
 
     let questIdList = [];
         for(let i=0;i<questProgress.length;i++){
-          questIdList.push(questProgress[i][0]);
+          questIdList.push(questProgress[i].id);
         }
 
     for(let i=0;i<occList.length;i++){
       if(client.charcall.hasData(client,occList[i][1],"questData")){
         questData = client.charcall.charData(client,occList[i][1],"questData");
       for(let j=0;j<questData.length;j++){
-        if(questData[j][7]==0&&!questIdList.includes(questData[j][0])){
+        if(questData[j].completion==0&&!questIdList.includes(questData[j].id)){
           message.channel.send("Quest accepted! Check your quest list to monitor your progress.");
-          questProgress.push([questData[j][0],questData[j][1],questData[j][2],0,questData[j][4],questData[j][5],false]);
+          questProgress.push({
+                              id:questData[j].id,
+                              title:questData[j].title,
+                              desc:questData[j].desc,
+                              progress:0,
+                              goal:questData[j].goal,
+                              type:questData[j].type,
+                              completed:false});
           client.charcall.setAnyData(client,userid,charid,questProgress,"questProgress");
-          questData[j][7]=1;
+          questData[j].completion=1;
           client.charcall.setAnyData(client,`~`,occList[i][1],questData,"questData");
           return;
         }

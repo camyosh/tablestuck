@@ -38,14 +38,13 @@ if(args[0].toLowerCase()==="god"){
   (client.sburbMap.get(sburbid,"godtier")?client.sburbMap.set(sburbid,false,"godtier"):client.sburbMap.set(sburbid,true,"godtier"));
   message.channel.send(`Player ${client.sburbMap.get(sburbid,"godtier")?`granted Godtier!`:`mortalized again!`}`);
   return;
-
 }
 if(args[0].toLowerCase()==="quest"){
   if(client.charcall.allData(client,userid,charid,"questProgress")!="NONE"){
     questProgress=client.charcall.allData(client,userid,charid,"questProgress");
     for(let i=0;i<questProgress.length;i++){
-    questProgress[i][3]=questProgress[i][4];
-    questProgress[i][6]=true;
+    questProgress[i].progress=questProgress[i].goal;
+    questProgress[i].completed=true;
     }
     client.charcall.setAnyData(client,userid,charid,questProgress,"questProgress");
     message.channel.send("All quests set to be Complete!");

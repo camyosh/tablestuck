@@ -30,7 +30,11 @@ if(!args[0]){
   .setTitle("**POSSESS LIST**")
   .addField(`**CURRENT OCCUPANTS:**`,msg)
   .addField(`**SPEED DIAL:**`,msg2)
-  .addField(`**CURRENTLY POSSESSING:**`,`**${client.charcall.charData(client,client.userMap.get(userid,"possess"),"name")}**\nTo stop possessing, do ${client.auth.prefix}possess cancel`)
+  .addField(`**CURRENTLY POSSESSING:**`,`**${client.charcall.charData(client,client.userMap.get(userid,"possess"),"name")}**\n\n
+      To stop possessing, do ${client.auth.prefix}possess cancel
+      To add to speeddial, do ${client.auth.prefix}possess add
+      To remove from speeddial, do ${client.auth.prefix}possess remove
+      To set as default character, do ${client.auth.prefix}possess default`)
 
   message.channel.send({embeds:[possessList]});
 
@@ -63,6 +67,37 @@ let target = client.userMap.get(userid,"possess");
 
   message.channel.send(`Stopped possessing ${client.charcall.charData(client,target,"name").toUpperCase()}!
 You have been shifted to your first Speed Dial option, ${client.charcall.charData(client,speeddial[0],"name").toUpperCase()}.`);
+  return;
+}
+if(args[0]=="add"){
+  if(speeddial.indexOf(charid)!=-1){
+    message.channel.send("This creature is already on your speed dial list!");
+    return;
+  }
+  speeddial.push(charid);
+  message.channel.send(`${client.charcall.charData(client,charid,"name")} added to speeddial!`);
+  client.charcall.setAnyData(client,userid,charid,speeddial,"speeddial");
+  return;
+}
+if(args[0]=="remove"){
+  if(speeddial.indexOf(charid)==-1){
+    message.channel.send("This creature isn't on your speed dial list!");
+    return;
+  }
+  speeddial.splice(speeddial.indexOf(charid),1);
+  message.channel.send(`${client.charcall.charData(client,charid,"name")} removed from speeddial!`);
+  client.charcall.setAnyData(client,userid,charid,speeddial,"speeddial");
+  return;
+}
+if(args[0]=="default"){
+  if(speeddial.indexOf(charid)==-1){
+    message.channel.send("This creature isn't on your speed dial list!");
+    return;
+  }
+  speeddial.splice(speeddial.indexOf(charid),1);
+  speeddial.unshift(charid);
+  message.channel.send(`${client.charcall.charData(client,charid,"name")} set as default character!`);
+  client.charcall.setAnyData(client,userid,charid,speeddial,"speeddial");
   return;
 }
 let isSpeed = false;
