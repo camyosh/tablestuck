@@ -1,4 +1,6 @@
-
+exports.type = "game";
+exports.desc ="Same thing as >ping";
+exports.use = `">pog", pog.`;
 exports.run = (client, message, args) => {
 
 /*

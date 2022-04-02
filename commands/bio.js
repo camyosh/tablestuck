@@ -1,3 +1,7 @@
+exports.type = "character";
+exports.desc = "Lets a player change their bio"
+exports.use = `">bio [text]" will set your bio(a snippet of text on your profile) to be whatever the text is.`
+
 exports.run = (client, message, args) => {
 
 if(!args[0]){

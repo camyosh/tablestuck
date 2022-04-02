@@ -1,4 +1,8 @@
-
+exports.type = "house";
+exports.desc = "Move around the world";
+exports.use = `">move" lists all rooms you can move to, in your current tile. This might be rooms in a house, or areas in a village.
+">move [number]" lets you move between rooms in a tile."
+">move [n,s,e,w,north,south,east,west]" lets you move between tiles on your planet, or anywhere else that you travel between tiles.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

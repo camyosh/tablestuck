@@ -1,5 +1,5 @@
 
-exports.dialogue = async function(client,msg){
+exports.dialogue = async function(client,msg,quest=false){
   client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1000,300);
@@ -53,7 +53,10 @@ const dioProfile = await client.Canvas.loadImage(`./miscsprites/morshu.png`);
   ctx.fillStyle = "#ffffff";
   ctx.textAlign = "center";
   ctx.fillText(msg.toUpperCase(),622,155-(12*(lines)));
-
+  if(quest){
+  ctx.font = `bold 20px Courier Standard Bold`;
+  ctx.fillText(`Accept this quest with ${client.auth.prefix}quest accept`,622,265);
+  }
   let attachment = new client.MessageAttachment(canvas.toBuffer(), 'dialogue.png');
   return attachment;
 }

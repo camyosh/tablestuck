@@ -1,4 +1,6 @@
-
+exports.type = "house";
+exports.desc = "For flying around the world";
+exports.use = `">fly [number] [number]" allows you to fly to a specified coordinate on a land map. Flight is only aquired by godtiering or certain other methods, but is always availible for DMs.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

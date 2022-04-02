@@ -1,3 +1,8 @@
+exports.type = "game";
+exports.desc ="Controls the rules of the world you play in";
+exports.use = `">config" will open the config menu.
+">config [option] [state]" will change config rules, such as >config channels 3 prevents channels from being created on registration.
+">config reset" will return config to default settings.`;
 exports.run = (client, message, args) => {
 
 //config check template: client.configMap.get(message.guild.id).options[#].selection==#

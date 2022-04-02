@@ -1,7 +1,9 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "house";
+exports.desc = "Restores your character to full health";
+exports.use = `">heal" refills your vitality, as long as your sprite is alive, released, and you are both in the house.`;
 exports.run = (client, message, args) => {
   var userid = message.guild.id.concat(message.author.id);
   var charid = client.userMap.get(userid,"possess");

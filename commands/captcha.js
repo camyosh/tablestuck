@@ -1,6 +1,10 @@
 const funcall = require("../modules/funcall.js");
 const landcall = require("../modules/landcall.js");
 const strifecall = require("../modules/strifecall.js");
+exports.type = "house";
+exports.desc = "Pick up items"
+exports.use = `">captcha [number]" will pick up the numbered item in whatever room you're in.
+">captcha [number] [number]" lets you pick up an item stored in another item. You can see what might be stored in an item by using the >contents command.`
 
 exports.run = (client, message, args) => {
 

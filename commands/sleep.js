@@ -1,3 +1,6 @@
+exports.type = "house";
+exports.desc = "Going to sleep";
+exports.use = `">sleep" will either switch control between you and your dreaming self, or if one is dead, simply let you rest to regain some vitality. While awake as one self, the other self slowly regains vitality for each action taken. `;
 exports.run = function(client, message, args) {
 
   var userid = message.guild.id.concat(message.author.id);

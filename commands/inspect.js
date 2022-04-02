@@ -4,7 +4,11 @@ const strifecall = require("../modules/strifecall.js");
 
 
 const typeList = ["EMPTY","DUNGEON","CONSTRUCT","RETURN NODE","VILLAGE","HOUSE","GATE"];
-
+exports.type = "house";
+exports.desc ="Look at the items in the room you are in";
+exports.use = `">inspect" lists all items in your current room.
+">inspect [number]" allows for a closer inspection of an item in a room.
+">inspect page [number]" lets you see more pages of what's in the room, as each page only holds 10 items and rooms have an unlimited amount of space.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

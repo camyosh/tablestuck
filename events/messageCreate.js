@@ -23,7 +23,6 @@ module.exports = (client, message) => {
   //standard argument/command name definition
   const args = message.content.slice(client.auth.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-
   // Grab the command data from the client.commands Enmap
   const cmd = client.commands.get(command);
   // If that command doesn't exist, silently exit and do nothing

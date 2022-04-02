@@ -12,6 +12,6 @@ exports.run = async(client,message,args) => {
   for(i=0;args[i];i++){
     msg+=`${args[i]} `;
   }
-  img = await client.diocall.dialogue(client,message,msg);
+  img = await client.diocall.dialogue(client,msg);
   message.channel.send({files: [img]});
 }

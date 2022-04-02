@@ -1,3 +1,8 @@
+exports.type = "house";
+exports.desc ="See items within storage items";
+exports.use = `">contents [number]" checks something in the room and sees if it has an inventory of it's own, usually due to having the STORAGE trait. This can only be used on items in a room, not in a creature's sylladex.
+">contents [number] [number]" checks the information of an item stored in another item, much like >inspect.
+">contents [number] page [number]" allows the viewing of multiple pages, for items with many items stored in them.`;
 exports.run = (client, message, args) => {
 
   if (!args[0]) {
@@ -41,7 +46,7 @@ exports.run = (client, message, args) => {
       return;
     }
 
-    if(subValue >= dex.length || subValue < 0) {
+    if(subValue >= dex[value][4].length || subValue < 0) {
       message.channel.send("That is not a valid argument!")
       return;
     }

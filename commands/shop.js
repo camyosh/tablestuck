@@ -56,6 +56,10 @@ if(area[0]==4){
     return;
   }
   let choice = parseInt(args[0],10);
+  if(isNaN(choice)){
+    message.channel.send("That is not a valid shop item!");
+    return;
+  }
   if(choice<=0||choice>dex.length){
     message.channel.send(`There are only ${dex.length} things to buy here! choose one of them!`);
     return;

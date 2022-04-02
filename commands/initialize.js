@@ -1,3 +1,7 @@
+exports.type = "game";
+exports.desc ="Confirm config settings and start the game";
+exports.use = `">initialize" will prompt you to check your config settings before beginning the game.
+">initialize confirm" starts the game, generating the dream moons and other session-specific data.`;
 exports.run = (client, message, args) => {
 
   if(!client.funcall.dmcheck(client,message)){

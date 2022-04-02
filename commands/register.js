@@ -1,3 +1,9 @@
+exports.type = "game";
+exports.desc ="Create a character and begin playing Tablestuck";
+exports.use = `">register" creates your character and channel to play in(based on config).
+">register [Aspect]" will register you as a certain aspect.
+">register confirm" allows you to re-register, erasing all current player data and remaking it.
+">register confirm [Aspect]" re-registers with an aspect.`;
 exports.run = async function(client, message, args){
 
 //First, there's a series of checks to see if the function should be run at all.

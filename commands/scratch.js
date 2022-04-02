@@ -1,6 +1,7 @@
-
-
-
+exports.type = "game";
+exports.desc ="Scrap a session and restart from.. you know.";
+exports.use = `">scratch" will check if you want to restart the game.
+">scratch confirm" will delete all files related to the game, so a fresh session can be initialized.`;
 exports.run = (client, message, args) => {
   if(!client.funcall.dmcheck(client,message)){
     message.channel.send(`Only someone with a role called "DM" can scratch a session!`);

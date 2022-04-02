@@ -1,7 +1,10 @@
 const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 //simple ping command to check if the bot is online.
-
+exports.type = "sylladex";
+exports.desc = "Uses an item from your Sylladex";
+exports.use = `">use [number]" will use an item with no target. This includes items like Boondollars, Strife and Sylladex cards, Strife Specibi, and certain lootable grists.
+">use [number] [number]" is for items that require targets, with the second number being the target. Installing your game disk into your computer, putting totems into a totem lathe, and punching cards in the punch designatrix all require this targeting.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

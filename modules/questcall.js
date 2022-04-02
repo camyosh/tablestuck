@@ -19,12 +19,12 @@ let questIdList = [];
           if(questData[j].completion==0){
             if(!questIdList.includes(questData[j].id)){
               messageCount++;
-              message.push(questData[j].dialogue[0]);
+              message.push([questData[j].dialogue[0],true]);
             }
           } else if(questData[j].completion==1){
             if(questIdList.includes(questData[j].id)&&questProgress[questIdList.indexOf(questData[j].id)].completed){
               messageCount++;
-              message.push(questData[j].dialogue[1]);
+              message.push([questData[j].dialogue[1],false]);
               boons+=questData[j].boon;
               questProgress.splice(questIdList.indexOf(questData[j].id),1);
               client.charcall.setAnyData(client,userid,charid,questProgress,"questProgress");
@@ -43,13 +43,13 @@ exports.stepQuest = function(client,userid,charid,type){
   if(questProgress=="NONE"){
     return;
   }
-  console.log(type);
   for(let i=0;i<questProgress.length;i++){
     if(type==questProgress[i].type&&!questProgress[i].completed){
       questProgress[i].progress++;
       if(questProgress[i].progress>=questProgress[i].goal){
         questProgress[i].progress=questProgress[i].goal;
         questProgress[i].completed=true;
+        client.funcall.chanMsg(client,charid,`Quest ${i+1} has been completed! Do "${client.auth.prefix}quest ${i+1}" to see what to do next!`);
       }
     }
   }

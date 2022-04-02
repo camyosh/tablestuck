@@ -1,7 +1,10 @@
 const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 //simple ping command to check if the bot is online.
-
+exports.type = "sylladex";
+exports.desc ="Checks your inventory";
+exports.use = `">sylladex" lets you see everything currently in your sylladex, as well as how much space you have in it.
+">sylladex [number]" lets you closely inspect an item in your sylladex to get more information about it.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

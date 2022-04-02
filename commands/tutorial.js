@@ -1,3 +1,9 @@
+exports.type = "game";
+exports.desc ="Checks info about the tutorial";
+exports.use = `">tutorial" lets you check your progress on the tutorial.
+">tutorial [number] will replay the selected tutorial.
+">tutorial [reset]" will reset your tutorial progress.
+">tutorial switch" will toggle if the tutorial is on or off.`;
 exports.run = (client, message, args) => {
 
 
