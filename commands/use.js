@@ -213,9 +213,9 @@ exports.run = (client, message, args) => {
             let newName = ``;
             for(let i=0; i<room[5][selectRoom][4][0][4].length; i++){
               if(i>0){
-                newName+=`// `;
+                newName+=` // `;
               }
-              newName+=`${room[5][selectRoom][4][0][4][i][0]} `
+              newName+=`${room[5][selectRoom][4][0][4][i][0]}`
 
             }
             if(newName.length>32){
