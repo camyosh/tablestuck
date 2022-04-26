@@ -1,4 +1,4 @@
-const phernalia = ["cruxtruder","totem lathe","alchemiter","pre-punched card","punch designix","instant alchemiter"]
+const phernalia = ["cruxtruder", "totem lathe", "alchemiter", "pre-punched card", "punch designix", "instant alchemiter", "transportalizer"]
 
 exports.run = async function(client, message, args) {
 
@@ -6,7 +6,7 @@ exports.run = async function(client, message, args) {
   var charid = client.userMap.get(userid,"possess");
   var local = client.charcall.charData(client,charid,"local");
   var room = client.landMap.get(local[4],local[0])[local[1]][local[2]][2][local[3]];
-  let defaultRegistry = [client.registry["cruxtruder"].item,client.registry["totem lathe"].item,client.registry["alchemiter"].item,client.registry["pre-punched card"].item,client.registry["punch designix"].item,client.registry["instant alchemiter"].item]
+  let defaultRegistry = [client.registry["cruxtruder"].item,client.registry["totem lathe"].item,client.registry["alchemiter"].item,client.registry["pre-punched card"].item,client.registry["punch designix"].item,client.registry["instant alchemiter"].item,client.registry["transportalizer"].item]
 
   let compCheck = client.traitcall.compTest(client,message,charid,room);
 
