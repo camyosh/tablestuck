@@ -34,7 +34,12 @@ exports.run = (client, message, args) => {
 
   //check if item code is blacklisted
 
-  if((code == "11111111"&&selectItem[4]==0) || code.charAt(0) == "/") {
+  /*if (code == "11111111" && selectItem[4].length == 1) { // Potential code to rename the item in a card instead of not renaming anything in the registry
+    code = selectItem[4][0][1];
+  } else if (code == "11111111" && selectItem[4].length == 2) {
+    code = funcall.alchemize(client, selectItem[4][0][1], selectItem[4][1][1], "||")[1];
+  }*/
+  if((code == "11111111"&&selectItem[4].length==0) || code.charAt(0) == "/") {
     message.channel.send("The name of that item cannot be changed!");
     return;
   }
@@ -49,14 +54,14 @@ exports.run = (client, message, args) => {
   client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
 
   function checkCode(checkItem){
-    return checkItem[1] == selectItem[1];
+    return checkItem[1] == code;
   }
- if(registry!="NONE"){
-  let regPos = registry.findIndex(checkCode);
-  if(regPos>-1){
-    registry[regPos][0]=name;
-    client.charcall.setAnyData(client,userid,charid,registry,"registry");
+  if (registry != "NONE" && code != "11111111") {
+    let regPos = registry.findIndex(checkCode);
+    if(regPos>-1){
+      registry[regPos][0]=name;
+      client.charcall.setAnyData(client,userid,charid,registry,"registry");
+    }
   }
-}
   message.channel.send(`Successfully changed the name of ${oldName} to ${name}`);
 }

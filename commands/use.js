@@ -92,100 +92,52 @@ exports.run = (client, message, args) => {
             return;
           }
         } else if(selectCode == "########" && sdex[selectDex][0] == "CRUXITE DOWEL"){
-          switch(room[5][selectRoom][4].length){
-            case 0:
-              message.channel.send("You use the CRUXITE DOWEL on the TOTEM LATHE but nothing happens! Try putting a PUNCHED CARD in the TOTEM LATHE first!");
-              return;
-              break;
+          if (room[5][selectRoom][4].length == 0) {
+            message.channel.send("You use the CRUXITE DOWEL on the TOTEM LATHE but nothing happens! Try putting a PUNCHED CARD in the TOTEM LATHE first!");
+            return;
+          }
+
+          sdex[selectDex][4] = [];
+          sdex[selectDex][0] = "CARVED TOTEM";
+          sdex[selectDex][5] = "https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
+
+          var firstCardContents = ["PERFECTLY GENERIC OBJECT", "00000000", 1, 1, []];
+          var secondCardContents = ["PERFECTLY GENERIC OBJECT", "00000000", 1, 1, []];
+          var prepunched = room[5][selectRoom][4][0][4].length == 1;
+          
+          switch (room[5][selectRoom][4][0][4].length) { // If the first card has two items in it, we need to combine them with alchemy
             case 1:
-              sdex[selectDex][4]=[];
-              if(room[5][selectRoom][4][0][4].length == 0){
-                //["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]
-                sdex[selectDex][0]="CARVED TOTEM";
-sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
-                client.tutorcall.progressCheck(client,message,46,["text","Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
-                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-                return;
-              } else if(room[5][selectRoom][4][0][4].length == 1){
-                sdex[selectDex][0]="CARVED TOTEM";
-sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                sdex[selectDex][4].push(room[5][selectRoom][4][0][4][0]);
-
-                client.tutorcall.progressCheck(client,message,29,["text","Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
-                if(client.userMap.get(userid,"tutor")[32]){
-                  client.tutorcall.progressCheck(client,message,46);
-                }
-                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-                return;
-              } else{
-                sdex[selectDex][0]="CARVED TOTEM";
-sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                //sdex[selectDex][4].push(funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]));
-                sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"));
-
-                client.tutorcall.progressCheck(client,message,46,["text","Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
-                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-                return;
-              }
+              firstCardContents = room[5][selectRoom][4][0][4][0];
               break;
             case 2:
-            sdex[selectDex][4]=[];
-            if(room[5][selectRoom][4][0][4].length == 0 || room[5][selectRoom][4][1][4].length == 0){
-              //["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]
-              sdex[selectDex][0]="CARVED TOTEM";
-sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-              sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-              sdex[selectDex][4].push(["PERFECTLY GENERIC OBJECT","00000000",1,1,[]]);
-
-                client.tutorcall.progressCheck(client,message,46,["text","Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
-              client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-              return;
-            } else if(room[5][selectRoom][4][0][4].length == 1){
-              if(room[5][selectRoom][4][1][4].length == 1){
-                sdex[selectDex][0]="CARVED TOTEM";
-sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                //sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0]));
-                sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][1][4][0],"&&"));
-
-                client.tutorcall.progressCheck(client,message,46,["text","Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
-                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-                return;
-              } else{
-                sdex[selectDex][0]="CARVED TOTEM";
-sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                //sdex[selectDex][4].push(funcall.andand(client,room[5][selectRoom][4][0][4][0],funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
-                sdex[selectDex][4].push(funcall.alchemize(client,room[5][selectRoom][4][0][4][0],funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"))
-
-                client.tutorcall.progressCheck(client,message,46,["text","Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
-                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-                return;
-              }
-            } else {
-              if(room[5][selectRoom][4][1][4].length == 1){
-                sdex[selectDex][0]="CARVED TOTEM";
-sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                //meme
-                //sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0]),room[5][selectRoom][4][1][4][0]));
-                sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][0],"||"),room[5][selectRoom][4][1][4][0],"&&"));
-
-                client.tutorcall.progressCheck(client,message,46,["text","Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
-                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-                return;
-              } else{
-                sdex[selectDex][0]="CARVED TOTEM";
-sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/810335171467280394/CARVED_DOWEL.png"
-                //sdex[selectDex][4].push(funcall.andand(client,funcall.oror(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1]),funcall.oror(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1])));
-
-                sdex[selectDex][4].push(funcall.alchemize(client,funcall.alchemize(client,room[5][selectRoom][4][0][4][0],room[5][selectRoom][4][0][4][1],"||"),funcall.alchemize(client,room[5][selectRoom][4][1][4][0],room[5][selectRoom][4][1][4][1],"||"),"&&"));
-
-                client.tutorcall.progressCheck(client,message,46,["text","Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
-                client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
-                return;
-              }
-            }
-            break;
+              firstCardContents = funcall.alchemize(client, room[5][selectRoom][4][0][4][0], room[5][selectRoom][4][0][4][1], "||");
+              break;
           }
+
+          if (room[5][selectRoom][4].length == 1) { // One card in the lathe
+            if (prepunched) { // Tutorial progress if using a card with a single item
+              client.tutorcall.progressCheck(client, message, 29, ["text", "Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
+              if (client.userMap.get(userid, "tutor")[32]) {
+                client.tutorcall.progressCheck(client, message, 46);
+              }
+            } else { // Tutorial progress if using a card with two items
+              client.tutorcall.progressCheck(client, message, 46, ["text", "Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
+            }
+            sdex[selectDex][4].push(firstCardContents);
+          } else { // Two cards in the lathe
+            switch (room[5][selectRoom][4][1][4].length) { // If the second card has two items in it, we need to combine them with alchemy
+              case 1:
+                secondCardContents = room[5][selectRoom][4][1][4][0];
+                break;
+              case 2:
+                secondCardContents = funcall.alchemize(client, room[5][selectRoom][4][1][4][0], room[5][selectRoom][4][1][4][1], "||");
+                break;
+            }
+
+            client.tutorcall.progressCheck(client, message, 46, ["text", "Carved the CRUXITE DOWEL into a CARVED TOTEM"]);
+            sdex[selectDex][4].push(funcall.alchemize(client, firstCardContents, secondCardContents, "&&"));
+          }
+          client.charcall.setAnyData(client, userid, charid, sdex, "sdex");
         } else {
           message.channel.send("That is not a valid item!")
           return;
@@ -261,9 +213,9 @@ sdex[selectDex][5]="https://media.discordapp.net/attachments/808757312520585227/
             let newName = ``;
             for(let i=0; i<room[5][selectRoom][4][0][4].length; i++){
               if(i>0){
-                newName+=`// `;
+                newName+=` // `;
               }
-              newName+=`${room[5][selectRoom][4][0][4][i][0]} `
+              newName+=`${room[5][selectRoom][4][0][4][i][0]}`
 
             }
             if(newName.length>32){
