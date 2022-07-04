@@ -177,7 +177,7 @@ exports.run = (client, message, args) => {
             client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
 
-            client.tutorcall.progressCheck(client,message,30,["text","Registered totem to the alchemy athenaeum!"]);
+            client.tutorcall.progressCheck(client,message,30,["text","Registered totem to the alchemy atheneum!"]);
 
             /*
             message.channel.send(`Placed the CARVED TOTEM onto the pedestal on the ALCHEMITER`)

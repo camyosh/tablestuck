@@ -70,7 +70,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
     registry.unshift(item1);
     client.charcall.setAnyData(client,userid,charid,registry,"registry");
-    message.channel.send(`Registered the ${item1[0]} to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
+    message.channel.send(`Registered the ${item1[0]} to the alchemy atheneum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;
 
@@ -129,7 +129,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
     registry.unshift(newItem);
     client.charcall.setAnyData(client,userid,charid,registry,"registry");
-    message.channel.send(`Registered the resulting item to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
+    message.channel.send(`Registered the resulting item to the alchemy atheneum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;
 
@@ -180,7 +180,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
     registry.unshift(newItem);
     client.charcall.setAnyData(client,userid,charid,registry,"registry");
-    message.channel.send(`Registered the resulting item to the alchemy athenaeum! Alchemize it using the ${client.auth.prefix}alchemize command`);
+    message.channel.send(`Registered the resulting item to the alchemy atheneum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
     return;
 /*

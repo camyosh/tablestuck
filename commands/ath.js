@@ -59,7 +59,7 @@ exports.run = (client, message, args) => {
 
        async function dexCheck(){
 
-       const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,[],"alchemy athenaeum");
+       const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,[],"alchemy atheneum");
 
          message.channel.send({files: [attachment]});
        }
@@ -84,7 +84,7 @@ exports.run = (client, message, args) => {
    } else if(args[0]=="delete"){
 
      if(!args[1]){
-       message.channel.send("Select an item from the athenaeum to delete!");
+       message.channel.send("Select an item from the atheneum to delete!");
        return;
      }
 
@@ -95,14 +95,14 @@ exports.run = (client, message, args) => {
      }
 
      let deleted = registry.splice(value,1);
-     message.channel.send(`Deleted the ${deleted[0][0]} from the athenaeum!`);
+     message.channel.send(`Deleted the ${deleted[0][0]} from the atheneum!`);
 
      client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
    } else if(args[0]=="push"){
 
      if(!args[1]){
-       message.channel.send("Select an item to push to the front of your athenaeum!");
+       message.channel.send("Select an item to push to the front of your atheneum!");
        return;
      }
 
@@ -117,7 +117,7 @@ exports.run = (client, message, args) => {
 
      registry.unshift(temp[0]);
 
-     message.channel.send(`moved the ${temp[0][0]} to the first position in the athenaeum!`);
+     message.channel.send(`moved the ${temp[0][0]} to the first position in the atheneum!`);
      client.charcall.setAnyData(client,userid,charid,registry,"registry");
 
    } else if(args[0]=="tier"){
@@ -127,7 +127,7 @@ exports.run = (client, message, args) => {
      }
 
      if(!args[1]){
-       message.channel.send(`Select an item in the ATHENAEUM to change the TIER of using the INSTANT ALCHEMITER'S ENLARGER. \n${client.auth.prefix}athenaeum tier [item] [tier]`);
+       message.channel.send(`Select an item in the ATHENEUM to change the TIER of using the INSTANT ALCHEMITER'S ENLARGER. \n${client.auth.prefix}atheneum tier [item] [tier]`);
        return;
      }
 
@@ -160,7 +160,7 @@ exports.run = (client, message, args) => {
 
    } else if(args[0]=="rename"){
      if(!args[1]){
-       message.channel.send(`Select an item in the ATHENAEUM to change the NAME of that item. \n${client.auth.prefix}athenaeum name [item] [desired name]`);
+       message.channel.send(`Select an item in the ATHENEUM to change the NAME of that item. \n${client.auth.prefix}atheneum name [item] [desired name]`);
        return;
      }
 
@@ -203,7 +203,7 @@ exports.run = (client, message, args) => {
 
    }
  }else{
-   message.channel.send("To see and interact with your athenaeum, you need to be in a room with an ALCHEMITER or COMPUTER with SBURB installed");
+   message.channel.send("To see and interact with your atheneum, you need to be in a room with an ALCHEMITER or COMPUTER with SBURB installed");
    return;
  }
 
