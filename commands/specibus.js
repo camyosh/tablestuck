@@ -1,7 +1,10 @@
 const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 //simple ping command to check if the bot is online.
-
+exports.type = "strife";
+exports.desc = "Check weapon information";
+exports.use = `">specibus" lets you see all of your currently equipped weapons.
+">specibus [number]" inspects an item in your specibus.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

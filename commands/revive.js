@@ -1,4 +1,6 @@
-
+exports.type = "sburb";
+exports.desc = "Revive a dead player";
+exports.use = `">revive" brings a dead character in the same room as you back to life, if they meet the right conditions.`;
 exports.run = (client, message, args) => {
 
 if(client.configMap.get(message.guild.id).options[0].selection!=1){

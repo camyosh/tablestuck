@@ -1,7 +1,9 @@
 const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 //simple ping command to check if the bot is online.
-
+exports.type = "sylladex";
+exports.desc = "Change name of item"
+exports.use = `">rename [number] [name]" will rename the numbered item in your sylladex to the new name.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

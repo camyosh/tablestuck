@@ -3,7 +3,10 @@ const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 
 //command to alchemize an item from a totem in the alchemiter
-
+exports.type = "alchemy";
+exports.desc = "Faster alchemy unlocked by by Instant Alchemizer";
+exports.use = `">quickalch [number]" lets you use the Instant Alchemizer to add an item in your sylladex to your atheneum.
+">quickalch [number] &&/||/and/or [number]" lets you combine two items in your invetory in alchemy, either using AND AND (&&,and) alchemy or OR OR (| |,or) alchemy. The resulting item is added to your atheneum.`;
 exports.run = (client, message, args) => {
 
 //defining the costs to alchemize the item based on the tier

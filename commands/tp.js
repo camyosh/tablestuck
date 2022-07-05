@@ -1,3 +1,6 @@
+exports.type = "author";
+exports.desc = "Teleport to a character";
+exports.use = `">tp [player ping]" teleports your character to the character controlled by the person you ping.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

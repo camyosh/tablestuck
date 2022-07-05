@@ -1,5 +1,7 @@
 const tierBD = [[1,2],[1,4],[1,6],[1,8],[1,10],[1,12],[2,16],[2,20],[2,24],[3,30],[3,36],[4,40],[5,50],[6,60],[7,70],[8,80],[10,100]];
-
+exports.type = "sylladex";
+exports.desc = "Eat an item"
+exports.use = `">consume [number]" lets you eat an item in your sylladex if it's consumable.`
 exports.run = (client,message,args) =>{
 
   var userid = message.guild.id.concat(message.author.id);

@@ -1,3 +1,10 @@
+exports.type = "author";
+exports.desc = "Take control of a creature";
+exports.use = `">possess" brings up a list of creatures in the room, as well as any creatures on your speed dial list.
+">possess [number]" switches your control from your current character to the target, giving access to all their items, movement, and actions.
+">possess cancel" will return to your default possession target, usually your first speeddial target.
+">possess default" sets your currently possessed body as your default body as long as it's on your speedial list.
+">possess add/remove [number]" adds or removes a creature from your speedial list, to be accessed and possessed from anywhere.`;
 exports.run = (client, message, args) => {
 
 var userid = message.guild.id.concat(message.author.id);

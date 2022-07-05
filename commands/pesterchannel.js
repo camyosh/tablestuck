@@ -1,3 +1,6 @@
+exports.type = "character";
+exports.desc = "Changes your pesterchannel"
+exports.use = `">pesterchannel" rebinds the channel the message is sent in as your new pesterchannel.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

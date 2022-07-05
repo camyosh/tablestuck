@@ -1,3 +1,6 @@
+exports.type = "character";
+exports.desc = "Sets your profile picture"
+exports.use = `">pic [url]" changes the picture that appears when people >check you (not your chumpic).`
 exports.run = (client, message, args) => {
 
 let pic = args[0];

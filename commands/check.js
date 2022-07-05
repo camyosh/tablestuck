@@ -1,3 +1,7 @@
+exports.type = "character";
+exports.desc = "Checks character information"
+exports.use = `">check" prints information on your own character.
+">check [number]" prints information on a character in your current room.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

@@ -1,7 +1,9 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "sylladex";
+exports.desc = "Remove items from your sylladex"
+exports.use = `">eject [number]" will eject the selected item from your sylladex, and put it as the last item in the current room.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

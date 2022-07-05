@@ -1,3 +1,7 @@
+exports.type = "author";
+exports.desc = "Spawn underlings or NPCS";
+exports.use = `">spawn [underling type]" spawns an underling in your current location of the specified type (imp,ogre,basilisk etc).
+">spawn [underling type] [grist type]" changes the grist type from random to the specified type.`;
 exports.run = function(client,message,args){
 
 if(!client.funcall.dmcheck(client,message)){

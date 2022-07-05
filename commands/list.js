@@ -1,6 +1,8 @@
 
 const typeList = ["EMPTY","DUNGEON","CONSTRUCT","RETURN NODE","VILLAGE","HOUSE","GATE"];
-
+exports.type = "strife";
+exports.desc = "Checks which creatures are in the room";
+exports.use = `">list" prints all the creatures in your current room, or their acting order and vitality when used in strife.`;
 exports.run = (client,message,args) =>{
 
   var userid = message.guild.id.concat(message.author.id);

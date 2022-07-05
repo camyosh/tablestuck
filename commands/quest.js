@@ -1,3 +1,8 @@
+exports.type = "sburb";
+exports.desc = "Manage quests";
+exports.use = `">quest" prints a list of any current quests you have.
+">quest accept" lets you accept a quest after you are offered one.
+">quest [number]" gives you specific details and progress notes on a numbered quest.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

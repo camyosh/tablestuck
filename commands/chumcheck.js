@@ -1,3 +1,6 @@
+exports.type = "character";
+exports.desc = "Check on a chum"
+exports.use = `">chumcheck [number]" checks a chum on your list, like the >check command.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

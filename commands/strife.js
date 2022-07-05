@@ -1,7 +1,9 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "strife";
+exports.desc = "Starts strife";
+exports.use = `">strife" begins strife between you and all underlings in the room, or join a strife already in progress at your location.`;
 exports.run = (client, message, args) => {
 
     let target = message.author;

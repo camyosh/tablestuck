@@ -5,7 +5,10 @@
 
 const gateReq = [0,100,200,400,800,1600,3200,6400];
 const gateName = ["FIRST","SECOND","THIRD","FOURTH","FIFTH","SIXTH","SEVENTH"];
-
+exports.type = "sburb";
+exports.desc = "Enter a gate, ring, or dungeon";
+exports.use = `">enter" either lists all gates you have unlocked if you are in a house, or uses and enterance or exit to a dungeon or return node. This also includes crossing the lunar chain and entering the castle.
+">enter [number]" enters the given gate number if it's unlocked and you're in a house.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

@@ -6,7 +6,11 @@ const strifecall = require("../modules/strifecall.js");
 const tierBD = [[1,2],[1,4],[1,6],[1,8],[1,10],[1,12],[2,16],[2,20],[2,24],[3,30],[3,36],[4,40],[5,50],[6,60],[7,70],[8,80],[10,100]];
 const tierAv = [1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
 const tList = ["MELEE","RANGED","MAGIC","NA"];
-
+exports.type = "sylladex";
+exports.desc = "Interact with equipped armor"
+exports.use = `">armor" will display your currently equipped armor, if there is one.
+">armor equip [number]" will equip the number item in your sylladex if it's armor.
+">armor eject" will drop your currently equipped armor in your current room.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

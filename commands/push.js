@@ -1,3 +1,6 @@
+exports.type = "strife";
+exports.desc = "Skips a turn";
+exports.use = `">push" will pass a turn of a character that hasn't taken an action in a while, for either AFK players or the occational broken underling.`;
 exports.run = (client, message, args) => {
 
   var charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");

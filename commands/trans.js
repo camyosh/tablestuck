@@ -1,3 +1,6 @@
+exports.type = "sburb";
+exports.desc = "Use Transportalizers";
+exports.use = `">trans [number]" will select a transportalizer of the given number in the current room and send you to it's bound location.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

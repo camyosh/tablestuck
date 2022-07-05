@@ -1,7 +1,10 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "sburb";
+exports.desc = "Build your client's house up";
+exports.use = `">build" tells you how much grist has been expended on your client's house, and how much it takes to reach the next gate.
+">build [number]" expends the given number of build grist from the client to build up their house.`;
 exports.run = (client, message, args) => {
 
   //define variables to determine required grist to reach each gate

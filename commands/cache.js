@@ -1,7 +1,9 @@
 const funcall = require("../modules/funcall.js");
 //displays player's grist total
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "sburb";
+exports.desc = "Checks your client player's grist cache";
+exports.use = `">cache" lists your client's grist count and grist cap.`;
 exports.run = (client, message, args) => {
   //check for computer with sburb installed
 

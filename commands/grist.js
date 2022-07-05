@@ -1,6 +1,8 @@
 
 //simple ping command to check if the bot is online.
-
+exports.type = "alchemy";
+exports.desc = "Lists grist count";
+exports.use = `">grist" displays your current amount of each kind of grist, as well as your current grist cap.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

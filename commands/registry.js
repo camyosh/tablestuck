@@ -1,5 +1,8 @@
 const phernalia = ["cruxtruder", "totem lathe", "alchemiter", "pre-punched card", "punch designix", "instant alchemiter", "transportalizer"]
-
+exports.type = "sburb";
+exports.desc = "Checks which items can be deployed";
+exports.use = `">registry" shows a combined list of everything your client has alchemized as well as all deployable machines.
+">registry page [page number]" goes to another page of registry.`;
 exports.run = async function(client, message, args) {
 
   var userid = message.guild.id.concat(message.author.id);

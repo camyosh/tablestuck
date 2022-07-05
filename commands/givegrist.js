@@ -1,7 +1,9 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "author";
+exports.desc = "Gives grist to a player";
+exports.use = `">givegrist [type of grist][# of grist given][ping of target player]" gives a player any amount of grist. Can exceed normal grist cap.`;
 exports.run = (client, message, args) => {
 
   if(!client.funcall.dmcheck(client,message)){

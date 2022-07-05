@@ -1,3 +1,6 @@
+exports.type = "sburb";
+exports.desc = "Prototype your sprite";
+exports.use = `">prototype [number]" will prototype your sprite with an item from your sylladex, as long as you are in the room with it.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

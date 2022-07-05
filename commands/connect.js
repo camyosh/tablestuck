@@ -1,7 +1,11 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "sburb";
+exports.desc = "Connect as a player's server";
+exports.use = `">connect" will list your client code, and if you have any current server or client.
+">connect [client code]" sets you as someone's server player, and them as your client.
+">connect break" removes yourself from being both a client or a server.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

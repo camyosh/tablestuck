@@ -1,3 +1,6 @@
+exports.type = "author";
+exports.desc = "Teleport another character to you";
+exports.use = `">tphere [player ping]" will teleport a character to your currently possessed character.`;
 exports.run = (client, message, args) => {
 
   if(!client.funcall.dmcheck(client,message)){

@@ -1,3 +1,6 @@
+exports.type = "character";
+exports.desc = "Talk to chums"
+exports.use = `">pester [pestertag] [message]" sends a message to a chum on your chumroll.`
 exports.run = async function(client, message, args){
 
   var userid = message.guild.id.concat(message.author.id);

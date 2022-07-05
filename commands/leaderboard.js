@@ -1,3 +1,6 @@
+exports.type = "character";
+exports.desc = "Shows top stats";
+exports.use = `">leaderboard" displays the players in the session who have the highest scores in certain tasks.`;
 exports.run = (client, message, args) => {
 
 let leaderAdd = message.guild.id+"mediumlead";

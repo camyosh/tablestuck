@@ -1,7 +1,10 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "author";
+exports.desc = "Gives a creature an item";
+exports.use = `>giveitem[code of item being given] [tier of item] [number of items being given] [ping of target player] [item name(optional)]
+gives an item to any creature that can hold an item (most creatures).`;
 exports.run = (client, message, args) => {
 
   if(!client.funcall.dmcheck(client,message)){

@@ -1,3 +1,6 @@
+exports.type = "character";
+exports.desc = "Set character name"
+exports.use = `">name [new name]" changes your character's name (as shown in >check). Seperate from pesterhandle.`
 exports.run = (client, message, args) => {
 
   if(!args[0]){

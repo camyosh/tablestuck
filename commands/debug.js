@@ -1,3 +1,6 @@
+exports.type = "author";
+exports.desc = "Access various debug functions";
+exports.use = `">debug" prints a list of debug actions.`;
 exports.run = function(client,message,args){
 
 if(!client.funcall.dmcheck(client,message)){

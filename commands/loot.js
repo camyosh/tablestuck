@@ -1,3 +1,6 @@
+exports.type = "sylladex";
+exports.desc = "Reclaim what belongs to you"
+exports.use = `">loot" lets you reclaim your items from your dead body if you are in it's location.`
 exports.run = (client, message, args,merge = false) => {
 
   var userid = message.guild.id.concat(message.author.id);

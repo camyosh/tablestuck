@@ -3,7 +3,11 @@ const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 
 const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
-
+exports.type = "sburb";
+exports.desc = "Place items in your client's house";
+exports.use = `">deploy" lists all items availible to deploy.
+">deploy [number]" will prompt you to select a room to deploy the selected item.
+">deploy [number] [room]" will deploy the item into the selected room if your client has the grist for it.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

@@ -2,7 +2,9 @@ const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 
 //used to allocate a weaponkind to the strife specibus
-
+exports.type = "sylladex";
+exports.desc = "Sets a weapon type"
+exports.use = `">allocate [number]" sets an item with a valid weapontype from your sylladex to a blank Strife Specibus. All players start with one, but more can be found throughout the game.`
 exports.run = (client, message, args) => {
 
 

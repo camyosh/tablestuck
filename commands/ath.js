@@ -1,3 +1,12 @@
+exports.type = "alchemy";
+exports.desc = "List of all things alchemized"
+exports.use = `">ath" lists all items you've alchemized or added to your atheneum through other means.
+">ath [number]" lets you inspect an item in your atheneum.
+">ath delete [number]" deletes an item from your atheneum.
+">ath push [number]" moves an item in your atheneum to the front of the list for easy use.
+">ath rename [number]" renames and item in your atheneum.
+">ath tier [number] [tier number]" changes the tier of an item in your atheneum to the specified number, for cheaper experimentation with traits.
+">ath page [pagenumber]" changes the page of your atheneum.`
 exports.run = (client, message, args) => {
 
 

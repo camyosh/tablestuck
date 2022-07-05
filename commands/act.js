@@ -1,6 +1,10 @@
 const tierDmg = [1,5,7,10,14,19,25,32,40,49,59,70,82,95,109,124,140];
 //Used to take actions during STRIFE
-
+exports.type = "strife";
+exports.desc = "Take action in strife";
+exports.use = `">act" lists all actions that are availible for you to take. Actions cost Stamina to take, and greyed out actions can't be taken.
+"act [number]" lists all valid targets, much like the >list command.
+"act [action number] [target number]" takes the chosen action against the chosen target.`;
 exports.run = (client, message, args) => {
 
 //Check if player is in STRIFE

@@ -1,3 +1,7 @@
+exports.type = "sylladex";
+exports.desc = "Checks information on traits"
+exports.use = `">trait" will display any currently active traits and your progress to the set bonus.
+">trait [trait name]" lets you see what any named trait does, as well as it's set bonus.`
 exports.run = (client, message, args) => {
 
   if(!args[0]){

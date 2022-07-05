@@ -1,7 +1,9 @@
 const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
 const strifecall = require("../modules/strifecall.js");
-
+exports.type = "sylladex";
+exports.desc = "Equip a weapon"
+exports.use = `">equip [number]" equips a weapon from your sylladex, as long as you have an allocated Strife Specibus of the same weaponkind. The number of weapons you can equip starts at 2, and can be expanded by using Strife Cards.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

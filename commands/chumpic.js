@@ -1,3 +1,6 @@
+exports.type = "character";
+exports.desc = "Set your chumpicture"
+exports.use = `">chumpic [url]" sets what image appears for other people when you pester them or >say (not your image for >check).`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

@@ -1,3 +1,6 @@
+exports.type = "sburb";
+exports.desc = "Displays a map of the area";
+exports.use = `">map" prints a map of the land or moon you're on.`;
 exports.run = function(client, message, args) {
 
 var userid = message.guild.id.concat(message.author.id);

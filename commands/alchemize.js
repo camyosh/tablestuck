@@ -1,3 +1,8 @@
+exports.type = "alchemy";
+exports.desc = "Alchemize an item"
+exports.use = `">alchemize" lists all items in the atheneum ready for printing, much like >ath.
+">alchemize [number]" creates the numbered item, if you have enough grist to make it.
+">alchemize [number] [count]" alchemizes multiple copies of the same item. Good for the mass production of cards. Limited to 16 at a time.`
 const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 

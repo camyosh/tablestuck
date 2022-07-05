@@ -1,3 +1,9 @@
+exports.type = "character";
+exports.desc = "List all chums"
+exports.use = `">chumroll" shows a list of all your chums you can pester.
+">chmroll add" prints a list of all active chumhandles in a session.
+">chumroll add [chumhandle/chumtag]" adds a chum to your chumroll.
+">chumroll page [number]" lets you switch between multiple pages of chums.`
 exports.run = async function(client, message, args) {
 
 

@@ -1,3 +1,6 @@
+exports.type = "character";
+exports.desc = "Chage your chumhandle"
+exports.use = `">chumhandle [chumhandle] [chumtag]" sets your chumhandle and chumtag. They don't need to follow normal chumhandle rules.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

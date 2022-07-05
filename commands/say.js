@@ -1,3 +1,6 @@
+exports.type = "sburb";
+exports.desc = "Speak to others in your location";
+exports.use = `">say [message]" will send any other characters in the same room as you your message.`;
 exports.run = async function(client, message, args){
 
   var userid = message.guild.id.concat(message.author.id);
