@@ -1148,8 +1148,8 @@ let aspectindex = ["TIME","SPACE","LIGHT","VOID","LIFE","DOOM","BREATH","BLOOD",
 const titlebar = await client.Canvas.loadImage("./miscsprites/TITLE.png");
 const numbers = await client.Canvas.loadImage("./miscsprites/NUMBERS.png");
 const tiles = await client.Canvas.loadImage("./miscsprites/MAPSHEET.png");
-const gate = await client.Canvas.loadImage("./miscsprites/DRGATE.gif");
-const plgate = await client.Canvas.loadImage("./miscsprites/PLGATE.gif");
+const gate = await client.Canvas.loadImage("./miscsprites/GATE.png");
+const plgate = await client.Canvas.loadImage("./miscsprites/PLGATE.png");
 
 
 client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`fontstuck`});
@@ -1252,8 +1252,9 @@ for(i=0;i<11;i++){
           ctx.drawImage(tiles,0,32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
          if(tile==2){
            ctx.drawImage(plgate,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
-         }
+         } else {
            ctx.drawImage(gate,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);//gate
+         }
          break;
         default:
           ctx.drawImage(tiles,0,32*tile,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
@@ -1307,8 +1308,9 @@ for(i=-1;i<2;i++){
          ctx.drawImage(tiles,0,32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
         if(tile==2){
           ctx.drawImage(plgate,(64*(j+1)),(64*(i+1)),64,64);
-        }
+        } else {
           ctx.drawImage(gate,(64*(j+1)),(64*(i+1)),64,64);//gate
+        }
         break;
          default:
           ctx.drawImage(tiles,0,32*tile,32,32,(64*(j+1)),(64*(i+1)),64,64);
