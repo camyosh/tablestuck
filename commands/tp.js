@@ -19,7 +19,7 @@ exports.run = (client, message, args) => {
       message.channel.send("NPC's don't have a home to teleport to!");
       return;
     }
-  client.funcall.move(client,message,charid,local,["h",0,0,0,local[4]],false,`Teleporting home!\nEntering a `);
+  client.funcall.move(client,message,charid,local,["h",0,0,0,client.charcall.charData(client,charid,"owner")],false,`Teleporting home!\nEntering a `);
   return;
   }
 
