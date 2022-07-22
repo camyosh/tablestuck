@@ -360,12 +360,34 @@ exports.run = (client, message, args) => {
 
       }
 
-
        else {
         message.channel.send("You can't use that item!")
         return;
       }
-    } else {
+    }
+	  else if(sdex[selectDex][3] > 1) {
+		  if(sdex.length == client.charcall.charData(client,charid,"cards"))
+		  {
+			message.channel.send(`You don't have any available cards, so you can't split that stack!`);
+			return;
+		  }
+		  let newStackSize = Math.floor(sdex[selectDex][3] / 2);
+		  sdex[selectDex][3] -= newStackSize;
+		  
+		  let newItem = [];
+		  for(let i=0;i<sdex[selectDex].length;i++){
+			if(i==3){
+			  newItem.push(newStackSize);
+			}else{
+			  newItem.push(sdex[selectDex][i]);
+			}
+		  }
+		  sdex.unshift(newItem);
+		  client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
+		  message.channel.send(`You have split your **${newItem[0].toUpperCase()}** stack in half!`);
+		  return;
+	  }
+	  else {
       message.channel.send("You can't use that item!");
       return;
     }
