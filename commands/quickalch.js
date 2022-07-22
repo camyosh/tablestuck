@@ -65,7 +65,15 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
     item1 = sdex[select1].slice();
     item1[4] = [];
+	
+	function checkCode(checkItem){
+	  return checkItem[1] == item1[1];
+	}
 
+	if(registry.findIndex(checkCode)!= -1){
+	  message.channel.send("You've already registered an item with that code!");
+	  return;
+	}
 
     if(item1[1].charAt(0) == "/"||item1[1]=="########"){
       message.channel.send("You can't alchemize that!");
@@ -143,14 +151,23 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
       newItem[1] = newItem[1][0] + "!" + newItem[1].substr(2);
 
     }
+	
+	function checkNewCode(checkItem){
+	  return checkItem[1] == newItem[1];
+	}
+	
+	if(registry.findIndex(checkNewCode)!= -1){
+	  message.channel.send("You've already registered an item with that code!");
+	  return;
+	}
 
     registry.unshift(newItem);
     client.charcall.setAnyData(client,userid,charid,registry,"registry");
     message.channel.send(`Registered the resulting item to the alchemy atheneum! Alchemize it using the ${client.auth.prefix}alchemize command`);
     client.funcall.tick(client,message);
-    return;
 	
     /*cost1=tierCost[newItem[2]];
+
     cost2=tierCost[newItem[2]-1];
 
     if(newItem[1].charAt(1)=="!"){
@@ -173,7 +190,10 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     client.landMap.set(land,sec,local[0]);
 
     message.channel.send(`Expended **${client.emojis.cache.get(client.grist["build"].emoji)} ${cost1}** and **${client.emojis.cache.get(client.grist[grist].emoji)} ${cost2}** to alchemize the **${newItem[0]}**`);
-  funcall.actionCheck(client,message,"alchemized");*/
+    funcall.actionCheck(client,message,"alchemized");
+
+*/
+    return;
 
 }else{
     client.tutorcall.progressCheck(client,message,42,["text","To QUICK ALCHEMIZE, you must be in a room with an INSTANT ALCHEMITER."]);
