@@ -499,7 +499,7 @@ return;
       message.channel.send(`Looks like your conditional immortality saves you from perishing forever, though it'll take some time to get up again. You can ${client.auth.prefix}revive yourself in 5 minutes.`);
       return;
     } else {
-      message.channel.send(`You've fallen in combat, and though you reached godtier, your life still hangs in the ballance. Call out to your Author, and they will ${client.auth.prefix}revive you if your death was not Heroic or Just.`);
+      message.channel.send(`You've fallen in combat, and though you reached godtier, your life still hangs in the balance. Call out to your Author, and they will ${client.auth.prefix}revive you if your death was not Heroic or Just.`);
       return;
     }
   } else {
