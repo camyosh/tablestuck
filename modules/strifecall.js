@@ -842,7 +842,7 @@ if(ping!="NONE"){
 }
 
 exports.pass = function(client, message, local) {
-  setTimeout(passTurn,1500,client,message,local);
+  passTurn(client,message,local);
 }
 
 exports.start = function(client, message, local) {
@@ -2152,8 +2152,7 @@ if(list[active[ik]][3] < 1){
   setTimeout(kill,1000,client,message,local,active[ik],init[turn][0]);
 }else{
   if(bounceCheck && active[ik]==target){
-    setTimeout(act,2000,client,message,local,"aggrieve",active[ik]);
-    client.strifeMap.set(strifeLocal,Date.now()+3000,"time");
+    act(client,message,local,"aggrieve",active[ik]);
     }
   }
 }
