@@ -8,7 +8,7 @@ if(!client.funcall.dmcheck(client,message)){
   return;
 }
 
-let debugOptions = [["enter","enters your medium and builds you up to your max."],["god","toggles godtier(DISABLED)"],["quest","completes all current quests"]];
+let debugOptions = [["enter","enters your medium and builds you up to your max."],["god","toggles godtier(DISABLED)"],["quest","completes all current quests"],["capgrist","Fixes NaN grist by setting it to the grist cap."]];
 if(!args[0]){
   let msg =`This is a quick command for various debug functions that don't fit in config. Accepted arguments:`;
   for(let i=0;i<debugOptions.length;i++){
@@ -54,6 +54,31 @@ if(args[0].toLowerCase()==="quest"){
     return;
   }
   message.channel.send("This creature can't do quests.");
+  return;
+}
+if(args[0].toLowerCase()==="capgrist"){
+  var gristCheck = client.charcall.allData(client,userid,charid,"grist");
+  const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
+  let rung = client.sburbMap.get(sburbid,"rung");
+  
+  let max = 0;
+  if (client.sburbMap.get(sburbid,`godtier`)) {
+	if(args[1].toLowerCase()!="confirm")
+	{
+        message.channel.send(`I can only help godtiers by setting their invalid grist levels to 0. If you're sure, add a 'confirm' to that.`);
+		return;
+	}
+  }
+  else {
+    max = client.cache(rung);
+  }
+  
+  for(i=0;i<gristTypes.length;i++){
+	if(isNaN(gristCheck[i])||isNull(gristCheck[i])||gristCheck[i]<0||(max > 0 && gristCheck[i]>max))
+		gristCheck[i] = max;
+  }
+  client.charcall.setAnyData(client,userid,charid,gristCheck,"grist");
+  message.channel.send("Fixed. Probably.");
   return;
 }
 
