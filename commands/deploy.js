@@ -82,28 +82,24 @@ exports.run = (client, message, args) => {
 
 //if no arguments, display list of deployable items
 
-  if(!args[0]) {
+if(!args[0] || args[0] == "page") {
 
-    if(!args[1] || args[1] == "page"){
-      let page = 0;
-      if (args[2]&&args[1] == "page") {
-        page = parseInt(args[2], 10) - 1;
-        if (isNaN(page)||page<0) {
-          message.channel.send("That is not a valid page number!");
-          return;
-        }
-      }
+	let page = 0;
+	if (args[1]&&args[0] == "page") {
+		page = parseInt(args[1], 10) - 1;
+		if (isNaN(page)||page<0) {
+		message.channel.send("That is not a valid page number!");
+		return;
+		}
+	}
+	
+	async function dexCheck(){
+		const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,defCost,"phernalia registry");
+		client.tutorcall.progressCheck(client,message,19,["img",attachment]);
+	}
 
-      async function dexCheck(){
-
-      const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,defCost,"phernalia registry");
-
-        client.tutorcall.progressCheck(client,message,19,["img",attachment]);
-      }
-
-      dexCheck();
-      return;
-  }
+	dexCheck();
+	return;
 }
 
   //if no second argument, display list of rooms in players house
