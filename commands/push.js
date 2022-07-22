@@ -27,6 +27,6 @@ exports.run = (client, message, args) => {
   let list = client.strifeMap.get(strifeLocal,"list");
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let init = client.strifeMap.get(strifeLocal,"init");
-    client.strifecall.pass(client,message,local);
+    client.strifecall.pass(client,list[init[turn][0]][1],message,local);
 
 }

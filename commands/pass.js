@@ -21,6 +21,6 @@ exports.run = (client, message, args) => {
 
   message.channel.send("Passing turn...");
   client.tutorcall.progressCheck(client,message,36);
-  client.strifecall.pass(client,message,local);
+  client.strifecall.pass(client,charid,message,local);
   //setTimeout(client.strifecall.pass,3000,client,message,local);
 }

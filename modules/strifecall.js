@@ -52,17 +52,22 @@ function inflict(client, message, local, list, target, chance, status, attacker)
 return alert;
 }
 
-function passTurn(client, message, local) {
+function passTurn(client,charid,message,local) {
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
   //chack if the strife exists in the database
   if(client.strifeMap.has(strifeLocal)){
-
   //Retrieve information from strife database
   let turn = client.strifeMap.get(strifeLocal,"turn");
   let list = client.strifeMap.get(strifeLocal,"list");
   let init = client.strifeMap.get(strifeLocal,"init");
+  //quick catch to ignore any pass if it's not the creature's turn, if it passes other similar checks.
+  console.log(`The passing creature is ${charid}.\n it's ${list[init[turn][0]][1]}'s turn right now.'`)
+if(client.charcall.charData(client,charid,"pos")!=init[turn][0]){
+    console.log("stopped a pass from a creature out of turn!");
+    return;
+  }
 
   //check if the character whos turn it is has any status effects
   for(let i=(list[init[turn][0]][7].length - 1);i>=0;i--){
@@ -83,7 +88,6 @@ function passTurn(client, message, local) {
 
   let active = client.strifeMap.get(strifeLocal,"active");
 
-  let charid = list[init[turn][0]][1];
 
   let msg;
 
@@ -416,7 +420,7 @@ let removed = [active.splice(active.indexOf(pos),1),sec[local[1]][local[2]][2][l
 client.strifeMap.set(strifeLocal,active,"active");
 client.landMap.set(local[4],sec,local[0]);
 if(init[turn][0] == pos){
-  setTimeout(passTurn,1500,client,message,local);
+  setTimeout(passTurn,1500,client,charid,message,local);
 }
 return;
 } else {
@@ -441,7 +445,7 @@ return;
     client.charcall.setAnyData(client,userid[0],charid,false,"strife");
     client.charcall.setAnyData(client,userid[0],charid,list[pos][3],"vit");
     if(init[turn][0] == pos){
-      setTimeout(passTurn,1500,client,message,local);
+      setTimeout(passTurn,1500,client,charid,message,local);
     }
   }
 }
@@ -832,17 +836,17 @@ if(ping!="NONE"){
 
     }
     let action = actionList[Math.floor(Math.random()*actionList.length)];
-    act(client,message,local,action,heartTarg);
+    act(client,charid,message,local,action,heartTarg);
     }
 
   if(client.charcall.charData(client,list[init[turn][0]][1],"control").length<1){
-    setTimeout(npcTurn,1500,client,message,local);
+    setTimeout(npcTurn,1500,client,message,list[init[turn][0]][1],local);
   }
 
 }
 
-exports.pass = function(client, message, local) {
-  passTurn(client,message,local);
+exports.pass = function(client,charid,message,local) {
+  passTurn(client,charid,message,local);
 }
 
 exports.start = function(client, message, local) {
@@ -993,7 +997,7 @@ exports.underRally = function(client, local) {
   }
 
 
-  function act(client,message,local,action,target){
+  function act(client,charid,message,local,action,target){
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 //if strife database does not exist, cancel code
     if(!client.strifeMap.has(strifeLocal)){
@@ -1004,14 +1008,20 @@ exports.underRally = function(client, local) {
     let bounceCheck = false;
 
     client.strifeMap.set(strifeLocal,Date.now(),"time");
-
-    if(action=="arbitrate"){
-      action = actionList[Math.floor(Math.random()*actionList.length)];
-    }
     var turn = client.strifeMap.get(strifeLocal,"turn");
     let list = client.strifeMap.get(strifeLocal,"list");
     let active = client.strifeMap.get(strifeLocal,"active");
     let init = client.strifeMap.get(strifeLocal,"init");
+
+    //quick catch to ignore any action if it's not the creature's turn, if it passes other similar checks.
+    if(client.charcall.charData(client,charid,"pos")!=init[turn][0]){
+      console.log("stopped an action from a creature out of turn!");
+      return;
+    }
+    if(action=="arbitrate"){
+      action = actionList[Math.floor(Math.random()*actionList.length)];
+    }
+
     let alert = ``;
     let dmgLvl = client.actionList[action].dmg;
 
@@ -2152,7 +2162,7 @@ if(list[active[ik]][3] < 1){
   setTimeout(kill,1000,client,message,local,active[ik],init[turn][0]);
 }else{
   if(bounceCheck && active[ik]==target){
-    act(client,message,local,"aggrieve",active[ik]);
+    act(client,charid,message,local,"aggrieve",active[ik]);
     }
   }
 }
@@ -2162,8 +2172,8 @@ if(list[active[ik]][3] < 1){
 }
   }
 
-  exports.act = function(client,message,local,action,target){
-    act(client,message,local,action,target);
+  exports.act = function(client,charid,message,local,action,target){
+    act(client,charid,message,local,action,target);
   }
 
 
@@ -2535,10 +2545,10 @@ exports.spawn = function(client,message,underling,pregrist = false){
   }
 
 }*/
-exports.npcTurn = function(client, message, local) {
-  npcTurn(client,message,local);
+exports.npcTurn = function(client, message, charid, local) {
+  npcTurn(client,message,charid,local);
 }
-function npcTurn(client, message, local){
+function npcTurn(client, message, charid, local){
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
@@ -2637,16 +2647,16 @@ function npcTurn(client, message, local){
         target = targetList[Math.floor((Math.random() * targetList.length))];
 
       }
-      setTimeout(act,1500,client,message,local,action,target)
-        setTimeout(npcTurn,3000,client,message,local);
+      setTimeout(act,1000,client,charid,message,local,action,target)
+        setTimeout(npcTurn,2000,client,message,charid,local);
 
 
     }else{
-      setTimeout(passTurn,1500,client,message,local);
+      setTimeout(passTurn,1000,client,charid,message,local);
     }
 }else{
   console.log("A dead NPC tried to take a turn, or an unpossessed player had their turn passed!");
-    setTimeout(passTurn,1500,client,message,local);
+    setTimeout(passTurn,1500,client,charid,message,local);
 }
 
 }

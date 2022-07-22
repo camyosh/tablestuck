@@ -376,7 +376,7 @@ return;
   }
   list[pos][6].push(""+select+equip);
   client.strifeMap.set(strifeLocal,list,"list")
-  client.strifecall.act(client,message,local,action[select],active[target]);
+  client.strifecall.act(client,charid,message,local,action[select],active[target]);
   client.tutorcall.progressCheck(client,message,35);
 }
 }
