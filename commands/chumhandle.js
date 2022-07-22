@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
   }
   var sburbid = client.charcall.sburbGet(client,charid);
   if(!args[0]){
-    message.channel.send(`Enter a your chumhandle and chumtag, like this: ${client.auth.prefix}chumhandle ghostlyTrickster GT`);
+    message.channel.send(`Enter your chumhandle and chumtag, like this: ${client.auth.prefix}chumhandle ghostlyTrickster GT`);
     return;
   }
 
