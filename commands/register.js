@@ -49,7 +49,10 @@ var channelCheck;
 
 //checks if the user has any charcter, player or NPC, under their control.
 if(userData.possess=="NONE"){
-  aspectChoice = chooseAspect(args[0],client,message);
+  if(args[0]!=undefined)
+  {
+    aspectChoice = chooseAspect(args[0],client,message);
+  }
   if(!aspectChoice) return;
 }
 //checks to see if the currently possessed creature is an NPC, not a player.
@@ -91,7 +94,7 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
     //gets the location of the dream tower.
     var towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
 
-  //startTime is used to keep track of how long resgistration takes, for debugging purposes.
+  //startTime is used to keep track of how long registration takes, for debugging purposes.
   var startTime = Date.now();
   console.log(`Start time is ${Date.now()-startTime}`);
 
