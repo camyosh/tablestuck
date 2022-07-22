@@ -61,6 +61,47 @@ if(area[0]==4){
   }
   let choice = parseInt(args[0],10);
   if(isNaN(choice)){
+	if(!args[1]){
+		message.channel.send("That is not a valid shop item!");
+		return;
+	}
+	switch(args[0].toLowerCase())
+	{
+		case "price":
+			choice = parseInt(args[1],10);
+			if(isNaN(choice)){
+				message.channel.send("That is not a valid shop item!");
+				return;
+			}
+			if(choice<=0||choice>dex.length){
+				message.channel.send(`There are only ${dex.length} things to buy here! choose one of them!`);
+				return;
+			}
+			let thisPrice = client.charcall.charData(client,shopkeepId,"shopPrices")[choice-1];
+			message.channel.send(`That ${dex[choice-1][0]} costs ${thisPrice} BOONDOLLARS.`);
+			return;
+		case "inspect":
+			choice = parseInt(args[1],10);
+			if(isNaN(choice)){
+				message.channel.send("That is not a valid shop item!");
+				return;
+			}
+			if(choice<=0||choice>dex.length){
+				message.channel.send(`There are only ${dex.length} things to buy here! choose one of them!`);
+				return;
+			}
+			
+			async function itemInspect()
+			{
+				const attachment = await client.imgcall.inspect(client,message,args,3,dex[value]);
+				message.channel.send({content: "Inspecting item", files: [attachment]});
+			}
+			itemInspect()
+			return;
+		default:
+			message.channel.send("That is not a valid shop item!");
+			return;
+	}
     message.channel.send("That is not a valid shop item!");
     return;
   }
