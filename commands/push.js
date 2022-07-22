@@ -21,7 +21,7 @@ exports.run = (client, message, args) => {
   let time = client.strifeMap.get(strifeLocal,"time");
 
   if(Date.now()-time<120000&&!client.funcall.dmcheck(client,message)){
-    message.channel.send("You need to wait until 30 seconds have passed since the last action taken to force-pass the turn!");
+    message.channel.send("You need to wait until 2 minutes have passed since the last action taken to force-pass the turn!");
     return;
   }
   let list = client.strifeMap.get(strifeLocal,"list");
