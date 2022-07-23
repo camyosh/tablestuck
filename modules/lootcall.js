@@ -119,9 +119,7 @@ let actpos;
 switch(name){
   case "ALCHEMY ITEM - ITEMKIND":
   roll = randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)]
-
-  name = `ALCHEMY ITEM - ${client.kind[client.codeCypher[0][client.captchaCode.indexOf(roll)]]}`
-
+    name = `ALCHEMY ITEM - ${client.kind[client.codeCypher[0][client.captchaCode.indexOf(roll)]].toUpperCase()}`
   code = `${roll}///////`;
   break;
   case "ALCHEMY ITEM - GRIST":
@@ -130,7 +128,7 @@ switch(name){
 
   code = `/${roll}//////`;
 
-  name = `ALCHEMY ITEM - ${client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(roll)]]}`
+	  name = `ALCHEMY ITEM - ${client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(roll)]].toUpperCase()}`
   break;
   case "ALCHEMY ITEM - ACTION":
   actpos=Math.floor(Math.random()*4)+4;
@@ -139,7 +137,7 @@ switch(name){
     (i!=actpos?code+="/":code += roll);
   }
 
-  name = `ALCHEMY ITEM - ${client.action[client.weaponkinds["hammerkind"].t][client.codeCypher[4][client.captchaCode.indexOf(roll)]]}`
+	  name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
   break;
   case "ALCHEMY ITEM - RARE ACTION":
 
@@ -150,7 +148,7 @@ switch(name){
     (i!=actpos?code+="/":code += roll);
   }
 
-  name = `ALCHEMY ITEM - ${client.action[client.weaponkinds["hammerkind"].t][client.codeCypher[4][client.captchaCode.indexOf(roll)]]}`
+	  name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
 
   break;
   case "ALCHEMY ITEM - TRAIT":
@@ -162,14 +160,11 @@ switch(name){
     if(Math.floor(Math.random()*2)==0){
       code+=roll1
       code+="/";
-
-      name = `ALCHEMY ITEM - ${client.traitList[client.captchaCode.indexOf(roll1)]}`
-
+      name = `ALCHEMY ITEM - ${client.traitList[client.captchaCode.indexOf(roll1)].toUpperCase()}`
     }else{
       code+="/";
       code+=roll2
-
-      name = `ALCHEMY ITEM - ${client.traitList2[client.captchaCode.indexOf(roll2)]}`
+      name = `ALCHEMY ITEM - ${client.traitList2[client.captchaCode.indexOf(roll2)].toUpperCase()}`
     }
     code+="////"
   break;
@@ -182,11 +177,11 @@ switch(name){
     if(Math.floor(Math.random()*2)==0){
       code+=roll1
       code+="/";
-      name = `ALCHEMY ITEM - ${client.traitList[client.captchaCode.indexOf(roll1)]}`
+      name = `ALCHEMY ITEM - ${client.traitList[client.captchaCode.indexOf(roll1)].toUpperCase()}`
     }else{
       code+="/";
       code+=roll2
-      name = `ALCHEMY ITEM - ${client.traitList2[client.captchaCode.indexOf(roll2)]}`
+      name = `ALCHEMY ITEM - ${client.traitList2[client.captchaCode.indexOf(roll2)].toUpperCase()}`
     }
     code+="////"
   break;

@@ -1,9 +1,9 @@
 exports.type = "sburb";
 exports.desc = "Buy items";
-exports.use = `">shop" lets you see what a merchant at your location has in stock.
-">shop [number]" will buy the chosen item if you have the boondollars for it.
-">shop price [number]" will tell you the price of the chosen item.
-">shop inspect [number]" will allow you to inspect the chosen item more thoroughly.`;
+exports.use = `";shop" lets you see what a merchant at your location has in stock.
+";shop [number]" will buy the chosen item if you have the boondollars for it.
+";shop price [number]" will tell you the price of the chosen item.
+";shop inspect [number]" will allow you to inspect the chosen item more thoroughly.`;
 exports.run = (client, message, args) => {
 
 
