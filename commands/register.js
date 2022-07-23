@@ -34,7 +34,7 @@ character. Each time a DM makes a character, the number of character is added on
 to the end of the sburbid.
 **FOR THE MOMENT, charCount IS NEVER INCREASED. TO BE CHANGED LATER.***/
 
-//since the game is built for re-registering for easy testing, mulitple characters
+//since the game is built for re-registering for easy testing, multiple characters
 //cannot be made at this time.
 var sburbid;
 if(userData.charCount>0){
@@ -47,7 +47,7 @@ var aspectChoice;
 var channelCheck;
 //T2: checks if the player has registered before and acts accordingly.
 
-//checks if the user has any charcter, player or NPC, under their control.
+//checks if the user has any character, player or NPC, under their control.
 if(userData.possess=="NONE"){
   if(args[0]!=undefined)
   {
@@ -82,6 +82,7 @@ else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
 }
 await register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels);
 }
+
 //---- Start of Execution ----------------------------------------------------------------------------------------------------
 async function register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels){
   //initializes some basic variables needed for registration.
@@ -105,6 +106,8 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
     } else {
       client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
     }*/
+
+  userData.aspect = aspectChoice;
 
   await createTutorial(client,message,userid,userData);
   var chumData = await chumCheck(client,message,userid,sburbid,chumhandle,chumtag);

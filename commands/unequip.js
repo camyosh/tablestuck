@@ -39,7 +39,7 @@ exports.run = (client, message, args) => {
 	{
 		case "TRINKET":
 		{
-			if(trinket == "NONE")
+			if(trinket == "NONE" || armor.length <= 0)
 			{
 				message.channel.send(`You don't have a trinket equipped!`);
 				return;
@@ -53,13 +53,12 @@ exports.run = (client, message, args) => {
 		case "ARMOR":
 		case "ARMOUR":
 		{
-			if(armor == "NONE")
+			if(armor == "NONE" || armor.length <= 0)
 			{
 				message.channel.send(`You don't have armor equipped!`);
 				return;
 			}
 			unequipItem = armor.splice(0,1)[0];
-
 			mess += `${unequipItem[0]} from your ARMOR SLOT`;
 		}
 		break;
