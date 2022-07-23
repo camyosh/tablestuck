@@ -495,11 +495,11 @@ exports.alchCheck = async function (client, message, page, args, sdex, priceSet 
 
         if(client.traitcall.itemTrait(client,sdex[j],"EXQUISITE")){
 
-          gristType = 14;
+          gristType = 13;
 
         }
 
-        if(gristType ==14){
+        if(gristType ==13){
 
           cost*=2;
           cost2*=2
