@@ -50,7 +50,7 @@ if(client.configMap.get(message.guild.id).options[0].selection!=1){
   if(godtiered&&!client.charcall.charData(client,charid,"alive")&&client.configMap.get(message.guild.id).options[6].selection==0){
       let s = client.charcall.allData(client,userid,charid,"sleepTimer");
       let t = Date.now();
-      if(t-s>20000){
+      if(t-s>300000){
         client.charcall.setAnyData(client,userid,charid,true,"alive");
         client.charcall.setAnyData(client,userid,charid,client.charcall.allData(client,userid,charid,"gel")*.5,"vit");
         message.channel.send("You get up off the ground, your wounds mostly healed. You can't think of sleeping for a while either...");
