@@ -84,7 +84,7 @@ if(args[0]=="set"){
   let target = client.transMap.get(message.guild.id+dex[value][1].substring(4),"target");
 
   if(target.length==0){
-    message.channel.send(`This transportalizer does not have a target set! To set the transportalizer to a target, do ${client.auth.prefix}transportalizer ${value+1} set [target code]\n\n This transportalizer's code is ${dex[value][1].substring(4)}`)
+    message.channel.send(`This transportalizer does not have a target set! To set the transportalizer to a target, do ${client.auth.prefix}trans set ${value+1} [target code]\n\n This transportalizer's code is ${dex[value][1].substring(4)}`)
     return;
   }
 
