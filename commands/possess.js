@@ -13,7 +13,6 @@ var charid = client.userMap.get(userid,"possess");
 let local = client.charcall.charData(client,charid,"local");
 
 let sec = client.landMap.get(local[4],local[0]);
-let occList = sec[local[1]][local[2]][2][local[3]][4];
 let speeddial = client.userMap.get(userid,"speeddial");
 
 if(!client.funcall.dmcheck(client,message)){
@@ -25,6 +24,7 @@ if(!args[0]){
   let msg = ``;
   let msg2 = ``;
   let i;
+  let occList = sec[local[1]][local[2]][2][local[3]][4];
 
   for(i=0;i<occList.length;i++){
       msg += `**[${i+1}]** **${client.charcall.charData(client,occList[i][1],"name").toUpperCase()}**\n\n`;
@@ -107,6 +107,8 @@ if(args[0]=="default"){
   client.charcall.setAnyData(client,userid,charid,speeddial,"speeddial");
   return;
 }
+else
+{
 let isSpeed = false;
 let target;
   value = parseInt(args[0], 10) - 1;
@@ -115,6 +117,7 @@ let target;
     return;
   }
 
+  let occList = sec[local[1]][local[2]][2][local[3]][4];
   if(value >= occList.length+speeddial.length || value < 0) {
     message.channel.send("That target doesn't exist!")
     return;
@@ -149,6 +152,8 @@ let target;
   checkDreaming(client,userid,charid);
   message.channel.send(`Now possessing ${client.charcall.charData(client,target,"name").toUpperCase()}!`);
 }
+}
+
 function checkStrife(client,message,charid){
   if(client.charcall.charData(client,charid,"strife")&&client.charcall.charData(client,charid,"faction")!="player"){
     let local = client.charcall.charData(client,charid,"local");

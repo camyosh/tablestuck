@@ -8,7 +8,13 @@ if(!client.funcall.dmcheck(client,message)){
   return;
 }
 
-let debugOptions = [["enter","enters your medium and builds you up to your max."],["god","toggles godtier(DISABLED)"],["quest","completes all current quests"],["capgrist","Fixes NaN grist by setting it to the grist cap."]];
+let debugOptions = [
+	["enter","enters your medium and builds you up to your max."],
+	["god","toggles godtier(DISABLED)"],
+	["quest","completes all current quests"],
+	["capgrist","gives NaN grist by setting it to the grist cap."],
+	["boons","Gives you a number of BOONDOLLARS equal to the provided amount."]
+];
 if(!args[0]){
   let msg =`This is a quick command for various debug functions that don't fit in config. Accepted arguments:`;
   for(let i=0;i<debugOptions.length;i++){
@@ -79,6 +85,20 @@ if(args[0].toLowerCase()==="capgrist"){
   }
   client.charcall.setAnyData(client,userid,charid,gristCheck,"grist");
   message.channel.send("Fixed. Probably.");
+  return;
+}
+if(args[0].toLowerCase()==="boons"){
+  // Stupid JS syntax where value is set to 0 if undefined or something.
+  let currentBoons = client.charcall.allData(client,userid,charid,"b") || 0;
+  if(args[1] && !isNaN(parseInt(args[1],10)))
+  {
+	  currentBoons += parseInt(args[1],10);
+	  client.charcall.setAnyData(client,userid,charid,currentBoons,"b");
+      message.channel.send(`Your boondollars are now ${currentBoons}.`);
+  }
+  else{
+    message.channel.send(`You need to provide a numerical amount of boondollars to add.`);
+  }
   return;
 }
 
