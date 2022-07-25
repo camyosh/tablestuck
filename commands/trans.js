@@ -23,7 +23,7 @@ if(!args[0]){
 if(args[0]=="set"){
 
   if(!args[1]){
-    message.channel.send(`Select a transportalizer in the room followed by the code of the target transportalizer you would like to set it's target as!\n\nFor example: ${client.auth.prefix}transportalize set 1 AAAA`);
+    message.channel.send(`Select a transportalizer in the room followed by the code of the target transportalizer you would like to set it's target as!\n\nFor example: ${client.auth.prefix}trans set 1 AAAA`);
     return;
   }
 
