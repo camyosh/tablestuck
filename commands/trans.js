@@ -48,17 +48,17 @@ if(args[0]=="set"){
     return;
   }
 
-  if(!client.transMap.has(message.guild.id+args[2].toUpperCase)){
+  if(!client.transMap.has(message.guild.id+args[2].toUpperCase())){
     message.channel.send(`No transportalizer with that code exists in this session!`);
     return;
   }
 
-  if(dex[value][1].substring(4)==args[2].toUpperCase){
+  if(dex[value][1].substring(4)==args[2].toUpperCase()){
     message.channel.send("You can't set a transportalizer to target itself!");
     return;
   }
 
-  client.transMap.set(message.guild.id+dex[value][1].substring(4),message.guild.id+args[2].toUpperCase,"target");
+  client.transMap.set(message.guild.id+dex[value][1].substring(4),message.guild.id+args[2].toUpperCase(),"target");
   message.channel.send("Set transportalizer target!");
   return;
 
