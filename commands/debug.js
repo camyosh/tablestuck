@@ -65,8 +65,15 @@ if(args[0].toLowerCase()==="quest"){
 
 var messagePing = message.mentions.members.first();
 var targetID = messagePing ? message.guild.id.concat(messagePing.id) : userid;
-charid = client.userMap.get(targetID,"possess");
-sburbid = client.charcall.allData(client,targetID,charid,"owner");
+if(client.userMap.has(targetID))
+{
+	charid = client.userMap.get(targetID,"possess");
+}
+else
+{
+    message.channel.send(`That person isn't registered!`);
+    return;
+}
 
 if(args[0].toLowerCase()==="capgrist"){
   var gristCheck = client.charcall.allData(client,targetID,charid,"grist");
@@ -76,17 +83,11 @@ if(args[0].toLowerCase()==="capgrist"){
     return;
   }
 
-  if(sburbid == "NONE")
-  {
-    message.channel.send(`That one simply cannot be helped right now.`);
-    return;
-  }
-
   const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
   let max = 0;
-  if(sburbid && !client.sburbMap.get(sburbid,`godtier`))
+  if((client.charcall.allData(client, targetID, charid, "godtier") != true) && (client.charcall.allData(client, targetID, charid, "rung") != "NONE"))
   {
-    max = client.cache(client.sburbMap.get(sburbid,"rung"));
+    max = client.cache(client.charcall.allData(client, targetID, charid, "rung"));
   }
   else if((!args[1] || args[1].toLowerCase()!="confirm") && (!args[2] || args[2].toLowerCase()!="confirm"))
   {
