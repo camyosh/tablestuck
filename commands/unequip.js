@@ -3,10 +3,10 @@ const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 exports.type = "sylladex";
 exports.desc = "Unequip a weapon or other equipment"
-exports.use = `";unequip" removes your currently-equipped weapon from your specibus and puts it in your sylladex.
-";unequip [number]" unequips the indicated weapon from your specibus.
-";unequip trinket" unequips your equipped trinket instead.
-";unequip armor" unequips your equipped armor instead.`
+exports.use = `">unequip" removes your currently-equipped weapon from your specibus and puts it in your sylladex.
+">unequip [number]" unequips the indicated weapon from your specibus.
+">unequip trinket" unequips your equipped trinket instead.
+">unequip armor" unequips your equipped armor instead.`
 exports.run = (client, message, args) => {
 	var userid = message.guild.id.concat(message.author.id);
 	var charid = client.userMap.get(userid,"possess");
@@ -25,7 +25,7 @@ exports.run = (client, message, args) => {
 	{
 		//make sure strife specibus is allocated
 		if(kinds.length == 0){
-			message.channel.send(`Your STRIFE SPECIBUS is not currently allocated to a weaponkind, you must ${client.auth.prefix}allocate it before you can ${client.auth.prefix}equip a weapon!`);
+			message.channel.send(`Your STRIFE SPECIBUS is not currently allocated to a weaponkind, you must ${client.auth.prefix}allocate it before you can ${client.auth.prefix}equip a weapon, much less unequip one!`);
 			return;
 		};
 		
@@ -39,7 +39,7 @@ exports.run = (client, message, args) => {
 	{
 		case "TRINKET":
 		{
-			if(trinket == "NONE" || armor.length <= 0)
+			if(trinket == "NONE" || trinket.length <= 0)
 			{
 				message.channel.send(`You don't have a trinket equipped!`);
 				return;
@@ -66,7 +66,7 @@ exports.run = (client, message, args) => {
 		default:
 		{
 			if(kinds.length == 0){
-				message.channel.send(`Your STRIFE SPECIBUS is not currently allocated to a weaponkind, you must ${client.auth.prefix}allocate it before you can ${client.auth.prefix}equip a weapon!`);
+				message.channel.send(`Your STRIFE SPECIBUS is not currently allocated to a weaponkind, you must ${client.auth.prefix}allocate it before you can ${client.auth.prefix}equip a weapon, much less unequip one!`);
 				return;
 			};
 			  
@@ -89,7 +89,7 @@ exports.run = (client, message, args) => {
 				  return;
 				}
 				
-				//decrease card count, place strife card in house
+				//decrease card count, specify a normal strife card as the returned item
 				scards-=1;
 				unequipItem=["STRIFE CARD","////////",1,1,[]];
 			  } else {
@@ -102,6 +102,7 @@ exports.run = (client, message, args) => {
 
 	sdex.unshift(unequipItem);
 	
+	// If the sylladex is over capacity, pop off a card, like always.
 	if(sdex.length > client.charcall.charData(client,charid,"cards"))
 	{
 		let dropItem = sdex.pop();

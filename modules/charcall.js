@@ -122,7 +122,7 @@ exports.hasData = function(client,charid,datatype){
    if(occList.length>0){
      for(i=0;i<occList.length;i++){
        if(occList[i][0]==false&&client.charcall.charData(client,occList[i][0],"control")=="NONE"){
-		   if(client.charcall.charData(client,occList[i][1],"faction") != "consort")
+		   if(client.charcall.charData(client,occList[i][1],"faction") == "underling")
 		   {
 			 check=true;
 			 return check;

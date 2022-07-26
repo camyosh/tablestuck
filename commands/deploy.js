@@ -7,7 +7,8 @@ exports.type = "sburb";
 exports.desc = "Place items in your client's house";
 exports.use = `">deploy" lists all items availible to deploy.
 ">deploy [number]" will prompt you to select a room to deploy the selected item.
-">deploy [number] [room]" will deploy the item into the selected room if your client has the grist for it.`;
+">deploy [number] [room]" will deploy the item into the selected room if your client has the grist for it.
+">deploy page [number]" will allow you to see additional items in the deploy list.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
