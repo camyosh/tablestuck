@@ -12,8 +12,8 @@ let debugOptions = [
 	["enter","enters your medium and builds you up to your max."],
 	["god","toggles godtier(DISABLED)"],
 	["quest","completes all current quests"],
-	["capgrist","gives NaN grist by setting it to the grist cap."],
-	["boons","Gives you a number of BOONDOLLARS equal to the provided amount."]
+	["capgrist","fixes NaN grist by setting it to the grist cap."],
+	["boons","gives a number of BOONDOLLARS equal to the provided amount."]
 ];
 if(!args[0]){
   let msg =`This is a quick command for various debug functions that don't fit in config. Accepted arguments:`;
@@ -62,43 +62,65 @@ if(args[0].toLowerCase()==="quest"){
   message.channel.send("This creature can't do quests.");
   return;
 }
+
+var messagePing = message.mentions.members.first();
+var targetID = messagePing ? message.guild.id.concat(messagePing.id) : userid;
+charid = client.userMap.get(targetID,"possess");
+sburbid = client.charcall.allData(client,targetID,charid,"owner");
+
 if(args[0].toLowerCase()==="capgrist"){
-  var gristCheck = client.charcall.allData(client,userid,charid,"grist");
-  const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
-  let rung = client.sburbMap.get(sburbid,"rung");
-  
-  let max = 0;
-  if (client.sburbMap.get(sburbid,`godtier`)) {
-	if(args[1].toLowerCase()!="confirm")
-	{
-        message.channel.send(`I can only help godtiers by setting their invalid grist levels to 0. If you're sure, add a 'confirm' to that.`);
-		return;
-	}
+  var gristCheck = client.charcall.allData(client,targetID,charid,"grist");
+  if(gristCheck == "NONE")
+  {
+    message.channel.send(`That person isn't currently possessing anything that has grist.`);
+    return;
   }
-  else {
-    max = client.cache(rung);
+
+  if(sburbid == "NONE")
+  {
+    message.channel.send(`That one simply cannot be helped right now.`);
+    return;
+  }
+
+  const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
+  let max = 0;
+  if(sburbid && !client.sburbMap.get(sburbid,`godtier`))
+  {
+    max = client.cache(client.sburbMap.get(sburbid,"rung"));
+  }
+  else if((!args[1] || args[1].toLowerCase()!="confirm") && (!args[2] || args[2].toLowerCase()!="confirm"))
+  {
+        message.channel.send(`I can only help that player by setting their invalid grist levels to 0. If you're sure, add a 'confirm' to that.`);
+        return;
   }
   
   for(i=0;i<gristTypes.length;i++){
 	if(isNaN(gristCheck[i])||isNull(gristCheck[i])||gristCheck[i]<0||(max > 0 && gristCheck[i]>max))
 		gristCheck[i] = max;
   }
-  client.charcall.setAnyData(client,userid,charid,gristCheck,"grist");
+  client.charcall.setAnyData(client,targetID,charid,gristCheck,"grist");
   message.channel.send("Fixed. Probably.");
   return;
 }
+
 if(args[0].toLowerCase()==="boons"){
   // Stupid JS syntax where value is set to 0 if undefined or something.
-  let currentBoons = client.charcall.allData(client,userid,charid,"b") || 0;
+  let currentBoons = client.charcall.allData(client,targetID,charid,"b") || 0;
+  
   if(args[1] && !isNaN(parseInt(args[1],10)))
   {
 	  currentBoons += parseInt(args[1],10);
-	  client.charcall.setAnyData(client,userid,charid,currentBoons,"b");
-      message.channel.send(`Your boondollars are now ${currentBoons}.`);
+  }
+  else if(args[2] && !isNaN(parseInt(args[2], 10)))
+  {
+	  currentBoons += parseInt(args[2],10);
   }
   else{
     message.channel.send(`You need to provide a numerical amount of boondollars to add.`);
+    return;
   }
+  client.charcall.setAnyData(client,targetID,charid,currentBoons,"b");
+  message.channel.send(`Your boondollars are now ${currentBoons}.`);
   return;
 }
 
