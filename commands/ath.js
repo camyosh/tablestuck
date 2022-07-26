@@ -54,7 +54,7 @@ exports.run = (client, message, args) => {
       }
     }
 
-	if(quick == false && client.traitcall.traitCheck(client,charid,"COMPUTER")[1])
+	if(client.traitcall.traitCheck(client,charid,"COMPUTER")[1])
 	{
 		quick = true;
 	}
