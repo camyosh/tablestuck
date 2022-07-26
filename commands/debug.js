@@ -105,8 +105,13 @@ if(args[0].toLowerCase()==="capgrist"){
 }
 
 if(args[0].toLowerCase()==="boons"){
-  // Stupid JS syntax where value is set to 0 if undefined or something.
-  let currentBoons = client.charcall.allData(client,targetID,charid,"b") || 0;
+  let currentBoons = client.charcall.allData(client,targetID,charid,"b");
+  
+  if(currentBoons == "NONE")
+  {
+    message.channel.send(`That character doesn't have a PORKHOLLOW!`);
+    return;
+  }
   
   if(args[1] && !isNaN(parseInt(args[1],10)))
   {
