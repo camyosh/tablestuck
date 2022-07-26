@@ -49,10 +49,7 @@ var channelCheck;
 
 //checks if the user has any character, player or NPC, under their control.
 if(userData.possess=="NONE"){
-  if(args[0]!=undefined)
-  {
-    aspectChoice = chooseAspect(args[0],client,message);
-  }
+  aspectChoice = chooseAspect(args[0],client,message);
   if(!aspectChoice) return;
 }
 //checks to see if the currently possessed creature is an NPC, not a player.
@@ -193,6 +190,10 @@ function chooseAspect(input,client,message){
     } else {
     aspectChoice=input.toUpperCase();
     }
+  }
+  //sets the aspect based on registration choice (TO BE REMOVED?)
+  if(aspectChoice === "random"){
+    aspectChoice = client.aspects[Math.floor((Math.random() * 11))];
   }
   return aspectChoice;
 }
@@ -469,17 +470,10 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
   client.playerMap.set(`d${sburbid}`,dreamSheet);
   client.sburbMap.set(sburbid,sburbSheet);
 }
-async function finishLandGen(client,message,sburbid,aspectChoice,gristSet,def){
+async function finishLandGen(client,message,sburbid,aspect,gristSet,def){
   //determines where all the gates on the land will be.
   var gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 
-  //sets the land's aspect based on registration choice (TO BE REMOVED)
-  var aspect;
-  if(aspectChoice === "random"){
-  aspect = client.aspects[Math.floor((Math.random() * 11))];
-  } else {
-  aspect = aspectChoice;
-  }
   //makes all 4 lands and saves them to variables.
   var s1 = await client.landcall.landGen(client,0,gategen[0],message,aspect,gristSet);
   var s2 = await client.landcall.landGen(client,1,gategen[1],message,aspect,gristSet);
