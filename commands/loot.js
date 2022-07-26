@@ -37,7 +37,7 @@ if(merge||matching&&client.charcall.allData(client,userid,charid,"revived")){
   let sec = client.landMap.get(local[4],local[0]);
   let occList = sec[local[1]][local[2]][2][local[3]][4];
 
-let simpleMerge = ["port","cards","scards"];
+let simpleMerge = ["port","cards","scards", "b"];
 for(let j=0;j<simpleMerge.length;j++){
   client.charcall.setAnyData(client,userid,charid,client.charcall.charData(client,sleepid,simpleMerge[j])+client.charcall.charData(client,charid,simpleMerge[j]),simpleMerge[j]);
   client.charcall.setAnyData(client,userid,sleepid,0,simpleMerge[j]);

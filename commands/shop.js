@@ -1,7 +1,9 @@
 exports.type = "sburb";
 exports.desc = "Buy items";
 exports.use = `">shop" lets you see what a merchant at your location has in stock.
-">shop [number]" will buy the chosen item if you have the boondollars for it.`;
+">shop [number]" will buy the chosen item if you have the boondollars for it.
+">shop price [number]" will tell you the price of the chosen item.
+">shop inspect [number]" will allow you to inspect the chosen item more thoroughly.`;
 exports.run = (client, message, args) => {
 
 
@@ -61,8 +63,38 @@ if(area[0]==4){
   }
   let choice = parseInt(args[0],10);
   if(isNaN(choice)){
-    message.channel.send("That is not a valid shop item!");
-    return;
+	if(!args[1]){
+		message.channel.send("That is not a valid shop item!");
+		return;
+	}
+	
+	choice = parseInt(args[1],10);
+	if(isNaN(choice)){
+		message.channel.send("That is not a valid shop item!");
+		return;
+	}
+	if(choice<=0||choice>dex.length){
+		message.channel.send(`There are only ${dex.length} things to buy here! choose one of them!`);
+		return;
+	}
+	switch(args[0].toLowerCase())
+	{
+		case "price":
+			let thisPrice = client.charcall.charData(client,shopkeepId,"shopPrices")[choice-1];
+			message.channel.send(`That ${dex[choice-1][0]} costs ${thisPrice} BOONDOLLARS.`);
+			return;
+		case "inspect":
+			async function itemInspect()
+			{
+				const attachment = await client.imgcall.inspect(client,message,args,3,dex[choice-1]);
+				message.channel.send({content: "Inspecting item", files: [attachment]});
+			}
+			itemInspect()
+			return;
+		default:
+			message.channel.send("That is not a valid shop item!");
+			return;
+	}
   }
   if(choice<=0||choice>dex.length){
     message.channel.send(`There are only ${dex.length} things to buy here! choose one of them!`);

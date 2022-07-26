@@ -54,6 +54,11 @@ exports.run = (client, message, args) => {
       }
     }
 
+	if(client.traitcall.traitCheck(client,charid,"COMPUTER")[1])
+	{
+		quick = true;
+	}
+
    if(alchemiter==true||client.traitcall.compTest(client,message,charid,room)[1]){
 
      if(!args[0] || args[0] == "page"){

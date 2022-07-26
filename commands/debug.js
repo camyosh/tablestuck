@@ -8,7 +8,13 @@ if(!client.funcall.dmcheck(client,message)){
   return;
 }
 
-let debugOptions = [["enter","enters your medium and builds you up to your max."],["god","toggles godtier(DISABLED)"],["quest","completes all current quests"]];
+let debugOptions = [
+	["enter","enters your medium and builds you up to your max."],
+	["god","toggles godtier(DISABLED)"],
+	["quest","completes all current quests"],
+	["capgrist","fixes NaN grist by setting it to the grist cap."],
+	["boons","gives a number of BOONDOLLARS equal to the provided amount."]
+];
 if(!args[0]){
   let msg =`This is a quick command for various debug functions that don't fit in config. Accepted arguments:`;
   for(let i=0;i<debugOptions.length;i++){
@@ -54,6 +60,73 @@ if(args[0].toLowerCase()==="quest"){
     return;
   }
   message.channel.send("This creature can't do quests.");
+  return;
+}
+
+var messagePing = message.mentions.members.first();
+var targetID = messagePing ? message.guild.id.concat(messagePing.id) : userid;
+if(client.userMap.has(targetID))
+{
+	charid = client.userMap.get(targetID,"possess");
+}
+else
+{
+    message.channel.send(`That person isn't registered!`);
+    return;
+}
+
+if(args[0].toLowerCase()==="capgrist"){
+  var gristCheck = client.charcall.allData(client,targetID,charid,"grist");
+  if(gristCheck == "NONE")
+  {
+    message.channel.send(`That person isn't currently possessing anything that has grist.`);
+    return;
+  }
+
+  const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
+  let max = 0;
+  if((client.charcall.allData(client, targetID, charid, "godtier") != true) && (client.charcall.allData(client, targetID, charid, "rung") != "NONE"))
+  {
+    max = client.cache(client.charcall.allData(client, targetID, charid, "rung"));
+  }
+  else if((!args[1] || args[1].toLowerCase()!="confirm") && (!args[2] || args[2].toLowerCase()!="confirm"))
+  {
+        message.channel.send(`I can only help that player by setting their invalid grist levels to 0. If you're sure, add a 'confirm' to that.`);
+        return;
+  }
+  
+  for(i=0;i<gristTypes.length;i++){
+	if(isNaN(gristCheck[i])||isNull(gristCheck[i])||gristCheck[i]<0||(max > 0 && gristCheck[i]>max))
+		gristCheck[i] = max;
+  }
+  client.charcall.setAnyData(client,targetID,charid,gristCheck,"grist");
+  message.channel.send("Fixed. Probably.");
+  return;
+}
+
+if(args[0].toLowerCase()==="boons"){
+  let currentBoons = client.charcall.allData(client,targetID,charid,"b");
+  
+  if(currentBoons == "NONE")
+  {
+    message.channel.send(`That character doesn't have a PORKHOLLOW!`);
+    return;
+  }
+  
+  if(args[1] && !isNaN(parseInt(args[1],10)))
+  {
+	  currentBoons += parseInt(args[1],10);
+  }
+  else if(args[2] && !isNaN(parseInt(args[2], 10)))
+  {
+	  currentBoons += parseInt(args[2],10);
+  }
+  else{
+    message.channel.send(`You need to provide a numerical amount of boondollars to add.`);
+    return;
+  }
+  client.charcall.setAnyData(client,targetID,charid,currentBoons,"b");
+  message.channel.send(`Your boondollars are now ${currentBoons}.`);
   return;
 }
 

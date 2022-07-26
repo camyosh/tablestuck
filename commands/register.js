@@ -34,7 +34,7 @@ character. Each time a DM makes a character, the number of character is added on
 to the end of the sburbid.
 **FOR THE MOMENT, charCount IS NEVER INCREASED. TO BE CHANGED LATER.***/
 
-//since the game is built for re-registering for easy testing, mulitple characters
+//since the game is built for re-registering for easy testing, multiple characters
 //cannot be made at this time.
 var sburbid;
 if(userData.charCount>0){
@@ -47,7 +47,7 @@ var aspectChoice;
 var channelCheck;
 //T2: checks if the player has registered before and acts accordingly.
 
-//checks if the user has any charcter, player or NPC, under their control.
+//checks if the user has any character, player or NPC, under their control.
 if(userData.possess=="NONE"){
   aspectChoice = chooseAspect(args[0],client,message);
   if(!aspectChoice) return;
@@ -79,6 +79,7 @@ else if(args[0]==undefined||args[0].toLowerCase()!="confirm"){
 }
 await register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels);
 }
+
 //---- Start of Execution ----------------------------------------------------------------------------------------------------
 async function register(client,message,args,userid,userData,sburbid,aspectChoice,channelCheck,channels){
   //initializes some basic variables needed for registration.
@@ -91,7 +92,7 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
     //gets the location of the dream tower.
     var towerLocal = client.landMap.get(message.guild.id+"medium","towerLocal");
 
-  //startTime is used to keep track of how long resgistration takes, for debugging purposes.
+  //startTime is used to keep track of how long registration takes, for debugging purposes.
   var startTime = Date.now();
   console.log(`Start time is ${Date.now()-startTime}`);
 
@@ -102,6 +103,8 @@ async function register(client,message,args,userid,userData,sburbid,aspectChoice
     } else {
       client.landMap.set(message.guild.id+"medium",Date.now(),"registerTimer");
     }*/
+
+  userData.aspect = aspectChoice;
 
   await createTutorial(client,message,userid,userData);
   var chumData = await chumCheck(client,message,userid,sburbid,chumhandle,chumtag);
@@ -187,6 +190,10 @@ function chooseAspect(input,client,message){
     } else {
     aspectChoice=input.toUpperCase();
     }
+  }
+  //sets the aspect based on registration choice (TO BE REMOVED)
+  if(aspectChoice === "random"){
+    aspectChoice = client.aspects[Math.floor((Math.random() * 11))];
   }
   return aspectChoice;
 }
@@ -463,17 +470,10 @@ function createSheets(client,message,userid,sburbid,userData,armorsets,randnum,m
   client.playerMap.set(`d${sburbid}`,dreamSheet);
   client.sburbMap.set(sburbid,sburbSheet);
 }
-async function finishLandGen(client,message,sburbid,aspectChoice,gristSet,def){
+async function finishLandGen(client,message,sburbid,aspect,gristSet,def){
   //determines where all the gates on the land will be.
   var gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 
-  //sets the land's aspect based on registration choice (TO BE REMOVED)
-  var aspect;
-  if(aspectChoice === "random"){
-  aspect = client.aspects[Math.floor((Math.random() * 11))];
-  } else {
-  aspect = aspectChoice;
-  }
   //makes all 4 lands and saves them to variables.
   var s1 = await client.landcall.landGen(client,0,gategen[0],message,aspect,gristSet);
   var s2 = await client.landcall.landGen(client,1,gategen[1],message,aspect,gristSet);

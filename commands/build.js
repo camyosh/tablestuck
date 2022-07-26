@@ -31,7 +31,7 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  //if no client player is connected cancel
+  //if no client player is connected, cancel
 
   if(client.charcall.allData(client,userid,charid,"client") == "NA"||client.charcall.allData(client,userid,charid,"client") == "NONE") {
     message.channel.send("You aren't connected to a client!");

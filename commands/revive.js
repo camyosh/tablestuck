@@ -50,7 +50,7 @@ if(client.configMap.get(message.guild.id).options[0].selection!=1){
   if(godtiered&&!client.charcall.charData(client,charid,"alive")&&client.configMap.get(message.guild.id).options[6].selection==0){
       let s = client.charcall.allData(client,userid,charid,"sleepTimer");
       let t = Date.now();
-      if(t-s>20000){
+      if(t-s>300000){
         client.charcall.setAnyData(client,userid,charid,true,"alive");
         client.charcall.setAnyData(client,userid,charid,client.charcall.allData(client,userid,charid,"gel")*.5,"vit");
         message.channel.send("You get up off the ground, your wounds mostly healed. You can't think of sleeping for a while either...");
@@ -119,6 +119,11 @@ for(let i=0;i<occList.length;i++){
     let aspectList=["BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM"];
     let quickKey =[["m","n","o","p","q","r","s","t","u","v","w","x"],["D","C","B","A","9","8","7","6","5","4","3","2"]];
     let aspectIndex =aspectList.indexOf(client.landMap.get(local[4],"aspect"));
+    if(isNaN(aspectIndex) || local[4]!=client.charcall.allData(client,userid,charid,"owner") || aspectIndex == undefined)
+    {
+    	let landID = client.sburbMap.get(client.charcall.allData(client,userid,charid,"owner"), "landID");
+    	aspectIndex = aspectList.indexOf(client.landMap.get(landID, "aspect"));
+    }
     client.charcall.setAnyData(client,userid,charid,[[`GODTIER PAJAMAS`,`s!${quickKey[0][aspectIndex]}${quickKey[1][aspectIndex]}0000`,1,1,[]]],"armor")
     client.charcall.setAnyData(client,userid,charid,true,"alive");
     client.charcall.setAnyData(client,userid,charid,client.charcall.allData(client,userid,charid,"gel"),"vit");
@@ -127,7 +132,7 @@ for(let i=0;i<occList.length;i++){
       destination = client.sburbMap.get(sburbidArray[i],"wakingID");
       altdestination = client.sburbMap.get(sburbidArray[i],"wakingID");
       if(destination!=charid&&altdestination!=charid){
-        client.funcall.chanMsg(client,destination,`The sky glows as you see the ${client.landMap.get(local[4],"aspect")} symbol burn in the distance. Someone has ascended.`);
+    		client.funcall.chanMsg(client,destination,`The sky glows as you see the ${aspectList[aspectIndex]} symbol burn in the distance. Someone has ascended.`);
       }
     }
 }
