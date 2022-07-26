@@ -66,7 +66,7 @@ let charid = client.userMap.get(userid,"possess");
 //checks if the player has a character database and is alive or not.
     if(charid!="NONE"){
         reg=true;
-      if(client.charcall.charData(client,charid,"alive")){
+      if(client.charcall.charData(client,charid,"alive")==true){
         alive=true;
       } else {
         alive=false;
@@ -85,7 +85,7 @@ let charid = client.userMap.get(userid,"possess");
       return;
       }
     }
-    if(reg&&alive&&client.charcall.charData(client,charid,"strife")&&strifeAct.indexOf(command)==-1){
+    if(reg&&alive&&client.charcall.charData(client,charid,"strife")==true&&strifeAct.indexOf(command)==-1){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
       return;
     }
