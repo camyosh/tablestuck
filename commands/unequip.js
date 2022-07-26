@@ -65,11 +65,6 @@ exports.run = (client, message, args) => {
 		
 		default:
 		{
-			if(kinds.length == 0){
-				message.channel.send(`Your STRIFE SPECIBUS is not currently allocated to a weaponkind, you must ${client.auth.prefix}allocate it before you can ${client.auth.prefix}equip a weapon, much less unequip one!`);
-				return;
-			};
-			  
 			selectIndex = parseInt(args[0], 10) - 1;
 			if(isNaN(selectIndex)){
 				message.channel.send("That is not a valid argument!");

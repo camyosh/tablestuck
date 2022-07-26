@@ -191,7 +191,7 @@ function chooseAspect(input,client,message){
     aspectChoice=input.toUpperCase();
     }
   }
-  //sets the aspect based on registration choice (TO BE REMOVED?)
+  //sets the aspect based on registration choice (TO BE REMOVED)
   if(aspectChoice === "random"){
     aspectChoice = client.aspects[Math.floor((Math.random() * 11))];
   }
