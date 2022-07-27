@@ -3,9 +3,10 @@ exports.run = (client, message, args) => {
   if(!args[0]){
     let helpSend = new client.MessageEmbed()
     .setTitle("HELP MENU")
-    .addField("**INSTRUCTIONS**",`Welcome to the ${client.auth.prefix}HELP menu! From here, you can learn how to use any command in the game.
-    \nThere are two ways to navigate this menu: you can either look up a command you already know exists by name, such as "${client.auth.prefix}help inspect", or you can go through groups of commands by number, such as looking up house commands with "${client.auth.prefix}help 2".`)
-    .addField("**CATAGORIES:**","[1] Game Commands\n[2] House Commands\n[3] Sylladex Commands\n[4] Character Commands\n[5] Strife Commands\n[6]Alchemy Commands\n[7] Sburb Commands\n[8] Author Commands");
+    .addFields(
+      {name:"**INSTRUCTIONS**",value:`Welcome to the ${client.auth.prefix}HELP menu! From here, you can learn how to use any command in the game.
+    \nThere are two ways to navigate this menu: you can either look up a command you already know exists by name, such as "${client.auth.prefix}help inspect", or you can go through groups of commands by number, such as looking up house commands with "${client.auth.prefix}help 2".`},
+      {name:"**CATAGORIES:**",value:"[1] Game Commands\n[2] House Commands\n[3] Sylladex Commands\n[4] Character Commands\n[5] Strife Commands\n[6]Alchemy Commands\n[7] Sburb Commands\n[8] Author Commands"});
     message.channel.send({embeds: [helpSend]});
     return;
   }
@@ -41,7 +42,7 @@ exports.run = (client, message, args) => {
     }
     let helpCatagory = new client.MessageEmbed()
     .setTitle("HELP MENU")
-    .addField(`**${helpArray[selection].toUpperCase()} COMMANDS:**`,msg.replaceAll(`>`,`${client.auth.prefix}`));
+    .addFields({name:`**${helpArray[selection].toUpperCase()} COMMANDS:**`,value:msg.replaceAll(`>`,`${client.auth.prefix}`)});
     message.channel.send({embeds: [helpCatagory]});
     return;
   }

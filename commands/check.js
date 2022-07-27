@@ -32,14 +32,15 @@ targId = occList[value][1];
 
   listPrint = new client.MessageEmbed()
   .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
-  .addField(`**NAME**`,`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,true)
-  .addField(`**TYPE**`,`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,true)
-  .addField(`**FACTION**`,`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,true)
-  .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.allData(client,userid,targId,"gel")}`,true)
-  .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.charcall.allData(client,userid,targId,"b")}`,true)
-  .addField(`**RUNG**`,`${client.charcall.allData(client,userid,targId,"rung")}`,true)
-  .addField(`**BIO**`,`${client.charcall.allData(client,userid,targId,"bio")}`)
-  .setImage(client.charcall.allData(client,userid,targId,"img"));
+  .addFields(
+    {name:`**NAME**`,value:`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,inline:true},
+    {name:`**TYPE**`,value:`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,inline:true},
+    {name:`**FACTION**`,value:`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,inline:true},
+    {name:`**VITALITY**`,value:`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.allData(client,userid,targId,"gel")}`,inline:true},
+    {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${client.charcall.allData(client,userid,targId,"b")}`,inline:true},
+    {name:`**RUNG**`,value:`${client.charcall.allData(client,userid,targId,"rung")}`,inline:true},
+    {name:`**BIO**`,value:`${client.charcall.allData(client,userid,targId,"bio")}`})
+    .setImage(client.charcall.allData(client,userid,targId,"img"));
   client.tutorcall.progressCheck(client,message,16,["embed",listPrint]);
 
 }

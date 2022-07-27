@@ -32,15 +32,15 @@ let items = client.landMap.get(leaderAdd,"itemsCaptchalogued");
 
 let stats = new client.MessageEmbed()
 .setTitle(`**SESSION LEADERBOARD**`)
-.addField(`**EXPERIENCE GAINED**`,`${exp[0]} **-** ${exp[1]}`,true)
-.addField(`**BOONDOLLARS GAINED**`,`${boon[0]} **-** ${boon[1]}`,true)
-.addField(`**TILES DISCOVERED**`,`${tiles[0]} **-** ${tiles[1]}`,true)
-.addField(`**ITEMS ALCHEMIZED**`,`${alchemized[0]} **-** ${alchemized[1]}`,true)
-.addField(`**ITEMS CAPTCHALOGUED**`,`${items[0]} **-** ${items[1]}`,true)
-.addField(`**UNDERLNGS DEFEATED**`,`${underlings[0]} **-** ${underlings[1]}`,true)
-.addField(`**PLAYERS DEFEATED**`,`${players[0]} **-** ${players[1]}`,true)
-.addField(`**BOSSES DEFEATED**`,`${bosses[0]} **-** ${bosses[1]}`,true)
-
+.addFields(
+  {name:`**EXPERIENCE GAINED**`,value:`${exp[0]} **-** ${exp[1]}`,inline:true},
+  {name:`**BOONDOLLARS GAINED**`,value:`${boon[0]} **-** ${boon[1]}`,inline:true},
+  {name:`**TILES DISCOVERED**`,value:`${tiles[0]} **-** ${tiles[1]}`,inline:true},
+  {name:`**ITEMS ALCHEMIZED**`,value:`${alchemized[0]} **-** ${alchemized[1]}`,inline:true},
+  {name:`**ITEMS CAPTCHALOGUED**`,value:`${items[0]} **-** ${items[1]}`,inline:true},
+  {name:`**UNDERLNGS DEFEATED**`,value:`${underlings[0]} **-** ${underlings[1]}`,inline:true},
+  {name:`**PLAYERS DEFEATED**`,value:`${players[0]} **-** ${players[1]}`,inline:true},
+  {name:`**BOSSES DEFEATED**`,value:`${bosses[0]} **-** ${bosses[1]}`,inline:true});
 message.channel.send({embeds: [stats]});
 
 }

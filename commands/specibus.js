@@ -41,10 +41,11 @@ exports.run = (client, message, args) => {
   specibusPrint = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S STRIFE SPECIBUS**`)
   .setColor("#00e371")
-  .addField(`**STRIFE CARDS**`,`**x${scards}**`,true)
-  .addField(`**KIND ABSTRATUS**`,`**${kinds}**`,true)
-  .addField(`**CURRENTLY EQUIPPED**`,eq)
-  .addField("**SPECIBUS**",msg);
+  .addFields(
+    {name:`**STRIFE CARDS**`,value:`**x${scards}**`,inline:true},
+    {name:`**KIND ABSTRATUS**`,value:`**${kinds}**`,inline:true},
+    {name:`**CURRENTLY EQUIPPED**`,value:eq},
+    {name:"**SPECIBUS**",value:msg});
   client.tutorcall.progressCheck(client,message,22,["embed",specibusPrint]);
 
 

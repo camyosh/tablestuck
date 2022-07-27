@@ -32,13 +32,14 @@ targId = chumroll[value];
 
 listPrint = new client.MessageEmbed()
 .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
-.addField(`**NAME**`,`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,true)
-.addField(`**TYPE**`,`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,true)
-.addField(`**FACTION**`,`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,true)
-.addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.getAnyData(client,userid,targId,"gel")}`,true)
-.addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.charcall.getAnyData(client,userid,targId,"b")}`,true)
-.addField(`**RUNG**`,`${client.charcall.getAnyData(client,userid,targId,"rung")}`,true)
-.addField(`**BIO**`,`${client.charcall.getAnyData(client,userid,targId,"bio")}`)
+.addFields(
+  {name:`**NAME**`,value:`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,inline:true},
+  {name:`**TYPE**`,value:`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,inline:true},
+  {name:`**FACTION**`,value:`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,inline:true},
+  {name:`**VITALITY**`,value:`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.allData(client,userid,targId,"gel")}`,inline:true},
+  {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${client.charcall.allData(client,userid,targId,"b")}`,inline:true},
+  {name:`**RUNG**`,value:`${client.charcall.allData(client,userid,targId,"rung")}`,inline:true},
+  {name:`**BIO**`,value:`${client.charcall.allData(client,userid,targId,"bio")}`})
 .setImage(client.charcall.getAnyData(client,userid,targId,"img"));
 
 
@@ -46,12 +47,13 @@ listPrint = new client.MessageEmbed()
 
     listPrint = new client.MessageEmbed()
     .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
-    .addField(`**NAME**`,`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,true)
-    .addField(`**TYPE**`,`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,true)
-    .addField(`**FACTION**`,`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,true)
-    .addField(`**VITALITY**`,`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.getAnyData(client,userid,targId,"gel")}`,true)
-    .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${client.charcall.getAnyData(client,userid,targId,"b")}`,true)
-    .addField(`**RUNG**`,`${client.charcall.getAnyData(client,userid,targId,"rung")}`,true)
+    .addFields(
+      {name:`**NAME**`,value:`**${client.charcall.charData(client,targId,"name").toUpperCase()}**`,inline:true},
+      {name:`**TYPE**`,value:`**${client.charcall.charData(client,targId,"type").toUpperCase()}**`,inline:true},
+      {name:`**FACTION**`,value:`**${client.charcall.charData(client,targId,"faction").toUpperCase()}**`,inline:true},
+      {name:`**VITALITY**`,value:`${client.emojis.cache.get('735664168400584715')} ${client.charcall.charData(client,targId,"vit")} / ${client.charcall.allData(client,userid,targId,"gel")}`,inline:true},
+      {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${client.charcall.allData(client,userid,targId,"b")}`,inline:true},
+      {name:`**RUNG**`,value:`${client.charcall.allData(client,userid,targId,"rung")}`,inline:true});
     message.channel.send({embeds: [listPrint]});
   })
 

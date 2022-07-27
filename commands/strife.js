@@ -30,7 +30,7 @@ exports.run = (client, message, args) => {
   var isNPC = client.charcall.npcCheck(client,charid);
 // if player is in strife, leave strife
 
-if(client.charcall.charData(client,charid,"strife")){
+if(client.charcall.charData(client,charid,"strife")==true){
       client.strifecall.leaveStrife(client,message,local,client.charcall.charData(client,charid,"pos"));
       return;
 

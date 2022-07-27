@@ -93,7 +93,7 @@ if(!args[0] || args[0] == "page") {
 		return;
 		}
 	}
-	
+
 	async function dexCheck(){
 		const attachment = await client.imgcall.alchCheck(client,message,page,args,registry,defCost,"phernalia registry");
 		client.tutorcall.progressCheck(client,message,19,["img",attachment]);
@@ -113,7 +113,7 @@ if(!args[0] || args[0] == "page") {
     }
     roomDirect = new client.MessageEmbed()
     .setTitle(`**CLIENT HOUSE DIRECTORY**`)
-    .addField("**ROOMS**",msg);
+    .addFields({name:"**ROOMS**",value:msg});
     message.channel.send({embeds: [roomDirect]});
     return;
   }

@@ -55,10 +55,10 @@ exports.run = (client, message, args) => {
       gateSend = new client.MessageEmbed()
       .setTitle(`${client.sburbMap.get(local[4],"name").toUpperCase()}'S GATES`)
       .setColor("#29b5d3")
-      .addField("**Gate Reached**",gate.toString())
-      .addField("**Grist to next Gate**",gristRemaining.toString())
-      .addField("**Gates**",msg)
-
+      .addFields(
+        {name:"**Gate Reached**",value:gate.toString()},
+        {name:"**Grist to next Gate**",value:gristRemaining.toString()},
+        {name:"**Gates**",value:msg});
       message.channel.send({embeds: [gateSend]});
 
       return;
