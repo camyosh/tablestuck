@@ -1,6 +1,6 @@
 //declare requirments
 
-const { Client, Intents, MessageEmbed, MessageAttachment } = require('discord.js');
+const { Client, Intents, MessageEmbed, MessageAttachment, MessageActionRow, MessageButton} = require('discord.js');
 const intents = new Intents(32767);
 const client = new Client({intents: intents});
 const Enmap = require('enmap');
@@ -164,6 +164,8 @@ client.map = require("./map.json");
 client.limit = 0;
 client.Canvas = Canvas;
 client.resources = require("./resources.json");
+client.MessageActionRow = MessageActionRow
+client.MessageButton = MessageButton
 
 //starting up the bot
 

@@ -1,6 +1,4 @@
-const funcall = require("../modules/funcall.js");
 //simple ping command to check if the bot is online.
-const strifecall = require("../modules/strifecall.js");
 exports.type = "game";
 exports.desc ="Checks if the bot is online";
 exports.use = `">ping", if the bot is online, will return "PONGERS".`;
