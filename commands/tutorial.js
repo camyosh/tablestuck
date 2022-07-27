@@ -38,7 +38,7 @@ if(!args[0]){
       ctx.fillStyle = "#6a6a6a";
       msg = `[${i+1}] LOCKED`;
     }
-
+    msg = msg.replaceAll(`>`,`${client.auth.prefix}`);
     ctx.fillText(msg,Math.floor(i/15)*300+20,(i%15)*30+40);
   }
   const attachment = new client.MessageAttachment(canvas.toBuffer(), 'tutorial.png');
