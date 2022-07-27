@@ -35,14 +35,14 @@ if(!args[0]){
   }
   possessList = new client.MessageEmbed()
   .setTitle("**POSSESS LIST**")
-  .addField(`**CURRENT OCCUPANTS:**`,msg)
-  .addField(`**SPEED DIAL:**`,msg2)
-  .addField(`**CURRENTLY POSSESSING:**`,`**${client.charcall.charData(client,client.userMap.get(userid,"possess"),"name")}**\n\n
-      To stop possessing, do ${client.auth.prefix}possess cancel
-      To add to speeddial, do ${client.auth.prefix}possess add
-      To remove from speeddial, do ${client.auth.prefix}possess remove
-      To set as default character, do ${client.auth.prefix}possess default`)
-
+  .addFields(
+    {name:`**CURRENT OCCUPANTS:**`,value:msg},
+    {name:`**SPEED DIAL:**`,value:msg2},
+    {name:`**CURRENTLY POSSESSING:**`,value:`**${client.charcall.charData(client,client.userMap.get(userid,"possess"),"name")}**\n\n
+        To stop possessing, do ${client.auth.prefix}possess cancel
+        To add to speeddial, do ${client.auth.prefix}possess add
+        To remove from speeddial, do ${client.auth.prefix}possess remove
+        To set as default character, do ${client.auth.prefix}possess default`});
   message.channel.send({embeds:[possessList]});
 
   return;

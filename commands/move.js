@@ -21,8 +21,9 @@ exports.run = (client, message, args) => {
     }
     roomDirect = new client.MessageEmbed()
     .setTitle(`**AREA DIRECTORY**`)
-    .addField("**HELP**","Select a room number below to move to that room in this area, or select a direction (North, South, East or West) to move to the surrounding area!")
-    .addField("**ROOMS**",msg);
+    .addFields(
+      {name:"**HELP**",value:"Select a room number below to move to that room in this area, or select a direction (North, South, East or West) to move to the surrounding area!"},
+      {name:"**ROOMS**",value:msg});
     client.tutorcall.progressCheck(client,message,8,["embed",roomDirect]);
     return;
   }

@@ -179,8 +179,9 @@ targonline = client.traitcall.compTest(client,message,targcarid,targroom);
 
       chumPrint = new client.MessageEmbed()
       .setTitle(`**SESSION CHUMHANDLES**`)
-      .addField(`**PAGE**`,`**${page+1} / ${Math.ceil(handleList.length/10)}**`)
-      .addField(`**CHUMHANDLE**`,msg)
+      .addFields(
+        {name:`**PAGE**`,value:`**${page+1} / ${Math.ceil(handleList.length/10)}**`},
+        {name:`**CHUMHANDLE**`,value:msg});
       message.channel.send({embeds: [chumPrint]});
       return;
     }

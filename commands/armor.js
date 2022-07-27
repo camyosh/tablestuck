@@ -40,9 +40,9 @@ exports.run = (client, message, args) => {
 
       inspectItem = new client.MessageEmbed()
       .setTitle(`**NO ARMOR EQUIPPED**`)
-      .addField(`**ITEM INFORMATION**`,msg)
-      .addField(`**ITEM TRAITS**`,msg1)
-      .addField(`**PROTECTION**`,`**AV -** 1 **BR -** 1d2`);
+      .addFields({name: `**ITEM INFORMATION**`,value:msg},
+      {name: `**ITEM TRAITS**`,value:msg1},
+      {name: `**PROTECTION**`,value:`**AV -** 1 **BR -** 1d2`});
 
 
     } else {
@@ -63,11 +63,11 @@ exports.run = (client, message, args) => {
 
       inspectItem = new client.MessageEmbed()
       .setTitle(`**${armor[0][0]}**`)
-      .addField(`**ITEM INFORMATION**`,msg)
-      .addField(`**ITEM TRAITS**`,msg1)
-      .addField(`**PROTECTION**`,`**AV -** ${tierAv[armor[0][2]]} **BR -** ${tierBD[armor[0][2]][0]}d${tierBD[armor[0][2]][1]}`);
-
-
+      .addFields(
+        {name:`**ITEM INFORMATION**`,value:msg},
+        {name:`**ITEM TRAITS**`,value:msg1},
+        {name:`**PROTECTION**`,value:`**AV -** ${tierAv[armor[0][2]]} **BR -** ${tierBD[armor[0][2]][0]}d${tierBD[armor[0][2]][1]}`}
+      );
     }
     client.tutorcall.progressCheck(client,message,24,["embed",inspectItem]);
     //if first argument is eject, eject armor

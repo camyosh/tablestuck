@@ -79,10 +79,11 @@ exports.run = (client,message,args) =>{
 
     listPrint = new client.MessageEmbed()
     .setTitle(`**ROOM OCCUPANTS**`)
-    .addField(`**AREA TYPE**`,`**${typeList[area[0]]}**`,true)
-    .addField(`**ROOM**`,`**${room[2]}**`,true)
-    .addField(`**PAGE**`,`**${page+1}**`,true)
-    .addField(`**CURRENT OCCUPANTS**`,msg)
+    .addFields(
+      {name:`**AREA TYPE**`,value:`**${typeList[area[0]]}**`,inline:true},
+      {name:`**ROOM**`,value:`**${room[2]}**`,inline:true},
+      {name:`**PAGE**`,value:`**${page+1}**`,inline:true},
+      {name:`**CURRENT OCCUPANTS**`,value:msg});
       client.tutorcall.progressCheck(client,message,2,["embed",listPrint]);
     return;
   }
