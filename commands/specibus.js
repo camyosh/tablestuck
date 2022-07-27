@@ -52,6 +52,8 @@ exports.run = (client, message, args) => {
   return;
 }
 
+  args[0] = args[0].toLowerCase();
+
 //eject selected item from specibus
 
 if(args[0]=="eject") {
@@ -101,6 +103,18 @@ if(args[0]=="eject") {
   client.funcall.tick(client,message);
 
 } else {
+
+if(args[0] == "inspect")
+{
+	if(!args[1])
+	{
+		args[0] = equip + 1;
+	}
+	else
+	{
+		args[0] = args[1];
+	}
+}
 
 value = parseInt(args[0], 10) - 1;
 if(isNaN(value)){
