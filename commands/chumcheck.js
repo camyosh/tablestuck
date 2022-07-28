@@ -20,15 +20,47 @@ if(!args[0]){
 
   let value = parseInt(args[0], 10) - 1;
   if(isNaN(value)){
-    message.channel.send(`That is not a valid selection! See a list of chums with ${client.auth.prefix}chumroll`);
-    return;
+	  let tagList = [];
+
+	  for(let i=0;i<chumroll.length;i++){
+		getTag = client.charcall.charGet(client,chumroll[i]);
+		if(client.charcall.allData(client,userid,getTag,"chumtag")!="NONE"){
+		  tagList.push(client.charcall.allData(client,userid,getTag,"chumtag"));
+		}else{
+		  tagList.push(i);
+		}
+	  }
+
+	  if(tagList.includes(args[0].toUpperCase())){
+		value=tagList.indexOf(args[0].toUpperCase());
+	  }else{
+		client.tutorcall.progressCheck(client,message,11,["text",`That is not a valid selection! See a list of chums with ${client.auth.prefix}chumroll`]);
+		return;
+	  }
   }
 
   if(value > chumroll.length-1 || value < 0) {
     message.channel.send(`That is not a valid selection! See a list of chums with ${client.auth.prefix}chumroll`);
     return;
   }
-targId = chumroll[value];
+
+
+// console.log(`Value is ${value}, so chumroll[value] is ${chumroll[value]}`);
+//targId = client.charcall.charGet(chumroll[value]);
+targId = "w" + chumroll[value];
+
+let alive = client.charcall.allData(client,chumroll[value],targId,"alive");
+
+if(alive == "false")
+{
+	targId = "d" + chumroll[value];
+	alive = client.charcall.allData(client,chumroll[value],targId,"alive");
+	if(alive == "false")
+	{
+		message.channel.send("Bad news: your chum is no longer with us.");
+		return;
+	}
+}
 
 listPrint = new client.MessageEmbed()
 .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
@@ -40,7 +72,7 @@ listPrint = new client.MessageEmbed()
   {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${client.charcall.allData(client,userid,targId,"b")}`,inline:true},
   {name:`**RUNG**`,value:`${client.charcall.allData(client,userid,targId,"rung")}`,inline:true},
   {name:`**BIO**`,value:`${client.charcall.allData(client,userid,targId,"bio")}`})
-.setImage(client.charcall.getAnyData(client,userid,targId,"img"));
+.setImage(client.charcall.allData(client,userid,targId,"img"));
 
 
   message.channel.send({embeds: [listPrint]}).catch(error => {

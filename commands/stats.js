@@ -26,9 +26,9 @@ exports.run = (client, message, args) => {
     }
   let stats = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S** Stats`)
-  .addField(`**Gel Viscosity**`,`${client.emojis.cache.get('735664168400584715')} ${gel.toString()}`,true)
+  .addField(`**Gel Viscosity**`,`${client.emojis.cache.get('998673037123670026')} ${gel.toString()}`,true)
   .addField(`**Vitality**`,vit.toString(),true)
-  .addField(`**Boondollars**`,`${client.emojis.cache.get('735664076180422758')} ${b.toString()}`,true)
+  .addField(`**Boondollars**`,`${client.emojis.cache.get('998673035756314674')} ${b.toString()}`,true)
   .addField(`**Rung**`,rung.toString(),true)
   .addField(`**Experience**`,xp.toString(),true)
   .addField(`**XP to next Rung**`,xpToRung.toString(),true);
