@@ -13,10 +13,10 @@ exports.run = (client, message, args) => {
   }
   let targId = charid;
 
-if(!args[0]){
-  message.channel.send(`Select a chum from your ${client.auth.prefix}chumroll`);
-  return;
-}
+  if(!args[0]){
+    message.channel.send(`Select a chum from your ${client.auth.prefix}chumroll`);
+    return;
+  }
 
   let value = parseInt(args[0], 10) - 1;
   if(isNaN(value)){
@@ -45,22 +45,12 @@ if(!args[0]){
   }
 
 
-// console.log(`Value is ${value}, so chumroll[value] is ${chumroll[value]}`);
-//targId = client.charcall.charGet(chumroll[value]);
-targId = "w" + chumroll[value];
+  targId = client.charcall.charGet(client, chumroll[value]);
 
-let alive = client.charcall.allData(client,chumroll[value],targId,"alive");
-
-if(alive == "false")
-{
-	targId = "d" + chumroll[value];
-	alive = client.charcall.allData(client,chumroll[value],targId,"alive");
-	if(alive == "false")
-	{
-		message.channel.send("Bad news: your chum is no longer with us.");
-		return;
-	}
-}
+  if(targId == "NONE") {
+    message.channel.send(`Something went wrong! Make sure you're correctly indicating which chum you want to check on. See a list of chums with ${client.auth.prefix}chumroll`);
+    return;
+  }
 
 listPrint = new client.MessageEmbed()
 .setTitle(`**CHECKING ${client.charcall.charData(client,targId,"name").toUpperCase()}**`)
@@ -87,6 +77,6 @@ listPrint = new client.MessageEmbed()
       {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${client.charcall.allData(client,userid,targId,"b")}`,inline:true},
       {name:`**RUNG**`,value:`${client.charcall.allData(client,userid,targId,"rung")}`,inline:true});
     message.channel.send({embeds: [listPrint]});
-  })
+  });
 
 }
