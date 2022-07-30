@@ -109,8 +109,8 @@ exports.run = (client, message, args) => {
         return;
       }
 
-      target[1]=clientGates[Math.floor(value/2)][0]
-      target[2]=clientGates[Math.floor(value/2)][1]
+      target[1]=clientGates[Math.floor(value/2)-1][0];
+      target[2]=clientGates[Math.floor(value/2)-1][1];
       target[4]=sburbClient;
 
     }
@@ -128,14 +128,13 @@ exports.run = (client, message, args) => {
     case 6:
 
     let server = client.sburbMap.get(local[4],"server");
-    let serverid =message.guild.id.concat(server);
 
-    if(!client.landMap.has(serverid)||!client.landMap.get(serverid,"enter")){
+    if(!client.landMap.has(server)||!client.landMap.get(server,"enter")){
       message.channel.send("This gate doesn't lead anywhere!");
       return;
     }
 
-    target = ["h",0,0,0,local[4]];
+    target = ["h",0,0,0,server];
     mapCheck=false;
     msg+=`You enter the GATE and are transported to a `
 
@@ -177,7 +176,7 @@ exports.run = (client, message, args) => {
       }else{
         target[0]=target[0].slice(0,-1)+`${(floor+1)}`;
       }
-      msg+=`Tou DESCEND deeper into the DUNGEON, you can go back up using the `;
+      msg+=`You DESCEND deeper into the DUNGEON, you can go back up using the `;
 
     break;
     case 47:
