@@ -827,7 +827,7 @@ exports.sleepHeal = function(client,charid){
   }
 
 
-exports.move = function(client,message,charid,local,target,mapCheck,msg){
+exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTitle="moving to"){
 
   let targSec = client.landMap.get(target[4],target[0]);
   var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
@@ -918,7 +918,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     var listEmbed;
     var files = [attachment];
     listEmbed = new client.MessageEmbed()
-      .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
+      .setTitle(`**${embedTitle.toUpperCase()} ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
       .addField(`**ALERTS**`,msg)
       .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
       .addField(`**PAGE**`,`**1**`,true)

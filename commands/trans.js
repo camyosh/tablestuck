@@ -98,6 +98,7 @@ if(args[0]=="set"){
   let targetLand = targetLocal[4];
   let targetSec = client.landMap.get(targetLand,targetLocal[0]);
 
+/*
   sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
 
   targetSec[targetLocal[1]][targetLocal[2]][2][targetLocal[3]][4].push(occset);
@@ -107,9 +108,19 @@ if(args[0]=="set"){
   client.charcall.setAnyData(client,userid,charid,targetLocal,"local");
 
   message.channel.send("Transportalizing!");
+*/
+
+  let mapCheck = true;
+  switch(targetLocal[0])
+  {
+	  case "h": mapCheck = false; break;
+	  default: break;
+  }
+
+  let msg = "You are TRANSPORTALIZED to a ";
+  client.funcall.move(client,message,charid,local,targetLocal,mapCheck,msg, "transportalizing to");
 
   //decypher captcha code and convert into weapon information
-
 
 
 }
