@@ -95,7 +95,11 @@ exports.run = (client, message, args) => {
      }
      itemInspect()
 
-   } else if(args[0]=="delete"){
+   } else{
+    switch(args[0])
+    {
+    case "delete":
+    {
 
      if(!args[1]){
        message.channel.send("Select an item from the atheneum to delete!");
@@ -112,8 +116,11 @@ exports.run = (client, message, args) => {
      message.channel.send(`Deleted the ${deleted[0][0]} from the atheneum!`);
 
      client.charcall.setAnyData(client,userid,charid,registry,"registry");
+     break;
 
-   } else if(args[0]=="push"){
+    }
+    case "push":
+    {
 
      if(!args[1]){
        message.channel.send("Select an item to push to the front of your atheneum!");
@@ -133,8 +140,11 @@ exports.run = (client, message, args) => {
 
      message.channel.send(`moved the ${temp[0][0]} to the first position in the atheneum!`);
      client.charcall.setAnyData(client,userid,charid,registry,"registry");
+     break;
 
-   } else if(args[0]=="tier"){
+    }
+    case "tier":
+    {
      if(!quick){
        message.channel.send("You need an INSTANT ALCHEMITER for that!");
        return;
@@ -172,7 +182,9 @@ exports.run = (client, message, args) => {
      message.channel.send(`Scaled the ${registry[value][0]} to TIER ${tier}!`);
      return;
 
-   } else if(args[0]=="rename"){
+    }
+    case "rename":
+    {
      if(!args[1]){
        message.channel.send(`Select an item in the ATHENEUM to change the NAME of that item. \n${client.auth.prefix}atheneum name [item] [desired name]`);
        return;
@@ -215,6 +227,15 @@ exports.run = (client, message, args) => {
      message.channel.send(`Changed the name of the ${oldName} to ${name}`);
      return;
 
+    }
+    default:
+    {
+        message.channel.send(`${args[0]} is not a valid subcommand.`);
+        let cmd = client.commands.get("help");
+        cmd.run(client,message,["ath"]);
+        return;
+    }
+    }
    }
  }else{
    message.channel.send("To see and interact with your atheneum, you need to be in a room with an ALCHEMITER or COMPUTER with SBURB installed");
