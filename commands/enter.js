@@ -35,8 +35,8 @@ exports.run = (client, message, args) => {
     let gate = client.landMap.get(local[4],"gate");
     let enter = client.landMap.get(local[4],"enter");
     let gristRemaining;
-    if(gate+1>=8){
-      gristRemaining = "MAX GATE REACHED!";
+    if(gate>7){
+      gristRemaining = "BUILD LIMIT REACHED!";
     } else {
       gristRemaining = gateReq[gate+1]-gristSpent;
     }
@@ -57,7 +57,7 @@ exports.run = (client, message, args) => {
       .setColor("#29b5d3")
       .addFields(
         {name:"**Gate Reached**",value:gate.toString()},
-        {name:"**Grist to next Gate**",value:gristRemaining.toString()},
+        {name: gate==7 ? "**Grist to build limit**" : "**Grist to next Gate**",value:gristRemaining.toString()},
         {name:"**Gates**",value:msg});
       message.channel.send({embeds: [gateSend]});
 
