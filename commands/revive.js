@@ -24,7 +24,8 @@ if(client.configMap.get(message.guild.id).options[0].selection!=1){
     }
     if(message.mentions.members.first()){
       let targuser = message.guild.id.concat(message.mentions.members.first().id);
-      let target = client.userMap.get(targuser,"control");
+      let target = client.userMap.get(targuser,"possess");
+      console.log(targuser);
       let godtiered = client.charcall.allData(client,targuser,target,"godtier");
       if(godtiered=="NONE"){
         godtiered = false;
