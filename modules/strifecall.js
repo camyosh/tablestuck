@@ -54,7 +54,7 @@ function inflict(client, message, local, list, target, chance, status, attacker)
 return alert;
 }
 
-function passTurn(client,charid,message,local) {
+function passTurn(client, message, local) {
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
