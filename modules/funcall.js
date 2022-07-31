@@ -723,7 +723,7 @@ exports.gristCacheEmbed = function(client,sburbid) {
   let i;
 
 
-  //loop to list all of a player's grist types and ammounts
+  //loop to list all of a player's grist types and amounts
 
   for(i=0;i<gristTypes.length;i++){
     msg += `${client.emojis.cache.get(client.grist[gristTypes[i]].emoji)} **${gristTypes[i].toUpperCase()} - ${grist[i]}**\n\n`
