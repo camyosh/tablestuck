@@ -71,7 +71,7 @@ exports.run = (client, message, args) => {
     }
 
     if(value>gate){
-      if (client.traitcall.traitCheck(client,charid,"ROCKET")[1]||client.traitcall.traitCheck(client,charid,"SPACE")[0]) {
+      if (client.traitcall.traitCheck(client,charid,"ROCKET")[1]||client.traitcall.traitCheck(client,charid,"SPACE")[0]||client.charcall.allData(client,userid,charid,"godtier")) {
         msg+= `House hasn't been built high enough to reach that gate, but you don't care, you can fly!\n`
       } else {
         message.channel.send(`House hasn't been built high enough to reach that gate! Have your client player build up your house with ${client.auth.prefix}build`);
