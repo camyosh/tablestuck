@@ -30,7 +30,7 @@ exports.run = (client, message, args) => {
   switch(area[0]){
 
     case 5:
-
+	{
     let gristSpent = client.landMap.get(local[4],"spent");
     let gate = client.landMap.get(local[4],"gate");
     let enter = client.landMap.get(local[4],"enter");
@@ -79,21 +79,9 @@ exports.run = (client, message, args) => {
       }
     }
 
+	let tier = Math.ceil(value/2);
 
-    let clientGates;
-    let clientCheck = false;
-
-    let sburbClient = client.sburbMap.get(local[4],"client");
-
-
-    if(client.landMap.has(sburbClient)){
-
-      clientGates = client.landMap.get(sburbClient,"gates");
-      clientCheck = true;
-
-    }
-
-    target[0]="s"+Math.ceil(value/2);
+    target[0]="s" + tier;
 
     if(value % 2 == 1){
       //odd gates lead to player's own land
@@ -102,21 +90,40 @@ exports.run = (client, message, args) => {
       target[2]=Math.floor(Math.random() * 11);
 
     }else{
-      //even gates lead to player's client's land
+      //even gates lead to player's client's land, or their client's land, or their client's land
 
-      if(!clientCheck||client.landMap.get(sburbClient,"enter")==false){
+      let targetLand = local[4];
+
+      let clientGates;
+      let clientCheck = true;
+
+      for(let i=0; i<tier && clientCheck; i++){
+
+		targetLand = client.sburbMap.get(targetLand,"client");
+	    if(client.landMap.has(targetLand))
+		{
+          clientCheck = true;
+		}
+		else {
+		  clientCheck = false;
+		  break;
+		}
+      }
+      clientGates = client.landMap.get(targetLand,"gates");
+
+      if(!clientCheck||client.landMap.get(targetLand,"enter")==false){
         message.channel.send("That gate doesn't lead anywhere!");
         return;
       }
 
-      target[1]=clientGates[Math.floor(value/2)-1][0];
-      target[2]=clientGates[Math.floor(value/2)-1][1];
-      target[4]=sburbClient;
+      target[1]=clientGates[tier-1][0];
+      target[2]=clientGates[tier-1][1];
+      target[4]=targetLand;
 
     }
 
     msg+=`You ascend to the ${gateName[value-1]} GATE and find yourself in a `
-
+	}
     break;
     case 3:
 
@@ -126,18 +133,42 @@ exports.run = (client, message, args) => {
 
     break;
     case 6:
+	{
+	let tier;
+	switch(local[0])
+	{
+		case "s1": tier = 1; break;
+		case "s2": tier = 2; break;
+		case "s3": tier = 3; break;
+		default:
+          message.channel.send("This gate doesn't lead anywhere!");
+          return;
+	}
 
-    let server = client.sburbMap.get(local[4],"server");
+	let targetLand = local[4];
+	let serverCheck = true;
+	for(let i=0; i<tier && serverCheck; i++){
 
-    if(!client.landMap.has(server)||!client.landMap.get(server,"enter")){
+	  targetLand = client.sburbMap.get(targetLand,"server");
+	  if(client.landMap.has(targetLand))
+	  {
+	    serverCheck = true;
+	  }
+	  else {
+	    serverCheck = false;
+	    break;
+	  }
+	}
+
+    if(!serverCheck||!client.landMap.get(targetLand,"enter")){
       message.channel.send("This gate doesn't lead anywhere!");
       return;
     }
 
-    target = ["h",0,0,0,server];
+    target = ["h",0,0,0,targetLand];
     mapCheck=false;
     msg+=`You enter the GATE and are transported to a `
-
+	}
     break;
     case 1:
 
