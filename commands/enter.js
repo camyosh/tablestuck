@@ -28,7 +28,6 @@ exports.run = (client, message, args) => {
   let target = [local[0],local[1],local[2],0,local[4]];
 
   switch(area[0]){
-
     case 5:
 	{
     let gristSpent = client.landMap.get(local[4],"spent");
@@ -121,12 +120,10 @@ exports.run = (client, message, args) => {
       target[4]=targetLand;
 
     }
-
     msg+=`You ascend to the ${gateName[value-1]} GATE and find yourself in a `
 	}
     break;
     case 3:
-
     target = ["h",0,0,0,local[4]];
     mapCheck=false;
     msg+=`You enter the RETURN NODE and are transported to a `

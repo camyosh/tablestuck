@@ -99,7 +99,7 @@ return [nameList[select],code,1,1,[]];
 }
 
 exports.lootGen = function(client,level){
- 
+
   tierVary = [1,3,6,9,12];
   quantityMin = [5,25,125,625,3125];
   quantityMax = [10,50,250,1250,6250];
@@ -123,37 +123,35 @@ switch(name){
     name = `ALCHEMY ITEM - ${client.kind[client.codeCypher[0][client.captchaCode.indexOf(roll)]].toUpperCase()}`
   code = `${roll}///////`;
   break;
+
   case "ALCHEMY ITEM - GRIST":
-
-  roll = randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)];
-
-  code = `/${roll}//////`;
-
-	  name = `ALCHEMY ITEM - ${client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(roll)]].toUpperCase()}`
+      roll = randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)];
+      code = `/${roll}//////`;
+      name = `ALCHEMY ITEM - ${client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(roll)]].toUpperCase()}`
   break;
+
   case "ALCHEMY ITEM - ACTION":
-  actpos=Math.floor(Math.random()*4)+4;
-  roll = randomChar.simpleActions[Math.floor(Math.random()*randomChar.simpleActions.length)]
-  for(let i=0;i<8;i++){
-    (i!=actpos?code+="/":code += roll);
-  }
+      actpos=Math.floor(Math.random()*4)+4;
+      roll = randomChar.simpleActions[Math.floor(Math.random()*randomChar.simpleActions.length)]
+      for(let i=0;i<8;i++){
+        (i!=actpos?code+="/":code += roll);
+      }
 
-	  name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
+      name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
   break;
+
   case "ALCHEMY ITEM - RARE ACTION":
+      roll = randomChar.rareActions[Math.floor(Math.random()*randomChar.rareActions.length)];
+      actpos=Math.floor(Math.random()*4)+4;
+      for(let i=0;i<8;i++){
+        (i!=actpos?code+="/":code += roll);
+      }
 
-  roll = randomChar.rareActions[Math.floor(Math.random()*randomChar.rareActions.length)];
-
-  actpos=Math.floor(Math.random()*4)+4;
-  for(let i=0;i<8;i++){
-    (i!=actpos?code+="/":code += roll);
-  }
-
-	  name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
+      name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
 
   break;
-  case "ALCHEMY ITEM - TRAIT":
 
+  case "ALCHEMY ITEM - TRAIT":
     roll1 = randomChar.simpleTraits1[Math.floor(Math.random()*randomChar.simpleTraits1.length)];
     roll2 = randomChar.simpleTraits2[Math.floor(Math.random()*randomChar.simpleTraits2.length)];
 
@@ -169,6 +167,7 @@ switch(name){
     }
     code+="////"
   break;
+
   case "ALCHEMY ITEM - RARE TRAIT":
 
   roll1 = randomChar.rareTraits1[Math.floor(Math.random()*randomChar.rareTraits1.length)];
@@ -232,31 +231,25 @@ switch(name){
   }
   tier = tierVary[level];
   break;
-  case "STRIFE CARD":
 
+  case "STRIFE CARD":
   code="////////"
   quantity = level+1;
-
   break;
-  case "STRIFE SPECIBUS":
 
+  case "STRIFE SPECIBUS":
   code="////////"
   quantity = Math.ceil(level+1/2);
-
   break;
+
   case "BOONDOLLARS":
-
   code="////////"
-
   quantity = Math.ceil(Math.random()*(quantityMax[level]-quantityMin[level]))+quantityMin[level];
-
   break;
+
   case "RAINBOW GRIST":
-
   code="////////"
-
   quantity = Math.ceil(Math.random()*(quantityMax[level]-quantityMin[level]))+quantityMin[level];
-
   break;
 
 }
