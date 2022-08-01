@@ -103,7 +103,6 @@ exports.run = (client, message, args) => {
 
     }else{
       //even gates lead to player's client's land
-
       if(!clientCheck||client.landMap.get(sburbClient,"enter")==false){
         message.channel.send("That gate doesn't lead anywhere!");
         return;
@@ -127,9 +126,7 @@ exports.run = (client, message, args) => {
     break;
     case 6:
 
-    let server = client.sburbMap.get(local[4],"server");
-    let serverid =message.guild.id.concat(server);
-
+    let serverid = client.sburbMap.get(local[4],"server");
     if(!client.landMap.has(serverid)||!client.landMap.get(serverid,"enter")){
       message.channel.send("This gate doesn't lead anywhere!");
       return;
