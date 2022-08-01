@@ -19,6 +19,7 @@ if (!fs.existsSync("./auth.json")){
 //declare json files
 const auth = require("./auth.json"); //external data: bot token, bot prefix, tournament list
 const grist =require("./grist.json"); //tracks grist types and their data.
+const emoji =require("./emoji.json"); //contains IDs for various external emoji.
 const registry =require("./registry.json"); //initial deploy list
 const actionList =require("./actions.json");//covers all actions and their data.
 
@@ -152,6 +153,7 @@ client.userMap = userMap;
 client.sburbMap = sburbMap;
 client.npcMap = npcMap;
 client.grist = grist;
+client.emoji = emoji;
 client.MessageEmbed = MessageEmbed
 client.MessageAttachment = MessageAttachment
 client.registry = registry;

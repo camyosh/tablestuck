@@ -396,8 +396,8 @@ function giveXp(client,target,xp){
     let congrats = new client.MessageEmbed()
     .setTitle(`**${name}** climbed their ECHELADDER!`)
     .addField(`**RUNG**`,`${curRung} + ${i - curRung}`,true)
-    .addField(`**GEL VISCOSITY**`,`${client.emojis.cache.get('735664168400584715')} ${curGv} + ${rungGel[i] - curGv}`, true)
-    .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${newBoon - curBoon}`,true);
+    .addField(`**GEL VISCOSITY**`,`${client.emojis.cache.get(client.emoji["GEL"])} ${curGv} + ${rungGel[i] - curGv}`, true)
+    .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get(client.emoji["BOONS"])} ${curBoon} + ${newBoon - curBoon}`,true);
 
     client.funcall.chanMsg(client,target,"NONE",congrats);
 

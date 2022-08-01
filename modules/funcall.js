@@ -681,8 +681,8 @@ exports.xpGive = function(client, message, xp, target){
     let congrats = new client.MessageEmbed()
     .setTitle(`${name} ASCENDED THEIR ECHELADDER!`)
     .addField("RUNG",`${curRung} + ${i - curRung}`,true)
-    .addField("GEL VISCOSITY",`${client.emojis.cache.get('721452682115809454')} ${curGel} + ${gvGain}`)
-    .addField("GRIST CACHE", `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache(i) - curCache}`)
+    .addField("GEL VISCOSITY",`${client.emojis.cache.get(client.emoji["GEL"])} ${curGel} + ${gvGain}`)
+    .addField("GRIST CACHE", `${client.emojis.cache.get(client.grist["build"].emoji)} ${curCache} + ${client.cache(i) - curCache}`)
     .setThumbnail(target.avatarURL());
     message.channel.send({embeds:[congrats]});
   }
@@ -944,7 +944,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
           let curBoon = client.charcall.allData(client,userid,charid,"b");
           let embed = new client.MessageEmbed()
           .setTitle(`**${client.charcall.charData(client,charid,"name")}** gained BOONDOLLARS!`)
-          .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${checkQuest[2]}= **${curBoon+checkQuest[2]}**`,true);
+          .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get(client.emoji["BOONS"])} ${curBoon} + ${checkQuest[2]}= **${curBoon+checkQuest[2]}**`,true);
           client.charcall.setAnyData(client,userid,charid,curBoon+checkQuest[2],"b");
           client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[embed], files:qfiles});
         }else{
