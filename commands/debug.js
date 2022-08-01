@@ -13,7 +13,9 @@ let debugOptions = [
 	["god","toggles godtier(DISABLED)"],
 	["quest","completes all current quests"],
 	["capgrist","fixes NaN grist by setting it to the grist cap."],
-	["boons","gives a number of BOONDOLLARS equal to the provided amount."]
+	["boons","gives a number of BOONDOLLARS equal to the provided amount."],
+	["wallet","captchalogues ANY item."],
+	["void","destroys an item completely."]
 ];
 if(!args[0]){
   let msg =`This is a quick command for various debug functions that don't fit in config. Accepted arguments:`;
@@ -28,6 +30,7 @@ var userid = message.guild.id.concat(message.author.id);
 var charid = client.userMap.get(userid,"possess");
 var sburbid = client.charcall.allData(client,userid,charid,"owner");
 var isNPC = client.charcall.npcCheck(client,charid);
+
 if(args[0].toLowerCase()==="enter"){
   if(isNPC){
     message.channel.send("Can't build up an NPC!");
@@ -48,6 +51,7 @@ if(args[0].toLowerCase()==="god"){
   message.channel.send(`Player ${client.sburbMap.get(sburbid,"godtier")?`granted Godtier!`:`mortalized again!`}`);
   return;
 }
+else
 if(args[0].toLowerCase()==="quest"){
   if(client.charcall.allData(client,userid,charid,"questProgress")!="NONE"){
     questProgress=client.charcall.allData(client,userid,charid,"questProgress");
@@ -62,6 +66,74 @@ if(args[0].toLowerCase()==="quest"){
   message.channel.send("This creature can't do quests.");
   return;
 }
+else if(args[0].toLowerCase()==="wallet")
+{
+	if(!args[1])
+	{
+		message.channel.send("You must select an item to captchalogue!");
+		return;
+	}
+	
+    let local = client.charcall.charData(client,charid,"local");
+    let land = local[4];
+    let sec = client.landMap.get(land,local[0]);
+    let area = sec[local[1]][local[2]];
+    let room = area[2][local[3]];
+    let currentInv = client.charcall.charData(client,charid,"sdex");
+
+
+	value = parseInt(args[1], 10) - 1;
+    if(isNaN(value)){
+      message.channel.send("That is not a valid argument! Make sure to give the number of an item in your room!");
+      return;
+    }
+    if(value >= room[5].length || value < 0){
+      message.channel.send(`That is not a valid item! Check the list of items in the room with ${client.auth.prefix}inspect`);
+      return;
+    }
+    let targetItem = room[5].splice(value,1)[0];
+	currentInv.unshift(targetItem);
+    let mess = `CAPTCHALOGUED the ${targetItem[0]} from the ${room[2]}.`
+    if(currentInv.length > client.charcall.charData(client,charid,"cards")){
+      let dropItem = currentInv.pop();
+      room[5].push(dropItem);
+      mess += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
+    }
+    sec[local[1]][local[2]][2][local[3]] = room;
+    client.landMap.set(land,sec,local[0]);
+    client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
+	
+    message.channel.send(mess);
+    return;
+}
+else if(args[0].toLowerCase()==="void")
+{
+	if(!args[1])
+	{
+		message.channel.send("You must select an item to void!");
+		return;
+	}
+	
+	value = parseInt(args[1], 10) - 1;
+    if(isNaN(value)){
+      message.channel.send("That is not a valid argument! Make sure to give the number of an item in your sylladex!");
+      return;
+    }
+	
+    let currentInv = client.charcall.charData(client,charid,"sdex");
+	
+    if(value >= currentInv.length || value < 0){
+      message.channel.send(`That is not a valid item!`);
+      return;
+    }
+	
+	let voidedItem = currentInv.splice(value, 1);
+    client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
+	
+	message.channel.send(`Deleted your ${voidedItem[0]} (code ${voidedItem[1]}, tier ${voidedItem[2]}) from your Sylladex!`);
+	return;
+}
+
 
 var messagePing = message.mentions.members.first();
 var targetID = messagePing ? message.guild.id.concat(messagePing.id) : userid;
