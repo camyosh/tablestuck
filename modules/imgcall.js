@@ -548,6 +548,163 @@ return attachment;
 
 }
 
+
+/*
+exports.alchCheckFiltered = async function (client, message, page, args, sdex, priceSet ,banner, numbers){
+
+  const ITEMS_PER_PAGE = 15;
+
+  client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`FONTSTUCK`});
+  client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
+  const canvas = client.Canvas.createCanvas(1056,874);
+  const ctx = canvas.getContext('2d');
+
+  //list light, list dark, card fg, card bg, card shade
+  let cards = sdex.length;
+  let scheme = ["#992445","#0c6137","#992ae1","#484848","#245cb2"];
+  let typeList = ["sylladex","strife specibus","container","room inventory"];
+  let cardList = ["captchalogue cards","strife cards","storage space","room space"]
+  let maxPage = Math.floor(numbers.length/ITEMS_PER_PAGE);
+  let type = 3;
+
+//set background
+  ctx.linewidth = 5;
+
+//set top text line
+
+  ctx.fillStyle = scheme[type];
+  ctx.fillRect(0,0,canvas.width,32);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.font = `bold 32px Courier Standard Bold`;
+  ctx.fillText(`${banner.toLowerCase()}::page ${page+1}/${maxPage+1}`,16,24);
+
+  const cardSheet = await client.Canvas.loadImage(`./miscsprites/CAPTCHACARD.png`);
+  const gristSheet = await client.Canvas.loadImage(`./miscsprites/GRISTSPRITES.png`);
+  const traitSheet = await client.Canvas.loadImage(`./miscsprites/TRAITSPRITES.png`);
+  const kindSheet = await client.Canvas.loadImage(`./miscsprites/WEAPONKINDSLARGE.png`);
+  const priceCard = await client.Canvas.loadImage(`./miscsprites/PRICECARD.png`);
+  const priceBlank = await client.Canvas.loadImage(`./miscsprites/PRICECARDBLANK.png`);
+
+  //ctx.drawImage(cardSheet,0,0,192,232,16,48,192,232);
+
+  let j = page*ITEMS_PER_PAGE;
+
+  for(let i=0;i<ITEMS_PER_PAGE;i++){
+
+    let x = 16+((i%5)*208);
+
+    let y = 48+(274*Math.floor(i/5))
+
+    if(j<numbers.length){
+
+//draw card
+
+      if(numbers[j]>=priceSet.length||numbers[j]<0){
+        type=4;
+      }
+
+      ctx.drawImage(cardSheet,194*(type+1),0,194,232,x,y,194,232);
+
+      if(numbers[j]<sdex.length){
+		await drawCard(client,canvas,ctx,sdex[numbers[j]],x,y,gristSheet,traitSheet,kindSheet);
+	  }
+
+      ctx.drawImage(priceCard,0,0,194,36,x,y+236,194,36);
+
+      ctx.fillStyle = "#000000";
+
+      if(j<priceSet.length){
+        //first grist cost image always build
+        ctx.drawImage(gristSheet,(client.grist.build.spos%8)*32,Math.floor(client.grist.build.spos/8)*32,32,32,x,y+236,32,32);
+        //second grist cost image
+        ctx.drawImage(gristSheet,(client.grist[priceSet[j][0]].spos%8)*32,Math.floor(client.grist[priceSet[j][0]].spos/8)*32,32,32,x+98,y+236,32,32);
+
+        //first grist cost
+        middleText(canvas,ctx,"0",x+34,y+236,x+91,y+267,18,8,"FONTSTUCK");
+        //second grist cost
+        middleText(canvas,ctx,priceSet[j][1].toString(),x+132,y+236,x+189,y+267,18,8,"FONTSTUCK");
+      }else{
+
+        let gristType = client.codeCypher[1][client.captchaCode.indexOf(sdex[numbers[j]][1].charAt(1))];
+        let tier = sdex[numbers[j]][2];
+
+        if(client.traitcall.itemTrait(client,sdex[numbers[j]],"SHITTY")){
+
+          tier=1;
+          gristType = 0;
+
+        } else if(client.traitcall.itemTrait(client,sdex[numbers[j]],"TRICKSTER")){
+          tier=16;
+          gristType = 14;
+        }
+
+        let cost = tierCost[tier];
+        let cost2 = tierCost[tier-1];
+        if(tier-1<0){
+          cost2=0;
+        }
+
+        if(client.traitcall.itemTrait(client,sdex[numbers[j]],"EXQUISITE")){
+
+          gristType = 13;
+
+        }
+
+        if(gristType ==13){
+
+          cost*=2;
+          cost2*=2
+        }
+
+        ctx.drawImage(gristSheet,(15%8)*32,Math.floor(15/8)*32,32,32,x,y+236,32,32);
+        //second grist cost image
+        ctx.drawImage(gristSheet,(gristType%8)*32,Math.floor(gristType/8)*32,32,32,x+98,y+236,32,32);
+
+        //first grist cost
+        middleText(canvas,ctx,cost.toString(),x+34,y+236,x+91,y+267,18,8,"FONTSTUCK");
+        //second grist cost
+        middleText(canvas,ctx,cost2.toString(),x+132,y+236,x+189,y+267,18,8,"FONTSTUCK");
+
+      }
+
+//number selection
+
+      ctx.fillStyle = "#000000";
+      ctx.font = `bold 20px FONTSTUCK`;
+      ctx.font = applyText(canvas,ctx, numbers[j]+1,20,12,"FONTSTUCK",26);
+      ctx.fillText(
+		numbers[j]+1,
+		x+152+26-ctx.measureText(numbers[j]+1).width-Math.floor((26-ctx.measureText(numbers[j]+1).width)/2),
+		y+20+Math.floor(ctx.measureText(numbers[j]+1).emHeightAscent/2)
+	  );
+
+      //16 28
+
+
+    } else {
+
+    ctx.drawImage(cardSheet,0,0,194,232,x,y,194,232);
+    ctx.drawImage(priceBlank,0,0,194,36,x,y+236,194,36);
+
+  }
+
+  j++
+
+  }
+
+
+//send message
+
+  let attachment = new client.MessageAttachment(canvas.toBuffer(), 'actionlist.png');
+
+return attachment;
+
+
+
+}
+*/
+
 exports.characterImg = async function (client, message, custom){
 
   const canvas = client.Canvas.createCanvas(224,288);
