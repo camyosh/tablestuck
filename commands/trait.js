@@ -55,8 +55,10 @@ exports.run = (client, message, args) => {
 
     var embed = new client.MessageEmbed()
     .setTitle(`ACTIVE TRAITS`)
-    .addField(`HELP`,`These are all your active traits and the bonuses they give you! These traits are determined by your equipped WEAPON, ARMOR, and TRINKET.\n\nIf you have at least 3 of the same trait equipped, you also get the SET BONUS listed alongside the trait.\n\n If you'd like to see details on traits you don't have, do ${client.auth.prefix}trait [trait name]`)
-    .addField(`TRAITS`,msg);
+    .addFields(
+      {name:`HELP`,value:`These are all your active traits and the bonuses they give you! These traits are determined by your equipped WEAPON, ARMOR, and TRINKET.\n\nIf you have at least 3 of the same trait equipped, you also get the SET BONUS listed alongside the trait.\n\n If you'd like to see details on traits you don't have, do ${client.auth.prefix}trait [trait name]`},
+      {name:`TRAITS`,value:msg}
+    );
 
     client.tutorcall.progressCheck(client,message,25,["embed",embed]);
     return;
@@ -67,8 +69,10 @@ exports.run = (client, message, args) => {
 
     var embed = new client.MessageEmbed()
     .setTitle(`${args[0].toUpperCase()} TRAIT`)
-    .addField(`TRAIT BONUS`,`*${client.traitDesc[args[0].toUpperCase()].trait}*`)
-    .addField(`SET BONUS (3 iterations of trait must be active)`,`*${client.traitDesc[args[0].toUpperCase()].set}*`)
+    .addFields(
+      {name:`TRAIT BONUS`,value:`*${client.traitDesc[args[0].toUpperCase()].trait}*`},
+      {name:`SET BONUS (3 iterations of trait must be active)`,value:`*${client.traitDesc[args[0].toUpperCase()].set}*`}
+    )
     .setThumbnail(client.traitDesc[args[0].toUpperCase()].img)
 
     message.channel.send({embeds:[embed]});

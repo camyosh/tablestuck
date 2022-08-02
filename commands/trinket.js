@@ -32,10 +32,6 @@ exports.run = (client, message, args) => {
 
       inspectItem = new client.MessageEmbed()
       .setTitle(`**NO TRINKET EQUIPPED**`)
-      .addField(`**ITEM INFORMATION**`,msg)
-      .addField(`**ITEM TRAITS**`,msg1)
-
-      message.channel.send({embeds:[inspectItem]});
 
     } else {
 
@@ -50,13 +46,14 @@ exports.run = (client, message, args) => {
 
       inspectItem = new client.MessageEmbed()
       .setTitle(`**${trinket[0][0]}**`)
-      .addField(`**ITEM INFORMATION**`,msg)
-      .addField(`**ITEM TRAITS**`,msg1)
 
-      message.channel.send({embeds:[inspectItem]});
 
     }
-
+    inspectItem.addFields(
+      {name:`**ITEM INFORMATION**`,value:msg},
+      {name:`**ITEM TRAITS**`,value:msg1}
+    );
+    message.channel.send({embeds:[inspectItem]});
     //if first argument is eject, eject trinket
 
   } else if(args[0]=="eject"){

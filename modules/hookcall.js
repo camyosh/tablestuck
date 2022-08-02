@@ -3,7 +3,7 @@ exports.pogChamp = async function(client,message,chan){
 
   const embed = new client.MessageEmbed()
   .setTitle(`POGCHAMP!`)
-  .addField(`**POGCHAMP SAYS**`,`POGGERS!`)
+  .addFields({name:`**POGCHAMP SAYS**`,value:`POGGERS!`})
   .setImage(`https://freepngimg.com/thumb/mouth/92712-ear-head-twitch-pogchamp-emote-free-download-png-hq-thumb.png`)
   const channel = client.channels.cache.get(chan);
 	try {

@@ -393,10 +393,11 @@ function giveXp(client,target,xp){
 
     let congrats = new client.MessageEmbed()
     .setTitle(`**${name}** climbed their ECHELADDER!`)
-    .addField(`**RUNG**`,`${curRung} + ${i - curRung}`,true)
-    .addField(`**GEL VISCOSITY**`,`${client.emojis.cache.get('735664168400584715')} ${curGv} + ${rungGel[i] - curGv}`, true)
-    .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${newBoon - curBoon}`,true);
-
+    .addFields(
+      {name:`**RUNG**`,value:`${curRung} + ${i - curRung}`,inline:true},
+      {name:`**GEL VISCOSITY**`,value:`${client.emojis.cache.get('735664168400584715')} ${curGv} + ${rungGel[i] - curGv}`,inline:true},
+      {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${newBoon - curBoon}`,inline:true}
+    );
     client.funcall.chanMsg(client,target,"NONE",congrats);
 
   }
@@ -2066,14 +2067,16 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
     }
     let embed = new client.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
-    .addField('CST', costMsg, true)
-    .addField('DMG', `${(dmg * dmgLvl)}`, true)
-    .addField("ADDITIONAL ACTION", client.actionList[action].aa )
-    .addField("STRIKE",strikeMsg,true)
-    .addField("TARGET AV",av.toString(),true)
-    .addField("HIT",`${effective}`)
-    .addField("DAMAGE", damagemsg, true)
-    .addField("ADDITIONAL ALERTS", alert)
+    .addFields(
+      {name:'CST',value:costMsg,inline:true},
+      {name:'DMG',value:`${(dmg * dmgLvl)}`,inline:true},
+      {name:"ADDITIONAL ACTION",value:client.actionList[action].aa},
+      {name:"STRIKE",value:strikeMsg,inline:true},
+      {name:"TARGET AV",value:av.toString(),inline:true},
+      {name:"HIT",value:`${effective}`},
+      {name:"DAMAGE",value:damagemsg,inline:true},
+      {name:"ADDITIONAL ALERTS",value:alert}
+    )
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
 
@@ -2114,13 +2117,15 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
 
     let embed = new client.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
-    .addField('CST', costMsg, true)
-    .addField('DMG', `${(dmg * dmgLvl)}`, true)
-    .addField("ADDITIONAL ACTION", client.actionList[action].aa )
-    .addField("STRIKE",strikeMsg,true)
-    .addField("TARGET AV",av.toString(),true)
-    .addField("HIT",`${`MISS!`}`)
-    .addField("ADDITIONAL ALERTS", alert)
+    .addFields(
+      {name:'CST',value:costMsg,inline:true},
+      {name:'DMG',value:`${(dmg * dmgLvl)}`,inline:true},
+      {name:"ADDITIONAL ACTION",value:client.actionList[action].aa},
+      {name:"STRIKE",value:strikeMsg,inline:true},
+      {name:"TARGET AV",value:av.toString(),inline:true},
+      {name:"HIT",value:`MISS!`},
+      {name:"ADDITIONAL ALERTS",value:alert}
+    )
     .setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
     for(i=0;i<active.length;i++){
@@ -2137,10 +2142,12 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
 
     let embed = new client.MessageEmbed()
     .setTitle(`${attName.toUpperCase()} ${client.actionList[action].name}S ${targName.toUpperCase()}!`)
-    .addField('CST', costMsg, true)
-    .addField('DMG', `${(dmg * dmgLvl)}`, true)
-    .addField("ADDITIONAL ACTION", client.actionList[action].aa )
-    .addField("ADDITIONAL ALERTS", alert)
+    .addFields(
+      {name:'CST',value:costMsg,inline:true},
+      {name:'DMG',value:`${(dmg * dmgLvl)}`,inline:true},
+      {name:"ADDITIONAL ACTION",value:client.actionList[action].aa},
+      {name:"ADDITIONAL ALERTS",value:alert}
+    )
     //.setColor(client.actionList[action].col)
     .setImage(client.actionList[action].img);
     for(i=0;i<active.length;i++){
@@ -2681,8 +2688,10 @@ function strifeList(client,local,active,list,turn,init,charid,page,title){
 
   let embed = new client.MessageEmbed()
   .setTitle(`**${title}**`)
-  .addField(`PAGE`,`${page+1}/${pageMax}`)
-  .addField(`**CHARACTERS IN STRIFE**`,msg)
+  .addFields(
+    {name:`PAGE`,value:`${page+1}/${pageMax}`},
+    {name:`**CHARACTERS IN STRIFE**`,value:msg}
+  )
   .setColor("#00e371")
 
   //try{message.channel.send(embed);}catch(err){message.channel.send(msg)};
