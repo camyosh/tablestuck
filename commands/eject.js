@@ -42,7 +42,7 @@ exports.run = (client, message, args) => {
   }
   else if(args[0] == "weapon" || args[0] == "specibus")
   {
-	let cmd = client.commands.get("switch");
+	let cmd = client.commands.get("specibus");
 	args[0] = "eject";
 	cmd.run(client,message,args);
 	return;
