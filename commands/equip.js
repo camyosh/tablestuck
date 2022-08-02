@@ -81,7 +81,15 @@ exports.run = (client, message, args) => {
     return;
   }
 
-  let equipItem = sdex.splice(selectDex,1)[0];
+
+  let equipItem;
+  if (sdex[selectDex][3] == 1) {
+    equipItem = sdex.splice(selectDex,1)[0];
+  } else {
+    equipItem = [sdex[selectDex][0], sdex[selectDex][1], sdex[selectDex][2], 1, sdex[selectDex][4]];
+    sdex[selectDex][3]--;
+  }
+
   spec.push(equipItem);
 
   client.charcall.setAnyData(client,userid,charid,sdex,"sdex");
