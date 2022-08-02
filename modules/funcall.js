@@ -95,15 +95,16 @@ if(curCount!="NONE"&&curCount>=client.limit&&client.limit!=0){
   message.channel.send("That was your last action in the tournament, here's your final stats:");
   let stats = new client.MessageEmbed()
   .setTitle(`**HERE'S HOW YOU DID**`)
-  .addField(`**EXPERIENCE GAINED**`,`${xp}`,true)
-  .addField(`**BOONDOLLARS GAINED**`,`${b}`,true)
-  .addField(`**TILES DISCOVERED**`,`${tiles}`,true)
-  .addField(`**ITEMS ALCHEMIZED**`,`${alchemized}`,true)
-  .addField(`**ITEMS CAPTCHALOGUED**`,`${items}`,true)
-  .addField(`**UNDERLNGS DEFEATED**`,`${underlings}`,true)
-  .addField(`**PLAYERS DEFEATED**`,`${players}`,true)
-  .addField(`**BOSSES DEFEATED**`,`${bosses}`,true)
-
+  .addFields(
+    {name:`**EXPERIENCE GAINED**`,value:xp,inline:true},
+    {name:`**BOONDOLLARS GAINED**`,value:b,inline:true},
+    {name:`**TILES DISCOVERED**`,value:tiles,inline:true},
+    {name:`**ITEMS ALCHEMIZED**`,value:alchemized,inline:true},
+    {name:`**ITEMS CAPTCHALOGUED**`,value:items,inline:true},
+    {name:`**UNDERLNGS DEFEATED**`,value:underlings,inline:true},
+    {name:`**PLAYERS DEFEATED**`,value:players,inline:true},
+    {name:`**BOSSES DEFEATED**`,value:bosses,inline:true}
+  );
   message.channel.send({embed:[stats]});
   //enter stat stuff here
 }
@@ -145,15 +146,16 @@ exports.tick = function(client, message){
     message.channel.send("That was your last action in the tournament, here's your final stats:");
     let stats = new client.MessageEmbed()
     .setTitle(`**HERE'S HOW YOU DID**`)
-    .addField(`**EXPERIENCE GAINED**`,`${xp}`,true)
-    .addField(`**BOONDOLLARS GAINED**`,`${b}`,true)
-    .addField(`**TILES DISCOVERED**`,`${tiles}`,true)
-    .addField(`**ITEMS ALCHEMIZED**`,`${alchemized}`,true)
-    .addField(`**ITEMS CAPTCHALOGUED**`,`${items}`,true)
-    .addField(`**UNDERLNGS DEFEATED**`,`${underlings}`,true)
-    .addField(`**PLAYERS DEFEATED**`,`${players}`,true)
-    .addField(`**BOSSES DEFEATED**`,`${bosses}`,true)
-
+    .addFields(
+      {name:`**EXPERIENCE GAINED**`,value:xp,inline:true},
+      {name:`**BOONDOLLARS GAINED**`,value:b,inline:true},
+      {name:`**TILES DISCOVERED**`,value:tiles,inline:true},
+      {name:`**ITEMS ALCHEMIZED**`,value:alchemized,inline:true},
+      {name:`**ITEMS CAPTCHALOGUED**`,value:items,inline:true},
+      {name:`**UNDERLNGS DEFEATED**`,value:underlings,inline:true},
+      {name:`**PLAYERS DEFEATED**`,value:players,inline:true},
+      {name:`**BOSSES DEFEATED**`,value:bosses,inline:true}
+    );
     message.channel.send({embed:[stats]});
     //enter stat stuff here
   }
@@ -680,9 +682,11 @@ exports.xpGive = function(client, message, xp, target){
 
     let congrats = new client.MessageEmbed()
     .setTitle(`${name} ASCENDED THEIR ECHELADDER!`)
-    .addField("RUNG",`${curRung} + ${i - curRung}`,true)
-    .addField("GEL VISCOSITY",`${client.emojis.cache.get('721452682115809454')} ${curGel} + ${gvGain}`)
-    .addField("GRIST CACHE", `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache(i) - curCache}`)
+    .addFields(
+      {name:"RUNG",value:`${curRung} + ${i - curRung}`,inline:true},
+      {name:"GEL VISCOSITY",value:`${client.emojis.cache.get('721452682115809454')} ${curGel} + ${gvGain}`},
+      {name:"GRIST CACHE",value: `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache(i) - curCache}`}
+    )
     .setThumbnail(target.avatarURL());
     message.channel.send({embeds:[congrats]});
   }
@@ -730,8 +734,10 @@ exports.gristCacheEmbed = function(client,sburbid) {
   }
   cachePrint = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S GRIST**`)
-  .addField(`**GRIST CAP**`,`**${max}**`)
-  .addField("**GRIST CACHE**",msg);
+  .addFields(
+    {name:`**GRIST CAP**`,value:`**${max}**`},
+    {name:"**GRIST CACHE**",value:msg}
+  );
   return cachePrint;
 }
 
@@ -919,10 +925,12 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     var files = [attachment];
     listEmbed = new client.MessageEmbed()
       .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
-      .addField(`**ALERTS**`,msg)
-      .addField(`**ROOM**`,`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,true)
-      .addField(`**PAGE**`,`**1**`,true)
-      .addField(`**CURRENT OCCUPANTS** (>list)`,list)
+      .addField(
+        {name:`**ALERTS**`,value:msg},
+        {name:`**ROOM**`,value:`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,inline:true},
+        {name:`**PAGE**`,value:`**1**`,inline:true},
+        {name:`**CURRENT OCCUPANTS** (>list)`,value:list}
+      )
       .setImage(`attachment://actionlist.png`);
     if(mapCheck){
       miniMap = await client.landcall.drawMap(client,message,true);
@@ -944,7 +952,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
           let curBoon = client.charcall.allData(client,userid,charid,"b");
           let embed = new client.MessageEmbed()
           .setTitle(`**${client.charcall.charData(client,charid,"name")}** gained BOONDOLLARS!`)
-          .addField(`**BOONDOLLARS**`,`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${checkQuest[2]}= **${curBoon+checkQuest[2]}**`,true);
+          .addFields({name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${checkQuest[2]}= **${curBoon+checkQuest[2]}**`,inline:true});
           client.charcall.setAnyData(client,userid,charid,curBoon+checkQuest[2],"b");
           client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[embed], files:qfiles});
         }else{
