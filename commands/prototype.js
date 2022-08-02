@@ -53,7 +53,15 @@ if(prototype.length>0){
 name = client.charcall.charData(client,occ[spritePos][1],"name");
 }
 
-let targetItem = sdex.splice(selectDex,1)[0];
+
+let targetItem;
+if (sdex[selectDex][3] == 1) {
+  targetItem = sdex.splice(selectDex,1)[0];
+} else {
+  targetItem = [sdex[selectDex][0], sdex[selectDex][1], sdex[selectDex][2], 1, sdex[selectDex][4]];
+  sdex[selectDex][3]--;
+}
+
 prototype.push(targetItem);
 
 let newName = targetItem[0].toUpperCase()+name;
