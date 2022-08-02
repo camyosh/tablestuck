@@ -1,6 +1,11 @@
 const tList = ["MELEE","RANGED","MAGIC","NA"];
 const tierDmg = [1,5,7,10,14,19,25,32,40,49,59,70,82,95,109,124,140];
 
+const CODE = 1;
+
+const CODE_TRAIT_ONE = 2;
+const CODE_TRAIT_TWO = 3;
+
 exports.traitCheck = function(client,target,traitName){
   try{
   let check = [false,false];
@@ -147,16 +152,16 @@ exports.inspectItem = async function(client, item, message){
     return ctx.font;
   }
 
-  let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(item[1].charAt(0)) /*-1*/  ]];
-  let gristType = client.codeCypher[1][client.captchaCode.indexOf(item[1].charAt(1))];
-  let gristName = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(item[1].charAt(1))]];
-  let trait1 = client.traitList[client.captchaCode.indexOf(item[1].charAt(2))];
-  let trait2 = client.traitList2[client.captchaCode.indexOf(item[1].charAt(3))];
+  let weaponkind = client.kind[client.codeCypher[0][client.captchaCode.indexOf(item[CODE].charAt(0)) /*-1*/  ]];
+  let gristType = client.codeCypher[1][client.captchaCode.indexOf(item[CODE].charAt(1))];
+  let gristName = client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(item[CODE].charAt(1))]];
+  let trait1 = client.traitList[client.captchaCode.indexOf(item[CODE].charAt(CODE_TRAIT_ONE))];
+  let trait2 = client.traitList2[client.captchaCode.indexOf(item[CODE].charAt(CODE_TRAIT_TWO))];
   let actions = [``,``,``,``];
-  actions[0] = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(item[1].charAt(4))]];
-  actions[1] = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(item[1].charAt(5))]];
-  actions[2] = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(item[1].charAt(6))]];
-  actions[3] = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(item[1].charAt(7))]];
+  actions[0] = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[4][client.captchaCode.indexOf(item[CODE].charAt(4))]];
+  actions[1] = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[5][client.captchaCode.indexOf(item[CODE].charAt(5))]];
+  actions[2] = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[6][client.captchaCode.indexOf(item[CODE].charAt(6))]];
+  actions[3] = client.action[client.weaponkinds[weaponkind].t][client.codeCypher[7][client.captchaCode.indexOf(item[CODE].charAt(7))]];
 
 //load all the grist images
 const amber = await client.Canvas.loadImage(`./GRIST/AMBER.png`);
