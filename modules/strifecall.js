@@ -58,7 +58,7 @@ function passTurn(client, charid, message, local) {
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
-  //chack if the strife exists in the database
+  //check if the strife exists in the database
   if(client.strifeMap.has(strifeLocal)){
   //Retrieve information from strife database
   let turn = client.strifeMap.get(strifeLocal,"turn");
@@ -71,7 +71,7 @@ if(client.charcall.charData(client,charid,"pos")!=init[turn][0]){
     return;
   }
 
-  //check if the character whos turn it is has any status effects
+  //check if the character whose turn it is has any status effects
   for(let i=(list[init[turn][0]][7].length - 1);i>=0;i--){
     switch(list[init[turn][0]][7][i]){
       case "TARGFAV":
@@ -632,41 +632,21 @@ function startTurn(client, message, local) {
         removed = list[init[turn][0]][7].splice(i,1);
       break;
       case "ALLBD":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "ALLFAV":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "ALLUNFAV":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "DISCOUNT":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "ROLLOUT1":
       case "ROLLOUT2":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "STATUSIMMUNE":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "AV":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "DEFLECT":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "DEFROST":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "DEGRAP":
+      case "GRISTINVERT":
         removed = list[init[turn][0]][7].splice(i,1);
       break;
       case "DAZED":
       stamfav--;
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
-      case "GRISTINVERT":
         removed = list[init[turn][0]][7].splice(i,1);
       break;
     }
@@ -694,12 +674,12 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
   stamfav++;
 }
 
-
-    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[1]){
+    let endurance = client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING");
+    if(endurance[1]){
 
       stamroll = [Math.floor((Math.random() * stamMax/2) + Math.floor(stamMax/2)+1),Math.floor((Math.random() * stamMax/2) + Math.floor(stamMax/2)+1)];
 
-    } else if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[0]){
+    } else if(endurance[0]){
 
       stamroll = [Math.floor((Math.random() * (stamMax-stamMax/4)) + Math.floor(stamMax/4)+1),Math.floor((Math.random() * (stamMax-stamMax/4)) + Math.floor(stamMax/4)+1)];
 
@@ -1001,7 +981,7 @@ exports.underRally = function(client, local) {
 
   function act(client,charid,message,local,action,target){
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
-//if strife database does not exist, cancel code
+    //if strife database does not exist, cancel code
     if(!client.strifeMap.has(strifeLocal)){
       console.log("Stopped a crash from act being run without a strife!");
       return;
@@ -1027,7 +1007,7 @@ exports.underRally = function(client, local) {
     let alert = ``;
     let dmgLvl = client.actionList[action].dmg;
 
-//check action tags
+    //check action tags
     let aa = client.actionList[action].add;
 
     let bd = 0;
@@ -1167,7 +1147,7 @@ targName = client.charcall.charData(client,list[target][1],"name");
   console.log(tarGrist);
 }
     //check for each action tag that is NONCOMBATIVE
-    //PREROLLACT
+    //PRE-ROLL ACT
     let pre;
     for(pre=(aa.length - 1);pre>=0;pre--){
       switch(aa[pre]){
