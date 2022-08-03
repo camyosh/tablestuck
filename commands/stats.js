@@ -26,22 +26,25 @@ exports.run = (client, message, args) => {
     }
   let stats = new client.MessageEmbed()
   .setTitle(`**${name.toUpperCase()}'S** Stats`)
-  .addField(`**Gel Viscosity**`,`${client.emojis.cache.get('998673037123670026')} ${gel.toString()}`,true)
-  .addField(`**Vitality**`,vit.toString(),true)
-  .addField(`**Boondollars**`,`${client.emojis.cache.get('998673035756314674')} ${b.toString()}`,true)
-  .addField(`**Rung**`,rung.toString(),true)
-  .addField(`**Experience**`,xp.toString(),true)
-  .addField(`**XP to next Rung**`,xpToRung.toString(),true);
+  .addFields(
+    {name:`**Gel Viscosity**`,value:`${client.emojis.cache.get(client.emoji["GEL"])} ${gel.toString()}`,inline:true},
+    {name:`**Vitality**`,value:vit.toString(),inline:true},
+    {name:`**Boondollars**`,value:`${client.emojis.cache.get(client.emoji["BOONS"])} ${b.toString()}`,inline:true},
+    {name:`**Rung**`,value:rung.toString(),inline:true},
+    {name:`**Experience**`,value:xp.toString(),inline:true},
+    {name:`**XP to next Rung**`,value:xpToRung.toString(),inline:true}
+  );
   if (client.limit != 0) {
-    stats.addField(`**ACTIONS LEFT**`,(client.limit - client.sburbMap.get(sburbid,"act")).toString(),true)
+    stats.addFields({name:`**ACTIONS LEFT**`,value:(client.limit - client.sburbMap.get(sburbid,"act")).toString(),inline:true});
   }
-  stats.addField(`**TILES DISCOVERED**`,client.charcall.allData(client,userid,charid,"tilesDiscovered").toString(),true)
-  .addField(`**ITEMS ALCHEMIZED**`,client.charcall.allData(client,userid,charid,"itemsAlchemized").toString(),true)
-  .addField(`**ITEMS CAPTCHALOGUED**`,client.charcall.allData(client,userid,charid,"itemsCaptchalogued").toString(),true)
-  .addField(`**UNDERLNGS DEFEATED**`,client.charcall.allData(client,userid,charid,"underlingsDefeated").toString(),true)
-  .addField(`**PLAYERS DEFEATED**`,client.charcall.allData(client,userid,charid,"playersDefeated").toString(),true)
-  .addField(`**BOSSES DEFEATED**`,client.charcall.allData(client,userid,charid,"bossesDefeated").toString(),true)
-
+  stats.addFields(
+    {name:`**TILES DISCOVERED**`,value:client.charcall.allData(client,userid,charid,"tilesDiscovered").toString(),inline:true},
+    {name:`**ITEMS ALCHEMIZED**`,value:client.charcall.allData(client,userid,charid,"itemsAlchemized").toString(),inline:true},
+    {name:`**ITEMS CAPTCHALOGUED**`,value:client.charcall.allData(client,userid,charid,"itemsCaptchalogued").toString(),inline:true},
+    {name:`**UNDERLNGS DEFEATED**`,value:client.charcall.allData(client,userid,charid,"underlingsDefeated").toString(),inline:true},
+    {name:`**PLAYERS DEFEATED**`,value:client.charcall.allData(client,userid,charid,"playersDefeated").toString(),inline:true},
+    {name:`**BOSSES DEFEATED**`,value:client.charcall.allData(client,userid,charid,"bossesDefeated").toString(),inline:true}
+  );
   message.channel.send({embeds:[stats]});
 
 }

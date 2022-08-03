@@ -166,9 +166,9 @@ if(args[0].toLowerCase()==="capgrist"){
         message.channel.send(`I can only help that player by setting their invalid grist levels to 0. If you're sure, add a 'confirm' to that.`);
         return;
   }
-  
+
   for(i=0;i<gristTypes.length;i++){
-	if(isNaN(gristCheck[i])||isNull(gristCheck[i])||gristCheck[i]<0||(max > 0 && gristCheck[i]>max))
+	if(isNaN(gristCheck[i])||gristCheck[i]===null||gristCheck[i]<0||(max > 0 && gristCheck[i]>max))
 		gristCheck[i] = max;
   }
   client.charcall.setAnyData(client,targetID,charid,gristCheck,"grist");
@@ -178,13 +178,13 @@ if(args[0].toLowerCase()==="capgrist"){
 
 if(args[0].toLowerCase()==="boons"){
   let currentBoons = client.charcall.allData(client,targetID,charid,"b");
-  
+
   if(currentBoons == "NONE")
   {
     message.channel.send(`That character doesn't have a PORKHOLLOW!`);
     return;
   }
-  
+
   if(args[1] && !isNaN(parseInt(args[1],10)))
   {
 	  currentBoons += parseInt(args[1],10);
