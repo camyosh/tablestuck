@@ -1795,7 +1795,7 @@ if(aa.includes("RANDSTATUS")){
       if(effective=="HIT!"){
         effective="CRITICAL HIT!"
       } else {
-        effective=effective.slice(0, -1) + " CRITITCAL!"
+        effective=effective.slice(0, -1) + " CRITICAL!"
       }
 
       if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOPE")[0]){
