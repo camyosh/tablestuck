@@ -1,14 +1,8 @@
 exports.type = "author";
 exports.desc = "Access various debug functions";
 exports.use = `">debug" prints a list of debug actions.`;
-exports.run = function(client,message,args){
 
-if(!client.funcall.dmcheck(client,message)){
-  message.channel.send("You must be a DM or Author to use this command!");
-  return;
-}
-
-let debugOptions = [
+const debugOptions = [
 	["enter","enters your medium and builds you up to your max."],
 	["god","toggles godtier(DISABLED)"],
 	["quest","completes all current quests"],
@@ -17,6 +11,14 @@ let debugOptions = [
 	["wallet","captchalogues ANY item."],
 	["void","destroys an item completely."]
 ];
+
+exports.run = function(client,message,args){
+
+if(!client.funcall.dmcheck(client,message)){
+  message.channel.send("You must be a DM or Author to use this command!");
+  return;
+}
+
 if(!args[0]){
   let msg =`This is a quick command for various debug functions that don't fit in config. Accepted arguments:`;
   for(let i=0;i<debugOptions.length;i++){
@@ -26,12 +28,24 @@ message.channel.send(msg);
 return;
 }
 
+args[0] = args[0].toLowerCase();
+if(debugCommand(args[0]) < 0){
+  let msg=`Sorry, that's not a valid debug command. Accepted arguments:`;
+  for(let i=0;i<debugOptions.length;i++){
+    msg+=`\n${debugOptions[i][0].toUpperCase()}: ${debugOptions[i][1]}`;
+  }
+  message.channel.send(msg);
+  return;
+}
+
 var userid = message.guild.id.concat(message.author.id);
 var charid = client.userMap.get(userid,"possess");
 var sburbid = client.charcall.allData(client,userid,charid,"owner");
 var isNPC = client.charcall.npcCheck(client,charid);
 
-if(args[0].toLowerCase()==="enter"){
+// Debug options that don't involve pinging a player
+switch(args[0]){
+	case "enter": {
   if(isNPC){
     message.channel.send("Can't build up an NPC!");
     return;
@@ -42,7 +56,9 @@ if(args[0].toLowerCase()==="enter"){
   message.channel.send("Player built up and entered!");
   return;
 }
-if(args[0].toLowerCase()==="god"){
+	break;
+	
+	case "god": {
   if(isNPC){
     message.channel.send("Can't godtier an NPC!");
     return;
@@ -51,8 +67,8 @@ if(args[0].toLowerCase()==="god"){
   message.channel.send(`Player ${client.sburbMap.get(sburbid,"godtier")?`granted Godtier!`:`mortalized again!`}`);
   return;
 }
-else
-if(args[0].toLowerCase()==="quest"){
+	break;
+	case "quest":{
   if(client.charcall.allData(client,userid,charid,"questProgress")!="NONE"){
     questProgress=client.charcall.allData(client,userid,charid,"questProgress");
     for(let i=0;i<questProgress.length;i++){
@@ -66,8 +82,8 @@ if(args[0].toLowerCase()==="quest"){
   message.channel.send("This creature can't do quests.");
   return;
 }
-else if(args[0].toLowerCase()==="wallet")
-{
+	break;
+	case "wallet": {
 	if(!args[1])
 	{
 		message.channel.send("You must select an item to captchalogue!");
@@ -106,8 +122,8 @@ else if(args[0].toLowerCase()==="wallet")
     message.channel.send(mess);
     return;
 }
-else if(args[0].toLowerCase()==="void")
-{
+	break;
+	case "void": {
 	if(!args[1])
 	{
 		message.channel.send("You must select an item to void!");
@@ -133,8 +149,10 @@ else if(args[0].toLowerCase()==="void")
 	message.channel.send(`Deleted your ${voidedItem[0]} (code ${voidedItem[1]}, tier ${voidedItem[2]}) from your Sylladex!`);
 	return;
 }
+	break;
+}
 
-
+// Debug options that allow pinging a player
 var messagePing = message.mentions.members.first();
 var targetID = messagePing ? message.guild.id.concat(messagePing.id) : userid;
 if(client.userMap.has(targetID))
@@ -147,7 +165,8 @@ else
     return;
 }
 
-if(args[0].toLowerCase()==="capgrist"){
+switch(args[0]){
+	case "capgrist": {
   var gristCheck = client.charcall.allData(client,targetID,charid,"grist");
   if(gristCheck == "NONE")
   {
@@ -175,8 +194,8 @@ if(args[0].toLowerCase()==="capgrist"){
   message.channel.send("Fixed. Probably.");
   return;
 }
-
-if(args[0].toLowerCase()==="boons"){
+	break;
+	case "boons": {
   let currentBoons = client.charcall.allData(client,targetID,charid,"b");
 
   if(currentBoons == "NONE")
@@ -201,12 +220,19 @@ if(args[0].toLowerCase()==="boons"){
   message.channel.send(`Your boondollars are now ${currentBoons}.`);
   return;
 }
+	break;
+}
+}
 
-  let msg=`Sorry, that's not a valid debug command. Accepted arguments:`;
-  for(let i=0;i<debugOptions.length;i++){
-    msg+=`\n${debugOptions[i][0].toUpperCase()}: ${debugOptions[i][1]}`;
-  }
-  message.channel.send(msg);
-  return;
 
+debugCommand = function(cmd){
+	if(!cmd)
+		return -1;
+	cmd = cmd.toLowerCase();
+	
+	for(let i=0; i<debugOptions.length; i++){
+		if(debugOptions[i][0] == cmd)
+			return i;
+	}
+	return -1;
 }
