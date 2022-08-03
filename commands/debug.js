@@ -146,8 +146,8 @@ exports.run = function(client,message,args){
           return;
         }
 
-      let voidedItem = currentInv.splice(value, 1);
-        client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
+      let voidedItem = currentInv.splice(value, 1)[0];
+      client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
 
       message.channel.send(`Deleted your ${voidedItem[0]} (code ${voidedItem[1]}, tier ${voidedItem[2]}) from your Sylladex!`);
       return;

@@ -112,7 +112,7 @@ if(strifeCheck){
 	  {
         message.channel.send("You're already at full health!");
 		if((strifeCheck==true) && list[pos][6].includes("CONSUME2")){
-		  list[pos][6].splice(list[pos][6].indexOf("CONSUME2"));
+		  list[pos][6].splice(list[pos][6].indexOf("CONSUME2"), 1);
 		}
         return;
 	  }
