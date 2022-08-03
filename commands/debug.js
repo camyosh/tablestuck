@@ -92,37 +92,36 @@ exports.run = function(client,message,args){
         return;
       }
 
-        let local = client.charcall.charData(client,charid,"local");
-        let land = local[4];
-        let sec = client.landMap.get(land,local[0]);
-        let area = sec[local[1]][local[2]];
-        let room = area[2][local[3]];
-        let currentInv = client.charcall.charData(client,charid,"sdex");
-
+      let local = client.charcall.charData(client,charid,"local");
+      let land = local[4];
+      let sec = client.landMap.get(land,local[0]);
+      let area = sec[local[1]][local[2]];
+      let room = area[2][local[3]];
+      let currentInv = client.charcall.charData(client,charid,"sdex");
 
       value = parseInt(args[1], 10) - 1;
-        if(isNaN(value)){
-          message.channel.send("That is not a valid argument! Make sure to give the number of an item in your room!");
-          return;
-        }
-        if(value >= room[5].length || value < 0){
-          message.channel.send(`That is not a valid item! Check the list of items in the room with ${client.auth.prefix}inspect`);
-          return;
-        }
-        let targetItem = room[5].splice(value,1)[0];
-      currentInv.unshift(targetItem);
-        let mess = `CAPTCHALOGUED the ${targetItem[0]} from the ${room[2]}.`
-        if(currentInv.length > client.charcall.charData(client,charid,"cards")){
-          let dropItem = currentInv.pop();
-          room[5].push(dropItem);
-          mess += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
-        }
-        sec[local[1]][local[2]][2][local[3]] = room;
-        client.landMap.set(land,sec,local[0]);
-        client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
-
-        message.channel.send(mess);
+      if(isNaN(value)){
+        message.channel.send("That is not a valid argument! Make sure to give the number of an item in your room!");
         return;
+      }
+      if(value >= room[5].length || value < 0){
+        message.channel.send(`That is not a valid item! Check the list of items in the room with ${client.auth.prefix}inspect`);
+        return;
+      }
+      let targetItem = room[5].splice(value,1)[0];
+      currentInv.unshift(targetItem);
+      let mess = `CAPTCHALOGUED the ${targetItem[0]} from the ${room[2]}.`
+      if(currentInv.length > client.charcall.charData(client,charid,"cards")){
+        let dropItem = currentInv.pop();
+        room[5].push(dropItem);
+        mess += `\nYour Sylladex is full, ejecting your ${dropItem[0]}!`
+      }
+      sec[local[1]][local[2]][2][local[3]] = room;
+      client.landMap.set(land,sec,local[0]);
+      client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
+
+      message.channel.send(mess);
+      return;
     }
     break;
 
@@ -134,17 +133,17 @@ exports.run = function(client,message,args){
       }
 
       value = parseInt(args[1], 10) - 1;
-        if(isNaN(value)){
-          message.channel.send("That is not a valid argument! Make sure to give the number of an item in your sylladex!");
-          return;
-        }
+      if(isNaN(value)){
+        message.channel.send("That is not a valid argument! Make sure to give the number of an item in your sylladex!");
+        return;
+      }
 
-        let currentInv = client.charcall.charData(client,charid,"sdex");
+      let currentInv = client.charcall.charData(client,charid,"sdex");
 
-        if(value >= currentInv.length || value < 0){
-          message.channel.send(`That is not a valid item!`);
-          return;
-        }
+      if(value >= currentInv.length || value < 0){
+        message.channel.send(`That is not a valid item!`);
+        return;
+      }
 
       let voidedItem = currentInv.splice(value, 1)[0];
       client.charcall.setAnyData(client,userid,charid,currentInv,"sdex");
