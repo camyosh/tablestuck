@@ -197,41 +197,41 @@ function roomGen(client, area, section, roomNum) {
   }
 
   //set room name
-  let nameList = ["CLEARING",`ROOM ${roomNum}`,"LAND CONSTRUCT","RETURN NODE",vilName[roomType]]
-  let roomName = nameList[area]
+  let nameList = ["CLEARING",`ROOM ${roomNum}`,"LAND CONSTRUCT","RETURN NODE",vilName[roomType]];
+  let roomName = nameList[area];
 
 //set room inventory
 
   let roomInv = [];
-//REPLACE THIS WITH A SWITCH CASE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //TODO: See if we can incorporate more of this into the switch case
 
   if(area==0 && roomType ==14){
-    roomInv = ["Hidden Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]]
+    roomInv = ["Hidden Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]];
   }
   else if(area==0 && roomType ==12){
-    roomInv[0] = ["Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
+    roomInv[0] = ["Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]];
   }
   else if(area == 1){
-    if(section == 0 && roomType == 3){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootC(client, section, roomLoot)]]
-    }
-    else if(section == 1 && roomType == 5){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
-    }
-    else if(section == 2 && roomType == 5){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootC(client, section, roomLoot)]]
-    }
-    else if(section == 2 && roomType == 7){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
-    }
-    else if(section == 3 && roomType == 5){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
-    }
-    else if(section == 3 && roomType == 7){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
-    }
-    else if(section == 3 && roomType == 9){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]]
+    switch(section * roomType){
+    case 0:
+      if(roomType != 3){
+        break;
+      }
+      //fallthrough
+    case 10:
+      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootC(client, section, roomLoot)]];
+      break;
+
+    case 5:
+    case 14:
+    case 15:
+    case 21:
+      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]];
+      break;
+
+    case 27:
+      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]];
+      break;
     }
   }
 
