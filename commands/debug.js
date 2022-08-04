@@ -231,10 +231,14 @@ exports.run = function(client,message,args){
   if(client.userMap.has(targetID))
   {
     charid = client.userMap.get(targetID,"possess");
+	if(charid == "NONE" || charid == undefined){
+      message.channel.send(`${targetID == userid ? "You're" : "They're"} not possessing anything!`);
+      return;
+	}
   }
   else
   {
-    message.channel.send(`That person isn't registered!`);
+    message.channel.send(`${targetID == userid ? "You're" : "They're"} not registered!`);
     return;
   }
 
@@ -243,7 +247,7 @@ exports.run = function(client,message,args){
       var gristCheck = client.charcall.allData(client,targetID,charid,"grist");
       if(gristCheck == "NONE")
       {
-        message.channel.send(`That person isn't currently possessing anything that has grist.`);
+        message.channel.send(`${targetID == userid ? "You're" : "They're"} not currently possessing anything that has grist.`);
         return;
       }
 
@@ -255,7 +259,7 @@ exports.run = function(client,message,args){
       }
       else if((!args[1] || args[1].toLowerCase()!="confirm") && (!args[2] || args[2].toLowerCase()!="confirm"))
       {
-        message.channel.send(`I can only help that player by setting their invalid grist levels to 0. If you're sure, add a 'confirm' to that.`);
+        message.channel.send(`I can only help ${targetID == userid ? "you" : "them"} by setting their invalid grist levels to 0. If you're sure, add a 'confirm' to that.`);
         return;
       }
 
@@ -274,7 +278,7 @@ exports.run = function(client,message,args){
 
       if(currentBoons == "NONE")
       {
-        message.channel.send(`That character doesn't have a PORKHOLLOW!`);
+        message.channel.send(`${targetID == userid ? "You" : "They"} don't have a PORKHOLLOW!`);
         return;
       }
 
@@ -291,7 +295,7 @@ exports.run = function(client,message,args){
         return;
       }
       client.charcall.setAnyData(client,targetID,charid,currentBoons,"b");
-      message.channel.send(`Your boondollars are now ${currentBoons}.`);
+      message.channel.send(`${targetID == userid ? "Your" : "Their"} boondollars are now ${currentBoons}.`);
       return;
     }
     break;
