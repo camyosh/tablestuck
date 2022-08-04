@@ -6,7 +6,8 @@ exports.use = `">ath" lists all items you've alchemized or added to your atheneu
 ">ath push [number]" moves an item in your atheneum to the front of the list for easy use.
 ">ath rename [number]" renames and item in your atheneum.
 ">ath tier [number] [tier number]" changes the tier of an item in your atheneum to the specified number, for cheaper experimentation with traits.
-">ath page [pagenumber]" changes the page of your atheneum.`
+">ath page [pagenumber]" changes the page of your atheneum.
+">ath search" will explain further arguments that can be given to the "search" subcommand.`
 exports.run = (client, message, args) => {
   //defining the costs to alchemize the item based on the tier
   const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
@@ -224,7 +225,6 @@ exports.run = (client, message, args) => {
         message.channel.send(`Changed the name of the ${oldName} to ${name}`);
         return;
       }
-	  /*
       case "search":
       {
         let mess = "";
@@ -299,6 +299,7 @@ exports.run = (client, message, args) => {
 				  }
 				}
 				
+				// TODO: Consider adding functionality for different types of NONE being treated as the same.
                 if(client.captchaCode.indexOf(registry[numbers[j]][1].charAt(2)) + client.captchaCode.indexOf(registry[numbers[j]][1].charAt(3)) != client.captchaCode.length - 2)
                 {
                   numbers.splice(j, 1);
@@ -500,7 +501,6 @@ exports.run = (client, message, args) => {
         message.channel.send(mess);
         return;
       }
-	  */
       default:
       {
         message.channel.send(`${args[0]} is not a valid subcommand.`);
