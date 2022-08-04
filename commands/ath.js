@@ -84,7 +84,7 @@ exports.run = (client, message, args) => {
 
       if(value<0||value>=registry.length){
         message.channel.send("That is not a valid selection!");
-		return;
+        return;
       }
 
       async function itemInspect(){
@@ -281,34 +281,34 @@ exports.run = (client, message, args) => {
           case "trait":
           {
             let trait = args[i+1].toUpperCase();
-			
-			if(trait == "SAME")
-			{
+            
+            if(trait == "SAME")
+            {
               for(var j=0; j<numbers.length; j++)
               {
-				if(registry[numbers[j]][1].charAt(2) == registry[numbers[j]][1].charAt(3))
-				{
-				  let character = registry[numbers[j]][1].charAt(2);
-				  if(character == "/" || character == "0" || character == "1" || character == "!" || character == "?")
-				  {
-				    continue;
-				  }
-				  else
-				  {
+                if(registry[numbers[j]][1].charAt(2) == registry[numbers[j]][1].charAt(3))
+                {
+                  let character = registry[numbers[j]][1].charAt(2);
+                  if(character == "/" || character == "0" || character == "1" || character == "!" || character == "?")
+                  {
+                    continue;
+                  }
+                  else
+                  {
                     numbers.splice(j, 1);
                     j--;
-				  }
-				}
-				
-				// TODO: Consider adding functionality for different types of NONE being treated as the same.
+                  }
+                }
+                
+                // TODO: Consider adding functionality for different types of NONE being treated as the same.
                 if(client.captchaCode.indexOf(registry[numbers[j]][1].charAt(2)) + client.captchaCode.indexOf(registry[numbers[j]][1].charAt(3)) != client.captchaCode.length - 2)
                 {
                   numbers.splice(j, 1);
                   j--;
                 }
               }
-			  break;
-			}
+              break;
+            }
 
             if(client.traitList.indexOf(trait) < 0)
             {
