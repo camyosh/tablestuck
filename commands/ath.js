@@ -84,6 +84,7 @@ exports.run = (client, message, args) => {
 
       if(value<0||value>=registry.length){
         message.channel.send("That is not a valid selection!");
+		return;
       }
 
       async function itemInspect(){
