@@ -119,8 +119,4 @@ if(args[0]=="set"){
 
   let msg = "You are TRANSPORTALIZED to a ";
   client.funcall.move(client,message,charid,local,targetLocal,mapCheck,msg, "transportalizing to");
-
-  //decypher captcha code and convert into weapon information
-
-
 }
