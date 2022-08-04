@@ -188,11 +188,11 @@ exports.run = function(client,message,args){
 	  {
 		case "on":
 		case "true":
-			newState = true;
+			newState = false;
 			break;
 		case "off":
 		case "false":
-			newState = false;
+			newState = true;
 			break;
 		default:
 			message.channel.send(`That's not a valid new state!`);
