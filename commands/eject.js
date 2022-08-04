@@ -17,6 +17,36 @@ exports.run = (client, message, args) => {
   let room = area[2][local[3]];
   let sdex = client.charcall.charData(client,charid,"sdex");
   let cards = client.charcall.charData(client,charid,"cards")
+  
+  if(!args[0])
+  {
+    message.channel.send(`You must supply an argument!`);
+    return;
+  }
+  
+  args[0] = args[0].toLowerCase();
+
+  if(args[0] == "armor" || args[0] == "armour")
+  {
+	let cmd = client.commands.get("armor");
+	args[0] = "eject";
+	cmd.run(client,message,args);
+	return;
+  }
+  else if(args[0] == "trinket")
+  {
+	let cmd = client.commands.get("trinket");
+	args[0] = "eject";
+	cmd.run(client,message,args);
+	return;
+  }
+  else if(args[0] == "weapon" || args[0] == "specibus")
+  {
+	let cmd = client.commands.get("specibus");
+	args[0] = "eject";
+	cmd.run(client,message,args);
+	return;
+  }
 
 //convert argument to number
 

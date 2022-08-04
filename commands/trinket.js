@@ -13,11 +13,13 @@ exports.run = (client, message, args) => {
   var charid = client.userMap.get(userid,"possess");
 
   var trinket = client.charcall.charData(client,charid,"trinket");
-  let name = client.charcall.charData(client,charid,"name");
 
 //if no arguments, display currently equipped trinket
 
-  if(!args[0]){
+  if(!args[0] || args[0].toLowerCase() == "inspect"){
+
+    let msg1;
+    let msg2;
 
     if(trinket.length==0){
 
@@ -47,16 +49,19 @@ exports.run = (client, message, args) => {
       inspectItem = new client.MessageEmbed()
       .setTitle(`**${trinket[0][0]}**`)
 
-
     }
     inspectItem.addFields(
-      {name:`**ITEM INFORMATION**`,value:msg},
-      {name:`**ITEM TRAITS**`,value:msg1}
+        {name:`**ITEM INFORMATION**`,value:msg},
+        {name:`**ITEM TRAITS**`,value:msg1}
     );
     message.channel.send({embeds:[inspectItem]});
-    //if first argument is eject, eject trinket
+    return;
+  }
 
-  } else if(args[0]=="eject"){
+  args[0] = args[0].toLowerCase();
+  
+  //if first argument is eject, eject trinket
+  if(args[0]=="eject"){
 
     if(client.charcall.charData(client,charid,"strife")){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
@@ -89,6 +94,25 @@ exports.run = (client, message, args) => {
 
     message.channel.send("Ejecting TRINKET!")
     client.funcall.tick(client,message);
+
+//if first argument is unequip, unequip selected trinket
+
+  } else if(args[0]=="unequip"){
+
+    if(client.charcall.charData(client,charid,"strife")){
+      message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
+      return;
+    }
+
+    if(trinket.length==0){
+      message.channel.send("You don't have any EQUIPPED TRINKET to UNEQUIP!");
+      return;
+    }
+
+	let cmd = client.commands.get("unequip");
+	args[0] = "trinket";
+	cmd.run(client,message,args);
+	return;
 
 //if first argument is equip, equip selected trinket
 

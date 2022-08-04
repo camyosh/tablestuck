@@ -3,7 +3,7 @@ const funcall = require("../modules/funcall.js");
 const strifecall = require("../modules/strifecall.js");
 exports.type = "strife";
 exports.desc = "Switches active weapon";
-exports.use = `">switch [number]" switches to a different weapon in your sylladex, from your current one. This costs 2 Stamina in strife.`;
+exports.use = `">switch [number]" switches to a different weapon in your strife deck, from your current one. This costs 2 Stamina in strife.`;
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);

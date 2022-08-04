@@ -1,4 +1,3 @@
-
 exports.run = (client, message, args) => {
   if(!args[0]){
     let helpSend = new client.MessageEmbed()

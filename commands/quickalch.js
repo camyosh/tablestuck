@@ -65,7 +65,7 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
     }
     item1 = sdex[select1].slice();
     item1[4] = [];
-	
+
 	function checkCode(checkItem){
 	  return checkItem[1] == item1[1];
 	}
@@ -87,19 +87,27 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
   }
 
-  if(!args[0]||!args[1]||!args[2]){
-    client.tutorcall.progressCheck(client,message,48,["text",`To use the Instant Alchemiter, you need to select an item from your sylladex, select an alchemy type (&& or ||), and select a second item from your sylladex. For example, ${client.auth.prefix}quickalch 1 && 2. If you want to just reproduce a single item, just select the first item.`]);
+  let argsCount = args.length;
+
+  if(argsCount < 3){
+    client.tutorcall.progressCheck(client,message,48,["text",`To use the Instant Alchemiter, you need to select an item from your sylladex or atheneum, select an alchemy type (&& or ||), and select a second item from your sylladex or atheneum. For example, ${client.auth.prefix}quickalch 1 && 2. If you want to just reproduce a single item, just select the first item.`]);
     return;
   }
-  
-  let is1Ath = false;
-  let is2Ath = false;
-  
-  if(args[0].toLowerCase() == "ath")
+
+  let is1Ath = (args[0].toLowerCase() == "ath");
+  let is2Ath = (args[argsCount - 2].toLowerCase() == "ath");
+
+  if((is1Ath ? 1 : 0) + (is2Ath ? 1 : 0) + 3 != argsCount)
+  {
+    client.tutorcall.progressCheck(client,message,48,["text",`To use the Instant Alchemiter, you need to select an item from your sylladex or atheneum, select an alchemy type (&& or ||), and select a second item from your sylladex or atheneum. For example, ${client.auth.prefix}quickalch 1 && ath 2. If you want to just reproduce a single item, just select the first item.`]);
+	return;
+  }
+
+  if(is1Ath)
   {
 	  select1 = parseInt(args[1], 10) - 1;
-	  if(isNaN(select1)){
-
+	  if(isNaN(select1))
+	  {
 		message.channel.send("Item 1 is not a valid argument!");
 		return;
 	  }
@@ -108,47 +116,48 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 		return;
 	  }
 	  args.splice(0, 1);
-	  is1Ath = true;
   }
   else
   {
 	  select1 = parseInt(args[0], 10) - 1;
-	  if(isNaN(select1)){
-
+	  if(isNaN(select1))
+	  {
 		message.channel.send("Item 1 is not a valid argument!");
 		return;
 	  }
-	  if(select1 >= sdex.length || select1< 0){
+	  if(select1 >= sdex.length || select1< 0)
+	  {
 		message.channel.send(`The first selection is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
 		return;
 	  }
   }
-  
-  
-  if(args[2].toLowerCase() == "ath")
+
+
+  if(is2Ath)
   {
 	  select2 = parseInt(args[3], 10) - 1;
-	  if(isNaN(select2)){
-
+	  if(isNaN(select2))
+	  {
 		message.channel.send("Item 2 is not a valid argument!");
 		return;
 	  }
-	  if(select2 >= registry.length || select2< 0){
+	  if(select2 >= registry.length || select2< 0)
+	  {
 		message.channel.send(`The second selection is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
 		return;
 	  }
 	  args.splice(2, 1);
-	  is2Ath = true;
   }
   else
   {
 	  select2 = parseInt(args[2], 10) - 1;
-	  if(isNaN(select2)){
-
+	  if(isNaN(select2))
+	  {
 		message.channel.send("Item 2 is not a valid argument!");
 		return;
 	  }
-	  if(select2 >= sdex.length || select2< 0){
+	  if(select2 >= sdex.length || select2< 0)
+	  {
 		message.channel.send(`The second selection is not a valid item! Check the list of items in your Sylladex with ${client.auth.prefix}sylladex`);
 		return;
 	  }
@@ -158,10 +167,10 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
 
   }
 
-	if(is1Ath)	{		item1 = registry[select1];	}	else	{		item1 = sdex[select1];	}
-	if(is2Ath)	{		item2 = registry[select2];	}	else	{		item2 = sdex[select2];	}
-  
-  
+  if(is1Ath) { item1 = registry[select1]; } else { item1 = sdex[select1]; }
+  if(is2Ath) { item2 = registry[select2]; } else { item2 = sdex[select2]; }
+
+
   let mode = args[1].toLowerCase();
   if(mode=="oror"||mode=="or")
   {
@@ -171,43 +180,44 @@ if (ialchemiter == true || client.traitcall.traitCheck(client,charid,"COMPUTER")
   {
 	  mode = "&&";
   }
-  
+
   if(mode!="||"&&mode!="&&")
   {
       message.channel.send("That is not a valid alchemy type!");
       return;
   }
 
-    newItem = funcall.alchemize(client,item1,item2,mode);
-  
-    if(client.traitcall.itemTrait(client,newItem,"SHITTY")){
+  newItem = funcall.alchemize(client,item1,item2,mode);
 
-      newItem[2]=1;
-      newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
+  if(client.traitcall.itemTrait(client,newItem,"SHITTY"))
+  {
+    newItem[2]=1;
+    newItem[1] = newItem[1][0] + "0" + newItem[1].substr(2);
+  }
+  else if(client.traitcall.itemTrait(client,newItem,"TRICKSTER"))
+  {
+    newItem[2]=16;
+    newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
+  }
+  else if(client.traitcall.itemTrait(client,newItem,"EXQUISITE"))
+  {
+    newItem[1] = newItem[1][0] + "!" + newItem[1].substr(2);
+  }
 
-    } else if(client.traitcall.itemTrait(client,newItem,"TRICKSTER")){
-      newItem[2]=16;
-      newItem[1] = newItem[1][0] + "?" + newItem[1].substr(2);
-    } else if(client.traitcall.itemTrait(client,newItem,"EXQUISITE")){
+  function checkNewCode(checkItem){
+    return checkItem[1] == newItem[1];
+  }
 
-      newItem[1] = newItem[1][0] + "!" + newItem[1].substr(2);
+  if(registry.findIndex(checkNewCode)!= -1){
+    message.channel.send("You've already registered an item with that code!");
+    return;
+  }
 
-    }
-	
-	function checkNewCode(checkItem){
-	  return checkItem[1] == newItem[1];
-	}
-	
-	if(registry.findIndex(checkNewCode)!= -1){
-	  message.channel.send("You've already registered an item with that code!");
-	  return;
-	}
+  registry.unshift(newItem);
+  client.charcall.setAnyData(client,userid,charid,registry,"registry");
+  message.channel.send(`Registered the resulting item to the alchemy atheneum! Alchemize it using the ${client.auth.prefix}alchemize command`);
+  client.funcall.tick(client,message);
 
-    registry.unshift(newItem);
-    client.charcall.setAnyData(client,userid,charid,registry,"registry");
-    message.channel.send(`Registered the resulting item to the alchemy atheneum! Alchemize it using the ${client.auth.prefix}alchemize command`);
-    client.funcall.tick(client,message);
-	
     /*cost1=tierCost[newItem[2]];
 
     cost2=tierCost[newItem[2]-1];

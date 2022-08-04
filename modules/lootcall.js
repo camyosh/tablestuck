@@ -10,9 +10,10 @@ const alcTraitName = ["ALCHEMY TRAIT- ROCKET","ALCHEMY TRAIT- HEAVY","ALCHEMY TR
 const alcActionCode = [["////X///","////U///","////z///","////f///","////j///","////R///","////Y///","////w///","////a///","////s///","////M///","////Z///","////c///","////Q///","////6///","////x///","////N///","////o///","////3///","////S///"],["/////a//","/////k//","/////w//","/////c//","/////j//","/////F//","/////o//","/////n//","/////q//","/////Y//","/////x//","/////B//","/////t//","/////J//","/////p//","/////8//","/////m//","/////Q//","/////g//","/////X//"],["//////u/","//////o/","//////2/","//////y/","//////C/","//////9/","//////t/","//////T/","//////6/","//////A/","//////c/","//////U/","//////P/","//////W/","//////G/","//////s/","//////Q/","//////S/","//////R/","//////e/"],["///////2","///////U","///////o","///////X","///////G","///////r","///////u","///////H","///////D","///////R","///////p","///////J","///////q","///////n","///////7","///////t","///////6","///////h","///////z","///////v"]]
 const alcActionName = ["ALCHEMY ACTION- ASSEMBLE/ARISE/ACCOUNT","ALCHEMY ACTION- ASSAULT/ARGUFY/ACCOMPLISH","ALCHEMY ACTION- ASSASSINATE/ARF/ACCLIMATE","ALCHEMY ACTION- ASSAIL/ARDOR/ACCLAIM","ALCHEMY ACTION- ASS/ARCHIVE/ACCESSORIZE","ALCHEMY ACTION- ASPIRE/ARBORIZE/ACCELERATE","ALCHEMY ACTION- ASPHIXIATE/ARBITRATE/ACCEDE","ALCHEMY ACTION- AGGRAVATE","ALCHEMY ACTION- AGGRESS","ALCHEMY ACTION- AGGREGATE","ALCHEMY ACTION- ASSERT/ARITHMATIZE/ACCUMULATE","ALCHEMY ACTION- ASSES/ARMAMENTIFY/ACCUSE","ALCHEMY ACTION- ASSEVERATE/ARRAIGN/ACERBATE","ALCHEMY ACTION- ASSIGN/ARRANGE/ACKNOWLEDGE","ALCHEMY ACTION- ASSIMILATE/ARREST/ACQUAINT","ALCHEMY ACTION- ASSIST/ARRIVE/ACQUIRE","ALCHEMY ACTION- ASSURE/ARROGATE/ACTUALIZE","ALCHEMY ACTION- ASTONISH/ARSENALIZE/ACTUATE","ALCHEMY ACTION- ASTOUND/ARTICULATE/ACUERE","ALCHEMY ACTION- ASTRICT/ARTILLERATE/ACCUPRESSURE"]
 
-const codeList = ["s$//$$$$","022x$$$$","0O3w$$$$","0d4v$$$$","0R5u$$$$","0b6t$$$$","0g7s$$$$","0x8r$$$$","0E9q$$$$","0fAp$$$$","0IBo$$$$","00Cncccc","0qDm$$$$","0CEl$$$$","0XFk$$$$","0NGj$$$$","08Hi$$$$","0tIh$$$$","0OJg$$$$","05Kf$$$$","0bLe$$$$","0ePa$$$$","0SQZ$$$$","0cRY$$$$","0sSX$$$$","0XTW$$$$","04UV$$$$","0QVU$$$$","0rWT$$$$","0VXS$$$$","0PYR$$$$","0OZQ$$$$","0HaP$$$$","0kbO$$$$","0kcN$$$$","0IdM$$$$","0oeL$$$$","0CfK$$$$","0AgJ$$$$","0AhI%%%%","0yiH%%%%","0jjG%%%%","0JkF%%%%","0?lE%%%%","0?lE$$$$","0PnC$$$$","0hoB$$$$","0qpA$$$$","0iq9$$$$","0dr8$$$$","0Ms7$$$$","0Nt6$$$$","02u5$$$$","05v4$$$$","0sw3$$$$","0yx2$$$$","2K//O1pY","3J//0lqF","4H//K0eE","5A//dU0L","6l//E9H1","74//0CUT","89//EsUj","9A//K0W5","AU//hsV0","BH//1lSP","Cf//p0MW","D6//KW1m","Ea//1e8Z","FF//1koc","GI//H9E8","Hz//0qiI","IP//q03R","IP//q03R","Kh//fZ1G","LB//IoDi","Ma//X71X","N4//DmTk","OC//cANq","PP//1dho","Q2//Jb81","Rf//Sd1i","Sw//91Ji","Tc//hA1N","Uq//pK30","V5//l1kb","Wq//JF4M","Xt//P8KJ","Yc//sdZ0","Z6//0FHC","ak//0ep0","bb//u80I","cK//15Q3","dr//pea1","e9//LVcl","f5//0hTI","gH//i9Gx","hD//CqU1","iA//560e","jv//0Lg5","k5//Cq1U","lm//K1Jl","mZ//Tjk1","nt//1F2o","o9//ipZm","ph//pojb","qV//HM1j","r4//EY90","ALCHEMY ITEM - ITEMKIND","ALCHEMY ITEM - GRIST","ALCHEMY ITEM - ACTION","ALCHEMY ITEM - RARE ACTION","ALCHEMY ITEM - TRAIT","ALCHEMY ITEM - RARE TRAIT","RANDOM WEAPON","RANDOM ARMOR","STRIFE CARD","STRIFE SPECIBUS","BOONDOLLARS","RAINBOW GRIST"];
+                 //0                                                     //5                                                    //10                                                         //15                                                             //20                                                         //25                                                         //30                                                         //35                                                               //40                                                            //45                                                   //50                                                             //55                                                           //60                                                   //65                                                         //70                                                       //75                                                             //80                                                        //85                                                   //90                                                      //95                                                    //100                                                        //105                                                                                    //110                                                                                                                     //115
+const codeList = ["s$//$$$$","022x$$$$","0O3w$$$$","0d4v$$$$","0R5u$$$$","0b6t$$$$","0g7s$$$$","0x8r$$$$","0E9q$$$$","0fAp$$$$","0IBo$$$$",   "00Cncccc","0qDm$$$$","0CEl$$$$",   "0XFk$$$$","0NGj$$$$","08Hi$$$$",        "0tIh$$$$", "0OJg$$$$", "05Kf$$$$","0bLe$$$$","0ePa$$$$","0SQZ$$$$",     "0cRY$$$$","0sSX$$$$", "0XTW$$$$",    "04UV$$$$","0QVU$$$$",  "0rWT$$$$","0VXS$$$$","0PYR$$$$",    "0OZQ$$$$",  "0HaP$$$$","0kbO$$$$","0kcN$$$$","0IdM$$$$",  "0oeL$$$$",   "0CfK$$$$","0AgJ$$$$",       "0AhI%%%%","0yiH%%%%","0jjG%%%%",        "0JkF%%%%","0?lE%%%%", "0?lE$$$$","0PnC$$$$","0hoB$$$$","0qpA$$$$","0iq9$$$$","0dr8$$$$","0Ms7$$$$","0Nt6$$$$","02u5$$$$",  "05v4$$$$","0sw3$$$$",        "0yx2$$$$","2K//O1pY","3J//0lqF",        "4H//K0eE","5A//dU0L","6l//E9H1","74//0CUT","89//EsUj","9A//K0W5","AU//hsV0","BH//1lSP",     "Cf//p0MW","D6//KW1m","Ea//1e8Z", "FF//1koc","GI//H9E8","Hz//0qiI","IP//0adf",    "Jz//q03R","Kh//fZ1G","LB//IoDi",     "Ma//X71X", "N4//DmTk",   "OC//cANq", "PP//1dho","Q2//Jb81",  "Rf//Sd1i","Sw//91Ji","Tc//hA1N",   "Uq//pK30","V5//l1kb","Wq//JF4M","Xt//P8KJ","Yc//sdZ0","Z6//0FHC","ak//0ep0","bb//u80I","cK//15Q3",   "dr//pea1","e9//LVcl", "f5//0hTI","gH//i9Gx","hD//CqU1","iA//560e","jv//0Lg5","k5//Cq1U","lm//K1Jl",  "mZ//Tjk1","nt//1F2o",    "o9//ipZm","ph//pojb","qV//HM1j", "r4//EY90",      "ALCHEMY ITEM - ITEMKIND","ALCHEMY ITEM - GRIST","ALCHEMY ITEM - ACTION","ALCHEMY ITEM - RARE ACTION","ALCHEMY ITEM - TRAIT","ALCHEMY ITEM - RARE TRAIT", "RANDOM WEAPON", "RANDOM ARMOR", "STRIFE CARD", "STRIFE SPECIBUS", "BOONDOLLARS", "RAINBOW GRIST"];
+const nameList = ["CLOTHES", "LAPTOP",  "LOCKBOX", "BREAD",   "GUSHERS", "STEAK",   "CANDLE",  "ICE",     "BATTERY", "PIN",     "DOORSTOPPER","JPEG",    "RIBBON",  "OUIJA BOARD","CAT",     "DOG",     "SHATTERED GLASS", "PILLOW",   "SUITCASE", "SPRING",  "GLUE",    "BRICK",   "VAMPIRE TEETH","FROG",    "HARLEQUIN","CRYSTAL BALL","SMUPPET", "MICROSCOPE","DUMBBELL","FEATHER", "PROSPIT FLAG","DERSE FLAG","YOGA MAT","ROSE",    "FIREWORK","POKER CHIP","URANIUM ROD","PIPE",    "WHOOPIE CUSHION","DIAMOND", "INK",     "TABLESTUCK GUIDE","CUEBALL", "LOLLIPOP", "FAN",     "PLANT",   "COIN",    "CLOCK",   "LOCKET",  "HORN",    "HEIRLOOM","ERASER",  "YARD STICK","BRAIN",   "RELIGIOUS SYMBOL","SKULL",   "HAMMER",  "KNITTING NEEDLES","KATANA",  "RIFLE",   "FORK",    "GLOVE",   "PUPPET",  "PISTOL",  "LANCE",   "THROWING STAR","SICKLE",  "CLAWS",   "CHAINSAW", "CANE",    "DICE",    "BOW",     "BASEBALL BAT","WAND",    "SPEAR",   "STUFFED BUNNY","MAGAZINE", "FANCY SANTA","UMBRELLA", "BROOM",   "FLASHLIGHT","SAW",     "WRENCH",  "SCREWDRIVER","PLIERS",  "NAIL",    "CROWBAR", "BOOK",    "YOYO",    "STAPLER", "SHOTGUN", "PENCIL",  "PAINT BRUSH","SCYTHE",  "SCISSORS", "KNIFE",   "SHOVEL",  "ROPE",    "AXE",     "DART",    "CHAIN",   "BASKETBALL","ROCK",    "HOCKEY STICK","TRIDENT", "RAZOR",   "PAPER FAN","PLAYING CARDS", "ALCHEMY ITEM - ITEMKIND","ALCHEMY ITEM - GRIST","ALCHEMY ITEM - ACTION","ALCHEMY ITEM - RARE ACTION","ALCHEMY ITEM - TRAIT","ALCHEMY ITEM - RARE TRAIT", "RANDOM WEAPON", "RANDOM ARMOR", "STRIFE CARD", "STRIFE SPECIBUS", "BOONDOLLARS", "RAINBOW GRIST"];
 
-const nameList = ["CLOTHES","LAPTOP","LOCKBOX","BREAD","GUSHERS","STEAK","CANDLE","ICE","BATTERY","PIN","DOORSTOPPER","JPEG","RIBBON","OUIJA BOARD","CAT","DOG","SHATTERED GLASS","PILLOW","SUITCASE","SPRING","GLUE","BRICK","VAMPIRE TEETH","FROG","HARLEQUIN","CRYSTAL BALL","SMUPPET","MICROSCOPE","DUMBBELL","FEATHER","PROSPIT FLAG","DERSE FLAG","YOGA MAT","ROSE","FIREWORK","POKER CHIP","URANIUM ROD","PIPE","WHOOPIE CUSHION","DIAMOND","INK","TABLESTUCK GUIDE","CUEBALL","LOLLIPOP","FAN","PLANT","COIN","CLOCK","LOCKET","HORN","HEIRLOOM","ERASER","YARD STICK","BRAIN","RELIGIOUS SYMBOL","SKULL","HAMMER","KNITTING NEEDLES","KATANA","RIFLE","FORK","GLOVE","PUPPET","PISTOL","LANCE","THROWING STAR","SICKLE","CLAWS","CHAINSAW","CANE","DICE","BOW","BASEBALL BAT","WAND","SPEAR","STUFFED BUNNY","MAGAZINE","FANCY SANTA","UMBRELLA","BROOM","FLASHLIGHT","SAW","WRENCH","SCREWDRIVER","PLIERS","NAIL","CROWBAR","BOOK","YOYO","STAPLER","SHOTGUN","PENCIL","PAINT BRUSH","SCYTHE","SCISSORS","KNIFE","SHOVEL","ROPE","AXE","DART","CHAIN","BASKETBALL","ROCK","HOCKEY STICK","TRIDENT","RAZOR","PAPER FAN","PLAYING CARDS","ALCHEMY ITEM - ITEMKIND","ALCHEMY ITEM - GRIST","ALCHEMY ITEM - ACTION","ALCHEMY ITEM - RARE ACTION","ALCHEMY ITEM - TRAIT","ALCHEMY ITEM - RARE TRAIT","RANDOM WEAPON","RANDOM ARMOR","STRIFE CARD","STRIFE SPECIBUS","BOONDOLLARS","RAINBOW GRIST"];
 
 const tables = {
   bedroom:[2,6,8,9,10,11,12,13,14,15,17,22,23,24,25,27,28,29,32,58,65,67,71,72,73,75,88,92,103],
@@ -98,7 +99,7 @@ return [nameList[select],code,1,1,[]];
 }
 
 exports.lootGen = function(client,level){
- 
+
   tierVary = [1,3,6,9,12];
   quantityMin = [5,25,125,625,3125];
   quantityMax = [10,50,250,1250,6250];
@@ -122,37 +123,35 @@ switch(name){
     name = `ALCHEMY ITEM - ${client.kind[client.codeCypher[0][client.captchaCode.indexOf(roll)]].toUpperCase()}`
   code = `${roll}///////`;
   break;
+
   case "ALCHEMY ITEM - GRIST":
-
-  roll = randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)];
-
-  code = `/${roll}//////`;
-
-	  name = `ALCHEMY ITEM - ${client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(roll)]].toUpperCase()}`
+      roll = randomChar.allRandom[Math.floor(Math.random()*randomChar.allRandom.length)];
+      code = `/${roll}//////`;
+      name = `ALCHEMY ITEM - ${client.gristTypes[client.codeCypher[1][client.captchaCode.indexOf(roll)]].toUpperCase()}`
   break;
+
   case "ALCHEMY ITEM - ACTION":
-  actpos=Math.floor(Math.random()*4)+4;
-  roll = randomChar.simpleActions[Math.floor(Math.random()*randomChar.simpleActions.length)]
-  for(let i=0;i<8;i++){
-    (i!=actpos?code+="/":code += roll);
-  }
+      actpos=Math.floor(Math.random()*4)+4;
+      roll = randomChar.simpleActions[Math.floor(Math.random()*randomChar.simpleActions.length)]
+      for(let i=0;i<8;i++){
+        (i!=actpos?code+="/":code += roll);
+      }
 
-	  name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
+      name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
   break;
+
   case "ALCHEMY ITEM - RARE ACTION":
+      roll = randomChar.rareActions[Math.floor(Math.random()*randomChar.rareActions.length)];
+      actpos=Math.floor(Math.random()*4)+4;
+      for(let i=0;i<8;i++){
+        (i!=actpos?code+="/":code += roll);
+      }
 
-  roll = randomChar.rareActions[Math.floor(Math.random()*randomChar.rareActions.length)];
-
-  actpos=Math.floor(Math.random()*4)+4;
-  for(let i=0;i<8;i++){
-    (i!=actpos?code+="/":code += roll);
-  }
-
-	  name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
+      name = `ALCHEMY ITEM - ${client.action[client.captchaCode.indexOf(roll)].toUpperCase()}`
 
   break;
-  case "ALCHEMY ITEM - TRAIT":
 
+  case "ALCHEMY ITEM - TRAIT":
     roll1 = randomChar.simpleTraits1[Math.floor(Math.random()*randomChar.simpleTraits1.length)];
     roll2 = randomChar.simpleTraits2[Math.floor(Math.random()*randomChar.simpleTraits2.length)];
 
@@ -168,6 +167,7 @@ switch(name){
     }
     code+="////"
   break;
+
   case "ALCHEMY ITEM - RARE TRAIT":
 
   roll1 = randomChar.rareTraits1[Math.floor(Math.random()*randomChar.rareTraits1.length)];
@@ -231,31 +231,25 @@ switch(name){
   }
   tier = tierVary[level];
   break;
-  case "STRIFE CARD":
 
+  case "STRIFE CARD":
   code="////////"
   quantity = level+1;
-
   break;
-  case "STRIFE SPECIBUS":
 
+  case "STRIFE SPECIBUS":
   code="////////"
   quantity = Math.ceil(level+1/2);
-
   break;
+
   case "BOONDOLLARS":
-
   code="////////"
-
   quantity = Math.ceil(Math.random()*(quantityMax[level]-quantityMin[level]))+quantityMin[level];
-
   break;
+
   case "RAINBOW GRIST":
-
   code="////////"
-
   quantity = Math.ceil(Math.random()*(quantityMax[level]-quantityMin[level]))+quantityMin[level];
-
   break;
 
 }

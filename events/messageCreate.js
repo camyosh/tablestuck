@@ -5,9 +5,26 @@ module.exports = (client, message) => {
   if(message.author.bot) return;
   //ignores all pms to the bot
   if(message.guild === null) return;
-
-  //Ignore all messages not starting with the prefix
-  if(message.content.indexOf(client.auth.prefix) !== 0) return;
+  
+  //Ignore (almost) all messages not starting with the prefix
+  if(message.content.indexOf(client.auth.prefix) !== 0)
+  {
+    if(client.configMap.get(message.guild.id).options[1].selection==1)
+    {
+      let userid2 = message.guild.id.concat(message.author.id);
+      if(client.userMap.has(userid2) && message.channel.id == client.userMap.get(userid2,"pesterchannel"))
+      {
+        let shortcutCommand = client.commands.get("pester");
+        let shortcutArgs = message.content.trim().split(/ +/g);
+        if(shortcutArgs[0] && shortcutArgs[0].length == 2)
+        {
+          console.log("pester (implicit)");
+          shortcutCommand.run(client, message, shortcutArgs);
+        }
+      }
+    }
+    return;
+  }
 
   //lists actions that don't increase the action counter
   var freeAct = ["register","leaderboard","stats","scratch","help","initialize","trait","act"];

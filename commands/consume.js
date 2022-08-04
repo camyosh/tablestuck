@@ -31,9 +31,18 @@ exports.run = (client,message,args) =>{
   let turn;
   let init;
   let active;
+  
+  let heals = (client.traitcall.itemTrait(client,sdex[selectDex],"FOOD")==true) || (dogCheck[0]==true);
+  let buffs = (client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")==true) || (client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")==true);
 
-  if(client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")==false&&client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")==false&&client.traitcall.itemTrait(client,sdex[selectDex],"FOOD")==false&&dogCheck[0]==false){
+  if(!buffs && !heals){
     message.channel.send("That is not a consumable item!");
+    return;
+  }
+  
+  if((strifeCheck == false) && !heals)
+  {
+    message.channel.send("You can't use that item outside of strife!");
     return;
   }
 
@@ -71,40 +80,44 @@ if(strifeCheck){
   msg2 = `${client.charcall.charData(client,list[init[turn][0]][1],"name")} consumes a ${sdex[selectDex][0]}!`;
 }
   if(client.traitcall.itemTrait(client,sdex[selectDex],"CANDY")){
-    if(strifeCheck==false){
-      message.channel.send("You can't use that item outside of strife!");
-      return;
-    }
-
     let stamina = list[pos][5];
     stamina+=tier;
     list[pos][5]=stamina;
     msg += `\nYou gain ${tier} STAMINA, you now have ${stamina} STAMINA!`;
     msg2 += `\nThey gain ${tier} STAMINA, and now have ${stamina} STAMINA!`;
-  }
-  if(client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")){
-    if(strifeCheck==false){
-      message.channel.send("You can't use that item outside of strife!");
-      return;
-    }
 
+  }
+
+  if(client.traitcall.itemTrait(client,sdex[selectDex],"MEAT")){
     list[pos][7].push(`MEAT${tier}`);
     msg += `\nYou will do +${tier} BD on your next attack!`;
     msg2 += `\nThey will do +${tier} BD on their next attack!`;
 
   }
 
-  if(client.traitcall.itemTrait(client,sdex[selectDex],"FOOD")||client.traitcall.traitCheck(client,charid,"DOG")[0]){
+  if(heals){
 
     let vit;
+    let gel = client.charcall.allData(client,userid,charid,"gel");
 
     if(strifeCheck==true){
-      vit = list[pos][3]
+      vit = list[pos][3];
     } else {
       vit = client.charcall.charData(client,charid,"vit");
     }
+	
+	if(vit >= gel)
+	{
+	  if(!buffs || (strifeCheck == false))
+	  {
+        message.channel.send("You're already at full health!");
+		if((strifeCheck==true) && list[pos][6].includes("CONSUME2")){
+		  list[pos][6].splice(list[pos][6].indexOf("CONSUME2"), 1);
+		}
+        return;
+	  }
+	}
 
-    let gel = client.charcall.allData(client,userid,charid,"gel");
     let heal = tier*.03;
 
     if(client.traitcall.traitCheck(client,charid,"FOOD")[1]){

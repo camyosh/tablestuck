@@ -10,7 +10,8 @@ exports.type = "sylladex";
 exports.desc = "Interact with equipped armor"
 exports.use = `">armor" will display your currently equipped armor, if there is one.
 ">armor equip [number]" will equip the number item in your sylladex if it's armor.
-">armor eject" will drop your currently equipped armor in your current room.`
+">armor eject" will drop your currently equipped armor in your current room.
+">armor unequip" will remove your currently equipped armor and put it in your sylladex.`
 exports.run = (client, message, args) => {
 
   var userid = message.guild.id.concat(message.author.id);
@@ -20,7 +21,7 @@ exports.run = (client, message, args) => {
   let inspectItem;
 //if no arguments, display currently equipped armor
 
-  if(!args[0]){
+  if(!args[0] || args[0].toLowerCase() == "inspect"){
 
     if(armor.length==0){
 
@@ -70,9 +71,13 @@ exports.run = (client, message, args) => {
       );
     }
     client.tutorcall.progressCheck(client,message,24,["embed",inspectItem]);
-    //if first argument is eject, eject armor
+	return;
+  }
 
-  } else if(args[0]=="eject"){
+  args[0] = args[0].toLowerCase();
+  
+  //if first argument is eject, eject armor
+  if(args[0]=="eject"){
 
     if(client.charcall.charData(client,charid,"strife")){
       message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
@@ -162,8 +167,27 @@ exports.run = (client, message, args) => {
       message.channel.send(`Successfully EQUIPPED the ${equipItem[0]}!`);
       client.funcall.tick(client,message);
 
+  } else if(args[0]=="unequip"){
+
+    if(client.charcall.charData(client,charid,"strife")){
+      message.channel.send("You can't do that in Strife! You need to either win the Strife or leave Strife using Abscond!");
+      return;
+    }
+	
+    //if armor is already equipped, cancel
+
+    if(armor.length<=0){
+      message.channel.send(`You have no ARMOR equipped! You must equip armor before you can unequip it.`);
+      return;
+    }
+
+	let cmd = client.commands.get("unequip");
+	args[0] = "armor";
+	cmd.run(client,message,args);
+	return;
+
   } else {
-    message.channel.send(`That is not a valid argument! Valid arguments for ${client.auth.prefix}armor are eject and equip!`)
+    message.channel.send(`That is not a valid argument! Valid arguments for ${client.auth.prefix}armor are eject, equip, and unequip!`)
   }
 
 

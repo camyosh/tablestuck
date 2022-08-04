@@ -3,7 +3,7 @@
 //const strifecall = require("../modules/strifecall.js");
 //const landcall = require("../modules/landcall.js");
 
-const gateReq = [0,100,200,400,800,1600,3200,6400];
+const gateReq = [0,100,200,400,800,1600,3200,6400,12800];
 const gateName = ["FIRST","SECOND","THIRD","FOURTH","FIFTH","SIXTH","SEVENTH"];
 exports.type = "sburb";
 exports.desc = "Enter a gate, ring, or dungeon";
@@ -28,15 +28,14 @@ exports.run = (client, message, args) => {
   let target = [local[0],local[1],local[2],0,local[4]];
 
   switch(area[0]){
-
     case 5:
-
+	{
     let gristSpent = client.landMap.get(local[4],"spent");
     let gate = client.landMap.get(local[4],"gate");
     let enter = client.landMap.get(local[4],"enter");
     let gristRemaining;
-    if(gate+1>=8){
-      gristRemaining = "MAX GATE REACHED!";
+    if(gate>7){
+      gristRemaining = "BUILD LIMIT REACHED!";
     } else {
       gristRemaining = gateReq[gate+1]-gristSpent;
     }
@@ -57,7 +56,7 @@ exports.run = (client, message, args) => {
       .setColor("#29b5d3")
       .addFields(
         {name:"**Gate Reached**",value:gate.toString()},
-        {name:"**Grist to next Gate**",value:gristRemaining.toString()},
+        {name: gate==7 ? "**Grist to build limit**" : "**Grist to next Gate**",value:gristRemaining.toString()},
         {name:"**Gates**",value:msg});
       message.channel.send({embeds: [gateSend]});
 
@@ -71,29 +70,17 @@ exports.run = (client, message, args) => {
     }
 
     if(value>gate){
-      if (client.traitcall.traitCheck(client,charid,"ROCKET")[1]||client.traitcall.traitCheck(client,charid,"SPACE")[0]||client.charcall.allData(client,userid,charid,"godtier")) {
+      if (client.traitcall.traitCheck(client,charid,"ROCKET")[1] || client.traitcall.traitCheck(client,charid,"SPACE")[0] || client.charcall.allData(client,userid,charid,"godtier")==true) {
         msg+= `House hasn't been built high enough to reach that gate, but you don't care, you can fly!\n`
       } else {
-        message.channel.send(`House hasn't been built high enough to reach that gate! Have your client player build up your house with ${client.auth.prefix}build`);
+        message.channel.send(`House hasn't been built high enough to reach that gate! Have your server player build up your house with ${client.auth.prefix}build`);
         return;
       }
     }
 
+	let tier = Math.ceil(value/2);
 
-    let clientGates;
-    let clientCheck = false;
-
-    let sburbClient = client.sburbMap.get(local[4],"client");
-
-
-    if(client.landMap.has(sburbClient)){
-
-      clientGates = client.landMap.get(sburbClient,"gates");
-      clientCheck = true;
-
-    }
-
-    target[0]="s"+Math.ceil(value/2);
+    target[0]="s" + tier;
 
     if(value % 2 == 1){
       //odd gates lead to player's own land
@@ -102,40 +89,83 @@ exports.run = (client, message, args) => {
       target[2]=Math.floor(Math.random() * 11);
 
     }else{
-      //even gates lead to player's client's land
-      if(!clientCheck||client.landMap.get(sburbClient,"enter")==false){
+      //even gates lead to player's client's land, or their client's land, or their client's land
+
+      let targetLand = local[4];
+
+      let clientGates;
+      let clientCheck = true;
+
+      for(let i=0; i<tier && clientCheck; i++){
+
+		targetLand = client.sburbMap.get(targetLand,"client");
+	    if(client.landMap.has(targetLand))
+		{
+          clientCheck = true;
+		}
+		else {
+		  clientCheck = false;
+		  break;
+		}
+      }
+      clientGates = client.landMap.get(targetLand,"gates");
+
+      if(!clientCheck||client.landMap.get(targetLand,"enter")==false){
         message.channel.send("That gate doesn't lead anywhere!");
         return;
       }
 
-      target[1]=clientGates[Math.floor(value/2)][0]
-      target[2]=clientGates[Math.floor(value/2)][1]
-      target[4]=sburbClient;
+      target[1]=clientGates[tier-1][0];
+      target[2]=clientGates[tier-1][1];
+      target[4]=targetLand;
 
     }
-
     msg+=`You ascend to the ${gateName[value-1]} GATE and find yourself in a `
-
+	}
     break;
     case 3:
-
     target = ["h",0,0,0,local[4]];
     mapCheck=false;
     msg+=`You enter the RETURN NODE and are transported to a `
 
     break;
     case 6:
+	{
+	let tier;
+	switch(local[0])
+	{
+		case "s1": tier = 1; break;
+		case "s2": tier = 2; break;
+		case "s3": tier = 3; break;
+		default:
+          message.channel.send("This gate doesn't lead anywhere!");
+          return;
+	}
 
-    let serverid = client.sburbMap.get(local[4],"server");
-    if(!client.landMap.has(serverid)||!client.landMap.get(serverid,"enter")){
+	let targetLand = local[4];
+	let serverCheck = true;
+	for(let i=0; i<tier && serverCheck; i++){
+
+	  targetLand = client.sburbMap.get(targetLand,"server");
+	  if(client.landMap.has(targetLand))
+	  {
+	    serverCheck = true;
+	  }
+	  else {
+	    serverCheck = false;
+	    break;
+	  }
+	}
+
+    if(!serverCheck||!client.landMap.get(targetLand,"enter")){
       message.channel.send("This gate doesn't lead anywhere!");
       return;
     }
 
-    target = ["h",0,0,0,local[4]];
+    target = ["h",0,0,0,targetLand];
     mapCheck=false;
     msg+=`You enter the GATE and are transported to a `
-
+	}
     break;
     case 1:
 
@@ -174,7 +204,7 @@ exports.run = (client, message, args) => {
       }else{
         target[0]=target[0].slice(0,-1)+`${(floor+1)}`;
       }
-      msg+=`Tou DESCEND deeper into the DUNGEON, you can go back up using the `;
+      msg+=`You DESCEND deeper into the DUNGEON, you can go back up using the `;
 
     break;
     case 47:

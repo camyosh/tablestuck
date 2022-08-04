@@ -10,6 +10,7 @@ exports.run = (client, message, args) => {
   //define variables to determine required grist to reach each gate
 
   const gateReq = [100,200,400,800,1600,3200,6400,12800];
+  const MAX_HEIGHT_INDEX = 7;
 
   //retrieve player location
 
@@ -46,7 +47,19 @@ exports.run = (client, message, args) => {
   let curGate = client.landMap.get(targsburb,"gate");
   //convert grist amount to number
   if(!args[0]){
-    client.tutorcall.progressCheck(client,message,21,["text",`Your client ${(curGate>0?`has access to gate number ${curGate}`:`hasn't reached a gate yet`)}. \nYou have expended ${buildSpent} grist on the house so far, and need to expend ${gateReq[curGate]-buildSpent} more to reach the next gate!`]);
+	let messText = `Your client ${(curGate>0?`has access to gate number ${curGate}`:`hasn't reached a gate yet.`)}.`;
+	let messText2 = `\nYou have expended ${buildSpent} grist on the house`;
+	if(curGate >= MAX_HEIGHT_INDEX + 1)
+	{
+      messText = `Your client has reached the build limit!`;
+	  messText2 += "."
+	}
+	else
+	{
+      messText2 += ` so far, and need to expend ${gateReq[curGate]-buildSpent} more to reach the ${(curGate < MAX_HEIGHT_INDEX) ? `next gate` : `build limit!`}!`;
+	}
+	messText += messText2;
+    client.tutorcall.progressCheck(client,message,21,["text", messText]);
     return;
   }
   value = parseInt(args[0], 10);
@@ -55,6 +68,23 @@ exports.run = (client, message, args) => {
     return;
   }
 
+  // Limit at the eighth position, rather than the seventh gate, in preparation for The Ultimate Alchemy.
+  if(value + buildSpent > gateReq[MAX_HEIGHT_INDEX])
+  {
+    let diff = value + buildSpent - gateReq[MAX_HEIGHT_INDEX];
+	value -= diff;
+  }
+  
+  if(value < 1)
+  {
+    message.channel.send("The Client has already reached the build limit! Their house can't go any higher!");
+	if(curGate <= MAX_HEIGHT_INDEX)
+	{
+		gate = MAX_HEIGHT_INDEX + 1;
+		client.landMap.set(targsburb,gate,"gate");
+	}
+    return;
+  }
 
   if(value > grist[0]) {
     message.channel.send("The Client doesn't have enough Build Grist!");
@@ -62,14 +92,10 @@ exports.run = (client, message, args) => {
   }
 
   //increases built amount and decreases build grist total
-
-
   buildSpent += value;
   grist[0] -= value;
 
   //check if player has enough grist to reach next gate
-
-
   for(let i=0;i<gateReq.length;i++){
     if(buildSpent>=gateReq[i]){
       gate++;
@@ -86,7 +112,7 @@ exports.run = (client, message, args) => {
   if(gate>curGate){
 
   client.landMap.set(targsburb,gate,"gate");
-  message.channel.send(`Expended ${value} BUILD GRIST to build house. The CLIENT PLAYER'S house now reaches GATE ${gate}`);
+  message.channel.send(`Expended ${value} BUILD GRIST to build house. The CLIENT PLAYER'S house now reaches ${gate <= MAX_HEIGHT_INDEX ? `GATE ${gate}.` : `the build limit!`}`);
 } else {
   message.channel.send(`Expended ${value} BUILD GRIST to build house.`);
 }

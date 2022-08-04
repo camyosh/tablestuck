@@ -197,41 +197,41 @@ function roomGen(client, area, section, roomNum) {
   }
 
   //set room name
-  let nameList = ["CLEARING",`ROOM ${roomNum}`,"LAND CONSTRUCT","RETURN NODE",vilName[roomType]]
-  let roomName = nameList[area]
+  let nameList = ["CLEARING",`ROOM ${roomNum}`,"LAND CONSTRUCT","RETURN NODE",vilName[roomType]];
+  let roomName = nameList[area];
 
 //set room inventory
 
   let roomInv = [];
-//REPLACE THIS WITH A SWITCH CASE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //TODO: See if we can incorporate more of this into the switch case
 
   if(area==0 && roomType ==14){
-    roomInv = ["Hidden Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]]
+    roomInv = ["Hidden Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]];
   }
   else if(area==0 && roomType ==12){
-    roomInv[0] = ["Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
+    roomInv[0] = ["Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]];
   }
   else if(area == 1){
-    if(section == 0 && roomType == 3){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootC(client, section, roomLoot)]]
-    }
-    else if(section == 1 && roomType == 5){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
-    }
-    else if(section == 2 && roomType == 5){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootC(client, section, roomLoot)]]
-    }
-    else if(section == 2 && roomType == 7){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
-    }
-    else if(section == 3 && roomType == 5){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
-    }
-    else if(section == 3 && roomType == 7){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]]
-    }
-    else if(section == 3 && roomType == 9){
-      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]]
+    switch(section * roomType){
+    case 0:
+      if(roomType != 3){
+        break;
+      }
+      //fallthrough
+    case 10:
+      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootC(client, section, roomLoot)]];
+      break;
+
+    case 5:
+    case 14:
+    case 15:
+    case 21:
+      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootB(client, section, roomLoot)]];
+      break;
+
+    case 27:
+      roomInv[0] = ["Dungeon Chest","y0Gc0000",1,1,[lootcall.lootA(client, section, roomLoot)]];
+      break;
     }
   }
 
@@ -684,8 +684,8 @@ exports.xpGive = function(client, message, xp, target){
     .setTitle(`${name} ASCENDED THEIR ECHELADDER!`)
     .addFields(
       {name:"RUNG",value:`${curRung} + ${i - curRung}`,inline:true},
-      {name:"GEL VISCOSITY",value:`${client.emojis.cache.get('721452682115809454')} ${curGel} + ${gvGain}`},
-      {name:"GRIST CACHE",value: `${client.emojis.cache.get('715632438751002654')} ${curCache} + ${client.cache(i) - curCache}`}
+      {name:"GEL VISCOSITY",value:`${client.emojis.cache.get(client.emoji["GEL"])} ${curGel} + ${gvGain}`},
+      {name:"GRIST CACHE",value: `${client.emojis.cache.get(client.grist["build"].emoji)} ${curCache} + ${client.cache(i) - curCache}`}
     )
     .setThumbnail(target.avatarURL());
     message.channel.send({embeds:[congrats]});
@@ -727,7 +727,7 @@ exports.gristCacheEmbed = function(client,sburbid) {
   let i;
 
 
-  //loop to list all of a player's grist types and ammounts
+  //loop to list all of a player's grist types and amounts
 
   for(i=0;i<gristTypes.length;i++){
     msg += `${client.emojis.cache.get(client.grist[gristTypes[i]].emoji)} **${gristTypes[i].toUpperCase()} - ${grist[i]}**\n\n`
@@ -833,7 +833,7 @@ exports.sleepHeal = function(client,charid){
   }
 
 
-exports.move = function(client,message,charid,local,target,mapCheck,msg){
+exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTitle="moving to"){
 
   let targSec = client.landMap.get(target[4],target[0]);
   var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
@@ -924,7 +924,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
     var listEmbed;
     var files = [attachment];
     listEmbed = new client.MessageEmbed()
-      .setTitle(`**MOVING TO ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
+      .setTitle(`**${embedTitle.toUpperCase()} ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
       .addFields(
         {name:`**ALERTS**`,value:msg},
         {name:`**ROOM**`,value:`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,inline:true},
@@ -952,7 +952,7 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg){
           let curBoon = client.charcall.allData(client,userid,charid,"b");
           let embed = new client.MessageEmbed()
           .setTitle(`**${client.charcall.charData(client,charid,"name")}** gained BOONDOLLARS!`)
-          .addFields({name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${checkQuest[2]}= **${curBoon+checkQuest[2]}**`,inline:true});
+          .addFields({name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get(client.emoji["BOONS"])} ${curBoon} + ${checkQuest[2]}= **${curBoon+checkQuest[2]}**`,inline:true});
           client.charcall.setAnyData(client,userid,charid,curBoon+checkQuest[2],"b");
           client.channels.cache.get(client.charcall.allData(client,userid,charid,"channel")).send({embeds:[embed], files:qfiles});
         }else{

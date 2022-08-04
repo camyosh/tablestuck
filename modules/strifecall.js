@@ -3,10 +3,12 @@ const log = true;
 const tierDmg = [1,5,7,10,14,19,25,32,40,49,59,70,82,95,109,124,140];
 const tierBD = [[1,2],[1,4],[1,6],[1,8],[1,10],[1,12],[2,16],[2,20],[2,24],[3,30],[3,36],[4,40],[5,50],[6,60],[7,70],[8,80],[10,100]];
 const tierAv = [1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
-const rungGrist = [20,22,24,26,28,30,32,34,36,38,40,44,48,52,56,60,64,68,72,76,80,88,96,104,112,120,128,136,144,152,160,176,192,208,224,240,256,272,288,304,320,352,384,416,448,480,512,544,576,608,640,704,768,832,896,960,1024,1088,1152,1216,1280,1408,1536,1664,1792,1920,2048,2176,2304,2432,2560,2816,3072,3328,3584,3840,4096,4352,4608,4864,5120,5632,6144,6656,7168,7680,8192,8704,9216,9728,10240,11264,12288,13312,14336,15360,16384,17408,18432,19456,20480];
-const rungReq = [0,1,2,3,4,5,6,7,8,9,10,12,14,16,18,20,22,24,26,28,30,34,38,42,46,50,54,58,62,66,70,78,86,94,102,110,118,126,134,142,150,166,182,198,214,230,246,262,278,294,310,342,374,406,438,470,502,534,566,598,630,694,758,822,886,950,1014,1078,1142,1206,1270,1398,1526,1654,1782,1910,2038,2166,2294,2422,2550,2806,3062,3318,3574,3830,4086,4342,4598,4854,5110,5622,6134,6646,7158,7670,8182,8694,9206,9718,10230,9999999999999999];
-const rungGel = [100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500,510,520,530,540,550,565,580,595,610,625,640,655,670,685,700,715,730,745,760,775,790,805,820,835,850,865,880,895,910,925,940,955,970,985,1000,1020,1040,1060,1080,1100,1120,1140,1160,1180,1200]
-const rungBoon = [0,10,10,10,10,10,10,10,10,10,10,20,20,20,20,20,20,20,20,20,20,40,40,40,40,40,40,40,40,40,40,80,80,80,80,80,80,80,80,80,80,160,160,160,160,160,160,160,160,160,160,320,320,320,320,320,320,320,320,320,320,640,640,640,640,640,640,640,640,640,640,1280,1280,1280,1280,1280,1280,1280,1280,1280,1280,2560,2560,2560,2560,2560,2560,2560,2560,2560,2560,5120,5120,5120,5120,5120,5120,5120,5120,5120,5120]
+
+                  // 0                 //5                //10                //15                //20                //25                //30                //35                //40                //45                //50                //55                     //60                     //65                     //70                     //75                     //80                     //85                      //90                          //95                         //100
+const rungGrist = [ 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 88, 96,104,112,120,128,136,144,152,160,176,192,208,224,240,256,272,288,304,320,352,384,416,448,480,512,544,576,608,640,704,768,832,896,960,1024,1088,1152,1216,1280,1408,1536,1664,1792,1920,2048,2176,2304,2432,2560,2816,3072,3328,3584,3840,4096,4352,4608,4864,5120,5632,6144,6656,7168,7680,8192,8704,9216,9728,10240,11264,12288,13312,14336,15360,16384,17408,18432,19456,20480];
+const rungReq   = [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 34, 38, 42, 46, 50, 54, 58, 62, 66, 70, 78, 86, 94,102,110,118,126,134,142,150,166,182,198,214,230,246,262,278,294,310,342,374,406,438,470, 502, 534, 566, 598, 630, 694, 758, 822, 886, 950,1014,1078,1142,1206,1270,1398,1526,1654,1782,1910,2038,2166,2294,2422,2550,2806,3062,3318,3574,3830,4086,4342,4598,4854, 5110, 5622, 6134, 6646, 7158, 7670, 8182, 8694, 9206, 9718,10230,9999999999999999];
+const rungGel   = [100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,180,185,190,195,200,205,210,215,220,225,230,235,240,245,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,420,430,440,450,460,470,480,490,500, 510, 520, 530, 540, 550, 565, 580, 595, 610, 625, 640, 655, 670, 685, 700, 715, 730, 745, 760, 775, 790, 805, 820, 835, 850, 865, 880, 895, 910, 925, 940, 955, 970, 985, 1000, 1020, 1040, 1060, 1080, 1100, 1120, 1140, 1160, 1180, 1200]
+const rungBoon  = [  0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80,160,160,160,160,160,160,160,160,160,160,320,320,320,320,320, 320, 320, 320, 320, 320, 640, 640, 640, 640, 640, 640, 640, 640, 640, 640,1280,1280,1280,1280,1280,1280,1280,1280,1280,1280,2560,2560,2560,2560,2560,2560,2560,2560,2560, 2560, 5120, 5120, 5120, 5120, 5120, 5120, 5120, 5120, 5120, 5120]
 const actionList = ["accede","accelerate","accessorize","acclaim","acclimate","accomplish","account","accumulate","accuse","acerbate","acknowledge","acquaint","acquire","actualize","actuate","activate","acupressure","arbitrate","arborize","archive","ardor","arf","argufy","arise","arithmetize","armamentify","arraign","arrange","arrest","arrive","arrogate","arsenalize","articulate","artillerate","asphixiate","aspire","ass","assail","assassinate","assault","assemble","assert","assess","asseverate","assign","assimilate","assist","assure","astonish","astound","astrict","arsonate","accomodate","abuse","abjure","abstain","absorb","abolish","abstract","abate"]
 
 
@@ -52,11 +54,11 @@ function inflict(client, message, local, list, target, chance, status, attacker)
 return alert;
 }
 
-function passTurn(client,charid,message,local) {
+function passTurn(client, charid, message, local) {
 
   let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
 
-  //chack if the strife exists in the database
+  //check if the strife exists in the database
   if(client.strifeMap.has(strifeLocal)){
   //Retrieve information from strife database
   let turn = client.strifeMap.get(strifeLocal,"turn");
@@ -69,7 +71,7 @@ if(client.charcall.charData(client,charid,"pos")!=init[turn][0]){
     return;
   }
 
-  //check if the character whos turn it is has any status effects
+  //check if the character whose turn it is has any status effects
   for(let i=(list[init[turn][0]][7].length - 1);i>=0;i--){
     switch(list[init[turn][0]][7][i]){
       case "TARGFAV":
@@ -395,8 +397,8 @@ function giveXp(client,target,xp){
     .setTitle(`**${name}** climbed their ECHELADDER!`)
     .addFields(
       {name:`**RUNG**`,value:`${curRung} + ${i - curRung}`,inline:true},
-      {name:`**GEL VISCOSITY**`,value:`${client.emojis.cache.get('735664168400584715')} ${curGv} + ${rungGel[i] - curGv}`,inline:true},
-      {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get('735664076180422758')} ${curBoon} + ${newBoon - curBoon}`,inline:true}
+      {name:`**GEL VISCOSITY**`,value:`${client.emojis.cache.get(client.emoji["GEL"])} ${curGv} + ${rungGel[i] - curGv}`,inline:true},
+      {name:`**BOONDOLLARS**`,value:`${client.emojis.cache.get(client.emoji["BOONS"])} ${curBoon} + ${newBoon - curBoon}`,inline:true}
     );
     client.funcall.chanMsg(client,target,"NONE",congrats);
 
@@ -631,41 +633,21 @@ function startTurn(client, message, local) {
         removed = list[init[turn][0]][7].splice(i,1);
       break;
       case "ALLBD":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "ALLFAV":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "ALLUNFAV":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "DISCOUNT":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "ROLLOUT1":
       case "ROLLOUT2":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "STATUSIMMUNE":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "AV":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "DEFLECT":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "DEFROST":
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
       case "DEGRAP":
+      case "GRISTINVERT":
         removed = list[init[turn][0]][7].splice(i,1);
       break;
       case "DAZED":
       stamfav--;
-        removed = list[init[turn][0]][7].splice(i,1);
-      break;
-      case "GRISTINVERT":
         removed = list[init[turn][0]][7].splice(i,1);
       break;
     }
@@ -693,12 +675,12 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
   stamfav++;
 }
 
-
-    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[1]){
+    let endurance = client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING");
+    if(endurance[1]){
 
       stamroll = [Math.floor((Math.random() * stamMax/2) + Math.floor(stamMax/2)+1),Math.floor((Math.random() * stamMax/2) + Math.floor(stamMax/2)+1)];
 
-    } else if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING")[0]){
+    } else if(endurance[0]){
 
       stamroll = [Math.floor((Math.random() * (stamMax-stamMax/4)) + Math.floor(stamMax/4)+1),Math.floor((Math.random() * (stamMax-stamMax/4)) + Math.floor(stamMax/4)+1)];
 
@@ -1000,7 +982,7 @@ exports.underRally = function(client, local) {
 
   function act(client,charid,message,local,action,target){
     let strifeLocal = `${local[0]}/${local[1]}/${local[2]}/${local[3]}/${local[4]}`;
-//if strife database does not exist, cancel code
+    //if strife database does not exist, cancel code
     if(!client.strifeMap.has(strifeLocal)){
       console.log("Stopped a crash from act being run without a strife!");
       return;
@@ -1026,7 +1008,7 @@ exports.underRally = function(client, local) {
     let alert = ``;
     let dmgLvl = client.actionList[action].dmg;
 
-//check action tags
+    //check action tags
     let aa = client.actionList[action].add;
 
     let bd = 0;
@@ -1166,7 +1148,7 @@ targName = client.charcall.charData(client,list[target][1],"name");
   console.log(tarGrist);
 }
     //check for each action tag that is NONCOMBATIVE
-    //PREROLLACT
+    //PRE-ROLL ACT
     let pre;
     for(pre=(aa.length - 1);pre>=0;pre--){
       switch(aa[pre]){
@@ -1814,7 +1796,7 @@ if(aa.includes("RANDSTATUS")){
       if(effective=="HIT!"){
         effective="CRITICAL HIT!"
       } else {
-        effective=effective.slice(0, -1) + " CRITITCAL!"
+        effective=effective.slice(0, -1) + " CRITICAL!"
       }
 
       if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"HOPE")[0]){
