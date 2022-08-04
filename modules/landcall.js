@@ -747,8 +747,7 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
   let dungeon = [[],[],[],[]];
   for(i=0;i<11;i++){
     for(j=0;j<dungeon.length;j++){
-      dungeon[j].push(
-		generateEmptyLine("OUT OF BOUNDS",7))
+      dungeon[j].push(generateEmptyLine("OUT OF BOUNDS",7));
     }
   }
 
@@ -757,19 +756,7 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
   // 
   for(i=0;i<11;i++){
     for(j=0;j<castle.length;j++){
-      castle[j].push([
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 0
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 1
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 2
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 3
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 4
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 5
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 6
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 7
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 8
-		generateBasicTile(7, "OUT OF BOUNDS"),	// 9
-		generateBasicTile(7, "OUT OF BOUNDS") 	// 10
-	  ])
+      castle[j].push(generateEmptyLine("OUT OF BOUNDS",7));
     }
 }
 
@@ -1163,7 +1150,7 @@ while(empty.length>0){
 function generateEmptyLine(name, tile, length = 11){
 	let retVal = [];
 	for(let i=0; i<length; i++){
-		retVal.push(generateBasicTile(10, name));
+		retVal.push(generateBasicTile(tile, name));
 	}
 }
 
@@ -1176,12 +1163,12 @@ function generateBasicTile(icon, name){
 		[
 			// The one (and only) room within this tile
 			[
-				[],		// ???
+				[],		// Shop inventory
 				[],		// ???
 				name,	// The name of this room. 
 				false,	// Whether this room has already been explored/visited.
-				[],		// ???
-				[]		// ???
+				[],		// List of all creatures in the room
+				[]		// List of all items in the room
 			]
 		]
 	];
@@ -1213,8 +1200,6 @@ const numbers = await client.Canvas.loadImage("./miscsprites/NUMBERS.png");
 const tiles = await client.Canvas.loadImage("./miscsprites/MAPSHEET.png");
 const gate = await client.Canvas.loadImage("./miscsprites/GATE.png");
 const plgate = await client.Canvas.loadImage("./miscsprites/PLGATE.png");
-
-let attachment;
 
 client.Canvas.registerFont("./miscsprites/fontstuck.ttf",{family:`fontstuck`});
 client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
@@ -1330,6 +1315,7 @@ for(i=0;i<11;i++){
 
 let attachment = new client.MessageAttachment(canvas.toBuffer(), 'landmap.png');
 //message.channel.send(attachment);
+return attachment;
 } else {
 
 const canvas = client.Canvas.createCanvas(192,192);
@@ -1383,8 +1369,8 @@ for(i=-1;i<2;i++){
   }
   }
   attachment = new client.MessageAttachment(canvas.toBuffer(), 'landmap.png');
+  return attachment;
 }
-return attachment;
 }
 //this will be remade and moved to charcall.
 // exports.underlingCheck = function(occList,client) {
