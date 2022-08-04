@@ -1152,6 +1152,7 @@ function generateEmptyLine(name, tile, length = 11){
 	for(let i=0; i<length; i++){
 		retVal.push(generateBasicTile(tile, name));
 	}
+	return retVal;
 }
 
 function generateBasicTile(icon, name){
