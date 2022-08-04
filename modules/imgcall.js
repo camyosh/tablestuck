@@ -549,7 +549,6 @@ return attachment;
 }
 
 
-/*
 exports.alchCheckFiltered = async function (client, message, page, args, sdex, priceSet ,banner, numbers){
 
   const ITEMS_PER_PAGE = 15;
@@ -703,7 +702,6 @@ return attachment;
 
 
 }
-*/
 
 exports.characterImg = async function (client, message, custom){
 
