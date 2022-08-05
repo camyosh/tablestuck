@@ -243,20 +243,15 @@ exports.inspect = async function (client,message,args,type,item){
   ctx.drawImage(gristSheet,(gristType%8)*32,Math.floor(gristType/8)*32,32,32,x+62,y+88,44,44);
   //draw effective grist
 
+  let effectiveGrists = [ client.grist[client.gristTypes[gristType]].effective, client.grist[client.gristTypes[gristType]].ineffective ];
+
   for(let i=0;i<4;i++){
-
-    tempGrist=client.grist[client.grist[client.gristTypes[gristType]].effective[i]].pos;
-
-    ctx.drawImage(gristSheet,(tempGrist%8)*32,Math.floor(tempGrist/8)*32,32,32,x+116+(52*i),y+38,44,44);
-
+    for(let j=0;j<2;j++){
+      tempGrist=client.grist[effectiveGrists[j][i]].spos;
+      ctx.drawImage(gristSheet,(tempGrist%8)*32,Math.floor(tempGrist/8)*32,32,32,x+116+(52*i),y+38+50*j,44,44);
+	}
   }
-  for(let i=0;i<4;i++){
 
-    tempGrist=client.grist[client.grist[client.gristTypes[gristType]].ineffective[i]].pos;
-
-    ctx.drawImage(gristSheet,(tempGrist%8)*32,Math.floor(tempGrist/8)*32,32,32,x+116+(52*i),y+88,44,44);
-
-  }
   //draw trait symbols
   ctx.drawImage(traitSheet,(trait1Search.indexOf(trait1)%8)*32,Math.floor(trait1Search.indexOf(trait1)/8)*32,32,32,x+16,140,32,32);
   ctx.drawImage(traitSheet,(trait1Search.indexOf(trait2)%8)*32,Math.floor(trait1Search.indexOf(trait2)/8)*32,32,32,x+170,140,32,32);

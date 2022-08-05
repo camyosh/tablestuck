@@ -113,6 +113,7 @@
   },
   "zillium":{
     "pos":14,
+    "spos":14,
     "effective":["rainbow","rainbow","rainbow","rainbow","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber"],
     "ineffective":["artifact","artifact","artifact","artifact"],
     "emoji":"715632438478504007",
@@ -128,6 +129,7 @@
   },
   "rainbow":{
     "emoji":"715632522662379631",
-    "spos":16
+    "spos":16,
+    "rgb":[[0,0,255],[255,0,0],[255,255,0],[0,255,0],[0,255,255]]
   }
 }
