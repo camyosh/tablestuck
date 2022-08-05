@@ -281,7 +281,7 @@ exports.run = (client, message, args) => {
           case "trait":
           {
             let trait = args[i+1].toUpperCase();
-            
+
             if(trait == "SAME")
             {
               for(var j=0; j<numbers.length; j++)
@@ -473,6 +473,35 @@ exports.run = (client, message, args) => {
             for(var j=0; j<numbers.length; j++)
             {
               if(registry[numbers[j]][0].toLowerCase().indexOf(nameSubstring) < 0)
+              {
+                numbers.splice(j, 1);
+                j--;
+              }
+            }
+            break;
+          }
+          case "move":
+          {
+            let moveName = args[i+1].toLowerCase();
+            let moveIndex = client.action.indexOf(moveName);
+            if(moveIndex < 0){
+              mess += `\n"${args[i+1]}" is not a recognized move, so that filter was ignored.`;
+              break;
+            }
+            
+            let moveNumber = client.codeCypher[4][moveIndex];
+            let moveCode = client.captchaCode[moveNumber];
+            
+            for(var j=0; j<numbers.length; j++)
+            {
+              let flag = false;
+              for(let k=4; k<8; k++){
+                if(registry[numbers[j]][1].charAt(k) == moveCode){
+                  flag = true;
+                  break;
+                }
+              }
+              if(!flag)
               {
                 numbers.splice(j, 1);
                 j--;
