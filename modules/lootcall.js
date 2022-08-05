@@ -31,7 +31,7 @@ const tables = {
 }
 const randomChar = {
   allRandom: ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"],
-  allWeapons: ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","x"],
+  allWeapons: ["2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","x"],
   allTrinkets:["t","u","v"],
   simpleActions:["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q"],
   simpleTraits1: ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","y","z"],
@@ -104,10 +104,17 @@ exports.lootGen = function(client,level){
   quantityMin = [5,25,125,625,3125];
   quantityMax = [10,50,250,1250,6250];
 
-let loot = (level>2?tables.allloot:tables.simpleloot);
-
-if(level==4){
-  loot=tables.rareloot;
+let loot;
+switch(level){
+case 4:
+  loot = tables.rareloot;
+  break;
+case 3:
+  loot = tables.allloot;
+  break;
+default:
+  loot = tables.simpleloot;
+  break;
 }
 
 let name = nameList[loot[Math.floor(Math.random()*loot.length)]];
