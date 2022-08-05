@@ -688,18 +688,18 @@ for(let u=0;u<11;u++){
       battleLine.push(generateBasicTile(0, "CLEARING"))
       lastBlack = false;
     } else {
-      battleLine.push(generateBasicTile(7, "CLEARING"))
+      battleLine.push(generateBasicTile(10, "CLEARING"))
       lastBlack = true;
     }
-    battleMap.push(battleLine);
-    battleLine = [];
   }
+  battleMap.push(battleLine);
+  battleLine = [];
 }
 return battleMap;
 }
 
 exports.moonGen = function(client,castleLocal,towerLocal,message){
-	
+
 	const PROSPIT = 0;
 	const DERSE = 1;
 	const PLANETS = [PROSPIT, DERSE];
@@ -715,7 +715,7 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
 	const DUNGEON_P2 = 5;
 	const DUNGEON_P3 = 6;
 	const PROSPIT_DUNGEONS = [DUNGEON_P1, DUNGEON_P2, DUNGEON_P3];
-	
+
 	const DUNGEON_D1 = 7;
 	const DUNGEON_D2 = 8;
 	const DUNGEON_D3 = 9;
@@ -725,7 +725,7 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
 	const ALL_DUNGEONS = [DUNGEON_P1, DUNGEON_P2, DUNGEON_P3, DUNGEON_D1, DUNGEON_D2, DUNGEON_D3];
 	const ALL_DUNGEONS_BY_MOON = [PROSPIT_DUNGEONS, DERSE_DUNGEONS];
 
-	
+
 //generates everything needed for both moons.
   let section = [[],[],[],[],[],[],[],[],[],[]];
   for(i=0;i<11;i++){
@@ -753,7 +753,7 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
 
   let castle = [[],[]];
 
-  // 
+  //
   for(i=0;i<11;i++){
     for(j=0;j<castle.length;j++){
       castle[j].push(generateEmptyLine("OUT OF BOUNDS",7));
@@ -1157,16 +1157,16 @@ function generateEmptyLine(name, tile, length = 11){
 
 function generateBasicTile(icon, name){
 	return [
-		icon,	// The image used to represent this tile. Sometimes carries other information, like the fact that a given tile is a wall. 
+		icon,	// The image used to represent this tile. Sometimes carries other information, like the fact that a given tile is a wall.
 		1,		// The number of rooms in a tile. This is ALMOST always 1.
-		
+
 		// The actual room array.
 		[
 			// The one (and only) room within this tile
 			[
 				[],		// Shop inventory
 				[],		// ???
-				name,	// The name of this room. 
+				name,	// The name of this room.
 				false,	// Whether this room has already been explored/visited.
 				[],		// List of all creatures in the room
 				[]		// List of all items in the room
@@ -1240,6 +1240,9 @@ let landname;
      break;
      case "dc":
      landname = `DERSE CASTLE`;
+     break;
+     case "bf":
+     landname = `BATTLEFIELD`;
      break;
     default:
     let name = client.landMap.get(local[4],"name");
