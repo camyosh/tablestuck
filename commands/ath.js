@@ -236,7 +236,7 @@ exports.run = (client, message, args) => {
           mess += `\n"grist tar" means that the item's grist type must be TAR.`;
           mess += `\n"tier 3" means that the item's tier must be 3.`;
           mess += `\n"trait meta" means that the item must have the META trait. "trait same" means an item's two traits must be the same trait.`;
-          // mess += `\n"move accrue" means that the item must have the move ACCRUE in (at least) one of its four action slots.`;
+          mess += `\n"action accrue" means that the item must have the move ACCRUE in (at least) one of its four action slots.`;
           mess += `\n"kind bladekind" means that the item must be a BLADEKIND weapon. "kind" can accept "trinket" and "weapon" in addition to specific kinds.`;
           mess += `\nAll of these are simply examples of possible search criteria.`;
           message.channel.send(mess);
@@ -480,12 +480,14 @@ exports.run = (client, message, args) => {
             }
             break;
           }
+          case "action":
+          case "act":
           case "move":
           {
             let moveName = args[i+1].toLowerCase();
             let moveIndex = client.action.indexOf(moveName);
             if(moveIndex < 0){
-              mess += `\n"${args[i+1]}" is not a recognized move, so that filter was ignored.`;
+              mess += `\n"${args[i+1]}" is not a recognized action, so that filter condition was ignored.`;
               break;
             }
             
