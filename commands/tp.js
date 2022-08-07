@@ -22,6 +22,14 @@ exports.run = (client, message, args) => {
   client.funcall.move(client,message,charid,local,["h",0,0,0,client.charcall.charData(client,charid,"owner")],false,`Teleporting home!\nEntering a `);
   return;
   }
+  if(args[0]=="bf"){
+    if(!occset[0]&&args[1]!="confirm"){
+      message.channel.send(`Careful, NPCs can't come back from the battlefield easily right now! do ${client.auth.prefix}tp bf confirm to go there anyways!`);
+      return;
+    }
+    client.funcall.move(client,message,charid,local,["bf",5,5,0,`${message.guild.id}medium`],true,`Teleporting to the Battlefield!\nEntering a `);
+    return;
+  }
 
 
   if(!message.mentions.members.first()){

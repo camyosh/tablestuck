@@ -80,7 +80,7 @@ exports.run = (client,message,args) =>{
     listPrint = new client.MessageEmbed()
     .setTitle(`**ROOM OCCUPANTS**`)
     .addFields(
-      {name:`**AREA TYPE**`,value:`**${typeList[area[0]]}**`,inline:true},
+      {name:`**AREA TYPE**`,value:`**${(typeList[area[0]]?typeList[area[0]]:room[2])}**`,inline:true},
       {name:`**ROOM**`,value:`**${room[2]}**`,inline:true},
       {name:`**PAGE**`,value:`**${page+1}**`,inline:true},
       {name:`**CURRENT OCCUPANTS**`,value:msg});
