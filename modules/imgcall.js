@@ -10,6 +10,7 @@ exports.sdexCheck = async function (client, message,page, args, type, sdex, card
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1056,560);
   const ctx = canvas.getContext('2d');
+  const ITEMS_PER_PAGE = 10;
 
   //list light, list dark, card fg, card bg, card shade
 
@@ -17,6 +18,8 @@ exports.sdexCheck = async function (client, message,page, args, type, sdex, card
   let typeList = ["sylladex","strife specibus","container","room inventory"];
   let cardList = ["captchalogue cards","strife cards","storage space","room space"]
   let maxPage = Math.floor((cards-1)/10);
+  let usedCards = sdex.length;
+  let maxPage = Math.floor((usedCards-1)/ITEMS_PER_PAGE);
 
 //set background
   ctx.linewidth = 5;
@@ -32,7 +35,7 @@ exports.sdexCheck = async function (client, message,page, args, type, sdex, card
 
   if(type<3){
 
-    let msg = `${cardList[type]}::${sdex.length}/${cards}`
+    let msg = `${cardList[type]}::${usedCards}/${cards}`
 
     ctx.fillText(msg,canvas.width-16-ctx.measureText(msg).width,24);
 
