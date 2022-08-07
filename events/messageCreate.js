@@ -9,7 +9,7 @@ module.exports = (client, message) => {
   //Ignore (almost) all messages not starting with the prefix
   if(message.content.indexOf(client.auth.prefix) !== 0)
   {
-    if(client.configMap.get(message.guild.id).options[1].selection==1)
+    if(client.configcall.get(client, message, "CHANNELS")==1)
     {
       let userid2 = message.guild.id.concat(message.author.id);
       if(client.userMap.has(userid2) && message.channel.id == client.userMap.get(userid2,"pesterchannel"))

@@ -254,7 +254,7 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
     //split rewards between all participating players
 
     let multiplier;
-    switch(client.configMap.get(message.guild.id).options[7].selection){
+    switch(client.configcall.get(client, message, "grist")){
       case 1:
       multiplier = 2;
       break;
@@ -474,7 +474,7 @@ return;
       return;
     }
     //switches the dreaming and waking self, and all those who control them.
-    if(client.configMap.get(message.guild.id).options[0].selection==0){
+    if(client.configcall.get(client, message, "death")==0){
       if(client.charcall.allData(client,userid,charid,"dreamer")){
         target = client.charcall.allData(client,userid,charid,"wakingID");
       } else {
@@ -497,7 +497,7 @@ return;
   let godtier = client.charcall.allData(client,userid,charid,"godtier");
   if(godtier=="NONE") godtier = false;
   if(godtier){
-    if(client.configMap.get(message.guild.id).options[6].selection==0){
+    if(client.configcall.get(client, message, "immortal")==0){
       client.charcall.setAnyData(client,userid,charid,Date.now(),"sleepTimer");
       message.channel.send(`Looks like your conditional immortality saves you from perishing forever, though it'll take some time to get up again. You can ${client.auth.prefix}revive yourself in 5 minutes.`);
       return;
@@ -597,7 +597,7 @@ function startTurn(client, message, local) {
   let stamroll;
   let stamsg;
   let carry = true;
-  if(client.configMap.get(message.guild.id).options[3].selection==1){
+  if(client.configcall.get(client, message, "retain")==1){
     carry = false;
   }
   let removed;

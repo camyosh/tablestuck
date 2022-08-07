@@ -37,7 +37,7 @@ exports.run = function(client, message, args) {
     target = client.charcall.allData(client,userid,charid,"dreamingID");
   }
 
-  if(client.charcall.charData(client,target,"vit")<1&&client.configMap.get(message.guild.id).options[0].selection==0){
+  if(client.charcall.charData(client,target,"vit")<1&&client.configcall.get(client, message, "death")==0){
     message.channel.send(`You try to wake up, but your other self has less than 1 VITALITY! Every action you take as this self will heal your other self by 5 HP. Your other self currently has ${client.playerMap.get(target,"vit")} VITALITY.`);
     return;
   }

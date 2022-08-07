@@ -74,8 +74,7 @@ client.landMap.set(message.guild.id+"mediumlead",leaderboard);
 
 defaultConfig = require("../config.json");
 if(!client.configMap.has(message.guild.id)){
-  console.log("creating a new config file!");
-client.configMap.set(message.guild.id,defaultConfig);
+  client.configcall.generateSettings(client, message.guild.id);
 }
 
   message.channel.send("Session initialized!");

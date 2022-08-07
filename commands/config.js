@@ -5,16 +5,15 @@ exports.use = `">config" will open the config menu.
 ">config reset" will return config to default settings.`;
 exports.run = (client, message, args) => {
 
-//config check template: client.configMap.get(message.guild.id).options[#].selection==#
+//config check template: client.configcall.get(client, message, "name")==#
 
   if(!client.funcall.dmcheck(client,message)){
     message.channel.send("Only a DM can use this command! Make sure to give yourself a role named \"DM\" if you're in charge!");
     return;
   }
-defaultConfig = require("../config.json");
+
 if(!client.configMap.has(message.guild.id)){
-  console.log("creating a new config file!");
-client.configMap.set(message.guild.id,defaultConfig);
+  client.configCall.generateSettings(client, message);
 }
 configList = client.configMap.get(message.guild.id);
 if(!args[0]){
@@ -63,6 +62,7 @@ if(newOption>configList.options[selection].choices.length||newOption<=0){
   return;
 }
 configList.options[selection].selection = (newOption-1);
+configList.settings[args[0].toUpperCase()] = (newOption-1);
 message.channel.send(`Settings updated! \nRULE: ${configList.options[selection].desc}\nSETTING: ${configList.options[selection].choices[newOption-1]}`);
 client.configMap.set(message.guild.id,configList);
 }

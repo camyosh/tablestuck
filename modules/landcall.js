@@ -1274,7 +1274,7 @@ for(i=0;i<11;i++){
       if(i==local[1]&& j==local[2]){
         tile = 2;
       }
-      if(tile!=2&&client.configMap.get(message.guild.id).options[5].selection==0&&!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
+      if(tile!=2&&client.configcall.get(client, message, "fog")==0&&!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
       //if(false){
          ctx.drawImage(tiles,0,32,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
 
