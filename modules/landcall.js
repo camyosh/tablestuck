@@ -753,7 +753,6 @@ exports.moonGen = function(client,castleLocal,towerLocal,message){
 
   let castle = [[],[]];
 
-  //
   for(i=0;i<11;i++){
     for(j=0;j<castle.length;j++){
       castle[j].push(generateEmptyLine("OUT OF BOUNDS",7));
@@ -1159,7 +1158,6 @@ function generateBasicTile(icon, name){
 	return [
 		icon,	// The image used to represent this tile. Sometimes carries other information, like the fact that a given tile is a wall.
 		1,		// The number of rooms in a tile. This is ALMOST always 1.
-
 		// The actual room array.
 		[
 			// The one (and only) room within this tile
@@ -1277,7 +1275,7 @@ for(i=0;i<11;i++){
       if(i==local[1]&& j==local[2]){
         tile = 2;
       }
-      if(tile!=2&&client.configMap.get(message.guild.id).options[5].selection==0&&!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
+      if(tile!=2&&client.configcall.get(client, message, "fog")==0&&!input[i][j][2][0][3]&&local[0]!="p"&&local[0]!="d"&&local[0]!="pm"&&local[0]!="dm"&&local[0]!="pc"&&local[0]!="dc"){
       //if(false){
          ctx.drawImage(tiles,0,32,32,32,5+(32.8*(j+1)),5+(32*(i+2)),32.8,31);
 

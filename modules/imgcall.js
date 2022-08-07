@@ -1,9 +1,7 @@
 
   const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
 
-const trait1Search = ["NONE","COMPUTER","STORAGE","FOOD","CANDY","MEAT","HOT","COLD","ELECTRIC","SHARP","BLUNT","SHITTY","CUTE","SPOOKY","CAT","DOG","BROKEN","CUSHIONED","BUSINESS","BOUNCY","STICKY","MELEE","RANGED","MAGIC","REFINED","VAMPIRIC","FROG","HARLEQUIN","WIZARD,","PLUSH","SCIENTIFIC","HEAVY","LIGHTWEIGHT","PROSPIT","DERSE","ENDURING","THORNS","ROCKET","GAMBLING","IRRADIATED","NOIR","CHARLATAN","EXQUISITE","GRIMDARK","META","WELSH", "TRICKSTER","BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM"]
-
-
+const trait1Search = ["NONE","COMPUTER","STORAGE","FOOD","CANDY","MEAT","HOT","COLD","ELECTRIC","SHARP","BLUNT","SHITTY","CUTE","SPOOKY","CAT","DOG","BROKEN","CUSHIONED","BUSINESS","BOUNCY","STICKY","MELEE","RANGED","MAGIC","REFINED","VAMPIRIC","FROG","HARLEQUIN","WIZARD","PLUSH","SCIENTIFIC","HEAVY","LIGHTWEIGHT","PROSPIT","DERSE","ENDURING","THORNS","ROCKET","GAMBLING","IRRADIATED","NOIR","CHARLATAN","EXQUISITE","GRIMDARK","META","WELSH", "TRICKSTER","BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM"]
 const  trait2Search = ["NONE","DOOM","HOPE","MIND","SPACE","VOID","BLOOD","RAGE","HEART","TIME","LIGHT","LIFE","BREATH","TRICKSTER","WELSH","META","GRIMDARK","EXQUISITE","CHARLATAN","NOIR","IRRADIATED","GAMBLING","ROCKET","THORNS","ENDURING","DERSE","PROSPIT","LIGHTWEIGHT","HEAVY","SCIENTIFIC","PLUSH","WIZARD","HARLEQUIN","FROG","VAMPIRIC","REFINED","MAGIC","RANGED","MELEE","STICKY","BOUNCY","BUSINESS","CUSHIONED","BROKEN","DOG","CAT","SPOOKY","CUTE","SHITTY","BLUNT","SHARP","ELECTRIC","COLD","HOT","MEAT","CANDY","FOOD","STORAGE","COMPUTER","NONE","NONE"];
 
 
@@ -12,13 +10,15 @@ exports.sdexCheck = async function (client, message,page, args, type, sdex, card
   client.Canvas.registerFont("./miscsprites/Courier Std Bold.otf",{family:`Courier Standard Bold`});
   const canvas = client.Canvas.createCanvas(1056,560);
   const ctx = canvas.getContext('2d');
+  const ITEMS_PER_PAGE = 10;
 
   //list light, list dark, card fg, card bg, card shade
 
   let scheme = ["#992445","#0c6137","#992ae1","#484848"];
   let typeList = ["sylladex","strife specibus","container","room inventory"];
   let cardList = ["captchalogue cards","strife cards","storage space","room space"]
-  let maxPage = Math.floor((cards-1)/10);
+  let usedCards = sdex.length;
+  let maxPage = Math.floor((usedCards-1)/ITEMS_PER_PAGE);
 
 //set background
   ctx.linewidth = 5;
@@ -34,7 +34,7 @@ exports.sdexCheck = async function (client, message,page, args, type, sdex, card
 
   if(type<3){
 
-    let msg = `${cardList[type]}::${sdex.length}/${cards}`
+    let msg = `${cardList[type]}::${usedCards}/${cards}`
 
     ctx.fillText(msg,canvas.width-16-ctx.measureText(msg).width,24);
 
