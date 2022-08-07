@@ -218,14 +218,19 @@ xp = client.underlings[npc].xp+client.charcall.allData(client,userid,list[target
 } else {
 xp = client.underlings[npc].xp;
 }
-    //figure out what all the underling drops on death
 
+
+    //figure out what all the underling drops on death
+const BUILD = 0;
+const ARTIFACT = 13;
+const ZILLIUM = 14;
 switch(client.charcall.charData(client,list[target][1],"faction")){
     case "underling":
     let primaryType = list[target][2];
     let secondType;
     let ranroll = (Math.floor((Math.random() * 8) + 1)) + (Math.floor((Math.random() * 20) + 1));
     let repgrist = "build";
+    let repGristIndex = BUILD;
     switch(ranroll){
       case 2:
         secondType = "rainbow";
@@ -245,16 +250,18 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       repgrist = "artifact";
       primaryType = "artifact";
       secondType = "artifact";
+      repGristIndex = ARTIFACT;
     }
     if(client.traitcall.traitCheck(client,list[pos][1],"TRICKSTER")[1]){
       repgrist = "zillium";
       primaryType = "zillium";
       secondType = "zillium";
+      repGristIndex = ZILLIUM;
     }
     //split rewards between all participating players
 
     let multiplier;
-    switch(client.configcall.get(client, message, "grist")){
+    switch(client.configcall.get(client, message, "GRIST")){
       case 1:
       multiplier = 2;
       break;
@@ -288,19 +295,16 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       //if an npc can collect grist but can't godtier, this will avoid crashes.
       if(godtier=="NONE") godtier = false;
 
-  if(list[target][7].includes("CORRUPT")){
-    if(!godtier&&grist[13]+Math.ceil(amount*4)>rungGrist[rung]){
-      grist[13]=rungGrist[rung];
-    } else {
-      grist[13]+=Math.ceil(amount*4);
-    }
-  } else {
-      if(!godtier&&grist[0]+Math.ceil(amount*4)>rungGrist[rung]){
-        grist[0]=rungGrist[rung];
-      } else {
-        grist[0]+=Math.ceil(amount*4);
+      if((repgrist == "build") != (repGristIndex == 0)){
+        console.log(`Something went wrong! repgrist is ${repgrist}, but the index is ${repGristIndex}!`);
       }
-    }
+
+      if(!godtier&&grist[repGristIndex]+Math.ceil(amount*4)>rungGrist[rung]){
+        grist[repGristIndex]=rungGrist[rung];
+      } else {
+        grist[repGristIndex]+=Math.ceil(amount*4);
+      }
+
       if(!godtier&&grist[client.grist[primaryType].pos]+Math.ceil(amount*2)>rungGrist[rung]){
         grist[client.grist[primaryType].pos]=rungGrist[rung];
       } else {
