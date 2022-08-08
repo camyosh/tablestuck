@@ -704,6 +704,15 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
 }
 
     let endurance = client.traitcall.traitCheck(client,list[init[turn][0]][1],"ENDURING");
+	
+    // Stamina value that are currently used are 4, 6, 8, 10, and 12.
+    //        Normal     Enduring[0]     Enduring[1]
+    //  4     1d4        1d3 + 1         1d2 + 2
+    //  6     1d6        1d4.5 + 1       1d3 + 3     // 1d4.5 is basically (1d9)/2, round up.
+    //  8     1d8        1d6 + 2         1d4 + 4
+    //  10    1d10       1d7.5 + 2       1d5 + 5     // 1d7.5 is basically (1d15)/2, round up.
+    //  12    1d12       1d9 + 3         1d6 + 6
+    //
     if(endurance[1]){
 
       stamroll = [Math.floor((Math.random() * stamMax/2) + Math.floor(stamMax/2)+1),Math.floor((Math.random() * stamMax/2) + Math.floor(stamMax/2)+1)];
