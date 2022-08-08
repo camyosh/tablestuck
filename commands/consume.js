@@ -102,6 +102,7 @@ if(strifeCheck){
 
     if(strifeCheck==true){
       vit = list[pos][3];
+	  gel = client.strifecall.getCharHealth(client, userid, charid)[1];
     } else {
       vit = client.charcall.charData(client,charid,"vit");
     }
