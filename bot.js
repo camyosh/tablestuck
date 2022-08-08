@@ -30,6 +30,7 @@ const hookcall =require("./modules/hookcall.js");
 const funcall =require("./modules/funcall.js");
 const strifecall =require("./modules/strifecall.js");
 const landcall =require("./modules/landcall.js");
+const configcall =require("./modules/configcall.js");
 const imgcall =require("./modules/imgcall.js");
 const lootcall =require("./modules/lootcall.js");
 const tutorcall =require("./modules/tutorcall.js");
@@ -38,6 +39,7 @@ const questcall =require("./modules/questcall.js");
 
 //makes all modules passable through client
 client.charcall = charcall;
+client.configcall = configcall;
 client.traitcall = traitcall;
 client.strifecall = strifecall;
 client.funcall = funcall;
@@ -117,6 +119,8 @@ client.kind = ["customkind 1","customkind 2","artifactkind","moduskind","hammerk
 client.gristTypes = ["artifact","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","diamond","zillium","build","rainbow"]
 client.traitList = ["CUSTOM TRAIT 1","CUSTOM TRAIT 2","NONE","NONE","COMPUTER","STORAGE","FOOD","CANDY","MEAT","HOT","COLD","ELECTRIC","SHARP","BLUNT","SHITTY","CUTE","SPOOKY","CAT","DOG","BROKEN","CUSHIONED","BUSINESS","BOUNCY","STICKY","MELEE","RANGED","MAGIC","REFINED","VAMPIRIC","FROG","HARLEQUIN","WIZARD","PLUSH","SCIENTIFIC","HEAVY","LIGHTWEIGHT","PROSPIT","DERSE","ENDURING","THORNS","ROCKET","GAMBLING","IRRADIATED","NOIR","CHARLATAN","EXQUISITE","GRIMDARK","META","WELSH", "TRICKSTER","BREATH","LIFE","LIGHT","TIME","HEART","RAGE","BLOOD","VOID","SPACE","MIND","HOPE","DOOM","NONE","NONE","NONE","NONE","NONE"];
 client.traitList2 = ["CUSTOM TRAIT 1","CUSTOM TRAIT 2","NONE","NONE","DOOM","HOPE","MIND","SPACE","VOID","BLOOD","RAGE","HEART","TIME","LIGHT","LIFE","BREATH","TRICKSTER","WELSH","META","GRIMDARK","EXQUISITE","CHARLATAN","NOIR","IRRADIATED","GAMBLING","ROCKET","THORNS","ENDURING","DERSE","PROSPIT","LIGHTWEIGHT","HEAVY","SCIENTIFIC","PLUSH","WIZARD","HARLEQUIN","FROG","VAMPIRIC","REFINED","MAGIC","RANGED","MELEE","STICKY","BOUNCY","BUSINESS","CUSHIONED","BROKEN","DOG","CAT","SPOOKY","CUTE","SHITTY","BLUNT","SHARP","ELECTRIC","COLD","HOT","MEAT","CANDY","FOOD","STORAGE","COMPUTER","NONE","NONE","NONE","NONE","NONE"];
+
+client.optionsNames = ["DEATH", "CHANNELS", "TUTORIAL", "RETAIN", "SELFCONNECT", "FOG", "IMMORTAL", "GRIST"];
 
 //function for a graph that has an increasing slope
 function curve(level, interval, inc, scale, base) {

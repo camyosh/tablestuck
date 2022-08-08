@@ -140,11 +140,7 @@ function createTutorial(client,message,userid,userData){
 }
   //this checks the tutorial config to see if it starts enabled or not. the first value in
   //the tutor array toggles if the tutorial is on or off.
-  if(client.configMap.get(message.guild.id).options[2].selection==0){
-    defaultTutor = [true];
-  } else {
-    defaultTutor = [false];
-  }
+  defaultTutor = [(client.configcall.get(client, message, "TUTORIAL")!=1)];
 
   //for the number of steps in the tutorial, this generates a new bool set to false.
   var tutorRef = require("../tutorRef.json");
@@ -508,7 +504,7 @@ async function finishLandGen(client,message,sburbid,aspect,gristSet,def){
 }
 async function generateChannels(client,message,userid,sburbid,channels){
   var chan,pesterchan;
-  if(client.configMap.get(message.guild.id).options[1].selection==2){
+  if(client.configcall.get(client, message, "CHANNELS")==2){
     channels[0] = message.channel.id;
     channels[1] = message.channel.id;
   } else {
@@ -528,7 +524,7 @@ async function generateChannels(client,message,userid,sburbid,channels){
    ]//,
    //parent:"827335332789878814"
     })
-    if(client.configMap.get(message.guild.id).options[1].selection==1){
+    if(client.configcall.get(client, message, "CHANNELS")==1){
     pesterchan = await message.guild.channels.create(`${client.sburbMap.get(sburbid,"name")}-pester`, {
         type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
         permissionOverwrites: [
@@ -544,7 +540,7 @@ async function generateChannels(client,message,userid,sburbid,channels){
    })
  }
       channels[0] = chan.id;
-      if(client.configMap.get(message.guild.id).options[1].selection==1){
+      if(client.configcall.get(client, message, "CHANNELS")==1){
       channels[1] = pesterchan.id;
     } else {
       channels[1] = chan.id;

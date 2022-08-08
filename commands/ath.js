@@ -236,7 +236,7 @@ exports.run = (client, message, args) => {
           mess += `\n"grist tar" means that the item's grist type must be TAR.`;
           mess += `\n"tier 3" means that the item's tier must be 3.`;
           mess += `\n"trait meta" means that the item must have the META trait. "trait same" means an item's two traits must be the same trait.`;
-          // mess += `\n"move accrue" means that the item must have the move ACCRUE in (at least) one of its four action slots.`;
+          mess += `\n"action accrue" means that the item must have the move ACCRUE in (at least) one of its four action slots.`;
           mess += `\n"kind bladekind" means that the item must be a BLADEKIND weapon. "kind" can accept "trinket" and "weapon" in addition to specific kinds.`;
           mess += `\nAll of these are simply examples of possible search criteria.`;
           message.channel.send(mess);
@@ -281,7 +281,7 @@ exports.run = (client, message, args) => {
           case "trait":
           {
             let trait = args[i+1].toUpperCase();
-            
+
             if(trait == "SAME")
             {
               for(var j=0; j<numbers.length; j++)
@@ -473,6 +473,37 @@ exports.run = (client, message, args) => {
             for(var j=0; j<numbers.length; j++)
             {
               if(registry[numbers[j]][0].toLowerCase().indexOf(nameSubstring) < 0)
+              {
+                numbers.splice(j, 1);
+                j--;
+              }
+            }
+            break;
+          }
+          case "action":
+          case "act":
+          case "move":
+          {
+            let moveName = args[i+1].toLowerCase();
+            let moveIndex = client.action.indexOf(moveName);
+            if(moveIndex < 0){
+              mess += `\n"${args[i+1]}" is not a recognized action, so that filter condition was ignored.`;
+              break;
+            }
+            
+            let moveNumber = client.codeCypher[4][moveIndex];
+            let moveCode = client.captchaCode[moveNumber];
+            
+            for(var j=0; j<numbers.length; j++)
+            {
+              let flag = false;
+              for(let k=4; k<8; k++){
+                if(registry[numbers[j]][1].charAt(k) == moveCode){
+                  flag = true;
+                  break;
+                }
+              }
+              if(!flag)
               {
                 numbers.splice(j, 1);
                 j--;

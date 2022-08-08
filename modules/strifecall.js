@@ -218,14 +218,19 @@ xp = client.underlings[npc].xp+client.charcall.allData(client,userid,list[target
 } else {
 xp = client.underlings[npc].xp;
 }
-    //figure out what all the underling drops on death
 
+
+    //figure out what all the underling drops on death
+const BUILD = 0;
+const ARTIFACT = 13;
+const ZILLIUM = 14;
 switch(client.charcall.charData(client,list[target][1],"faction")){
     case "underling":
     let primaryType = list[target][2];
     let secondType;
     let ranroll = (Math.floor((Math.random() * 8) + 1)) + (Math.floor((Math.random() * 20) + 1));
     let repgrist = "build";
+    let repGristIndex = BUILD;
     switch(ranroll){
       case 2:
         secondType = "rainbow";
@@ -245,16 +250,18 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       repgrist = "artifact";
       primaryType = "artifact";
       secondType = "artifact";
+      repGristIndex = ARTIFACT;
     }
     if(client.traitcall.traitCheck(client,list[pos][1],"TRICKSTER")[1]){
       repgrist = "zillium";
       primaryType = "zillium";
       secondType = "zillium";
+      repGristIndex = ZILLIUM;
     }
     //split rewards between all participating players
 
     let multiplier;
-    switch(client.configMap.get(message.guild.id).options[7].selection){
+    switch(client.configcall.get(client, message, "GRIST")){
       case 1:
       multiplier = 2;
       break;
@@ -288,19 +295,16 @@ switch(client.charcall.charData(client,list[target][1],"faction")){
       //if an npc can collect grist but can't godtier, this will avoid crashes.
       if(godtier=="NONE") godtier = false;
 
-  if(list[target][7].includes("CORRUPT")){
-    if(!godtier&&grist[13]+Math.ceil(amount*4)>rungGrist[rung]){
-      grist[13]=rungGrist[rung];
-    } else {
-      grist[13]+=Math.ceil(amount*4);
-    }
-  } else {
-      if(!godtier&&grist[0]+Math.ceil(amount*4)>rungGrist[rung]){
-        grist[0]=rungGrist[rung];
-      } else {
-        grist[0]+=Math.ceil(amount*4);
+      if((repgrist == "build") != (repGristIndex == 0)){
+        console.log(`Something went wrong! repgrist is ${repgrist}, but the index is ${repGristIndex}!`);
       }
-    }
+
+      if(!godtier&&grist[repGristIndex]+Math.ceil(amount*4)>rungGrist[rung]){
+        grist[repGristIndex]=rungGrist[rung];
+      } else {
+        grist[repGristIndex]+=Math.ceil(amount*4);
+      }
+
       if(!godtier&&grist[client.grist[primaryType].pos]+Math.ceil(amount*2)>rungGrist[rung]){
         grist[client.grist[primaryType].pos]=rungGrist[rung];
       } else {
@@ -474,7 +478,7 @@ return;
       return;
     }
     //switches the dreaming and waking self, and all those who control them.
-    if(client.configMap.get(message.guild.id).options[0].selection==0){
+    if(client.configcall.get(client, message, "death")==0){
       if(client.charcall.allData(client,userid,charid,"dreamer")){
         target = client.charcall.allData(client,userid,charid,"wakingID");
       } else {
@@ -497,7 +501,7 @@ return;
   let godtier = client.charcall.allData(client,userid,charid,"godtier");
   if(godtier=="NONE") godtier = false;
   if(godtier){
-    if(client.configMap.get(message.guild.id).options[6].selection==0){
+    if(client.configcall.get(client, message, "immortal")==0){
       client.charcall.setAnyData(client,userid,charid,Date.now(),"sleepTimer");
       message.channel.send(`Looks like your conditional immortality saves you from perishing forever, though it'll take some time to get up again. You can ${client.auth.prefix}revive yourself in 5 minutes.`);
       return;
@@ -597,7 +601,7 @@ function startTurn(client, message, local) {
   let stamroll;
   let stamsg;
   let carry = true;
-  if(client.configMap.get(message.guild.id).options[3].selection==1){
+  if(client.configcall.get(client, message, "retain")==1){
     carry = false;
   }
   let removed;
