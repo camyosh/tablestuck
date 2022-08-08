@@ -41,7 +41,7 @@ module.exports = (client, message) => {
   //list of all commands accepted pre-registry.
   var preReg =["register","help","ping","initialize","scratch","leaderboard","config","name"];
   //list of all commands that can be taken in strife
-  var strifeAct =["act","armor","bio","check","chumcheck","chumroll","config","consume","debug","givegrist","giveitem","help","initialize","leaderboard","list","pass","pester","ping","possess","push","say","scratch","spawn","specibus","stats","strife","switch","sylladex","tutorial","trinket","trait","grist"];
+  var strifeAct =["abscond","act","armor","bio","check","chumcheck","chumroll","config","consume","debug","givegrist","giveitem","help","initialize","leaderboard","list","pass","pester","ping","possess","push","say","scratch","spawn","specibus","stats","strife","switch","sylladex","tutorial","trinket","trait","grist"];
   //standard argument/command name definition
   const args = message.content.slice(client.auth.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
