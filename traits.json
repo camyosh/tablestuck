@@ -304,7 +304,7 @@
     "img":"https://cdn.discordapp.com/attachments/808757312520585227/808884041326526484/TIME.png",
   "trait":"Get +1 extra STAMINA each turn",
 
-  "set":"ADV ON STAMINA ROLLS"},
+  "set":"STAMINA ROLLS ARE FAVORABLE"},
 
   "HEART":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808873732654497792/HEART.png",
@@ -326,7 +326,7 @@
 
   "VOID":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808877694481596416/VOID.png",
-  "trait":"Enemies reroll TRUE SUCCESS",
+  "trait":"Enemy 20s against you become 1s",
 
   "set":"STRIKE CHECKS are UNFAVORABLE agianst you, you are invisible"},
 
