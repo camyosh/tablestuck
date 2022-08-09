@@ -615,7 +615,7 @@ function startTurn(client, message, local) {
 //reset actions taken this turn
   list[init[turn][0]][6]=[];
   
-  let trinketBonus = getBonusFromTrinket(client.charcall.charData(client, list[init[turn][0]][PROFILE.CHARID], "trinket")[0]);
+  let trinketBonus = getBonusFromTrinket(client, message, client.charcall.charData(client, list[init[turn][0]][PROFILE.CHARID], "trinket")[0]);
   // 50% chance for the bonus AV to trigger for the round.
   if(trinketBonus[1] === "avChance" && Math.random() < 0.5){
 	  list[init[turn][0]][PROFILE.ACTION].push(`HAT${trinketBonus[0]}`);
@@ -955,7 +955,7 @@ exports.leaveStrife = function(client,message,local,target){
   leaveStrife(client,message,local,target);
 }
 
-exports.underRally = function(client, local) {
+exports.underRally = function(client, message, local) {
 //check if any underlings are in room, if so they will be added to the strife
   let sec = client.landMap.get(local[4],local[0]);
   let occList = sec[local[1]][local[2]][2][local[3]][4];
@@ -973,7 +973,7 @@ exports.underRally = function(client, local) {
       let list = client.strifeMap.get(strifeLocal,"list");
       let init = client.strifeMap.get(strifeLocal,"init");
       let active = client.strifeMap.get(strifeLocal,"active");
-	  let trinketBonus = getBonusFromTrinket(client.charcall.charData(client,occList[i][1],"trinket")[0]);
+	  let trinketBonus = getBonusFromTrinket(client, message, client.charcall.charData(client, occList[i][1],"trinket")[0]);
 
       var pos = list.length;
       client.charcall.setAnyData(client,'-',occList[i][1],pos,"pos");
@@ -1181,7 +1181,7 @@ targName = client.charcall.charData(client,list[target][1],"name");
   console.log(tarGrist);
 }
 
-    let trinketBonus = getBonusFromTrinket(client.charcall.charData(client,attUnit[1],"trinket")[0]);
+    let trinketBonus = getBonusFromTrinket(client, message, client.charcall.charData(client,attUnit[1],"trinket")[0]);
     if(trinketBonus[1] === "accuracy"){
 		strikeBonus += trinketBonus[0];
 	}
@@ -2429,22 +2429,31 @@ if(list[active[ik]][3] < 1){
   }
 }*/
 
-function getBonusFromTrinket(trinket){
-	if(trinket == undefined || trinket[1] == undefined){
+function getBonusFromTrinket(client, message, trinket){
+	let trinketSetting = client.configcall.get(client, message, "TRINKETS");
+	
+	if(trinketSetting == 0 || trinketSetting == "NONE" || trinket == undefined || trinket[1] == undefined){
 		return [0, "none"];
 	}
 	let tier = trinket[2];
 	let kind = trinket[1][0];
-	switch(kind){
-		case "t":	return [Math.floor(Math.sqrt(tier)), "initiative"];
-		case "u":	return [Math.floor(Math.sqrt(tier)), "avChance"];
-		case "v":	return [Math.floor(Math.sqrt(tier)), "accuracy"];
-		default:	return [0, "none"];
+	let bonus = Math.floor(Math.sqrt(tier));
+	if(trinketSetting == 1){
+		return [bonus, "accuracy"];
 	}
+	else if(trinketSetting == 2){
+		switch(kind){
+			case "t":	return [bonus, "initiative"];
+			case "u":	return [bonus, "avChance"];
+			case "v":	return [bonus, "accuracy"];
+			default:	return [0, "none"];
+		}
+	}
+	return [0, "none"];
 }
 
-exports.getBonusFromTrinket = function(trinket){
-	return getBonusFromTrinket(trinket);
+exports.getBonusFromTrinket = function(client, message, trinket){
+	return getBonusFromTrinket(client, message, trinket);
 }
 
 
