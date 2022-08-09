@@ -1520,7 +1520,7 @@ if(strikeBonus<0){
     av = av+2;
   }
   
-  if(targUnit[PROFILE.ACTION][0].substring(0,3) === "HAT"){
+  if(targUnit[PROFILE.ACTION][0] && targUnit[PROFILE.ACTION][0].substring(0,3) === "HAT"){
 	let hatBonus = parseInt(targUnit[PROFILE.ACTION][0].substring(3), 10);
 	if(!isNaN(hatBonus)){
 	  av += hatBonus;
