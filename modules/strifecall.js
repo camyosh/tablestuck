@@ -14,6 +14,25 @@ const actionList = ["accede","accelerate","accessorize","acclaim","acclimate","a
 
 const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
 
+// Each unit in the "list" of a strife has a "profile" that consists of eight parts:
+//  0: Whether the unit is an NPC,
+//  1: The character ID of the unit,
+//  2: The grist type of the unit's armor (or nature, for underlings)
+//  3: Vitality
+//  4: "Baseline" favorability (from what I can see, this never changed to anything but zero)
+//  5: Stamina
+//  6: List of actions taken so far this turn
+//  7: List of status effects
+const PROFILE = {
+    IS_NPC: 0,
+    CHARID: 1,
+    ARMOUR: 2,
+    HEALTH: 3,
+    FAVORS: 4,
+    STAMIN: 5,
+    ACTION: 6,
+    STATUS: 7
+}
 
 function inflict(client, message, local, list, target, chance, status, attacker){
   //quickjump
@@ -595,6 +614,12 @@ function startTurn(client, message, local) {
   let i;
 //reset actions taken this turn
   list[init[turn][0]][6]=[];
+  
+  let trinketBonus = getBonusFromTrinket(client, message, client.charcall.charData(client, list[init[turn][0]][PROFILE.CHARID], "trinket")[0]);
+  // 50% chance for the bonus AV to trigger for the round.
+  if(trinketBonus[1] === "avChance" && Math.random() < 0.5){
+	  list[init[turn][0]][PROFILE.ACTION].push(`HAT${trinketBonus[0]}`);
+  }
 
   let stamina;
   let stamfav = 0;
@@ -930,7 +955,7 @@ exports.leaveStrife = function(client,message,local,target){
   leaveStrife(client,message,local,target);
 }
 
-exports.underRally = function(client, local) {
+exports.underRally = function(client, message, local) {
 //check if any underlings are in room, if so they will be added to the strife
   let sec = client.landMap.get(local[4],local[0]);
   let occList = sec[local[1]][local[2]][2][local[3]][4];
@@ -948,10 +973,14 @@ exports.underRally = function(client, local) {
       let list = client.strifeMap.get(strifeLocal,"list");
       let init = client.strifeMap.get(strifeLocal,"init");
       let active = client.strifeMap.get(strifeLocal,"active");
+	  let trinketBonus = getBonusFromTrinket(client, message, client.charcall.charData(client, occList[i][1],"trinket")[0]);
 
       var pos = list.length;
       client.charcall.setAnyData(client,'-',occList[i][1],pos,"pos");
       let initRoll = [pos, Math.floor((Math.random() * 20) + 1)];
+	  if(trinketBonus[1] === "initiative"){
+		initRoll += trinketBonus[0];
+	  }
 
       list.push(profile);
       active.push(pos);
@@ -1151,6 +1180,13 @@ targName = client.charcall.charData(client,list[target][1],"name");
   console.log(grist);
   console.log(tarGrist);
 }
+
+    let trinketBonus = getBonusFromTrinket(client, message, client.charcall.charData(client,attUnit[1],"trinket")[0]);
+    if(trinketBonus[1] === "accuracy"){
+		strikeBonus += trinketBonus[0];
+	}
+
+
     //check for each action tag that is NONCOMBATIVE
     //PRE-ROLL ACT
     let pre;
@@ -1482,6 +1518,14 @@ if(strikeBonus<0){
   }
   if(client.traitcall.traitCheck(client,list[target][1],"BREATH")[0]){
     av = av+2;
+  }
+  
+  if(targUnit[PROFILE.ACTION][0] && targUnit[PROFILE.ACTION][0].substring(0,3) === "HAT"){
+	let hatBonus = parseInt(targUnit[PROFILE.ACTION][0].substring(3), 10);
+	if(!isNaN(hatBonus)){
+	  av += hatBonus;
+	  alert+=`That sure is a nifty piece of headwear!\n`;
+	}
   }
 
   if((strikeCheck+strikeBonus)>av && (client.traitcall.traitCheck(client,list[target][1],"FROG")[1] && !(Math.floor((Math.random() * 12))))){
@@ -2384,6 +2428,35 @@ if(list[active[ik]][3] < 1){
 
   }
 }*/
+
+function getBonusFromTrinket(client, message, trinket){
+	let trinketSetting = client.configcall.get(client, message, "TRINKETS");
+	
+	if(trinketSetting == 0 || trinketSetting == "NONE" || trinket == undefined || trinket[1] == undefined){
+		return [0, "none"];
+	}
+	let tier = trinket[2];
+	let kind = trinket[1][0];
+	let bonus = Math.floor(Math.sqrt(tier));
+	if(trinketSetting == 1){
+		return [bonus, "accuracy"];
+	}
+	else if(trinketSetting == 2){
+		switch(kind){
+			case "t":	return [bonus, "initiative"];
+			case "u":	return [bonus, "avChance"];
+			case "v":	return [bonus, "accuracy"];
+			default:	return [0, "none"];
+		}
+	}
+	return [0, "none"];
+}
+
+exports.getBonusFromTrinket = function(client, message, trinket){
+	return getBonusFromTrinket(client, message, trinket);
+}
+
+
 exports.spawn = function(client,message,underling,pregrist = false){
   let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
   let local = client.charcall.charData(client,charid,"local");
@@ -2614,7 +2687,7 @@ function npcTurn(client, message, charid, local){
       }
 
       if(actionSet.includes("arrive")){
-        if(list[init[turn][0]][6].length==0){
+        if(list[init[turn][0]][6].length==0 && !(list[pos][6].length == 1 && list[pos][6][0].substring(0,3) === "HAT")){
           action = "arrive";
         } else {
           while(action=="arrive"){

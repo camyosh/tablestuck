@@ -1,7 +1,13 @@
 exports.get = function(client, message, datatype){
-	datatype = datatype.toUpperCase();
-	let guildID = message.guild.id;
-	let retVal = "NONE"
+	return get(client, message.guild.id, datatype.toUpperCase());
+}
+
+exports.getWithGuildID = function(client, guildID, datatype){
+	return get(client, guildID, datatype.toUpperCase());
+}
+
+function get(client, guildID, datatype){
+	let retVal = "NONE";
 	
 	if(!client.configMap.has(guildID) || (client.configMap.get(guildID).settings == undefined)){
 		generateSettings(client, guildID);

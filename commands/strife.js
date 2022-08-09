@@ -146,6 +146,11 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
   initRoll=20;
 }
 
+    let trinketBonus = client.strifecall.getBonusFromTrinket(client, message, client.charcall.charData(client, charid, "trinket")[0]);
+    if(trinketBonus[1] === "initiative"){
+		initRoll += trinketBonus[0];
+	}
+
     var strifeSet = {
       list:[profile],
       init:[[0,initRoll]],
@@ -173,7 +178,7 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
 
 
     //add all underlings in area to strife
-    strifecall.underRally(client,local);
+    strifecall.underRally(client,message,local);
     client.funcall.tick(client,message);
     message.channel.send("Entering Strife!");
 

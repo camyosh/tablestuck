@@ -308,7 +308,7 @@ return;
 
 //If action has FIRST, makes sure its the first action taken this turn
   if(client.actionList[action[select]].add.includes("FIRST")){
-    if(list[pos][6].length > 0){
+    if(list[pos][6].length > 0 && !(list[pos][6].length == 1 && list[pos][6][0].substring(0,3) === "HAT")){
       message.channel.send("That ACTION can only be used if it is the first ACTION taken on a turn!");
       return;
     }

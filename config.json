@@ -40,6 +40,11 @@
       "desc" : "**What is the grist multiplier?**",
       "choices": ["x1","x2","x1/2 (warning, terrible)"],
       "selection": 0
+  },{
+      "name" : "TRINKETS",
+      "desc" : "**What bonuses are provided by trinkets?**",
+      "choices": ["No bonuses, only the traits","To-hit bonuses for all trinkets","To-hit for glasses, initiative for shoes, and occasional AV for hats."],
+      "selection": 0
   }
 ]
 }
