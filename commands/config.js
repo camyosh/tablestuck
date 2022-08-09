@@ -13,7 +13,7 @@ exports.run = (client, message, args) => {
   }
 
 if(!client.configMap.has(message.guild.id)){
-  client.configCall.generateSettings(client, message);
+  client.configcall.generateSettings(client, message);
 }
 configList = client.configMap.get(message.guild.id);
 if(!args[0]){
