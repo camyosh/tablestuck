@@ -146,6 +146,11 @@ if(client.traitcall.traitCheck(client,charid,"ROCKET")[0]){
   initRoll=20;
 }
 
+    let trinketBonus = client.strifecall.getBonusFromTrinket(client.charcall.charData(client, charid, "trinket")[0]);
+    if(trinketBonus[1] === "initiative"){
+		initRoll += trinketBonus[0];
+	}
+
     var strifeSet = {
       list:[profile],
       init:[[0,initRoll]],

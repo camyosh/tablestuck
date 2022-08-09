@@ -948,10 +948,14 @@ exports.underRally = function(client, local) {
       let list = client.strifeMap.get(strifeLocal,"list");
       let init = client.strifeMap.get(strifeLocal,"init");
       let active = client.strifeMap.get(strifeLocal,"active");
+	  let trinketBonus = getBonusFromTrinket(client.charcall.charData(client,occList[i][1],"trinket")[0]);
 
       var pos = list.length;
       client.charcall.setAnyData(client,'-',occList[i][1],pos,"pos");
       let initRoll = [pos, Math.floor((Math.random() * 20) + 1)];
+	  if(trinketBonus[1] === "initiative"){
+		initRoll += trinketBonus[0];
+	  }
 
       list.push(profile);
       active.push(pos);
