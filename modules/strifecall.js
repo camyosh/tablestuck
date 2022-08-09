@@ -1155,6 +1155,13 @@ targName = client.charcall.charData(client,list[target][1],"name");
   console.log(grist);
   console.log(tarGrist);
 }
+
+    let trinketBonus = getBonusFromTrinket(client.charcall.charData(client,attUnit[1],"trinket")[0]);
+    if(trinketBonus[1] === "accuracy"){
+		strikeBonus += trinketBonus[0];
+	}
+
+
     //check for each action tag that is NONCOMBATIVE
     //PRE-ROLL ACT
     let pre;
