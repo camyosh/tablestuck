@@ -2384,6 +2384,26 @@ if(list[active[ik]][3] < 1){
 
   }
 }*/
+
+function getBonusFromTrinket(trinket){
+	if(trinket == undefined || trinket[1] == undefined){
+		return [0, "none"];
+	}
+	let tier = trinket[2];
+	let kind = trinket[1][0];
+	switch(kind){
+		case "t":	return [Math.floor(Math.sqrt(tier)), "initiative"];
+		case "u":	return [Math.floor(Math.sqrt(tier)), "avChance"];
+		case "v":	return [Math.floor(Math.sqrt(tier)), "accuracy"];
+		default:	return [0, "none"];
+	}
+}
+
+exports.getBonusFromTrinket = function(trinket){
+	return getBonusFromTrinket(trinket);
+}
+
+
 exports.spawn = function(client,message,underling,pregrist = false){
   let charid = client.userMap.get(message.guild.id.concat(message.author.id),"possess");
   let local = client.charcall.charData(client,charid,"local");
