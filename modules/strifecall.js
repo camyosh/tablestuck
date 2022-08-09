@@ -14,6 +14,25 @@ const actionList = ["accede","accelerate","accessorize","acclaim","acclimate","a
 
 const gristTypes = ["build","uranium","amethyst","garnet","iron","marble","chalk","shale","cobalt","ruby","caulk","tar","amber","artifact","zillium","diamond"];
 
+// Each unit in the "list" of a strife has a "profile" that consists of eight parts:
+//  0: Whether the unit is an NPC,
+//  1: The character ID of the unit,
+//  2: The grist type of the unit's armor (or nature, for underlings)
+//  3: Vitality
+//  4: "Baseline" favorability (from what I can see, this never changed to anything but zero)
+//  5: Stamina
+//  6: List of actions taken so far this turn
+//  7: List of status effects
+const PROFILE = {
+    IS_NPC: 0,
+    CHARID: 1,
+    ARMOUR: 2,
+    HEALTH: 3,
+    FAVORS: 4,
+    STAMIN: 5,
+    ACTION: 6,
+    STATUS: 7
+}
 
 function inflict(client, message, local, list, target, chance, status, attacker){
   //quickjump
@@ -595,6 +614,12 @@ function startTurn(client, message, local) {
   let i;
 //reset actions taken this turn
   list[init[turn][0]][6]=[];
+  
+  let trinketBonus = getBonusFromTrinket(client.charcall.charData(client, list[init[turn][0]][PROFILE.CHARID], "trinket")[0]);
+  // 50% chance for the bonus AV to trigger for the round.
+  if(trinketBonus[1] === "avChance" && Math.random() < 0.5){
+	  list[init[turn][0]][PROFILE.ACTION].push(`HAT${trinketBonus[0]}`);
+  }
 
   let stamina;
   let stamfav = 0;
@@ -1493,6 +1518,14 @@ if(strikeBonus<0){
   }
   if(client.traitcall.traitCheck(client,list[target][1],"BREATH")[0]){
     av = av+2;
+  }
+  
+  if(targUnit[PROFILE.ACTION][0].substring(0,3) === "HAT"){
+	let hatBonus = parseInt(targUnit[PROFILE.ACTION][0].substring(3), 10);
+	if(!isNaN(hatBonus)){
+	  av += hatBonus;
+	  alert+=`That sure is a nifty piece of headwear!\n`;
+	}
   }
 
   if((strikeCheck+strikeBonus)>av && (client.traitcall.traitCheck(client,list[target][1],"FROG")[1] && !(Math.floor((Math.random() * 12))))){
@@ -2645,7 +2678,7 @@ function npcTurn(client, message, charid, local){
       }
 
       if(actionSet.includes("arrive")){
-        if(list[init[turn][0]][6].length==0){
+        if(list[init[turn][0]][6].length==0 && !(list[pos][6].length == 1 && list[pos][6][0].substring(0,3) === "HAT")){
           action = "arrive";
         } else {
           while(action=="arrive"){
