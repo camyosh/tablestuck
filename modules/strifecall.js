@@ -2687,7 +2687,7 @@ function npcTurn(client, message, charid, local){
       }
 
       if(actionSet.includes("arrive")){
-        if(list[init[turn][0]][6].length==0 && !(list[pos][6].length == 1 && list[pos][6][0].substring(0,3) === "HAT")){
+        if(list[init[turn][0]][6].length==0 && !(list[turn][6].length == 1 && list[turn][6][0].substring(0,3) === "HAT")){
           action = "arrive";
         } else {
           while(action=="arrive"){
