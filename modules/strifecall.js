@@ -614,7 +614,7 @@ function startTurn(client, message, local) {
   let i;
 //reset actions taken this turn
   list[init[turn][0]][6]=[];
-  
+
   let trinketBonus = getBonusFromTrinket(client, message, client.charcall.charData(client, list[init[turn][0]][PROFILE.CHARID], "trinket")[0]);
   // 50% chance for the bonus AV to trigger for the round.
   if(trinketBonus[1] === "avChance" && Math.random() < 0.5){
@@ -1105,7 +1105,8 @@ bdroll = tierBD[specibus[equip][2]];
 
 }
 
-
+let attUnit = list[init[turn][0]];
+let targUnit = list[target];
 attName = client.charcall.charData(client,list[init[turn][0]][1],"name");
 targName = client.charcall.charData(client,list[target][1],"name");
 
@@ -1519,7 +1520,7 @@ if(strikeBonus<0){
   if(client.traitcall.traitCheck(client,list[target][1],"BREATH")[0]){
     av = av+2;
   }
-  
+
   if(targUnit[PROFILE.ACTION][0] && targUnit[PROFILE.ACTION][0].substring(0,3) === "HAT"){
 	let hatBonus = parseInt(targUnit[PROFILE.ACTION][0].substring(3), 10);
 	if(!isNaN(hatBonus)){
@@ -2431,7 +2432,7 @@ if(list[active[ik]][3] < 1){
 
 function getBonusFromTrinket(client, message, trinket){
 	let trinketSetting = client.configcall.get(client, message, "TRINKETS");
-	
+
 	if(trinketSetting == 0 || trinketSetting == "NONE" || trinket == undefined || trinket[1] == undefined){
 		return [0, "none"];
 	}
