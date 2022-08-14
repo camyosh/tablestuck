@@ -214,10 +214,6 @@ for(i=0;i<action.length;i++){
       tempcolor=  `#ffae00`;
       tempbg = `#ffe7b3`;
       break;
-      case `ab`:
-      tempcolor=  `#ffae00`;
-      tempbg = `#ffe7b3`;
-      break;
       case 'ag':
       tempcolor = "#3ef443";
       tempbg = `#aaf2ac`;
