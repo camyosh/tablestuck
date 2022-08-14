@@ -799,7 +799,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
       stamsg =`0 (STUNNED)`;
     }
 
-    //set rolled stamina to strife data
+    //set strife data to rolled stamina
     list[init[turn][0]][5]=stamina;
 
     client.strifeMap.set(strifeLocal,list,"list");
