@@ -93,7 +93,7 @@ exports.run = (client, message, args) => {
   if(value >= dex.length || value < 0) {
     message.channel.send("That is not a valid argument!")
     return;
-  };
+  }
 
   //decypher captcha code and convert into weapon information
 
@@ -102,6 +102,5 @@ exports.run = (client, message, args) => {
 
     client.tutorcall.progressCheck(client,message,4,["img",attachment]);
   }
-  itemInspect()
-
+  itemInspect();
 }
