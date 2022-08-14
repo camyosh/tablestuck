@@ -108,12 +108,13 @@ exports.run = (client, message, args) => {
 		  break;
 		}
       }
-      clientGates = client.landMap.get(targetLand,"gates");
 
       if(!clientCheck||client.landMap.get(targetLand,"enter")==false){
         message.channel.send("That gate doesn't lead anywhere!");
         return;
       }
+
+      clientGates = client.landMap.get(targetLand,"gates");
 
       target[1]=clientGates[tier-1][0];
       target[2]=clientGates[tier-1][1];
