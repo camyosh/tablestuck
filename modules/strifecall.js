@@ -1138,52 +1138,57 @@ targName = client.charcall.charData(client,list[target][1],"name");
     }
     let effective = "HIT!"
 
-    try{
-//check for grist effectivity, if effective change message accordingly and increase BR or BD accordingly
-  /*  if(grist=="artifact"){
-      if(tarGrist!="artifact"&&tarGrist!="diamond"&&tarGrist!="zillium"){
-        br++;
-        effective="INEFFECTIVE!"
-      } else if(tarGrist=="zillium"){
-        bd++;
-        effective="EFFECTIVE!"
-      }
-    } else if(grist=="zillium"){
-      if(tarGrist!="artifact"&&tarGrist!="diamond"&&tarGrist!="zillium"){
-        bd++;
-        effective="EFFECTIVE!"
-      } else if(tarGrist=="artifact"){
-        br++;
-        effective="INEFFECTIVE!"
-      }
-    } else*/ if(client.grist[tarGrist].ineffective.includes(grist)){
+  try{
+    let attackEfficacy = 0;
+    let targScience = client.traitcall.traitCheck(client,targUnit[1],"SCIENTIFIC");
+    let attScience = client.traitcall.traitCheck(client,attUnit[1],"SCIENTIFIC");
 
-      if(list[target][7].includes("GRISTINVERT")||list[init[turn][0]][7].includes("GRISTINVERT")){
+    // Establish basic efficacy: effective, ineffective, or neither.
+    if(client.grist[tarGrist].ineffective.includes(grist)){
+        attackEfficacy = 1;
+    } else if(client.grist[tarGrist].effective.includes(grist)){
+        attackEfficacy = -1;
+    }
 
-        br++
-        effective="INEFFECTIVE!"
+    // Check whether grist effectiveness should be inverted for this action.
+    // If both combatants involved have inverted grist, or if they both do not, attacks are resolved normally.
+    if(targUnit[STATUS].includes("GRISTINVERT") != attUnit[STATUS].includes("GRISTINVERT"))
+    {
+        attackEfficacy *= -1;
+    }
 
-      }else{
+    if(targScience[1] && attackEfficacy > 0){
+        attackEfficacy = 0;
+    }
 
-      bd++
-      effective="EFFECTIVE!"
-      if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"REFINED")[0]){
+    // Apply bonuses associated with the efficacy of the attack: BD for the attacker, or BR for the defender.
+    // This is also a convenient place to include the REFINED trait bonus's logic.
+    if(attackEfficacy > 0)
+    {
+      bd += attackEfficacy;
+      effective="EFFECTIVE!";
+      if(client.traitcall.traitCheck(client,attUnit[1],"REFINED")[0]){
         strikeBonus+=2;
       }
     }
-    } else if(client.grist[tarGrist].effective.includes(grist)){
-
-
-      if(list[target][7].includes("GRISTINVERT")||list[init[turn][0]][7].includes("GRISTINVERT")){
-        bd++
-        effective="EFFECTIVE!"
-        if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"REFINED")[0]){
-          strikeBonus+=2;
-        }
-      } else {
-      br++
-      effective="INEFFECTIVE!"
+    else if (attackEfficacy < 0)
+    {
+      br += (attackEfficacy * -1);
+      effective="INEFFECTIVE!";
     }
+
+    if(attScience[0]){
+        br *= 2;
+        bd *= 2;
+        attackEfficacy *= 2;
+        strikeBonus *= 2;
+    }
+
+    if(targScience[0]){
+        br *= 2;
+        bd *= 2;
+        attackEfficacy *= 2;
+        strikeBonus *= 2;
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[0]){
       strikeBonus += Math.ceil(Math.random()*4);

@@ -182,9 +182,9 @@
 
   "SCIENTIFIC":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757628629024828/SCIENTIFIC.png",
-  "trait":"Use INT for STRIKE CHECK",
+  "trait":"Grist type effects are doubled",
 
-  "set":"INT +2"},
+  "set":"Attacks against you are never effective"},
 
   "HEAVY":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757591852449802/HEAVY.png",
