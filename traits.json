@@ -188,15 +188,15 @@
 
   "HEAVY":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757591852449802/HEAVY.png",
-  "trait":"Use STR for STRIKE CHECK",
+  "trait":"All attacks are unfavorable",
 
-  "set":"STR +2"},
+  "set":"Double experience"},
 
   "LIGHTWEIGHT":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808762958191525908/LIGHTWEIGHT.png",
-  "trait":"Use AGL for STRIKE CHECK",
+  "trait":"All attacks are favorable",
 
-  "set":"AGL +2"},
+  "set":"+2 AV"},
 
   "PROSPIT":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808768036706320454/PROSPIT.png",
