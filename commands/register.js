@@ -162,12 +162,22 @@ function clearConnections(client,sburbid){
   if(client.sburbMap.get(sburbid,"client")!="NA"&&client.sburbMap.get(sburbid,"client")!=sburbid){
     target = client.sburbMap.get(sburbid,"client");
     client.sburbMap.set(target,"NA","server");
+	try{
     client.funcall.chanMsg(client,target,`Your server has re-registerd, leaving you without a server!`);
+	}
+	catch(e){
+	  console.log(`Unable to notify ${target} that their server has re-registered.`);
+	}
   }
   if(client.sburbMap.get(sburbid,"server")!="NA"&&client.sburbMap.get(sburbid,"server")!=sburbid){
       target = client.sburbMap.get(sburbid,"server");
     client.sburbMap.set(target,"NA","client");
+	try{
     client.funcall.chanMsg(client,target,`Your client has re-registerd, leaving you without a client!`);
+	}
+	catch(e){
+	  console.log(`Unable to notify ${target} that their client has re-registered.`);
+	}
   }
 }
 

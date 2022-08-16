@@ -39,7 +39,7 @@ module.exports = (client, message) => {
     freeAct = ["register","leaderboard","stats","scratch","help","initialize","trait","heal","consume","act","strife","switch","specibus","sylladex","captcha","eject","alchemize","armor","trinket","equip","list","inspect","pass","quickalch","grist","ath","say","rename","use","allocate","push"];
   }
   //list of all commands accepted pre-registry.
-  var preReg =["register","help","ping","initialize","scratch","leaderboard","config","name"];
+  var preReg =["register","help","ping","initialize","scratch","leaderboard","config","name","config2"];
   //list of all commands that can be taken in strife
   var strifeAct =["abscond","act","armor","bio","check","chumcheck","chumroll","config","consume","debug","givegrist","giveitem","help","initialize","leaderboard","list","pass","pester","ping","possess","push","say","scratch","spawn","specibus","stats","strife","switch","sylladex","tutorial","trinket","trait","grist"];
   //standard argument/command name definition

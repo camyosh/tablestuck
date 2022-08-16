@@ -10,7 +10,7 @@ exports.use = `">ath" lists all items you've alchemized or added to your atheneu
 ">ath search" will explain further arguments that can be given to the "search" subcommand.`
 exports.run = (client, message, args) => {
   //defining the costs to alchemize the item based on the tier
-  const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072]
+  const tierCost = [0,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072];
 
   //defining important variables
 
