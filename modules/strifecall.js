@@ -1163,6 +1163,7 @@ targName = client.charcall.charData(client,list[target][1],"name");
 
     if(targScience[1] && attackEfficacy > 0){
         attackEfficacy = 0;
+        alert+=`The target's incredible science power prevented the attack from being EFFECTIVE!\n`;
     }
 
     // Apply bonuses associated with the efficacy of the attack: BD for the attacker, or BR for the defender.
@@ -1181,18 +1182,22 @@ targName = client.charcall.charData(client,list[target][1],"name");
       effective="INEFFECTIVE!";
     }
 
-    if(attScience[0]){
-        br *= 2;
-        bd *= 2;
-        attackEfficacy *= 2;
-        strikeBonus *= 2;
-    }
+    if(attackEfficacy != 0){
+        if(attScience[0]){
+            br *= 2;
+            bd *= 2;
+            attackEfficacy *= 2;
+            strikeBonus *= 2;
+            alert+=`SCIENCE!!! Grist matchup effects were doubled!\n`;
+        }
 
-    if(targScience[0]){
-        br *= 2;
-        bd *= 2;
-        attackEfficacy *= 2;
-        strikeBonus *= 2;
+        if(targScience[0]){
+            br *= 2;
+            bd *= 2;
+            attackEfficacy *= 2;
+            strikeBonus *= 2;
+            alert+=`SCIENCE!!! Grist matchup effects were doubled!\n`;
+        }
     }
     if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[0]){
       strikeBonus += Math.ceil(Math.random()*4);
