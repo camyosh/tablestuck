@@ -158,7 +158,7 @@ function checkStrife(client,message,charid){
   if(client.charcall.charData(client,charid,"strife")&&client.charcall.charData(client,charid,"faction")!="player"){
     let local = client.charcall.charData(client,charid,"local");
       if(client.strifecall.turnTest(client,message,local)){
-        setTimeout(client.strifecall.npcTurn,1500,client,message,local);
+        setTimeout(client.strifecall.npcTurn,1500,client,message,charid,local);
     }
   }
 }
