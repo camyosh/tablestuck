@@ -1186,7 +1186,6 @@ targName = client.charcall.charData(client,list[target][1],"name");
         if(attScience[0]){
             br *= 2;
             bd *= 2;
-            attackEfficacy *= 2;
             strikeBonus *= 2;
             alert+=`SCIENCE!!! Grist matchup effects were doubled!\n`;
         }
@@ -1194,7 +1193,6 @@ targName = client.charcall.charData(client,list[target][1],"name");
         if(targScience[0]){
             br *= 2;
             bd *= 2;
-            attackEfficacy *= 2;
             strikeBonus *= 2;
             alert+=`SCIENCE!!! Grist matchup effects were doubled!\n`;
         }
@@ -1333,7 +1331,11 @@ targName = client.charcall.charData(client,list[target][1],"name");
 
     let costMsg = `${client.actionList[action].cst}`;
 
-    if(list[init[turn][0]][7].includes("DISCOUNT")){
+    if(client.actionList[action].cst > 3 && client.traitcall.traitCheck(client,attUnit[1],"LIGHTWEIGHT")[1]){
+      alert += `YOUR LIGHTWEIGHT GEAR DISCOUNTS EXPENSIVE MOVES\n`;
+      costMsg +=` - 1`;
+    }
+    if(attUnit[STATUS].includes("DISCOUNT")){
       if(client.actionList[action].cst>1){
       alert += `ACTIONS DISCOUNTED THIS TURN\n`;
       costMsg +=` - 1`;
@@ -1428,14 +1430,14 @@ if(client.traitcall.traitCheck(client,list[target][1],"VOID")[1]){
   if(client.traitcall.traitCheck(client,attUnit[1],"HEAVY")[0]){
     fav--;
   }
-  if(client.traitcall.traitCheck(client,attUnit[1],"LIGHTWEIGHT")[1]){
+  if(client.traitcall.traitCheck(client,attUnit[1],"LIGHTWEIGHT")[0]){
     fav += 1;
   }
 
   if(client.traitcall.traitCheck(client,targUnit[1],"HEAVY")[0]){
     fav += 1;
   }
-  if(client.traitcall.traitCheck(client,targUnit[1],"LIGHTWEIGHT")[1]){
+  if(client.traitcall.traitCheck(client,targUnit[1],"LIGHTWEIGHT")[0]){
     fav -= 1;
   }
 
@@ -1550,9 +1552,6 @@ if(strikeBonus<0){
     av++;
   }
   if(client.traitcall.traitCheck(client,list[target][1],"EXQUISITE")[1]){
-    av = av+2;
-  }
-  if(client.traitcall.traitCheck(client,targUnit[1],"LIGHTWEIGHT")[1]){
     av = av+2;
   }
   if(client.traitcall.traitCheck(client,targUnit[1],"BREATH")[0]){
@@ -1894,6 +1893,10 @@ if(aa.includes("RANDSTATUS")){
         let hopeStam = client.actionList[action].cst;
         alert+=`ACTION IS FREE!\n`;
 
+        if(hopeStam > 3 && client.traitcall.traitCheck(client,attUnit[1],"LIGHTWEIGHT")[1]){
+            hopeStam--;
+        }
+
         if(list[init[turn][0]][7].includes("DISCOUNT")){
           if(client.actionList[action].cst>1){
           hopeStam--;
@@ -2153,13 +2156,17 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"BOUNCY")[0]&&!Math
 
       let hopeStam = client.actionList[action].cst;
       alert+=`ACTION IS FREE!\n`;
-
-      if(list[init[turn][0]][7].includes("DISCOUNT")){
-        if(client.actionList[action].cst>1){
+      if(hopeStam > 3 && client.traitcall.traitCheck(client,attUnit[1],"LIGHTWEIGHT")[1]){
         hopeStam--;
-         }
-       }
-     //closing here
+      }
+
+      if(attUnit[STATUS].includes("DISCOUNT")){
+        if(client.actionList[action].cst>1){
+          hopeStam--;
+        }
+      }
+
+      //closing here
       if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"MIND")[1]){
         if(client.actionList[action].cst > 1){
           hopeStam--;

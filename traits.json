@@ -178,7 +178,7 @@
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757616155164692/PLUSH.png",
   "trait":"Increased gel viscosity during strife",
 
-  "set":"When rolling BR, roll extra BR"},
+  "set":"When rolling BR, roll +2 BR"},
 
   "SCIENTIFIC":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808757628629024828/SCIENTIFIC.png",
@@ -196,7 +196,7 @@
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808762958191525908/LIGHTWEIGHT.png",
   "trait":"All attacks are favorable",
 
-  "set":"+2 AV"},
+  "set":"Actions with cost 4 or more cost 1 less."},
 
   "PROSPIT":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808768036706320454/PROSPIT.png",
