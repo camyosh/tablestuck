@@ -802,7 +802,7 @@ if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"TIME")[1]){
       stamsg =`0 (STUNNED)`;
     }
 
-    //set rolled stamina to strife data
+    //set strife data to rolled stamina
     list[init[turn][0]][5]=stamina;
 
     client.strifeMap.set(strifeLocal,list,"list");
@@ -1185,8 +1185,8 @@ targName = client.charcall.charData(client,list[target][1],"name");
             alert+=`SCIENCE!!! Grist matchup effects were doubled!\n`;
         }
     }
-    if(client.traitcall.traitCheck(client,list[init[turn][0]][1],"NOIR")[0]){
-      strikeBonus += Math.ceil(Math.random()*4);
+    if(client.traitcall.traitCheck(client,attUnit[1],"NOIR")[0]){
+      strikeBonus += Math.floor(Math.random()*4) + 1;
     }
 
 } catch(err) {

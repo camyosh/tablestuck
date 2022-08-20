@@ -32,7 +32,7 @@ exports.run = (client, message, args) => {
 
   let eq;
 
-  if(equip<spec.length){
+  if(equip >= 0 && equip<spec.length){
     eq = `**[${equip+1}] ${spec[equip][0]} x${spec[equip][3]}** \n${spec[equip][1]} TIER - ${spec[equip][2]}\n\n`
   } else {
     eq = `**[${equip+1}] EMPTY**\n\n`

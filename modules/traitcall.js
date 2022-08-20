@@ -22,7 +22,7 @@ exports.traitCheck = function(client,target,traitName){
       checklist.push(prototype[i][1]);
     }
   }
-  if(specibus.length != 0) checklist.push(specibus[equip][1]);
+  if(specibus.length > equip) checklist.push(specibus[equip][1]);
   if(armor.length!=0) checklist.push(armor[0][1]);
   if(trinket.length!=0) checklist.push(trinket[0][1]);
 
