@@ -212,9 +212,9 @@
 
   "ENDURING":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808778241250426930/ENDURING.png",
-  "trait":"Roll 1d6+2 for STAMINA roll",
+  "trait":"Roll 2d4 for STAMINA roll",
 
-  "set":"Roll 1d4+4 for STAMINA roll"},
+  "set":"Roll 4d2 for STAMINA roll"},
 
   "THORNS":{
   "img":"https://cdn.discordapp.com/attachments/808757312520585227/808782820075634698/THORNS.png",
