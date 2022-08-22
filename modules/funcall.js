@@ -852,43 +852,43 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
 
   }
 
-    targSec[target[1]][target[2]][2][target[3]][4].push(occset);
-//the &&false is to disable prospitians spawning for the tournament
-    if(target[4]==message.guild.id+"medium"&&targSec[target[1]][target[2]][2][target[3]][4].length==1){
+  let targetTile = onSomeoneEnterRoom(client, message, charid, targSec[target[1]][target[2]], target[3]);
+
+    targetTile[2][target[3]][4].push(occset);
+    if(target[4]==message.guild.id+"medium" && targetTile[2][target[3]][4].length==1){
       switch(target[0]){
         case "dm":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
-        break;
         case "d":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
+          targetTile[2][target[3]][4]=targetTile[2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
         break;
         case "pm":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id))
-        break;
         case "p":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id))
+          targetTile[2][target[3]][4]=targetTile[2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id));
         break;
         case "bf":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id),client.landcall.carSpawn(client,target,1,message.guild.id));
+          targetTile[2][target[3]][4]=targetTile[2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id),client.landcall.carSpawn(client,target,1,message.guild.id));
         break;
       }
-    }else if(target[4]!=message.guild.id+"medium"){
-      if(targSec[target[1]][target[2]][2][target[3]][4].length==1){
+    }
+	else if(target[4]!=message.guild.id+"medium"){
+      if(targetTile[2][target[3]][4].length==1){
     targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
   }
   }
 //for now, NPCs won't reveal new tiles.
-  if(!client.charcall.npcCheck(client,charid)&&targSec[target[1]][target[2]][2][target[3]][3]==false){
+  if(!client.charcall.npcCheck(client,charid)&&targetTile[2][target[3]][3]==false){
     client.funcall.actionCheck(client,message,"tile")
-    targSec[target[1]][target[2]][2][target[3]][3]=true;
+    targetTile[2][target[3]][3]=true;
   }
+
+  targSec[target[1]][target[2]] = targetTile;
 
   client.funcall.tick(client,message);
   client.charcall.setAnyData(client,userid,charid,target,"local");
   client.landMap.set(target[4],targSec,target[0]);
 
-  let occNew = targSec[target[1]][target[2]][2][target[3]][4];
-  let location = targSec[target[1]][target[2]][2][target[3]][2];
+  let occNew = targetTile[2][target[3]][4];
+  let location = targetTile[2][target[3]][2];
   msg +=`**${location}**`
 
   if(occNew.length > 1){
@@ -904,16 +904,16 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
 
   }
 
-  if(targSec[target[1]][target[2]][2].length>1){
+  if(targetTile[2].length>1){
     msg+=`\nThere are multiple rooms in this area!`;
   }
 
   async function moveEmbed(){
     var userid = message.guild.id.concat(message.author.id);
     var charid = client.userMap.get(userid,"possess");
-    dex = targSec[target[1]][target[2]][2][target[3]][5];
-    var attachment = await client.imgcall.sdexCheck(client,message,0,false,3,dex,dex.length,`${targSec[target[1]][target[2]][2][target[3]][2]} (>inspect)`);
-    let occList = targSec[target[1]][target[2]][2][target[3]][4];
+    dex = targetTile[2][target[3]][5];
+    var attachment = await client.imgcall.sdexCheck(client,message,0,false,3,dex,dex.length,`${targetTile[2][target[3]][2]} (>inspect)`);
+    let occList = targetTile[2][target[3]][4];
 
     let i;
     let list = ``;
@@ -924,10 +924,10 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
     var listEmbed;
     var files = [attachment];
     listEmbed = new client.MessageEmbed()
-      .setTitle(`**${embedTitle.toUpperCase()} ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
+      .setTitle(`**${embedTitle.toUpperCase()} ${targetTile[2][target[3]][2]}**`)
       .addFields(
         {name:`**ALERTS**`,value:msg},
-        {name:`**ROOM**`,value:`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,inline:true},
+        {name:`**ROOM**`,value:`**${targetTile[2][target[3]][2]}**`,inline:true},
         {name:`**PAGE**`,value:`**1**`,inline:true},
         {name:`**CURRENT OCCUPANTS** (>list)`,value:list}
       )
@@ -993,3 +993,54 @@ function dreamCheck(client,target,local){
 exports.dreamCheck =  function(client,target,local){
   return dreamCheck(client,target,local);
 }
+
+function onSomeoneEnterRoom(client, message, charid, tile, roomIndex){
+  // console.log("onSomeoneEnterRoom called!");
+  if(!tile[2] || !tile[2][roomIndex]){
+	console.log("onSomeoneEnterRoom called on entering a room that doesn't exist!");
+	return tile;
+  }
+  
+  let triggers = tile[2][roomIndex][1];
+  if(!triggers){
+	return tile;
+  }
+  
+  tile = actOnActionList(client, message, charid, tile, roomIndex, triggers.any);
+  tile = actOnActionList(client, message, charid, tile, roomIndex, triggers.onSomeoneEnterRoom);
+  
+  return tile;
+}
+
+function actOnActionList(client, message, charid, tile, roomIndex, actionList){
+  if(!actionList){
+	return tile;
+  }
+
+  for(let i=0; i<actionList.length; i++){
+	switch(actionList[i].toUpperCase()){
+	  case "DISTINGUISH":{
+		if(roomIndex == 0){
+		  console.log("Distinguishing tile!");
+		  tile = JSON.parse(JSON.stringify(tile));
+		}
+		else{
+		  console.log("Distinguishing room!");
+		  tile[2][roomIndex] = JSON.parse(JSON.stringify(tile[2][roomIndex]));
+		}
+		let actionsMap = tile[2][roomIndex][1];
+		let distinguishTriggerArray = [actionsMap.any];
+		for(let j=0; j<distinguishTriggerArray.length; j++){
+		  distinguishTriggerArray[j].splice(distinguishTriggerArray[j].findIndex(functionName => functionName.toUpperCase() === "DISTINGUISH"), 1);
+		}
+		break;
+	  }
+      default:{
+	    console.log(`actOnActionList encountered unexpected action ${actionList[i].toUpperCase()}`);
+	  }
+	}
+  }
+
+  return tile;
+}
+

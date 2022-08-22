@@ -23,7 +23,15 @@ for(i=0;i<2;i++){
   castlegen[i][j]=Math.floor(Math.random()*2)+(Math.floor(Math.random()*4)*3);
 }
 }
-  let dreamMoon = client.landcall.moonGen(client,castlegen[0],castlegen[1]);
+
+let dreamMoon;
+
+if(client.configcall.get(client, message, "HACKY_WORLDGEN") == "true"){
+  dreamMoon = client.landcall.hackyMoonGen(client,castlegen[0],castlegen[1]);
+}
+else{
+  dreamMoon = client.landcall.moonGen(client,castlegen[0],castlegen[1]);
+}
 
 //chumhandle [charid,chumhandle]
 

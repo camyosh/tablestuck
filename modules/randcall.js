@@ -6,6 +6,17 @@ exports.randLessThan = function(upperLimit){
 	return randLessThan(upperLimit);
 }
 
+exports.spliceRandom = function(list){
+	return spliceRandom(list);
+}
+
+function spliceRandom(list){
+	let number = randLessThan(list.length);
+	return list.splice(number, 1)[0];
+}
+
+// Note: upperLimit does not need to be an integer.
+// Giving it (1.5) is the same as calling Math.floor((Math.random() * 6) / 4), for example.
 function randLessThan(upperLimit){
 	return Math.floor((Math.random() * upperLimit));
 }
@@ -60,7 +71,4 @@ exports.rollToHit = function(noirBonus = false, refinedBonus = false, scienceBon
 		}
 	}
 	return retVal;
-}
-
-exports.tileToLocal = function(client,message,tile){
 }
