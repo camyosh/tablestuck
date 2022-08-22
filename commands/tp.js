@@ -14,7 +14,8 @@ exports.run = (client, message, args) => {
   let local = client.charcall.charData(client,charid,"local");
   let sec = client.landMap.get(local[4],local[0]);
   var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
-  if(args[0]=="home"){
+  switch(args[0].toLowerCase()){
+  case "home":{
     if(!occset[0]){
       message.channel.send("NPC's don't have a home to teleport to!");
       return;
@@ -22,7 +23,7 @@ exports.run = (client, message, args) => {
   client.funcall.move(client,message,charid,local,["h",0,0,0,client.charcall.charData(client,charid,"owner")],false,`Teleporting home!\nEntering a `);
   return;
   }
-  if(args[0]=="bf"){
+  case "bf": {
     if(!occset[0]&&args[1]!="confirm"){
       message.channel.send(`Careful, NPCs can't come back from the battlefield easily right now! do ${client.auth.prefix}tp bf confirm to go there anyways!`);
       return;
