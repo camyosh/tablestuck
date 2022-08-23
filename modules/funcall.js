@@ -842,7 +842,9 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
 
     targSec[local[1]][local[2]][2][local[3]][4].splice(targSec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
 
-  } else {
+  }
+  // Remove the character from the previous room, interdimensionally
+  else if(client.landMap.has(local[4])) {
 
     let sec = client.landMap.get(local[4],local[0]);
 
