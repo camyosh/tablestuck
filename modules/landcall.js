@@ -144,14 +144,16 @@ empty =[];
 }
   //Moon outposts appear on only the first section of a land.
   if(sec==0){
+    let moon=[["PROSPIT","DERSE"],["pc","dc"]];
+    let transCount = client.landMap.get(message.guild.id+"medium","transCount");
+    let transList = client.landMap.get(message.guild.id+"medium","transList");
+    let transLocal = client.landMap.get(message.guild.id+"medium","transLocal");
+
     for(let i=0;i<2;i++){
-      let moon=[["PROSPIT","DERSE"],["pc","dc"]];
       let temp=empty.splice(Math.floor(Math.random()*empty.length));
-      let transCount = client.landMap.get(message.guild.id+"medium","transCount");
-      let transList = client.landMap.get(message.guild.id+"medium","transList");
       let transCode = "0000";
       let transCode1 = "0000";
-      let moonCode = "0000";
+
       //block to generate the ID of the transportalizers.
       while(transList.includes(transCode)||transCode=="0000"){
         transCode = "";
@@ -173,7 +175,6 @@ empty =[];
       transList.push(transCode1);
       transCount++;
 
-      let transLocal = client.landMap.get(message.guild.id+"medium","transLocal");
       //transSet goes on the land, transSet1 is added to the respective moon.
       var transSet = {
         local:["s1",temp[0][0],temp[0][1],0,message.guild.id.concat(message.author.id)],
@@ -201,11 +202,10 @@ empty =[];
       section[temp[0][0]][temp[0][1]]=[11,1,[[[],[],`${moon[0][i]} OUTPOST`,false,[],[[`${moon[0][i]} TRANSPORTALIZER`,`@/jG${transCode}`,1,1,[],"https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png"]]]]];
       client.transMap.set(`${message.guild.id}${transCode}`,transSet);
       client.transMap.set(`${message.guild.id}${transCode1}`,transSet1);
-      client.landMap.set(message.guild.id+"medium",transList,"transList");
-      client.landMap.set(message.guild.id+"medium",transCount,"transCount");
       client.landMap.set(message.guild.id+"medium",castle,moon[1][i]);
-
     }
+    client.landMap.set(message.guild.id+"medium",transList,"transList");
+    client.landMap.set(message.guild.id+"medium",transCount,"transCount");
   }
 //all areas and dungeons of the section have been completed.
 return [section,dungeon];
