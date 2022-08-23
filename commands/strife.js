@@ -76,6 +76,12 @@ if(client.charcall.charData(client,charid,"strife")==true){
   let spec =client.charcall.charData(client,charid,"spec");
   let equip = client.charcall.charData(client,charid,"equip");
 
+
+  if(client.traitcall.traitCheck(client,charid,"PLUSH")[0]){
+    vit = client.strifecall.getCharHealth(client, userid, charid)[0];
+  }
+
+
 /*  if(equip>=spec.length){
     message.channel.send("You must have a weapon equipped before entering strife!");
     return;

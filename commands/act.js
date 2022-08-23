@@ -171,11 +171,19 @@ ctx.fillText("DMG",910-d,125);
 
 for(i=0;i<action.length;i++){
   let lcost = client.actionList[action[i]].cst
+
+  if(client.traitcall.traitCheck(client,charid,"LIGHTWEIGHT")[1]){
+    if(lcost > 3){
+       lcost--;
+    }
+  }
+
   if(list[pos][7].includes("DISCOUNT")){
     if(lcost > 1){
        lcost--;
      }
   }
+
   if(client.traitcall.traitCheck(client,charid,"MIND")[1]){
     if(lcost > 1){
       lcost--;
