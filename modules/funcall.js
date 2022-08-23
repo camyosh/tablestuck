@@ -373,7 +373,7 @@ exports.regImport = async function(client, charSheet) {
 exports.alchemize = function(client, item1, item2, type){
 
   let code1 = [item1[1].charAt(0),item1[1].charAt(1),item1[1].charAt(2),item1[1].charAt(3),item1[1].charAt(4),item1[1].charAt(5),item1[1].charAt(6),item1[1].charAt(7)];
-  let code2 = [item2[1].charAt(0),item2[1].charAt(1),item2[1].charAt(2),item2[1].charAt(3),item2[1].charAt(4),item2[1].charAt(5),item2[1].charAt(6),item2[1].charAt(7),];
+  let code2 = [item2[1].charAt(0),item2[1].charAt(1),item2[1].charAt(2),item2[1].charAt(3),item2[1].charAt(4),item2[1].charAt(5),item2[1].charAt(6),item2[1].charAt(7)];
 
   let tier;
   let i;
@@ -835,23 +835,25 @@ exports.sleepHeal = function(client,charid){
 
 exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTitle="moving to"){
 
-  let targSec = client.landMap.get(target[4],target[0]);
+  let targetLandID = target[4];
+  let targSec = client.landMap.get(targetLandID,target[0]);
   var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
   var userid = message.guild.id.concat(message.author.id);
+
+  // Remove the character from the previous room
   if(local[0]==target[0]&&local[4]==target[4]){
-
-    targSec[local[1]][local[2]][2][local[3]][4].splice(targSec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
-
+    let roomFrom = targSec[local[1]][local[2]][2][local[3]];
+    roomFrom[4].splice(roomFrom[4].findIndex(occpos => occpos[1] === occset[1]),1);
   }
   // Remove the character from the previous room, interdimensionally
   else if(client.landMap.has(local[4])) {
 
     let sec = client.landMap.get(local[4],local[0]);
-
-    sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
-
-    client.landMap.set(local[4],sec,local[0]);
-
+    let roomFrom = sec[local[1]][local[2]][2][local[3]];
+    if(sec[0]){
+      roomFrom[4].splice(roomFrom[4].findIndex(occpos => occpos[1] === occset[1]),1);
+      client.landMap.set(local[4],sec,local[0]);
+    }
   }
 
   let targetTile = onSomeoneEnterRoom(client, message, charid, targSec[target[1]][target[2]], target[3]);
@@ -902,8 +904,6 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
         occCheck[1]=true;
       }
     }
-
-
   }
 
   if(targetTile[2].length>1){
