@@ -523,7 +523,7 @@ function dungeonGenA(client, roomCoor, sec, dungeon, message, hacky = false) {
 					}
 				}
 				
-				let bossRoomCoords[0] = [currentY, currentX];
+				let bossRoomCoords = [currentY, currentX];
 				currentTile = [8,1,[[
 					[],
 					{},

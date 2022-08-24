@@ -1029,7 +1029,7 @@ function actOnActionList(client, message, charid, tile, roomIndex, map, actionLi
 			console.log(`LOOT_S trigger was unable to glean sec from designation "${map}"`);
 			break;
 		}
-		tile[2][roomIndex][5] = [client.lootcall.lootA(client, sec, client.randcall.rollXdY(2,8) - 2];
+		tile[2][roomIndex][5] = [client.lootcall.lootA(client, sec, client.randcall.rollXdY(2,8) - 2)];
 
 		removeFromTriggers.push([tile[2][roomIndex][1].onSomeoneEnterRoom]);
 		break;
@@ -1040,7 +1040,7 @@ function actOnActionList(client, message, charid, tile, roomIndex, map, actionLi
 			console.log(`LOOT_B trigger was unable to glean sec from designation "${map}"`);
 			break;
 		}
-		tile[2][roomIndex][5] = [client.lootcall.lootB(client, sec, client.randcall.rollXdY(2,8) - 2];
+		tile[2][roomIndex][5] = [client.lootcall.lootB(client, sec, client.randcall.rollXdY(2,8) - 2)];
 
 		removeFromTriggers.push([tile[2][roomIndex][1].onSomeoneEnterRoom]);
 		break;
