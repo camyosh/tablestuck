@@ -1,10 +1,44 @@
 
 
-//generic room structure: [AREA TYPE,NUMBER OF ROOMS,[[[roomShopPool],[unused?],roomName,roomVisited,[occ],[roomInv]],[room2]]];
-//default empty = [0,1,[[],[],"CLEARING",false,[underlings],[items]]];
+//generic room structure: [AREA TYPE,NUMBER OF ROOMS,[[[roomShopPool],{triggerName:[functions]},roomName,roomVisited,[occ],[roomInv]],[room2]]];
+//default empty = [0,1,[[],{},"CLEARING",false,[underlings],[items]]];
 
-const defaultEmpty = [0,1,[[[],[],"CLEARING",false,[],[]]]];
-const defaultGate = [6,1,[[[],[],"GATE",false,[],[]]]];
+//defines a few room constants
+const defaultEmpty =     [ 0,1,[[[],{"any":["DISTINGUISH"]},"CLEARING",false,[],[]]]];
+const defaultDungeon =   [ 1,1,[[[],{"any":["DISTINGUISH"]},"DUNGEON ENTRANCE",false,[],[]]]];
+const defaultConstruct = [ 2,1,[[[],{"any":["DISTINGUISH"]},"LAND CONSTRUCT",false,[],[]]]];
+const defaultBed =       [ 2,1,[[[],{"any":["DISTINGUISH"]},"DREAM BED",false,[],[]]]];
+const defaultNode =      [ 3,1,[[[],{"any":["DISTINGUISH"]},"RETURN NODE",false,[],[]]]];
+const defaultVillage =   [ 4,2,[[[],{"any":["DISTINGUISH"]},"ROOM 1",false,[],[]],[[],{},"ROOM 2",false,[],[]]]];
+const defaultGate =      [ 6,1,[[[],{"any":["DISTINGUISH"]},"GATE",false,[],[]]]];
+const defaultWall =      [ 7,1,[[[],{},"OUT OF BOUNDS",false,[],[]]]];
+const dungeonRoom =      [10,1,[[[],{"any":["DISTINGUISH"]},"DUNGEON ROOM",false,[],[]]]];
+
+// We add an empty chest into the room so we can be sure the move embed shows the chest.
+const defaultFreeLoot =  [ 0,1,[[[],{"any":["DISTINGUISH"],"onSomeoneEnterRoom":["LOOT_B"]},"CLEARING",false,[],[["CHEST","y03wX2Ze",1,1,[]]]]]];
+const dungeonBossRoom =  [ 8,1,[[[],{"any":["DISTINGUISH"],"onSomeoneEnterRoom":["LOOT_A"]},"BOSS ROOM",false,[],[["BOSS CHEST","y!3IXhgi",1,1,[]]]]]];
+const dungeonRoomLoot =  [10,1,[[[],{"any":["DISTINGUISH"],"onSomeoneEnterRoom":["LOOT_B"]},"DUNGEON ROOM",false,[],[["CHEST","y03wX2Ze",1,1,[]]]]]];
+
+
+
+
+
+
+
+const transportalizerImage = "https://cdn.discordapp.com/attachments/808757312520585227/814690784209010738/TRANSPORTALIZER.png";
+
+
+//lists current bosses and their names in the order they appear.
+const bossList = ["unicorn","kraken","hecatoncheires"];
+const support = ["basilisk","basilisk","basilisk"];
+
+
+
+
+
+
+
+
 
 //this function for rolling 2dx feels like it should be replaced by one function.
 function dubs(x){
@@ -30,10 +64,6 @@ const aspectItems = [
   ["SKULL","0yx2d0Om",1,1,[]]
 ]
 
-//defines a few more room constants
-const defaultConstruct =[2,1,[[[],[],"LAND CONSTRUCT",false,[],[]]]];
-const defaultNode =[3,1,[[[],[],"RETURN NODE",false,[],[]]]];
-const defaultVillage =[4,2,[[[],[],"ROOM 1",false,[],[]],[[],[],"ROOM 2",false,[],[]]]];
 
 //called to make a section of a land.
 exports.landGen = function(client,sec,gateCoor,message,aspect,gristSet) {
@@ -188,7 +218,7 @@ empty =[];
 
       let castle = client.landMap.get(message.guild.id+"medium",moon[1][i]);
 
-      // This exists to support "HACKY_WORLDGEN".
+      // This exists to support "HACKY_WORLDGEN", in case the settings were changed between initialization and registration
 	  console.log(castle[transLocal[0]][transLocal[1]]);
 	  let needsReload = (i === 0) && (castle[0][0] === castle[0][1]) && (transCount <= 2);
 	  if(needsReload){
@@ -213,10 +243,493 @@ return [section,dungeon];
 
 }
 
+
+
+exports.hackyLandGen = function(client,sec,gateCoor,message,aspect,gristSet,hacky=false) {
+  return hackyLandGen(client,sec,gateCoor,message,aspect,gristSet,hacky);
+}
+
+function hackyLandGen(client,sec,gateCoor,message,aspect,gristSet) {
+
+	// empty is a one-dimentional array with the coordinates of every square on the 11x11
+	//  land grid, used to determine which spaces are still open
+	let empty =[];
+
+	let section = [,,,,,,,,,,];
+	let dungeon = [,,,,,,,,,,];
+
+	//creates a 2D array that is an 11x11 grid of default squares for the land and dungeon
+	for(let i=0;i<11;i++){
+		section[i] = [,,,,,,,,,,];
+		dungeon[i] = [,,,,,,,,,,];
+
+		for(let j=0;j<11;j++){
+			empty.push([i,j]);
+			section[i][j] = defaultEmpty;
+			dungeon[i][j] = defaultWall;
+		}
+	}
+
+	// If this is the 4th section, put the the denizen lair entrance in the middle
+	if(sec==3){
+		let temp=empty.splice(60,1)[0];
+		section[temp[0]][temp[1]]=generateBasicTile(1, "DENIZEN LAIR ENTRANCE");
+		dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
+	}
+	// If this isn't the 4th section, then the gate is placed as normal.
+	// Gate locations are pre-generated so they can be stored in the landmap.
+	else {
+		let gate = empty.splice((gateCoor[0]*11)+(gateCoor[1]),1);
+		section[gate[0][0]][gate[0][1]] = generateBasicTile(6, "GATE");
+	}
+
+	// sections 1 and 2 have 6 dungeons each, section 3 has 3 dungeons, and section 4 has only the denizen dungeon.
+	let dunCount;
+	let dunGenFunction;
+	switch(sec){
+		case 0:
+		case 1:
+			dunGenFunction = dungeonGenA;
+			dunCount = 2;
+			break;
+		case 2:
+			dunGenFunction = dungeonGenC;
+			dunCount = 1;
+			break;
+		case 3:
+			dunGenFunction = dungeonGenD;
+			dunCount = 0;
+			break;
+	}
+
+	// bedpos tells the game to generate the dream bed in the 4th section of a player's land,
+	//  in one of the three subsections.
+	let bedpos = -1;
+	if (sec==3){
+		bedpos = client.randcall.randLessThan(3);
+	}
+
+	// this is the big loop that runs the land gen code 3 times to spread out stuff.
+	for(let j=0;j<3;j++){
+		//since there's always a gate or denizen lair, the 11x11 grid has 120 empty spaces,
+		//which means each third will have 40 in it. This makes it so that temp is never
+		//an invalid value in empty.
+		let subsectionCoords = empty.splice(empty.length - 40);
+
+		//Creates Dungeons
+		for(let i=0;i<dunCount;i++){
+			let temp=client.randcall.spliceRandom(subsectionCoords);
+			section[temp[0]][temp[1]]=defaultDungeon;
+			dungeon = dunGenFunction(client,[temp],sec,dungeon,message,true);
+		}
+	
+		//Creates Dreambed if needed
+		if(bedpos==j){
+			let temp=client.randcall.spliceRandom(subsectionCoords);
+			section[temp[0]][temp[1]]=defaultBed;
+		}
+
+		//Creates a Village (9 per section)
+		for(let i=0;i<3;i++){
+			let temp=client.randcall.spliceRandom(subsectionCoords);
+			section[temp[0]][temp[1]] = [4,2,[
+				[
+					client.funcall.preItem(client,1,7,[],gristSet),
+					{},
+					"ROOM 1",
+					false,
+					client.landcall.consortSpawn(client,message,[`s${sec+1}`,temp[0],temp[1],0],["shopkeep"],1),
+					[]
+				],
+				[[],{},"ROOM 2",false,[],[]]
+			]];
+		}
+
+		//Creates the Land Constructs (9 per section)
+		for(let i=0;i<3;i++){
+			let temp=client.randcall.spliceRandom(subsectionCoords);
+			let roomContents = client.randcall.randLessThan(4)==0 ? [aspectItems[client.aspects.indexOf(aspect)]] : [];
+			section[temp[0]][temp[1]]=[2,1,[[[],[],"LAND CONSTRUCT",false,[],roomContents]]];
+		}
+
+		//Creates the return nodes (12 per section)
+		for(let i=0;i<4;i++){
+			let temp=client.randcall.spliceRandom(subsectionCoords);
+			section[temp[0]][temp[1]]=defaultNode;
+		}
+
+		//Creates free loot (9 per section)
+		for(let i=0;i<3;i++){
+			let temp=client.randcall.spliceRandom(subsectionCoords);
+			section[temp[0]][temp[1]]=defaultFreeLoot;
+		}
+	}
+
+	//Moon outposts appear on only the first section of a land.
+	if(sec==0){
+		generateMoonOutpost(client, message, section, empty, "pc", "PROSPIT");
+		generateMoonOutpost(client, message, section, empty, "dc", "DERSE");
+	}
+
+	//all areas and dungeons of the section have been completed.
+	return [section,dungeon];
+}
+
+
+function generateMoonOutpost(client, message, section, coordCandidates, castleDesignation, moonName) {
+	let transCount = client.landMap.get(message.guild.id+"medium","transCount");
+	let transList = client.landMap.get(message.guild.id+"medium","transList");
+	let transLocal = client.landMap.get(message.guild.id+"medium","transLocal");
+	let castle = client.landMap.get(message.guild.id+"medium",castleDesignation);
+
+	let temp=client.randcall.spliceRandom(coordCandidates);
+	let hubCode = null;
+	let outpostCode = null;
+
+	// generate the IDs of the transportalizers
+	while(hubCode==null || transList.includes(hubCode)){
+		hubCode = "";
+		for(k=0;k<4;k++){
+			hubCode+= client.captchaCode[client.randcall.randLessThan(38)];
+		}
+	}
+
+	transList.push(hubCode);
+	transCount++;
+
+	while(outpostCode==null || transList.includes(outpostCode)){
+		outpostCode = "";
+		for(k=0;k<4;k++){
+			outpostCode+= client.captchaCode[client.randcall.randLessThan(38)];
+		}
+	}
+
+	transList.push(outpostCode);
+	transCount++;
+
+	// outpostTrans goes on the land, hubTrans is added to the respective moon.
+	var outpostTrans = {
+		local:["s1",temp[0],temp[1],0,message.guild.id.concat(message.author.id)],
+		target:`${message.guild.id}${outpostCode}`
+	}
+
+	var hubTrans = {
+		local:[castleDesignation,transLocal[0],transLocal[1],0,message.guild.id+"medium"],
+		target:`${message.guild.id}${hubCode}`
+	}
+
+	// Make sure that the transportalizer hubs of Prospit and Derse aren't the exact same room.
+	let needsReload = (castle[0][0] === castle[0][1]) && (transCount <= 2);
+	if(needsReload){
+		castle[transLocal[0]] = castle[transLocal[0]].slice();
+		castle[transLocal[0]][transLocal[1]] = JSON.parse(JSON.stringify(castle[transLocal[0]][transLocal[1]]));
+	}
+
+	let transHubTile = castle[transLocal[0]][transLocal[1]];
+	// TODO: Replace with an invcall method like "addItemToRoom"
+	transHubTile[2][0][5].push([`${message.author.username}`,`@/jG${outpostCode}`,1,1,[],transportalizerImage]);
+
+	section[temp[0]][temp[1]] = [11,1,[
+		[],
+		{},
+		`${moonName} OUTPOST`,
+		false,
+		[],
+		[[`${moonName} TRANSPORTALIZER`,`@/jG${hubCode}`,1,1,[],transportalizerImage]]
+	]];
+
+	// Save the new transportalizers
+	client.transMap.set(`${message.guild.id}${hubCode}`,outpostTrans);
+	client.transMap.set(`${message.guild.id}${outpostCode}`,hubTrans);
+
+	// Save the changes to the castles
+	client.landMap.set(message.guild.id+"medium",castle,castleDesignation);
+	client.landMap.set(message.guild.id+"medium",transList,"transList");
+	client.landMap.set(message.guild.id+"medium",transCount,"transCount");
+}
+
+
+// Function that generates the dungeons for Section 1 and Section 2
+function dungeonGenA(client, roomCoor, sec, dungeon, message, hacky = false) {
+	roomCoor = roomCoor[0];
+
+	let DIRECTIONS = {
+		"east": [0, 1],
+		"west": [0, -1],
+		"north": [-1, 0],
+		"south": [0, -1]
+	};
+
+
+	//because section 1 and 2 dungeons only make 1 or 2 paths, respectively, the directions they
+	//split off to has to be selected. If the exit is in a location where a direction
+	//can't be used (aka too close to the edge of the map), the option is spliced from the array.
+	let directions=["east","west","south","north"];
+
+    if(roomCoor[0]>5){
+		removed = directions.splice(directions.indexOf("east"),1);
+    }
+	else if(roomCoor[0]<5){
+		removed = directions.splice(directions.indexOf("west"),1);
+    }
+
+    if(roomCoor[1]>5){
+		removed = directions.splice(directions.indexOf("south"),1);
+    }
+	else if(roomCoor[1]<5){
+		removed = directions.splice(directions.indexOf("north"),1);
+    }
+
+	// b counts for when it's time to spawn a dungeon's boss.
+	let b = 0;
+	let bossTime = false;
+	let occupied = false;
+	
+	for(let o=0;o<=sec;o++) {
+		let oDirection = client.randcall.spliceRandom(directions);
+		let offset1 = DIRECTIONS[oDirection][0];
+		let offset2 = DIRECTIONS[oDirection][1];
+
+		let increment = function(coords, amount = 1){
+			coords[0] += offset1 * amount;
+			coords[1] += offset2 * amount;
+			return coords;
+		}
+
+		let coords = roomCoor.slice();
+		for(let k=0;k<5;k++){
+			b++;
+			increment(coords);
+			let currentTile = dungeon[currentY][currentX];
+
+			//checks if the room it's about to generate over is already a dungeon exit or a boss.
+			if(currentTile[0]==1 || currentTile[0] == 8){
+				occupied = true;
+			}
+
+			//if b is at its max value, generates the boss room and it's monsters.
+			if (b >= 5*(sec+1)){
+				bossTime = true;
+			}
+
+			if (bossTime){
+				// TODO: Fix this code up so that it won't let the coordinates go off the map.
+				//  (Suppose the entrance is at (0,0), and everything between (0,0) and (0,5) is already occupied.)
+				while(occupied){
+					increment(coords, -1);
+					k--;
+					if(dungeon[currentY][currentX][0]!=1 && dungeon[currentY][currentX][0] != 8){
+						occupied = false;
+					}
+				}
+				
+				let bossRoomCoords[0] = [currentY, currentX];
+				currentTile = [8,1,[[
+					[],
+					{},
+					"BOSS ROOM",
+					false,
+					[
+						client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, bossList[sec], message),
+						client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, support[sec], message),
+						client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, support[sec], message)
+					],
+					[client.lootcall.lootA(client, sec, dubs(8))]
+				]]];
+				k=5;
+			}
+
+			//if it's not a boss, makes a normal room with a chance of loot.
+			else if(!occupied){
+				currentTile = dungeonRoomGen(client,sec,hacky);
+			}
+			occupied = false;
+
+			dungeon[roomCoor[0]+offset1*k][roomCoor[1]+offset2*k] = currentTile;
+		}
+	}
+
+	return [dungeon];
+}
+
+function dungeonGenB(client, roomCoor, sec, dungeon, message) { 
+	return dungeonGenA(client, roomCoor, sec, dungeon, message);
+}
+
+// Function that generates a dungeon for Section 3
+function dungeonGenC(client, roomCoor, sec, dungeon, message, hacky=false) {
+	roomCoor = roomCoor[0];
+
+	// This is all for the section 3 dungeon, which generates in a cross pattern.
+	// It checks every space in the cross, and as long as it isn't a boss room or enterance,
+	//  it makes a dungeon room there.
+	for(k=0;k<11;k++){
+		if(!isDungeonTileOccupied(dungeon[roomCoor[0]][k])){
+			dungeon[roomCoor[0]][k] = dungeonRoomGen(client,sec,hacky);
+		}
+	}
+
+	for(k=0;k<11;k++){
+		if(!isDungeonTileOccupied(dungeon[k][roomCoor[1]])){
+			dungeon[k][roomCoor[1]] = dungeonRoomGen(client,sec,hacky);
+		}
+	}
+
+	let bossRoomCoords = null;
+	//flips a coin to choose which path to make the boss room in.
+	switch(Math.floor((Math.random() * 2))){
+		case 0:
+		while(bossRoomCoords == null){
+			//randomly picks an empty room along the path and makes it the boss room
+			let random = Math.floor((Math.random() * 11));
+			if(dungeon[roomCoor[0]][random][0]==10){
+				bossRoomCoords = [roomCoor[0], random];
+			}
+		}
+		break;
+		case 1:
+		while(bossRoomCoords == null){
+			let random = Math.floor((Math.random() * 11))
+			if(dungeon[random][roomCoor[1]][0]==10){
+				bossRoomCoords = [random, roomCoor[1]];
+			}
+		}
+		break;
+	}
+
+	dungeon[bossRoomCoords[0]][bossRoomCoords[1]] = [8,1,[[[],[],"BOSS ROOM",false,[
+		client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, bossList[sec], message),
+		client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, support[sec], message),
+		client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, support[sec], message)
+	],[client.lootcall.lootA(client, sec, dubs(8))]]]];
+
+	return dungeon;
+}
+
+// Function that generates a Denizen Dungeon
+function dungeonGenD(client,roomCoor,sec,dungeon,message,hacky = false) {
+	roomCoor = roomCoor[0];
+
+	//this is the section 4 dungeon, or the denizen dungeon.
+	let emptyTiles=[];
+	let genDirection =["n","s","e","w"];
+	let pathStart = [roomCoor.slice(), roomCoor.slice(), roomCoor.slice(), roomCoor.slice()];
+	let g = 0;
+	let denizen = undefined;
+	
+	let denizenChamber = [9,1,[[
+		[],
+		{},
+		"DENIZEN CHAMBER",
+		false,
+		[], // We wait to add the Denizen to the room after we know the room's location.
+		[client.lootcall.lootA(client, sec, dubs(8))]
+	]]];
+
+	// pathStart and genDirection work together to make sure there's at least one branch
+	//  in each direction for the denizen dungeon.
+	while(pathStart.length != 0){
+		let curr = client.randcall.spliceRandom(pathStart);
+		let curx = curr[0];
+		let cury = curr[1];
+		let hitWall = false;
+		let curDirection;
+
+		// Each branch begins with a specified direction, but goes off randomly after that.
+		if(g<4){
+			curDirection = genDirection[g];
+			g++;
+		}
+		else {
+			curDirection = genDirection[Math.floor((Math.random()*4))];
+		}
+
+		while(!hitWall){
+			//this generates 2 rooms before checking direction agin.
+			for(let m=0;m<2 && !hitWall;m++){
+				switch (curDirection){
+				case "n":
+					if((--cury)<0){
+						hitWall=true;
+						cury = 0;
+					}
+					break;
+				case "s":
+					if((++cury)>10){
+						hitWall=true;
+						cury = 10;
+					}
+					break;
+				case "e":
+					if((++curx)>10){
+						hitWall=true;
+						curx = 10;
+					}
+					break;
+				case "w":
+					if((--curx)<0){
+						hitWall=true;
+						cury = 0;
+					}
+					break;
+				}
+
+				//whenever a branching path hits a wall, there's a 10% chance the denizen spawns there.
+				if(hitWall && !denizen && Math.floor(Math.random()*10)==0){
+					dungeon[curx][cury] = denizenChamber;
+					denizen=[curx,cury];
+				}
+
+				//if a wall isn't hit, a basic tile is placed.
+				if(!hitWall && dungeon[curx][cury][0] == 7){
+					dungeon[curx][cury] = dungeonRoomGen(client,sec,hacky);
+					emptyTiles.push([curx,cury]);
+				}
+			}
+
+			//50% of the time, the tile is saved as a future branching point.
+			if (!hitWall && g<4 && Math.floor(Math.random()*2)==1){
+				pathStart.push([curx,cury]);
+			}
+
+			curDirection = client.randcall.getAnyExcept(genDirection, curDirection);
+			//this iterates until the branch hits a wall.
+		}
+	}
+
+	// Once all paths have been generated, if the denizen has yet to been generated,
+	//  it will be placed in a random empty room.
+	if (!denizen){
+		let roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
+		dungeon [roomToFill[0][0]][roomToFill[0][1]] = denizenChamber;
+		denizen = roomToFill;
+	}
+
+	denizenChamber[2][0][4] = [client.strifecall.dungeonSpawn(client, sec, denizen, 'denizen', message)];
+
+	// Four denizen minions are also placed around the map, to eventually be bosses.
+	for (d=0;d<4;d++){
+		let roomToFill = emptyTiles.splice(Math.floor(Math.random()*emptyTiles.length)-1,1);
+		dungeon[roomToFill[0][0]][roomToFill[0][1]] = [8,1,[[
+			[],
+			{},
+			"DENIZEN MINION",
+			false,
+			[client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message)],
+			[client.lootcall.lootA(client, sec, dubs(8))]
+		]]];
+	}
+
+	return dungeon;
+}
+
+
+function isDungeonTileOccupied(tile) {
+	return (tile[0] == 1 || tile[0] == 8);
+}
+
+
 function dungeonGen(client,roomCoor,sec,dungeon,message) {
-  //lists current bosses and their names in the order they appear.
-  let bossList = ["unicorn","kraken","hecatoncheires"];
-  let support = ["basilisk","basilisk","basilisk"];
   //every dungeon has an exit where the entrance is, so we start with that.
   dungeon[roomCoor[0][0]][roomCoor[0][1]]=generateBasicTile(1, "DUNGEON EXIT");
 
@@ -359,7 +872,8 @@ let occupied = false;
       break;
     }
   }
-} else if(sec==2){
+}
+else if(sec==2){
   //this is all for the section 3 dungeon, which generates in a cross pattern.
   //it checks every space in the cross, and as long as it isn't a boss room or enterance, it
   //makes a dungeon room there.
@@ -376,7 +890,7 @@ let occupied = false;
   }
   let bosscheck = false;
   //flips a coin to choose which path to make the boss room in.
-  switch(Math.floor((Math.random() * 1))){
+  switch(Math.floor((Math.random() * 2))){
     case 0:
     while(!bosscheck){
       //randomly picks a room along a path and places the boss in an empty room.
@@ -408,7 +922,8 @@ let occupied = false;
 [][][/]
 [x][/][/]
 */
-} else if(sec==3){
+}
+else if(sec==3){
 //this is the section 4 dungeon, or the denizen dungeon.
 let emptyTiles=[];
 let genDirection =["n","s","e","w"];
@@ -543,7 +1058,8 @@ for (d=0;d<4;d++){
     client.strifecall.dungeonSpawn(client, sec, [roomToFill[0][0],roomToFill[0][1]], 'basilisk', message),],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 }
 
-} else if(sec=="m"){
+}
+else if(sec=="m"){
 //this is in theory for the moon dungeon, but I never see where it's called, and it's
 //an exact copy of the section 4 gen. Look into why this is here.
 let emptyTiles=[];
@@ -673,18 +1189,21 @@ for (d=0;d<4;d++){
 
 }
 
-function dungeonRoomGen(client,sec) {
+function dungeonRoomGen(client,sec,hacky=false) {
   //25% of the time, there is loot in a dungeon room. That's what this is for.
-  switch(Math.floor((Math.random() * 4))){
+  let tile = hacky ? dungeonRoom : generateBasicTile(10, "DUNGEON ROOM");
 
-case 3:
-return [10,1,[[[],[],"DUNGEON ROOM",false,[],[client.lootcall.lootB(client, sec, dubs(8))]]]];
-break;
-  default:
-  return generateBasicTile(10, "DUNGEON ROOM");
+  if(Math.floor((Math.random() * 4)) == 3){
+	if(hacky){
+	  tile = dungeonRoomLoot;
+	}
+	else{
+	  tile[2][0][5] = [client.lootcall.lootB(client, sec, dubs(8))];
+	}
   }
-
+  return tile;
 }
+
 //==========================================================================================
 exports.battlefieldGen = function(client,message){
   //though untested, this should in theory make a blank checkerboard pattern for the battlefield.
@@ -1841,7 +2360,7 @@ for(i=-1;i<2;i++){
 //   return check;
 // }
 
-//creates a carpacian
+//creates a carapacian
 exports.carSpawn = function(client,local,lunar,sessionID){
 
   let picList = [
