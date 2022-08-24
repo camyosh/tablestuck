@@ -874,12 +874,12 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
         break;
       }
     }
-	else if(target[4]!=message.guild.id+"medium"){
+    else if(target[4]!=message.guild.id+"medium"){
       if(targetTile[2][target[3]][4].length==1){
-    targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
-  }
-  }
-//for now, NPCs won't reveal new tiles.
+        targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
+      }
+    }
+  //for now, NPCs won't reveal new tiles.
   if(!client.charcall.npcCheck(client,charid)&&targetTile[2][target[3]][3]==false){
     client.funcall.actionCheck(client,message,"tile")
     targetTile[2][target[3]][3]=true;
@@ -997,97 +997,94 @@ exports.dreamCheck =  function(client,target,local){
 }
 
 function onSomeoneEnterRoom(client, message, charid, tile, roomIndex, map){
-  // console.log("onSomeoneEnterRoom called!");
   if(!tile[2] || !tile[2][roomIndex]){
-	console.log("onSomeoneEnterRoom called on entering a room that doesn't exist!");
-	return tile;
+    console.log("onSomeoneEnterRoom called on entering a room that doesn't exist!");
+    return tile;
   }
-  
+
   let triggers = tile[2][roomIndex][1];
   if(!triggers){
-	return tile;
+    return tile;
   }
-  
+
   tile = actOnActionList(client, message, charid, tile, roomIndex, map, triggers.any);
   tile = actOnActionList(client, message, charid, tile, roomIndex, map, triggers.onSomeoneEnterRoom);
-  
+
   return tile;
 }
 
 function actOnActionList(client, message, charid, tile, roomIndex, map, actionList){
   if(!actionList || actionList.length == 0){
-	return tile;
+    return tile;
   }
 
   for(let i=actionList.length - 1; i>=0; i--){
-	let removeFromTriggers = [];
-	let functionName = actionList[i].toUpperCase();
-	switch(functionName){
-	  case "LOOT_A":{
-		let sec = getSectionFromMapName(map);
-		if(isNaN(sec)){
-			console.log(`LOOT_S trigger was unable to glean sec from designation "${map}"`);
-			break;
-		}
-		tile[2][roomIndex][5] = [client.lootcall.lootA(client, sec, client.randcall.rollXdY(2,8) - 2)];
+    let removeFromTriggers = [];
+    let functionName = actionList[i].toUpperCase();
+    switch(functionName){
+      case "LOOT_A":{
+        let sec = getSectionFromMapName(map);
+        if(isNaN(sec)){
+          console.log(`LOOT_S trigger was unable to glean sec from designation "${map}"`);
+          break;
+        }
+        tile[2][roomIndex][5] = [client.lootcall.lootA(client, sec, client.randcall.rollXdY(2,8) - 2)];
 
-		removeFromTriggers.push(tile[2][roomIndex][1].onSomeoneEnterRoom);
-		break;
-	  }
-	  case "LOOT_B":{
-		let sec = getSectionFromMapName(map);
-		if(isNaN(sec)){
-			console.log(`LOOT_B trigger was unable to glean sec from designation "${map}"`);
-			break;
-		}
-		tile[2][roomIndex][5] = [client.lootcall.lootB(client, sec, client.randcall.rollXdY(2,8) - 2)];
+        removeFromTriggers.push(tile[2][roomIndex][1].onSomeoneEnterRoom);
+        break;
+      }
+      case "LOOT_B":{
+        let sec = getSectionFromMapName(map);
+        if(isNaN(sec)){
+          console.log(`LOOT_B trigger was unable to glean sec from designation "${map}"`);
+          break;
+        }
+        tile[2][roomIndex][5] = [client.lootcall.lootB(client, sec, client.randcall.rollXdY(2,8) - 2)];
 
-		removeFromTriggers.push(tile[2][roomIndex][1].onSomeoneEnterRoom);
-		break;
-	  }
-	  case "DISTINGUISH":{
-		if(roomIndex == 0){
-		  console.log("Distinguishing tile!");
-		  tile = JSON.parse(JSON.stringify(tile));
-		}
-		else{
-		  console.log("Distinguishing room!");
-		  tile[2][roomIndex] = JSON.parse(JSON.stringify(tile[2][roomIndex]));
-		}
-		removeFromTriggers.push(tile[2][roomIndex][1].any);
-		break;
-	  }
+        removeFromTriggers.push(tile[2][roomIndex][1].onSomeoneEnterRoom);
+        break;
+      }
+      case "DISTINGUISH":{
+        if(roomIndex == 0){
+          tile = JSON.parse(JSON.stringify(tile));
+        }
+        else{
+          tile[2][roomIndex] = JSON.parse(JSON.stringify(tile[2][roomIndex]));
+        }
+        removeFromTriggers.push(tile[2][roomIndex][1].any);
+        break;
+      }
       default:{
-	    console.log(`actOnActionList encountered unexpected action ${actionList[i].toUpperCase()}`);
-	  }
-	}
-	
-	for(let j=0; j<removeFromTriggers.length; j++){
-	  removeFromTriggers[j].splice(removeFromTriggers[j].findIndex(name => name.toUpperCase() === functionName), 1);
-	}
+        console.log(`actOnActionList encountered unexpected action ${actionList[i].toUpperCase()}`);
+		break;
+      }
+    }
+
+    for(let j=0; j<removeFromTriggers.length; j++){
+      removeFromTriggers[j].splice(removeFromTriggers[j].findIndex(name => name.toUpperCase() === functionName), 1);
+    }
   }
 
-  console.log(JSON.stringify(tile));
   return tile;
 }
 
 
 function getSectionFromMapName(mapName){
-	switch(mapName){
-		case "s1":
-		case "s1d":
-			return 1;
-		case "s2":
-		case "s2d":
-			return 2;
-		case "s3":
-		case "s3d":
-			return 3;
-		case "s4":
-		case "s4d":
-			return 4;
-	}
+  switch(mapName){
+    case "s1":
+    case "s1d":
+      return 1;
+    case "s2":
+    case "s2d":
+      return 2;
+    case "s3":
+    case "s3d":
+      return 3;
+    case "s4":
+    case "s4d":
+      return 4;
+  }
 
-	return undefined;
+  return undefined;
 }
 
