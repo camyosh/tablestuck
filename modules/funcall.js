@@ -1015,7 +1015,7 @@ function onSomeoneEnterRoom(client, message, charid, tile, roomIndex, map){
 }
 
 function actOnActionList(client, message, charid, tile, roomIndex, map, actionList){
-  if(!actionList){
+  if(!actionList || actionList.length == 0){
 	return tile;
   }
 
@@ -1031,7 +1031,7 @@ function actOnActionList(client, message, charid, tile, roomIndex, map, actionLi
 		}
 		tile[2][roomIndex][5] = [client.lootcall.lootA(client, sec, client.randcall.rollXdY(2,8) - 2)];
 
-		removeFromTriggers.push([tile[2][roomIndex][1].onSomeoneEnterRoom]);
+		removeFromTriggers.push(tile[2][roomIndex][1].onSomeoneEnterRoom);
 		break;
 	  }
 	  case "LOOT_B":{
@@ -1042,7 +1042,7 @@ function actOnActionList(client, message, charid, tile, roomIndex, map, actionLi
 		}
 		tile[2][roomIndex][5] = [client.lootcall.lootB(client, sec, client.randcall.rollXdY(2,8) - 2)];
 
-		removeFromTriggers.push([tile[2][roomIndex][1].onSomeoneEnterRoom]);
+		removeFromTriggers.push(tile[2][roomIndex][1].onSomeoneEnterRoom);
 		break;
 	  }
 	  case "DISTINGUISH":{
@@ -1054,18 +1054,20 @@ function actOnActionList(client, message, charid, tile, roomIndex, map, actionLi
 		  console.log("Distinguishing room!");
 		  tile[2][roomIndex] = JSON.parse(JSON.stringify(tile[2][roomIndex]));
 		}
-		removeFromTriggers.push([tile[2][roomIndex][1].any]);
+		removeFromTriggers.push(tile[2][roomIndex][1].any);
 		break;
 	  }
       default:{
 	    console.log(`actOnActionList encountered unexpected action ${actionList[i].toUpperCase()}`);
 	  }
 	}
-	for(let j=0; j<triggerArray.length; j++){
-	  triggerArray[j].splice(triggerArray[j].findIndex(name => name.toUpperCase() === functionName), 1);
+	
+	for(let j=0; j<removeFromTriggers.length; j++){
+	  removeFromTriggers[j].splice(removeFromTriggers[j].findIndex(name => name.toUpperCase() === functionName), 1);
 	}
   }
 
+  console.log(JSON.stringify(tile));
   return tile;
 }
 

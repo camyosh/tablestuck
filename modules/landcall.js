@@ -253,7 +253,9 @@ function hackyLandGen(client,sec,gateCoor,message,aspect,gristSet) {
 
 	// empty is a one-dimentional array with the coordinates of every square on the 11x11
 	//  land grid, used to determine which spaces are still open
+	// empty2 stores everything that remains, to decide where to place moon outposts
 	let empty =[];
+	let empty2=[];
 
 	let section = [,,,,,,,,,,];
 	let dungeon = [,,,,,,,,,,];
@@ -269,12 +271,15 @@ function hackyLandGen(client,sec,gateCoor,message,aspect,gristSet) {
 			dungeon[i][j] = defaultWall;
 		}
 	}
+	
+	let dungeonExit = generateDistinguishedTile(1, "DUNGEON EXIT");
 
 	// If this is the 4th section, put the the denizen lair entrance in the middle
 	if(sec==3){
 		let temp=empty.splice(60,1)[0];
-		section[temp[0]][temp[1]]=generateBasicTile(1, "DENIZEN LAIR ENTRANCE");
-		dungeon = dungeonGen(client,temp,sec,dungeon,message)[0];
+		section[temp[0]][temp[1]] = generateBasicTile(1, "DENIZEN LAIR ENTRANCE");
+		dungeon[temp[0]][temp[1]] = dungeonExit;
+		dungeon = dungeonGenD(client,[temp],sec,dungeon,message,true)[0];
 	}
 	// If this isn't the 4th section, then the gate is placed as normal.
 	// Gate locations are pre-generated so they can be stored in the landmap.
@@ -320,7 +325,8 @@ function hackyLandGen(client,sec,gateCoor,message,aspect,gristSet) {
 		for(let i=0;i<dunCount;i++){
 			let temp=client.randcall.spliceRandom(subsectionCoords);
 			section[temp[0]][temp[1]]=defaultDungeon;
-			dungeon = dunGenFunction(client,[temp],sec,dungeon,message,true);
+			dungeon[temp[0]][temp[1]]=dungeonExit;
+			dungeon = dunGenFunction(client,[temp],sec,dungeon,message,true)[0];
 		}
 	
 		//Creates Dreambed if needed
@@ -363,12 +369,14 @@ function hackyLandGen(client,sec,gateCoor,message,aspect,gristSet) {
 			let temp=client.randcall.spliceRandom(subsectionCoords);
 			section[temp[0]][temp[1]]=defaultFreeLoot;
 		}
+
+		empty2 = empty2.concat(subsectionCoords);
 	}
 
 	//Moon outposts appear on only the first section of a land.
 	if(sec==0){
-		generateMoonOutpost(client, message, section, empty, "pc", "PROSPIT");
-		generateMoonOutpost(client, message, section, empty, "dc", "DERSE");
+		generateMoonOutpost(client, message, section, empty2, "pc", "PROSPIT");
+		generateMoonOutpost(client, message, section, empty2, "dc", "DERSE");
 	}
 
 	//all areas and dungeons of the section have been completed.
@@ -429,14 +437,14 @@ function generateMoonOutpost(client, message, section, coordCandidates, castleDe
 	// TODO: Replace with an invcall method like "addItemToRoom"
 	transHubTile[2][0][5].push([`${message.author.username}`,`@/jG${outpostCode}`,1,1,[],transportalizerImage]);
 
-	section[temp[0]][temp[1]] = [11,1,[
+	section[temp[0]][temp[1]] = [11,1,[[
 		[],
 		{},
 		`${moonName} OUTPOST`,
 		false,
 		[],
 		[[`${moonName} TRANSPORTALIZER`,`@/jG${hubCode}`,1,1,[],transportalizerImage]]
-	]];
+	]]];
 
 	// Save the new transportalizers
 	client.transMap.set(`${message.guild.id}${hubCode}`,outpostTrans);
@@ -450,14 +458,14 @@ function generateMoonOutpost(client, message, section, coordCandidates, castleDe
 
 
 // Function that generates the dungeons for Section 1 and Section 2
-function dungeonGenA(client, roomCoor, sec, dungeon, message, hacky = false) {
+function dungeonGenA(client, roomCoor, sec, dungeon, message, hacky=false) {
 	roomCoor = roomCoor[0];
 
 	let DIRECTIONS = {
 		"east": [0, 1],
 		"west": [0, -1],
 		"north": [-1, 0],
-		"south": [0, -1]
+		"south": [1, 0]
 	};
 
 
@@ -466,17 +474,17 @@ function dungeonGenA(client, roomCoor, sec, dungeon, message, hacky = false) {
 	//can't be used (aka too close to the edge of the map), the option is spliced from the array.
 	let directions=["east","west","south","north"];
 
-    if(roomCoor[0]>5){
+    if(roomCoor[1]>5){
 		removed = directions.splice(directions.indexOf("east"),1);
     }
-	else if(roomCoor[0]<5){
+	else if(roomCoor[1]<5){
 		removed = directions.splice(directions.indexOf("west"),1);
     }
 
-    if(roomCoor[1]>5){
+    if(roomCoor[0]>5){
 		removed = directions.splice(directions.indexOf("south"),1);
     }
-	else if(roomCoor[1]<5){
+	else if(roomCoor[0]<5){
 		removed = directions.splice(directions.indexOf("north"),1);
     }
 
@@ -500,10 +508,12 @@ function dungeonGenA(client, roomCoor, sec, dungeon, message, hacky = false) {
 		for(let k=0;k<5;k++){
 			b++;
 			increment(coords);
+			let currentY = coords[0];
+			let currentX = coords[1];
 			let currentTile = dungeon[currentY][currentX];
 
 			//checks if the room it's about to generate over is already a dungeon exit or a boss.
-			if(currentTile[0]==1 || currentTile[0] == 8){
+			if(isDungeonTileOccupied(currentTile)){
 				occupied = true;
 			}
 
@@ -518,42 +528,42 @@ function dungeonGenA(client, roomCoor, sec, dungeon, message, hacky = false) {
 				while(occupied){
 					increment(coords, -1);
 					k--;
-					if(dungeon[currentY][currentX][0]!=1 && dungeon[currentY][currentX][0] != 8){
+					if(!isDungeonTileOccupied(dungeon[coords[0]][coords[1]])){
 						occupied = false;
 					}
 				}
 				
-				let bossRoomCoords = [currentY, currentX];
 				currentTile = [8,1,[[
 					[],
 					{},
 					"BOSS ROOM",
 					false,
 					[
-						client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, bossList[sec], message),
-						client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, support[sec], message),
-						client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, support[sec], message)
+						client.strifecall.dungeonSpawn(client, sec, coords, bossList[sec], message),
+						client.strifecall.dungeonSpawn(client, sec, coords, support[sec], message),
+						client.strifecall.dungeonSpawn(client, sec, coords, support[sec], message)
 					],
 					[client.lootcall.lootA(client, sec, dubs(8))]
 				]]];
 				k=5;
 			}
-
 			//if it's not a boss, makes a normal room with a chance of loot.
 			else if(!occupied){
 				currentTile = dungeonRoomGen(client,sec,hacky);
 			}
 			occupied = false;
 
-			dungeon[roomCoor[0]+offset1*k][roomCoor[1]+offset2*k] = currentTile;
+			dungeon[coords[0]][coords[1]] = currentTile;
 		}
 	}
+
+	console.log("Dungeon generated using algorithm A.");
 
 	return [dungeon];
 }
 
-function dungeonGenB(client, roomCoor, sec, dungeon, message) { 
-	return dungeonGenA(client, roomCoor, sec, dungeon, message);
+function dungeonGenB(client, roomCoor, sec, dungeon, message, hacky=false) { 
+	return dungeonGenA(client, roomCoor, sec, dungeon, message, hacky);
 }
 
 // Function that generates a dungeon for Section 3
@@ -603,11 +613,12 @@ function dungeonGenC(client, roomCoor, sec, dungeon, message, hacky=false) {
 		client.strifecall.dungeonSpawn(client, sec, bossRoomCoords, support[sec], message)
 	],[client.lootcall.lootA(client, sec, dubs(8))]]]];
 
-	return dungeon;
+	console.log("Dungeon generated using algorithm C.");
+	return [dungeon];
 }
 
 // Function that generates a Denizen Dungeon
-function dungeonGenD(client,roomCoor,sec,dungeon,message,hacky = false) {
+function dungeonGenD(client,roomCoor,sec,dungeon,message,hacky=false) {
 	roomCoor = roomCoor[0];
 
 	//this is the section 4 dungeon, or the denizen dungeon.
@@ -669,7 +680,7 @@ function dungeonGenD(client,roomCoor,sec,dungeon,message,hacky = false) {
 				case "w":
 					if((--curx)<0){
 						hitWall=true;
-						cury = 0;
+						curx = 0;
 					}
 					break;
 				}
@@ -692,7 +703,7 @@ function dungeonGenD(client,roomCoor,sec,dungeon,message,hacky = false) {
 				pathStart.push([curx,cury]);
 			}
 
-			curDirection = client.randcall.getAnyExcept(genDirection, curDirection);
+			curDirection = client.randcall.getAnyExcept(genDirection, genDirection[genDirection.indexOf(curDirection) ^ 1]);
 			//this iterates until the branch hits a wall.
 		}
 	}
@@ -720,7 +731,8 @@ function dungeonGenD(client,roomCoor,sec,dungeon,message,hacky = false) {
 		]]];
 	}
 
-	return dungeon;
+	console.log("Dungeon generated using algorithm D.");
+	return [dungeon];
 }
 
 
