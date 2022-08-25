@@ -2066,12 +2066,11 @@ function generatePrisonBlock(){
 // As above, but with pointer magics.
 function generatePrisonBlockHackily(){
   let sec = [];
-  let corridorLine = generateEmptyLineHackily("CORRIDOR", 10);
   let corridor = generateDistinguishedTile(10, "CORRIDOR");
   let cell = generateDistinguishedTile(15, "PRISON CELL");
   for(let i=0; i<11; i++){
     if(i % 3 == 2){
-      sec.push(corridorLine);
+      sec.push(generateEmptyLineHackily("CORRIDOR", 10));
       continue;
     }
 
