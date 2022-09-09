@@ -30,12 +30,12 @@ function rollXdYZTimes(x, y, z){
 	return retVal;
 }
 
-exports.rollBonusUsingOldMethod(tier){
+exports.rollBonusUsingOldMethod = function(tier){
 	let bonusRoll = bonus[tier];
 	return Math.floor((Math.random() * (bonusRoll[1] - bonusRoll[0])) + bonusRoll[0]);
 }
 
-exports.rollBonusUsingDice(tier){
+exports.rollBonusUsingDice = function(tier){
 	let bonusRoll = bonus[tier];
 	return rollXdY(bonusRoll[0], bonusRoll[1]/bonusRoll[0]);
 }
