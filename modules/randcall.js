@@ -80,3 +80,6 @@ exports.rollToHit = function(noirBonus = false, refinedBonus = false, scienceBon
 	}
 	return retVal;
 }
+
+exports.tileToLocal = function(client,message,tile){
+}
