@@ -8,11 +8,11 @@ exports.getWithGuildID = function(client, guildID, datatype){
 
 function get(client, guildID, datatype){
 	let retVal = "NONE";
-	
+
 	if(!client.configMap.has(guildID) || (client.configMap.get(guildID).settings == undefined)){
 		generateSettings(client, guildID);
 	}
-	
+
 	if(client.configMap.has(guildID)){
 		let settings = client.configMap.get(guildID).settings;
 		if(settings[datatype] == undefined){
@@ -42,28 +42,26 @@ exports.generateSettings = function (client, guildID){
 }
 
 function generateSettings(client, guildID){
-	let options = undefined;
+	let options;
 	let settings = {};
-	
+
 	// Populate options Array
 	if(!client.configMap.has(guildID)){
 		let defaultConfig = require("../config.json");
 		console.log("creating a new config file!");
 		client.configMap.set(guildID,defaultConfig);
 
-		let options = client.configMap.get(guildID);
-		
+		options = client.configMap.get(guildID);
 		// If the default options file contains a settings dictionary, then we can just use that.
 		if(options.settings != undefined){
 			settings = options.settings;
 		}
-		
+
 		options = options.options;
 	}
 	else{
 		options = client.configMap.get(guildID).options;
 	}
-	
 	for(let i=0; i<options.length; i++){
 //	In terms of performance, it may be better to skip this part, and simply load EVERYTHING into settings.
 //		// All options created before the "default" field was added had a default value of 0.
@@ -86,7 +84,7 @@ exports.set = function(client, message, datatype, value){
 	let guildID = message.guild.id;
 	let options;
 	let settings;
-	
+
 	if(!client.configMap.has(guildID) || (client.configMap.has(guildID).settings == undefined)){
 		settings = generateSettings(client, guildID);
 		options = client.configMap.get(guildID).options;
@@ -96,7 +94,7 @@ exports.set = function(client, message, datatype, value){
 		settings = config.settings;
 		options = config.options;
 	}
-	
+
 	settings[datatype] = value;
 	client.configMap.set(guildID, {options: options, settings: settings});
 }

@@ -14,7 +14,7 @@ exports.run = (client, message, args) => {
   }
 
 if(!client.configMap.has(message.guild.id)){
-  client.configcall.generateSettings(client, message);
+  client.configcall.generateSettings(client, message.guild.id);
 }
 configList = client.configMap.get(message.guild.id);
 if(!args[0]||args[0]==`page`){
