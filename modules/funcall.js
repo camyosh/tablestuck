@@ -373,7 +373,7 @@ exports.regImport = async function(client, charSheet) {
 exports.alchemize = function(client, item1, item2, type){
 
   let code1 = [item1[1].charAt(0),item1[1].charAt(1),item1[1].charAt(2),item1[1].charAt(3),item1[1].charAt(4),item1[1].charAt(5),item1[1].charAt(6),item1[1].charAt(7)];
-  let code2 = [item2[1].charAt(0),item2[1].charAt(1),item2[1].charAt(2),item2[1].charAt(3),item2[1].charAt(4),item2[1].charAt(5),item2[1].charAt(6),item2[1].charAt(7),];
+  let code2 = [item2[1].charAt(0),item2[1].charAt(1),item2[1].charAt(2),item2[1].charAt(3),item2[1].charAt(4),item2[1].charAt(5),item2[1].charAt(6),item2[1].charAt(7)];
 
   let tier;
   let i;
@@ -835,60 +835,64 @@ exports.sleepHeal = function(client,charid){
 
 exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTitle="moving to"){
 
-  let targSec = client.landMap.get(target[4],target[0]);
+  let targetLandID = target[4];
+  let targSec = client.landMap.get(targetLandID,target[0]);
   var occset = [(client.charcall.npcCheck(client,charid)?false:true),charid];
   var userid = message.guild.id.concat(message.author.id);
+
+  // Remove the character from the previous room
   if(local[0]==target[0]&&local[4]==target[4]){
-
-    targSec[local[1]][local[2]][2][local[3]][4].splice(targSec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
-
-  } else {
+    let roomFrom = targSec[local[1]][local[2]][2][local[3]];
+    roomFrom[4].splice(roomFrom[4].findIndex(occpos => occpos[1] === occset[1]),1);
+  }
+  // Remove the character from the previous room, interdimensionally
+  else if(client.landMap.has(local[4])) {
 
     let sec = client.landMap.get(local[4],local[0]);
-
-    sec[local[1]][local[2]][2][local[3]][4].splice(sec[local[1]][local[2]][2][local[3]][4].findIndex(occpos => occpos[1] === occset[1]),1);
-
-    client.landMap.set(local[4],sec,local[0]);
-
+    let roomFrom = sec[local[1]][local[2]][2][local[3]];
+    if(sec[0]){
+      roomFrom[4].splice(roomFrom[4].findIndex(occpos => occpos[1] === occset[1]),1);
+      client.landMap.set(local[4],sec,local[0]);
+    }
   }
 
-    targSec[target[1]][target[2]][2][target[3]][4].push(occset);
-//the &&false is to disable prospitians spawning for the tournament
-    if(target[4]==message.guild.id+"medium"&&targSec[target[1]][target[2]][2][target[3]][4].length==1){
+  let targetTile = onSomeoneEnterRoom(client, message, charid, targSec[target[1]][target[2]], target[3], target[0]);
+  targSec[target[1]][target[2]] = targetTile;
+
+    targetTile[2][target[3]][4].push(occset);
+    if(target[4]==message.guild.id+"medium" && targetTile[2][target[3]][4].length==1){
       switch(target[0]){
         case "dm":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
-        break;
         case "d":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
+          targetTile[2][target[3]][4]=targetTile[2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id))
         break;
         case "pm":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id))
-        break;
         case "p":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id))
+          targetTile[2][target[3]][4]=targetTile[2][target[3]][4].concat(client.landcall.carSpawn(client,target,1,message.guild.id));
         break;
         case "bf":
-          targSec[target[1]][target[2]][2][target[3]][4]=targSec[target[1]][target[2]][2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id),client.landcall.carSpawn(client,target,1,message.guild.id));
+          targetTile[2][target[3]][4]=targetTile[2][target[3]][4].concat(client.landcall.carSpawn(client,target,0,message.guild.id),client.landcall.carSpawn(client,target,1,message.guild.id));
         break;
       }
-    }else if(target[4]!=message.guild.id+"medium"){
-      if(targSec[target[1]][target[2]][2][target[3]][4].length==1){
-    targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
-  }
-  }
-//for now, NPCs won't reveal new tiles.
-  if(!client.charcall.npcCheck(client,charid)&&targSec[target[1]][target[2]][2][target[3]][3]==false){
+    }
+    else if(target[4]!=message.guild.id+"medium"){
+      if(targetTile[2][target[3]][4].length==1){
+        targSec =  client.strifecall.underSpawn(client,target,targSec,message.guild.id);
+      }
+    }
+  //for now, NPCs won't reveal new tiles.
+  if(!client.charcall.npcCheck(client,charid)&&targetTile[2][target[3]][3]==false){
     client.funcall.actionCheck(client,message,"tile")
-    targSec[target[1]][target[2]][2][target[3]][3]=true;
+    targetTile[2][target[3]][3]=true;
   }
+
 
   client.funcall.tick(client,message);
   client.charcall.setAnyData(client,userid,charid,target,"local");
   client.landMap.set(target[4],targSec,target[0]);
 
-  let occNew = targSec[target[1]][target[2]][2][target[3]][4];
-  let location = targSec[target[1]][target[2]][2][target[3]][2];
+  let occNew = targetTile[2][target[3]][4];
+  let location = targetTile[2][target[3]][2];
   msg +=`**${location}**`
 
   if(occNew.length > 1){
@@ -900,20 +904,18 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
         occCheck[1]=true;
       }
     }
-
-
   }
 
-  if(targSec[target[1]][target[2]][2].length>1){
+  if(targetTile[2].length>1){
     msg+=`\nThere are multiple rooms in this area!`;
   }
 
   async function moveEmbed(){
     var userid = message.guild.id.concat(message.author.id);
     var charid = client.userMap.get(userid,"possess");
-    dex = targSec[target[1]][target[2]][2][target[3]][5];
-    var attachment = await client.imgcall.sdexCheck(client,message,0,false,3,dex,dex.length,`${targSec[target[1]][target[2]][2][target[3]][2]} (>inspect)`);
-    let occList = targSec[target[1]][target[2]][2][target[3]][4];
+    dex = targetTile[2][target[3]][5];
+    var attachment = await client.imgcall.sdexCheck(client,message,0,false,3,dex,dex.length,`${targetTile[2][target[3]][2]} (>inspect)`);
+    let occList = targetTile[2][target[3]][4];
 
     let i;
     let list = ``;
@@ -924,10 +926,10 @@ exports.move = function(client,message,charid,local,target,mapCheck,msg,embedTit
     var listEmbed;
     var files = [attachment];
     listEmbed = new client.MessageEmbed()
-      .setTitle(`**${embedTitle.toUpperCase()} ${targSec[target[1]][target[2]][2][target[3]][2]}**`)
+      .setTitle(`**${embedTitle.toUpperCase()} ${targetTile[2][target[3]][2]}**`)
       .addFields(
         {name:`**ALERTS**`,value:msg},
-        {name:`**ROOM**`,value:`**${targSec[target[1]][target[2]][2][target[3]][2]}**`,inline:true},
+        {name:`**ROOM**`,value:`**${targetTile[2][target[3]][2]}**`,inline:true},
         {name:`**PAGE**`,value:`**1**`,inline:true},
         {name:`**CURRENT OCCUPANTS** (>list)`,value:list}
       )
@@ -993,3 +995,96 @@ function dreamCheck(client,target,local){
 exports.dreamCheck =  function(client,target,local){
   return dreamCheck(client,target,local);
 }
+
+function onSomeoneEnterRoom(client, message, charid, tile, roomIndex, map){
+  if(!tile[2] || !tile[2][roomIndex]){
+    console.log("onSomeoneEnterRoom called on entering a room that doesn't exist!");
+    return tile;
+  }
+
+  let triggers = tile[2][roomIndex][1];
+  if(!triggers){
+    return tile;
+  }
+
+  tile = actOnActionList(client, message, charid, tile, roomIndex, map, triggers.any);
+  tile = actOnActionList(client, message, charid, tile, roomIndex, map, triggers.onSomeoneEnterRoom);
+
+  return tile;
+}
+
+function actOnActionList(client, message, charid, tile, roomIndex, map, actionList){
+  if(!actionList || actionList.length == 0){
+    return tile;
+  }
+
+  for(let i=actionList.length - 1; i>=0; i--){
+    let removeFromTriggers = [];
+    let functionName = actionList[i].toUpperCase();
+    switch(functionName){
+      case "LOOT_A":{
+        let sec = getSectionFromMapName(map);
+        if(isNaN(sec)){
+          console.log(`LOOT_S trigger was unable to glean sec from designation "${map}"`);
+          break;
+        }
+        tile[2][roomIndex][5] = [client.lootcall.lootA(client, sec, client.randcall.rollXdY(2,8) - 2)];
+
+        removeFromTriggers.push(tile[2][roomIndex][1].onSomeoneEnterRoom);
+        break;
+      }
+      case "LOOT_B":{
+        let sec = getSectionFromMapName(map);
+        if(isNaN(sec)){
+          console.log(`LOOT_B trigger was unable to glean sec from designation "${map}"`);
+          break;
+        }
+        tile[2][roomIndex][5] = [client.lootcall.lootB(client, sec, client.randcall.rollXdY(2,8) - 2)];
+
+        removeFromTriggers.push(tile[2][roomIndex][1].onSomeoneEnterRoom);
+        break;
+      }
+      case "DISTINGUISH":{
+        if(roomIndex == 0){
+          tile = JSON.parse(JSON.stringify(tile));
+        }
+        else{
+          tile[2][roomIndex] = JSON.parse(JSON.stringify(tile[2][roomIndex]));
+        }
+        removeFromTriggers.push(tile[2][roomIndex][1].any);
+        break;
+      }
+      default:{
+        console.log(`actOnActionList encountered unexpected action ${actionList[i].toUpperCase()}`);
+		break;
+      }
+    }
+
+    for(let j=0; j<removeFromTriggers.length; j++){
+      removeFromTriggers[j].splice(removeFromTriggers[j].findIndex(name => name.toUpperCase() === functionName), 1);
+    }
+  }
+
+  return tile;
+}
+
+
+function getSectionFromMapName(mapName){
+  switch(mapName){
+    case "s1":
+    case "s1d":
+      return 1;
+    case "s2":
+    case "s2d":
+      return 2;
+    case "s3":
+    case "s3d":
+      return 3;
+    case "s4":
+    case "s4d":
+      return 4;
+  }
+
+  return undefined;
+}
+

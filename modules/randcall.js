@@ -6,8 +6,31 @@ exports.randLessThan = function(upperLimit){
 	return randLessThan(upperLimit);
 }
 
+exports.spliceRandom = function(list){
+	return spliceRandom(list);
+}
+
+exports.getAnyExcept = function(list, forbidden){
+	let index = randLessThan(list.length - 1);
+	if(index >= list.indexOf(forbidden)){
+		index++;
+	}
+	return list[index];
+}
+
+function spliceRandom(list){
+	let number = randLessThan(list.length);
+	return list.splice(number, 1)[0];
+}
+
+// Note: upperLimit does not need to be an integer.
+// Giving it (1.5) is the same as calling Math.floor((Math.random() * 6) / 4), for example.
 function randLessThan(upperLimit){
 	return Math.floor((Math.random() * upperLimit));
+}
+
+exports.rollXdY = function(x,y){
+	return rollXdY(x, y);
 }
 
 function rollXdY(x, y){
@@ -38,10 +61,6 @@ exports.rollBonusUsingOldMethod = function(tier){
 exports.rollBonusUsingDice = function(tier){
 	let bonusRoll = bonus[tier];
 	return rollXdY(bonusRoll[0], bonusRoll[1]/bonusRoll[0]);
-}
-
-exports.rollXdY = function(x,y){
-	return rollXdY(x, y);
 }
 
 // Note: Math.ceil(Math.random() * x) is not sufficient.

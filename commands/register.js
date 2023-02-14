@@ -480,11 +480,21 @@ async function finishLandGen(client,message,sburbid,aspect,gristSet,def){
   //determines where all the gates on the land will be.
   var gategen = [[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))],[Math.floor((Math.random() * 11)),Math.floor((Math.random() * 11))]]
 
+  let hackyWorldgen = client.configcall.get(client, message, "HACKY_WORLDGEN");
+
   //makes all 4 lands and saves them to variables.
-  var s1 = await client.landcall.landGen(client,0,gategen[0],message,aspect,gristSet);
-  var s2 = await client.landcall.landGen(client,1,gategen[1],message,aspect,gristSet);
-  var s3 = await client.landcall.landGen(client,2,gategen[2],message,aspect,gristSet);
-  var s4 = await client.landcall.landGen(client,3,gategen[3],message,aspect,gristSet);
+  if(hackyWorldgen=="true" || hackyWorldgen=="semi"){
+    var s1 = await client.landcall.hackyLandGen(client,0,gategen[0],message,aspect,gristSet,hackyWorldgen=="true");
+    var s2 = await client.landcall.hackyLandGen(client,1,gategen[1],message,aspect,gristSet,hackyWorldgen=="true");
+    var s3 = await client.landcall.hackyLandGen(client,2,gategen[2],message,aspect,gristSet,hackyWorldgen=="true");
+    var s4 = await client.landcall.hackyLandGen(client,3,gategen[3],message,aspect,gristSet,hackyWorldgen=="true");
+  }
+  else{
+    var s1 = await client.landcall.landGen(client,0,gategen[0],message,aspect,gristSet);
+    var s2 = await client.landcall.landGen(client,1,gategen[1],message,aspect,gristSet);
+    var s3 = await client.landcall.landGen(client,2,gategen[2],message,aspect,gristSet);
+    var s4 = await client.landcall.landGen(client,3,gategen[3],message,aspect,gristSet);
+  }
 
   //defines all the data for the player's land
   var land = {
